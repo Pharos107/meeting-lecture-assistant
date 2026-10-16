@@ -1,0 +1,6 @@
+# Chưa khóa. Điền cùng ngày build image.
+# Dòng pip cài PyTorch CUDA:
+# Repo faster-whisper large-v3-turbo: mobiuslabsgmbh/faster-whisper-large-v3-turbo
+# Repo faster-whisper small: Systran/faster-whisper-small
+# pyannote.audio bản kiểm thử: 3.3.2
+# Pipeline: pyannote/speaker-diarization-3.1

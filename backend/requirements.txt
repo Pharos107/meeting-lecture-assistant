@@ -1,0 +1,16 @@
+faster-whisper
+pyannote.audio>=3.1,<4
+fastapi
+uvicorn
+celery[redis]
+redis
+sqlalchemy
+alembic
+psycopg[binary]
+pydantic
+python-multipart
+argon2-cffi
+PyJWT
+httpx
+python-docx
+fpdf2
