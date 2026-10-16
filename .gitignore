@@ -1,0 +1,49 @@
+# Secrets and local env
+.env
+.env.*
+!.env.example
+
+# Runtime data, model cache, and reference audio
+/data/
+**/.cache/
+**/huggingface/
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.opus
+*.m4a
+*.webm
+*.mp4
+*.aac
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+
+# Docker volumes
+postgres-data/
+redis-data/
+
+# OS and editors
+Thumbs.db
+Desktop.ini
+.DS_Store
+.idea/
+.vscode/
+
+# Microsoft Office lock files
+~$*
