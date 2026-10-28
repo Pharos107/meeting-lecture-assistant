@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Chỉ dùng khi chạy `next dev` không có Caddy. Triển khai thật để Caddy gửi /api sang FastAPI.
+  async rewrites() {
+    const target = process.env.DEV_API_PROXY;
+    return target ? [{ source: "/api/:path*", destination: `${target}/api/:path*` }] : [];
+  },
 };
 
 export default nextConfig;
