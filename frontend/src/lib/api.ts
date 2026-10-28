@@ -173,3 +173,191 @@ export async function logout() {
   else await revokeSession();
   if (typeof window !== "undefined") window.location.assign("/login");
 }
+
+// ----- Kiểu dữ liệu của API job -----
+
+export type JobStatus =
+  | "queued"
+  | "capturing"
+  | "preprocessing"
+  | "transcribing"
+  | "diarizing"
+  | "ready"
+  | "failed"
+  | "cancelled";
+
+export type JobWarning = { code: string; message: string };
+
+export type JobSummary = {
+  id: string;
+  title: string;
+  source: "upload" | "live";
+  status: JobStatus;
+  duration_ms: number | null;
+  warnings: JobWarning[];
+  created_at: string;
+};
+
+export type JobDetail = JobSummary & {
+  error_code: string | null;
+  error_message: string | null;
+  vocabulary: string | null;
+  num_speakers: number | null;
+  diarization_device: "cuda" | "cpu" | null;
+  started_at: string | null;
+  finished_at: string | null;
+};
+
+export type ApiWord = { text: string; start_ms: number; end_ms: number; speaker_label?: string | null };
+
+export type ApiSegment = {
+  id: string;
+  position?: number;
+  start_ms: number;
+  end_ms: number;
+  text_raw: string;
+  text_cleaned?: string | null;
+  text_edited?: string | null;
+  speaker_label?: string | null;
+  speaker_name?: string | null;
+  words: ApiWord[];
+};
+
+export type ApiSpeaker = { label: string; display_name: string; source: "manual" | "voice_profile" | null };
+
+export type Transcript = { pass: number | null; segments: ApiSegment[]; speakers: ApiSpeaker[] };
+
+export type JobEvent =
+  | { type: "stage"; seq: number; stage: string; detail: string }
+  | {
+      type: "chunk";
+      seq: number;
+      chunk_index: number;
+      chunk_count: number;
+      processing_time_ms: number;
+      expected_next_chunk_ms: number;
+      segments: ApiSegment[];
+    }
+  | { type: "speakers"; seq: number }
+  | { type: "warning"; seq: number; code: string; message: string }
+  | { type: "done"; seq: number }
+  | { type: "error"; seq: number; code: string; message: string };
+
+export const ACTIVE_STATUSES: JobStatus[] = ["queued", "capturing", "preprocessing", "transcribing", "diarizing"];
+
+export const STATUS_LABELS: Record<JobStatus, string> = {
+  queued: "Đang chờ",
+  capturing: "Đang thu",
+  preprocessing: "Chuẩn hóa âm thanh",
+  transcribing: "Đang nhận dạng",
+  diarizing: "Gán người nói",
+  ready: "Sẵn sàng",
+  failed: "Lỗi",
+  cancelled: "Đã hủy",
+};
+
+// ----- Tải file lên. Dùng XHR để có tiến độ gửi, fetch chưa báo được phần này -----
+
+function sendUpload(form: FormData, onProgress: (ratio: number) => void, signal?: AbortSignal) {
+  return new Promise<{ status: number; body: string }>((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/jobs");
+    const token = getAccessToken();
+    if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) onProgress(event.loaded / event.total);
+    };
+    xhr.onload = () => resolve({ status: xhr.status, body: xhr.responseText });
+    xhr.onerror = () => reject(new ApiRequestError(0, "network_error", "Mất kết nối khi tải file lên."));
+    xhr.onabort = () => reject(new ApiRequestError(0, "aborted", "Đã hủy tải lên."));
+    signal?.addEventListener("abort", () => xhr.abort(), { once: true });
+    xhr.send(form);
+  });
+}
+
+function uploadError(status: number, body: string): ApiRequestError {
+  try {
+    const error = JSON.parse(body)?.error;
+    if (error) return new ApiRequestError(status, error.code, error.message, error.fields);
+  } catch {
+    // Thân lỗi không phải JSON, ví dụ trang lỗi của proxy.
+  }
+  return new ApiRequestError(status, "server_unavailable", "Không kết nối được máy chủ.");
+}
+
+export async function uploadJob(
+  form: FormData,
+  onProgress: (ratio: number) => void,
+  signal?: AbortSignal,
+): Promise<{ job_id: string; status: JobStatus }> {
+  await ensureSession();
+  let res = await sendUpload(form, onProgress, signal);
+  if (res.status === 401) {
+    if (!(await refreshSession())) {
+      redirectToLogin();
+      throw uploadError(res.status, res.body);
+    }
+    res = await sendUpload(form, onProgress, signal);
+  }
+  if (res.status < 200 || res.status >= 300) throw uploadError(res.status, res.body);
+  return JSON.parse(res.body);
+}
+
+// ----- SSE qua fetch, vì EventSource không gắn được header Authorization -----
+
+type StreamOptions = {
+  afterSeq: number;
+  signal: AbortSignal;
+  onEvent: (event: JobEvent) => void;
+};
+
+/** Đọc SSE của job đến khi server đóng stream. Trả seq cuối đã nhận để nối lại. */
+export async function streamJobEvents(jobId: string, { afterSeq, signal, onEvent }: StreamOptions): Promise<number> {
+  let lastSeq = afterSeq;
+  const res = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/events?after_seq=${afterSeq}`, {
+    headers: { Accept: "text/event-stream" },
+    signal,
+  });
+  if (!res.ok || !res.body) throw await readError(res);
+
+  const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+  let buffer = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += value.replace(/\r\n/g, "\n");
+    let boundary = buffer.indexOf("\n\n");
+    while (boundary >= 0) {
+      const frame = buffer.slice(0, boundary);
+      buffer = buffer.slice(boundary + 2);
+      boundary = buffer.indexOf("\n\n");
+      const parsed = parseFrame(frame);
+      if (!parsed) continue;
+      if (parsed.seq <= lastSeq) continue;
+      lastSeq = parsed.seq;
+      onEvent(parsed);
+    }
+  }
+  return lastSeq;
+}
+
+function parseFrame(frame: string): JobEvent | null {
+  let type = "message";
+  const data: string[] = [];
+  for (const line of frame.split("\n")) {
+    if (line.startsWith(":")) continue;
+    const colon = line.indexOf(":");
+    const field = colon < 0 ? line : line.slice(0, colon);
+    const value = colon < 0 ? "" : line.slice(colon + 1).replace(/^ /, "");
+    if (field === "event") type = value;
+    else if (field === "data") data.push(value);
+  }
+  if (data.length === 0) return null;
+  try {
+    const payload = JSON.parse(data.join("\n"));
+    if (typeof payload?.seq !== "number") return null;
+    return { ...payload, type } as JobEvent;
+  } catch {
+    return null;
+  }
+}
