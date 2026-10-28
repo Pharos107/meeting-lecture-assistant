@@ -1,8 +1,8 @@
 # Công nghệ và môi trường
 
 **Dự án:** Hệ thống trợ lý chuyển đổi, tóm tắt và trích xuất biên bản cuộc họp / bài giảng tiếng Việt  
-**Phiên bản:** 1.3  
-**Ngày:** 2026-10-16  
+**Phiên bản:** 1.4  
+**Ngày:** 2026-10-28  
 **Vai trò của file này:** Khóa thư viện, máy, biến môi trường, Docker, và cây thư mục. Hành vi nằm ở [kiến trúc](ARCHITECTURE_SPEC.md). Hợp đồng nằm ở [API và dữ liệu](API_AND_DATA.md).
 
 ## 1. Hồ sơ máy
@@ -26,7 +26,7 @@ Worker ghi tên GPU và tổng VRAM vào log lúc khởi động. Thiếu CUDA t
 | Tầng | Công nghệ | Vai trò |
 |---|---|---|
 | Frontend | Next.js App Router, React, TypeScript, Tailwind CSS, shadcn/ui | Trang tài khoản, tải file, transcript, phiên nghe |
-| Nén trên trình duyệt | `@ffmpeg/ffmpeg` và `@ffmpeg/core` | Đưa upload về Opus. Thiếu SharedArrayBuffer thì bỏ qua và tải file gốc |
+| Nén trên trình duyệt | `@ffmpeg/ffmpeg` và `@ffmpeg/core` bản đơn luồng | Tách âm thanh khỏi video, đưa upload về Opus. WASM lỗi thì tải file gốc |
 | Backend | FastAPI, Pydantic, Uvicorn | REST, SSE, WebSocket, xác thực |
 | Hàng đợi | Celery, Redis 7 | Hàng `gpu` concurrency 1. Hàng `io` concurrency 4 cho LLM |
 | STT | faster-whisper | Pass chuẩn `large-v3-turbo`, pass nháp `small` |
@@ -51,6 +51,8 @@ Tên ngắn dưới đây là khóa trong `faster_whisper/utils.py` của bản 
 
 Khi nâng faster-whisper, mở lại bảng `_MODELS` và ghi repo thực tế vào `backend/MODELS.lock`. Tham số runtime nằm ở kiến trúc.
 
+`large-v3-turbo` cắt decoder từ 32 xuống 4 lớp. Mức giảm chất lượng thường rõ hơn ở ngôn ngữ ít dữ liệu. Ứng viên để so là PhoWhisper của VinAI, đã huấn luyện thêm trên khoảng 844 giờ tiếng Việt, chuyển sang định dạng CTranslate2 rồi chạy `int8` như bản chuẩn. Model bản chuẩn được chọn theo CER trên bộ đối chiếu, theo tiêu chí ở [ý tưởng mục 6](IDEA_AND_CHALLENGES.md#6-tiêu-chí-nghiệm-thu). Đổi model thì `WHISPER_MODEL` nhận đường dẫn thư mục model đã chuyển.
+
 ### Pyannote
 
 - Thư viện: `pyannote.audio>=3.1,<4`.
@@ -59,6 +61,7 @@ Khi nâng faster-whisper, mở lại bảng `_MODELS` và ghi repo thực tế v
 - Tài khoản Hugging Face của token phải chấp nhận điều kiện ở [segmentation-3.0](https://huggingface.co/pyannote/segmentation-3.0) và [speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1).
 - Dòng 4 không dùng trên hồ sơ GPU này vì mức VRAM đã đo vượt 6GB.
 - Cache tải lúc chạy vào volume, không nung weight gated vào image.
+- Chạy trên CPU khi CUDA hết bộ nhớ chậm hơn nhiều lần. Đo thời gian với file 60 phút và 3 giờ trước khi hứa thời gian xử lý, và hiện tiến độ cho người dùng trong lúc chạy CPU.
 
 `Pipeline.from_pretrained` của dòng 3.3 nhận `use_auth_token`.
 
@@ -79,7 +82,7 @@ Cross-Origin-Opener-Policy: same-origin
 Cross-Origin-Embedder-Policy: require-corp
 ```
 
-Hai header này giúp FFmpeg.wasm đa luồng dùng SharedArrayBuffer. Font và asset khác của trang phải cùng origin hoặc có CORP. Trang không gọi script bên thứ ba.
+Hai header này bật `SharedArrayBuffer`. Chỉ bản đa luồng `@ffmpeg/core-mt` bắt buộc cần nó. Gói đang cài là `@ffmpeg/core` đơn luồng, chạy được không cần hai header. Giữ chúng để còn đổi sang bản đa luồng khi cần tốc độ. Font và asset khác của trang phải cùng origin hoặc có CORP. Trang không gọi script bên thứ ba.
 
 ## 3. Biến môi trường
 
@@ -137,7 +140,8 @@ meeting-lecture-assistant/
 │   └── app/
 │       ├── main.py
 │       ├── worker.py
-│       ├── core/                 # config, auth, lỗi
+│       ├── db.py
+│       ├── core/                 # config, security, exceptions, rate_limit, timeutil
 │       ├── api/
 │       │   ├── routes_auth.py
 │       │   ├── routes_jobs.py
@@ -154,8 +158,16 @@ meeting-lecture-assistant/
 │       │   ├── speaker_align.py
 │       │   ├── voice_profile.py
 │       │   ├── llm_client.py
+│       │   ├── llm_runner.py     # cắt lát, map-reduce, validate
+│       │   ├── pipeline.py       # bản chuẩn: chunk, ghi câu, diarization, sự kiện
 │       │   ├── gpu_lock.py
+│       │   ├── job_notify.py     # publish job:{job_id}:events sau commit
+│       │   ├── live_channel.py   # quyền ghi PCM, kênh live:{sid}:out, open_draft
+│       │   ├── live_heartbeat.py
+│       │   ├── dispatch.py       # send_task sang Celery
+│       │   ├── housekeeping.py   # xóa media token, ticket hết hạn
 │       │   └── exporter.py
+│       ├── tasks/
 │       ├── models.py
 │       └── schemas/
 └── frontend/
@@ -166,6 +178,8 @@ meeting-lecture-assistant/
         ├── app/
         │   ├── login/page.tsx
         │   ├── register/page.tsx
+        │   ├── forgot-password/page.tsx   # chỉ giao diện, chưa có API
+        │   ├── components/page.tsx        # trang mẫu component, không phải tính năng
         │   ├── jobs/page.tsx
         │   ├── jobs/new/page.tsx
         │   ├── jobs/[id]/page.tsx
@@ -178,9 +192,12 @@ meeting-lecture-assistant/
         │   ├── audio-player-bar.tsx
         │   ├── speaker-list.tsx
         │   ├── selection-toolbar.tsx
-        │   └── ai-action-panel.tsx
+        │   ├── ai-action-panel.tsx
+        │   ├── auth-shell.tsx
+        │   └── ui/                        # shadcn/ui
         └── lib/
             ├── api.ts
+            ├── auth.ts
             ├── ffmpeg-compressor.ts
             ├── typewriter-queue.ts
             └── live-capture.ts
@@ -348,6 +365,8 @@ fpdf2
 
 Các gói còn lại lấy bản tương thích lúc khóa lockfile. `pyannote.audio` không được giải lên dòng 4.
 
+`ctranslate2` từ 4.5 cần cuDNN 9, còn PyTorch đời cũ đi kèm cuDNN 8. Cài bản mới nhất của từng gói dễ làm Whisper và pyannote không chạy chung một image. Trước khi demo, ghim đúng phiên bản `torch`, `ctranslate2`, `faster-whisper`, và `pyannote.audio` đã chạy cùng nhau trên máy mục tiêu, bằng `==` trong `requirements.txt`, và ghi bộ đó vào `backend/MODELS.lock`.
+
 Trên Windows, GPU trong Docker đi qua WSL2: driver NVIDIA cài ở Windows, toolkit cài trong bản phân phối WSL, rồi `docker compose up` chạy từ WSL.
 
 ## 6. Celery
@@ -365,6 +384,7 @@ Không chạy worker trên hàng mặc định `celery`. Mọi tác vụ khai b�
 - `task_reject_on_worker_lost = true`
 - Hết hạn cứng của một task GPU là 6 giờ, dài hơn trần audio 3 giờ để còn chỗ cho diarization CPU.
 - Task LLM dùng trần `LLM_TIMEOUT_SECONDS` cho từng request HTTP, và hết hạn task 30 phút cho cả lần map-reduce.
+- `broker_transport_options = {"visibility_timeout": 25200}`. Với broker Redis, task đã nhận mà chưa ack quá `visibility_timeout` sẽ được giao lại. Mặc định là 1 giờ, nên khi bật `task_acks_late`, task GPU dài hơn 1 giờ sẽ chạy hai lần. 7 giờ dài hơn hạn cứng 6 giờ của task GPU.
 
 `gpu:lock`, `retry` sau 5 giây của PT1, và các key `live:{session_id}:*` nằm ở kiến trúc. PT1 không chiếm slot worker bằng vòng lặp chờ khóa.
 

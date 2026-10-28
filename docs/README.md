@@ -1,9 +1,9 @@
 # Bộ tài liệu triển khai
 
 **Dự án:** Hệ thống trợ lý chuyển đổi, tóm tắt và trích xuất biên bản cuộc họp / bài giảng tiếng Việt  
-**Phiên bản:** 1.3  
-**Ngày:** 2026-10-16  
-**Trạng thái:** Đặc tả đủ để triển khai Phương thức 1 và Phương thức 2
+**Phiên bản:** 1.4  
+**Ngày:** 2026-10-28  
+**Trạng thái:** Đặc tả đủ để triển khai Phương thức 1 và Phương thức 2. Có bản phân tích luồng đối chiếu với code
 
 Khi các tài liệu lệch nhau, dùng thứ tự này:
 
@@ -11,7 +11,10 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 2. [`ARCHITECTURE_SPEC.md`](ARCHITECTURE_SPEC.md) là hành vi pipeline, GPU, và thuật toán.
 3. [`TECH_STACK_AND_ENVIRONMENT.md`](TECH_STACK_AND_ENVIRONMENT.md) là phiên bản thư viện, Docker, và cây thư mục.
 4. [`IDEA_AND_CHALLENGES.md`](IDEA_AND_CHALLENGES.md) là phạm vi sản phẩm và tiêu chí nghiệm thu.
-5. File này là nhật ký quyết định.
+5. [`FLOWS.md`](FLOWS.md) là bản tổng hợp luồng. Nó trích từ các file trên và từ code, không đặt ra quy định mới.
+6. File này là nhật ký quyết định.
+
+Đoạn mở đầu bằng "Hướng tối ưu" trong các file trên là đề xuất chưa khóa. Chỉ làm theo sau khi đo, rồi sửa đoạn đó thành quy định và thêm một dòng vào bảng quyết định.
 
 ## Cách đọc
 
@@ -21,6 +24,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | [Kiến trúc](ARCHITECTURE_SPEC.md) | Luồng PT1, luồng PT2, cắt âm, STT, diarization, chạy chữ, LLM |
 | [API và dữ liệu](API_AND_DATA.md) | REST, SSE, WebSocket, schema Postgres, mã lỗi |
 | [Công nghệ và môi trường](TECH_STACK_AND_ENVIRONMENT.md) | Thư viện, biến môi trường, Docker, GPU, Git |
+| [Phân tích luồng](FLOWS.md) | Tác nhân, use case, sơ đồ tuần tự từng luồng, key Redis, file trên volume, hiện trạng code và khoảng trống |
 
 ## Quyết định đã khóa
 
@@ -43,12 +47,22 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | D15 | Trang job là hai vùng: trình phát và transcript. Bôi đen một đoạn trong câu để đánh dấu hoặc tạo việc cần làm tại mốc đó. |
 | D16 | Biên bản có hai mẫu: cuộc họp doanh nghiệp, và ghi chú bài giảng. Người dùng chọn mẫu lúc bấm. |
 
+## Lịch sử phiên bản
+
+| Phiên bản | Ngày | Thay đổi |
+|---|---|---|
+| 1.3 | 2026-10-16 | Khóa đặc tả PT1, PT2, hồ sơ giọng, hai mẫu biên bản |
+| 1.4 | 2026-10-28 | Thêm [`FLOWS.md`](FLOWS.md). Thêm các đoạn "Hướng tối ưu" từ lượt đánh giá thiết kế vào kiến trúc, API, môi trường, và ý tưởng. Khóa thêm yêu cầu cấu hình: `visibility_timeout` của Celery, ghim phiên bản torch, ctranslate2, faster-whisper, pyannote, mã lỗi `llm_upstream`, đọc từ của transcript trong một truy vấn. Làm rõ FFmpeg.wasm đang là bản đơn luồng. Ghi rõ những gì code đã làm mà đặc tả chưa nói: mã `429 rate_limited`, mã lỗi WebSocket, kênh `job:{job_id}:events`, cạnh `failed → queued` và việc dọn đánh dấu khi chạy lại. Cập nhật cây thư mục theo repo. Không đổi quyết định D1–D16 |
+
 ## Việc còn mở
 
 | Hạng mục | Cách xử lý trong đặc tả |
 |---|---|
 | Model LLM cụ thể | Để trống `LLM_MODEL`. Điền trước khi chạy hậu kỳ. Schema JSON đầu ra đã khóa. |
 | Mã card màn hình | Chưa gắn một SKU. Ngân sách thiết kế là card dưới 6GB, tính toán chặt cho card 4GB. |
+| Model bản chuẩn | `large-v3-turbo` là mặc định. So CER với PhoWhisper trên bộ đối chiếu trước khi khóa. |
+| Các đoạn "Hướng tối ưu" | Chưa khóa. Đo trên bộ đối chiếu rồi mới ghi thành quy định. |
+| Phần code chưa hiện thực | Liệt kê và xếp mức ở [`FLOWS.md` mục 13](FLOWS.md#13-khoảng-trống-giữa-đặc-tả-và-code). |
 
 ## Thuật ngữ
 
