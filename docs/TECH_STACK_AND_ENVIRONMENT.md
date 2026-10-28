@@ -342,11 +342,14 @@ ENV LD_LIBRARY_PATH="/usr/local/lib/python3.11/site-packages/nvidia/cublas/lib:/
 - Chạy bằng user không phải root.
 - Lệnh API: `uvicorn app.main:app --host 0.0.0.0 --port 8000`.
 
-`requirements.txt` khóa sàn và trần của các gói có ảnh hưởng VRAM và hợp đồng:
+`requirements.txt` ghim các gói có ảnh hưởng VRAM và hợp đồng. `torch` và `torchaudio` cài trước từ index CUDA trong Dockerfile:
 
 ```text
-faster-whisper
-pyannote.audio>=3.1,<4
+ctranslate2==4.5.0
+faster-whisper==1.1.1
+pyannote.audio==3.3.2
+numpy==1.26.4
+huggingface_hub<1.0
 fastapi
 uvicorn
 celery[redis]
@@ -362,6 +365,8 @@ httpx
 python-docx
 fpdf2
 ```
+
+`huggingface_hub` dòng 1.x bỏ gói `requests` mà faster-whisper 1.1.1 import, và bỏ tham số `use_auth_token` mà pyannote.audio 3.3.2 dùng. Trên Windows, ctranslate2 4.5.0 còn cần `setuptools` để có `pkg_resources`. Image Linux không gặp lỗi này.
 
 Các gói còn lại lấy bản tương thích lúc khóa lockfile. `pyannote.audio` không được giải lên dòng 4.
 
