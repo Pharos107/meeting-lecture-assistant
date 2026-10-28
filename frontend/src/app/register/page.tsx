@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { registerApi, saveAuthSession } from "@/lib/auth";
+import { startSessionTimer } from "@/lib/api";
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -117,6 +118,7 @@ export default function RegisterPage() {
           user: result.data.user,
           rememberMe: true,
         });
+        startSessionTimer(result.data.expires_in);
         router.push("/jobs");
       } else if (result.error) {
         if (result.error.fields) {
