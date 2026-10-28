@@ -176,7 +176,7 @@ export default function ComponentsPage() {
             currentMs={currentMs}
             durationMs={DURATION_MS}
             playing={playing}
-            selectedId={selectedId}
+            selection={selectedId ? { segmentId: selectedId, quote: "đoạn đang chọn" } : null}
             notice={notice}
             onModeChange={setMode}
             onTogglePlay={() => setPlaying((value) => !value)}
