@@ -22,6 +22,15 @@ const REFRESH_EARLY_MS = 60_000;
 
 let refreshing: Promise<boolean> | null = null;
 let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+// Tăng mỗi khi phiên bị xóa. Lượt làm mới bắt đầu từ phiên cũ thì bỏ kết quả của nó.
+let sessionGeneration = 0;
+
+function endSession() {
+  sessionGeneration += 1;
+  if (refreshTimer) clearTimeout(refreshTimer);
+  refreshTimer = null;
+  clearAuthSession();
+}
 
 function rememberedInLocalStorage() {
   return typeof window !== "undefined" && localStorage.getItem("refresh_token") !== null;
@@ -38,6 +47,7 @@ async function rotateRefreshToken(): Promise<boolean> {
   // Đọc token trong khóa: tab khác có thể vừa xoay token, token cũ dùng lại sẽ bị thu hồi.
   const token = getRefreshToken();
   if (!token) return false;
+  const generation = sessionGeneration;
   let res: Response;
   try {
     res = await fetch("/api/auth/refresh", {
@@ -48,11 +58,14 @@ async function rotateRefreshToken(): Promise<boolean> {
   } catch {
     return false;
   }
+  if (generation !== sessionGeneration) return false;
   if (!res.ok) {
-    if (res.status === 401 && getRefreshToken() === token) clearAuthSession();
+    if (res.status === 401 && getRefreshToken() === token) endSession();
     return false;
   }
   const json = (await res.json()) as AuthResponse;
+  // Đăng xuất xảy ra trong lúc chờ thì không ghi lại phiên vừa xóa.
+  if (generation !== sessionGeneration) return false;
   saveAuthSession({
     accessToken: json.access_token,
     refreshToken: json.refresh_token,
@@ -89,7 +102,7 @@ export function startSessionTimer(expiresInSeconds: number) {
 }
 
 export function redirectToLogin() {
-  clearAuthSession();
+  endSession();
   if (typeof window !== "undefined") window.location.assign("/login");
 }
 
@@ -141,14 +154,22 @@ export async function apiJson<T>(path: string, init: RequestInit = {}): Promise<
   return (await res.json()) as T;
 }
 
-export async function logout() {
+async function revokeSession() {
   const token = getRefreshToken();
-  if (token) {
-    await fetch("/api/auth/logout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify({ refresh_token: token }),
-    }).catch(() => undefined);
-  }
-  redirectToLogin();
+  endSession();
+  if (!token) return;
+  await fetch("/api/auth/logout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    body: JSON.stringify({ refresh_token: token }),
+  }).catch(() => undefined);
+}
+
+/** Thu hồi refresh token hiện tại. Chạy trong cùng khóa với lượt làm mới để không thu hồi nhầm token cũ. */
+export async function logout() {
+  await refreshing?.catch(() => false);
+  const locks = typeof navigator !== "undefined" ? navigator.locks : undefined;
+  if (locks) await locks.request(REFRESH_LOCK, revokeSession);
+  else await revokeSession();
+  if (typeof window !== "undefined") window.location.assign("/login");
 }
