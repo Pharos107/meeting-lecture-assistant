@@ -10,6 +10,8 @@ import numpy as np
 SAMPLE_RATE = 16000
 BYTES_PER_SAMPLE = 4
 MAX_PCM_BYTES = 800 * 1024 * 1024
+# Mã hóa trên CPU nhanh hơn thời gian thực nhiều lần. Hạn này chặn file làm FFmpeg treo.
+FFMPEG_MIN_TIMEOUT_S = 600
 
 
 class MediaError(Exception):
@@ -70,9 +72,12 @@ def check_duration(duration_s: float | None, max_duration_s: int) -> None:
         raise MediaError("duration_exceeded", "File dài hơn thời lượng cho phép.")
 
 
-def _ffmpeg(arguments: list[str]) -> None:
+def _ffmpeg(arguments: list[str], timeout_s: int) -> None:
     command = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-nostdin", "-y", *arguments]
-    result = subprocess.run(command, capture_output=True)
+    try:
+        result = subprocess.run(command, capture_output=True, timeout=timeout_s)
+    except subprocess.TimeoutExpired:
+        raise MediaError("unsupported_media", "Xử lý file quá thời gian cho phép.")
     if result.returncode != 0:
         raise MediaError("unsupported_media", "Không đọc được âm thanh trong file.")
 
@@ -86,22 +91,27 @@ def normalize(source: Path, opus_path: Path, pcm_path: Path, max_duration_s: int
 
     opus_path.parent.mkdir(parents=True, exist_ok=True)
     pcm_path.parent.mkdir(parents=True, exist_ok=True)
+    # Cả hai lệnh cắt ở trần cộng một giây và có hạn chạy, kể cả khi probe không đọc được thời lượng.
+    cap = str(max_duration_s + 1)
+    timeout_s = max(FFMPEG_MIN_TIMEOUT_S, max_duration_s)
     if source.resolve() != opus_path.resolve():
         staging = opus_path.with_suffix(".opus.part")
         try:
             _ffmpeg(
-                ["-i", str(source), "-vn", "-ac", "1", "-ar", str(SAMPLE_RATE),
-                 "-c:a", "libopus", "-b:a", "32k", "-f", "ogg", str(staging)]
+                ["-i", str(source), "-t", cap, "-vn", "-ac", "1", "-ar", str(SAMPLE_RATE),
+                 "-c:a", "libopus", "-b:a", "32k", "-f", "ogg", str(staging)],
+                timeout_s,
             )
             staging.replace(opus_path)
         finally:
             staging.unlink(missing_ok=True)
 
     try:
-        # Giải mã tới trần cộng một giây. Chạm trần nghĩa là file dài hơn mức cho phép.
+        # Chạm trần nghĩa là file dài hơn mức cho phép.
         _ffmpeg(
-            ["-i", str(opus_path), "-t", str(max_duration_s + 1), "-f", "f32le",
-             "-acodec", "pcm_f32le", "-ac", "1", "-ar", str(SAMPLE_RATE), str(pcm_path)]
+            ["-i", str(opus_path), "-t", cap, "-f", "f32le",
+             "-acodec", "pcm_f32le", "-ac", "1", "-ar", str(SAMPLE_RATE), str(pcm_path)],
+            timeout_s,
         )
         samples = pcm_path.stat().st_size // BYTES_PER_SAMPLE
         check_duration(samples / SAMPLE_RATE, max_duration_s)

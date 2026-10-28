@@ -8,6 +8,7 @@ import unittest
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+from unittest import mock
 
 os.environ.setdefault("DATABASE_URL", "sqlite://")
 os.environ.setdefault("JWT_SECRET", "t" * 32)
@@ -18,6 +19,7 @@ from sqlalchemy.orm import Session
 from app.core.config import get_settings
 from app.db import get_engine
 from app.models import Base, Job, JobEvent, Segment, User, Word
+from app.services import audio_processor
 from app.services.pipeline import clear_pass, run_upload_job
 from app.services.speaker_align import SpeakerTurn
 from app.services.stt_engine import GpuOutOfMemory, is_hallucination, prompt_or_none
@@ -186,6 +188,18 @@ class UploadJobTests(unittest.TestCase):
             job = db.get(Job, job_id)
             self.assertEqual((job.status, job.error_code), ("failed", "duration_exceeded"))
         self.assertFalse((self.root / "tmp" / f"{job_id}.f32").exists())
+
+    def test_unknown_duration_is_capped(self) -> None:
+        job_id = self._job()
+        source = self._source(job_id, seconds=4)
+        opus = self.root / "audio" / f"{job_id}-cap.opus"
+        pcm = self.root / "tmp" / f"{job_id}-cap.f32"
+        with mock.patch.object(audio_processor, "probe", return_value=audio_processor.Probe(True, None)):
+            with self.assertRaises(audio_processor.MediaError) as caught:
+                audio_processor.normalize(source, opus, pcm, max_duration_s=1)
+        self.assertEqual(caught.exception.code, "duration_exceeded")
+        self.assertFalse(pcm.exists())
+        self.assertLessEqual(audio_processor.probe(opus).duration_s, 2.1)
 
     def test_whisper_oom_fails(self) -> None:
         def broken():
