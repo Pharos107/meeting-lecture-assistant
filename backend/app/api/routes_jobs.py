@@ -20,6 +20,7 @@ from app.services.dispatch import enqueue
 from app.services.gpu_lock import get_gpu_lock, keeper
 from app.services.live_channel import close_session, unlink_pcm
 from app.services.housekeeping import purge_expired_secrets
+from app.services.pipeline import clear_pass
 from app.core.security import hash_refresh_token
 from app.core.timeutil import as_utc, iso_micros, iso_seconds
 from app.db import get_db
@@ -385,17 +386,7 @@ def retry_job(job_id: str, request: Request, db: Session = Depends(get_db)) -> d
     job = owned_job(db, user, job_id)
     if job.status != "failed":
         raise invalid_state()
-    segment_ids = list(
-        db.scalars(select(Segment.id).where(Segment.job_id == job.id, Segment.pass_index == 2)).all()
-    )
-    if segment_ids:
-        db.query(Highlight).filter(Highlight.segment_id.in_(segment_ids)).delete(synchronize_session=False)
-        db.query(Word).filter(Word.segment_id.in_(segment_ids)).delete(synchronize_session=False)
-        db.query(ActionItem).filter(ActionItem.segment_id.in_(segment_ids)).update(
-            {ActionItem.segment_id: None},
-            synchronize_session=False,
-        )
-        db.query(Segment).filter(Segment.id.in_(segment_ids)).delete(synchronize_session=False)
+    clear_pass(db, job.id, 2)
     job.status = "queued"
     job.error_code = None
     job.error_message = None
