@@ -1,8 +1,8 @@
 # Ý tưởng, phạm vi, và tiêu chí nghiệm thu
 
 **Dự án:** Hệ thống trợ lý chuyển đổi, tóm tắt và trích xuất biên bản cuộc họp / bài giảng tiếng Việt  
-**Phiên bản:** 1.3  
-**Ngày:** 2026-10-16  
+**Phiên bản:** 1.4  
+**Ngày:** 2026-10-28  
 **Vai trò của file này:** Mô tả bài toán, phạm vi làm, và cách biết hệ thống đạt yêu cầu. Cách làm nằm ở [kiến trúc](ARCHITECTURE_SPEC.md) và [API](API_AND_DATA.md).
 
 ## 1. Bài toán
@@ -42,6 +42,10 @@ Ba phần việc đi cùng nhau:
 - Nhận ra người nói chưa từng ghi hồ sơ giọng trong tài khoản này.
 
 PT2 dùng hộp thoại chia sẻ màn hình của Chromium và ô chia sẻ âm thanh. Micro dùng được trên các trình duyệt có `getUserMedia`. Thu âm thanh toàn hệ điều hành ngoài hộp thoại đó nằm ngoài phạm vi.
+
+### Thứ tự triển khai
+
+PT1 trọn vẹn là phần lõi của bản demo: tải file, chữ hiện dần, sửa, biên bản, xuất file. PT2 và hồ sơ giọng làm sau khi PT1 chạy hết đường trên máy mục tiêu. Hiện trạng từng phần nằm ở [phân tích luồng](FLOWS.md#13-khoảng-trống-giữa-đặc-tả-và-code).
 
 ## 3. Hai phương thức
 
@@ -100,6 +104,10 @@ Mỗi từ nhận một nhãn: người có đoạn nói chồng nhiều nhất 
 
 Sau khi có các cụm, worker so vector giọng của từng cụm với hồ sơ đã ghi trong tài khoản. Điểm giống từ ngưỡng cấu hình thì tên hồ sơ được điền vào nhãn. Người chưa có hồ sơ vẫn là `SPEAKER_00` cho đến khi người dùng đổi tên trên buổi đó.
 
+### Chữ bịa của Whisper
+
+Ở đoạn ồn hoặc lặng, Whisper tiếng Việt hay sinh câu không có trong audio, thường là câu cuối video kiểu "Hãy đăng ký kênh…". Bản nháp PT2 dễ gặp hơn vì đoạn audio ngắn. Cách lọc nằm ở [kiến trúc mục 2.4](ARCHITECTURE_SPEC.md#24-nhận-dạng-bản-chuẩn). Bộ đối chiếu nên có ít nhất một đoạn nhiều khoảng lặng để đo hiện tượng này.
+
 ### Prompt thuật ngữ
 
 `initial_prompt` của Whisper là ngữ cảnh ngắn, có trần ký tự ở hệ thống này là 800. Nó làm mô hình nghiêng về cách viết đã gợi ý. Nó không bảo đảm tên riêng được nhận đúng. Phần đo độ chính xác vì thế có một danh sách thuật ngữ riêng.
@@ -124,7 +132,7 @@ Sau khi có các cụm, worker so vector giọng của từng cụm với hồ s
 
 Các con số dưới đây là việc phải đo, không phải mốc đã đạt.
 
-- CER của pass 2 trên bộ đối chiếu do nhóm thu: ít nhất 3 đoạn tiếng Việt, tổng thời lượng ít nhất 30 phút, có transcript người làm. Báo cáo CER toàn bộ và CER trên danh sách tên riêng, thuật ngữ.
+- CER của pass 2 trên bộ đối chiếu do nhóm thu: ít nhất 3 đoạn tiếng Việt, tổng thời lượng ít nhất 30 phút, có transcript người làm. Báo cáo CER toàn bộ và CER trên danh sách tên riêng, thuật ngữ. Chạy cùng bộ này với `large-v3-turbo` và PhoWhisper đã chuyển sang CTranslate2 `int8`, kèm thời gian xử lý, để chọn model bản chuẩn.
 - Với diarization, nếu có file RTTM đối chiếu thì báo cáo DER. Nếu chưa có, nghe lại 10 phút được rút ngẫu nhiên và ghi số chỗ gán nhầm.
 - Với PT2, đo thời gian từ lúc hết một câu nói đến sự kiện nháp ổn định, trên câu không dài quá 8 giây. Mục tiêu thiết kế là trong 3 giây khi GPU đang dành cho phiên đó. Báo cáo số đo được, kể cả lần trượt mục tiêu.
 

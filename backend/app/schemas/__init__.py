@@ -1,1 +1,1 @@
-"""Schema Pydantic. Chưa triển khai."""
+"""Schema Pydantic."""

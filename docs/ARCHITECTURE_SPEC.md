@@ -1,11 +1,11 @@
 # Đặc tả kiến trúc
 
 **Dự án:** Hệ thống trợ lý chuyển đổi, tóm tắt và trích xuất biên bản cuộc họp / bài giảng tiếng Việt  
-**Phiên bản:** 1.3  
-**Ngày:** 2026-10-16  
+**Phiên bản:** 1.4  
+**Ngày:** 2026-10-28  
 **Phạm vi:** Phương thức 1 và Phương thức 2, ở mức triển khai được
 
-Hợp đồng trường và đường dẫn nằm ở [API và dữ liệu](API_AND_DATA.md). Thư viện và Docker nằm ở [công nghệ và môi trường](TECH_STACK_AND_ENVIRONMENT.md).
+Hợp đồng trường và đường dẫn nằm ở [API và dữ liệu](API_AND_DATA.md). Thư viện và Docker nằm ở [công nghệ và môi trường](TECH_STACK_AND_ENVIRONMENT.md). Sơ đồ tuần tự từng luồng, key Redis, và hiện trạng code nằm ở [phân tích luồng](FLOWS.md).
 
 ## 1. Hình dạng hệ thống
 
@@ -35,6 +35,8 @@ Khóa Redis `gpu:lock` là `SET key value NX EX 30`. Giá trị là id phiên ng
 
 Tác vụ PT1, khi được worker lấy ra, thử `SET NX` với id job. Thất bại thì gọi `self.retry(countdown=5)` và trả slot ngay, để tác vụ nghe đang chờ được vào gia hạn khóa. Job đã `cancelled` thì không retry. PT1 nhả khóa khi job sang `ready`, `failed`, hoặc `cancelled`. Request tải file vẫn trả `queued` trong lúc task nằm trên broker.
 
+Hướng tối ưu, chưa khóa: tác vụ PT1 đang chạy giữ khóa đến hết job, nên một file 3 giờ chặn phiên nghe mới hàng chục phút. PT1 đã ghi kết quả theo chunk, nên tác vụ có thể đọc một cờ `gpu:wanted` giữa hai chunk, nhả model và khóa, `retry`, rồi chạy tiếp từ chunk chưa ghi. Phiên nghe đặt cờ đó khi gặp `gpu_busy`.
+
 ## 2. Phương thức 1
 
 ```text
@@ -60,7 +62,9 @@ Lệnh mục tiêu của WASM:
 ffmpeg -i input -vn -ac 1 -ar 16000 -c:a libopus -b:a 32k -f ogg output.opus
 ```
 
-Trang bật COOP và COEP như tài liệu môi trường. WASM đa luồng cần `SharedArrayBuffer`. Thiếu bộ nhớ chia sẻ, hoặc WASM báo lỗi, form chuyển sang tải file gốc. Trần file gốc là 500 MB. Trần Opus là 64 MB. Trần thời lượng sau khi probe là 3 giờ.
+Gói đang cài là `@ffmpeg/core`, bản đơn luồng, chạy được không cần `SharedArrayBuffer`. COOP và COEP ở tài liệu môi trường chỉ bắt buộc khi đổi sang `@ffmpeg/core-mt`. WASM báo lỗi thì form chuyển sang tải file gốc. Trần file gốc là 500 MB. Trần Opus là 64 MB. Trần thời lượng sau khi probe là 3 giờ.
+
+WASM giữ file trong bộ nhớ, trần khoảng 2 GB. Gắn file bằng `WORKERFS` để không chép cả file vào bộ nhớ. Với video, chạy trước `ffmpeg -i input -vn -c:a copy` để tách luồng âm thanh mà không mã hóa lại. Bước này gần như tức thì và thường đã giảm phần lớn dung lượng. Mã hóa sang Opus là bước sau, khi còn muốn giảm tiếp.
 
 ### 2.2. Chuẩn hóa trên worker
 
@@ -109,6 +113,8 @@ Các bước:
 
 `vad_filter` trong lời gọi Whisper để `False`, vì bước này đã cắt xong.
 
+Hướng tối ưu, cần đo trước khi khóa: luật gộp khoảng lặng không quá 2 giây tạo nhiều chunk ngắn khi người nói hay ngắt. Chunk vài giây thiếu ngữ cảnh và dễ sinh chữ bịa. Phương án thay là ghép các vùng có tiếng tới gần 30 giây, cắt bỏ phần lặng giữa chúng, và giữ bảng ánh xạ để quy timestamp về thời gian gốc. Chỉ đổi khi CER trên bộ đối chiếu tốt hơn.
+
 ### 2.4. Nhận dạng bản chuẩn
 
 Worker nạp model một lần cho cả job:
@@ -144,6 +150,10 @@ segments, info = model.transcribe(
 
 `condition_on_previous_text` tắt để một chunk ồn không kéo câu của chunk trước vào vòng lặp.
 
+Với `temperature=0.0` một mức, `compression_ratio_threshold` gần như không có tác dụng: ngưỡng này chỉ quyết định có giải mã lại ở mức temperature cao hơn. `log_prob_threshold` vẫn được dùng cùng `no_speech_threshold` để bỏ đoạn không có tiếng.
+
+Whisper tiếng Việt hay sinh câu không có trong audio ở đoạn ồn hoặc lặng, kiểu "Hãy đăng ký kênh…" hoặc "Cảm ơn các bạn đã theo dõi". Hướng tối ưu, cần đo: dùng dải `temperature=(0.0, 0.2, 0.4)`, bật `hallucination_silence_threshold`, bỏ câu có `no_speech_prob` cao đi cùng `avg_logprob` thấp, và lọc theo danh sách cụm hay bị bịa. Bản nháp PT2 cần bộ lọc này hơn cả vì audio ngắn.
+
 Sau mỗi chunk, cộng offset, khử chồng lấn, ghi segment và word của pass 2, ghi sự kiện `chunk`, rồi publish số thứ tự. Giữa các chunk, worker đọc cờ hủy.
 
 `processing_time_ms` là thời gian tường của riêng chunk đó. `expected_next_chunk_ms` là trung bình cộng của tối đa ba `processing_time_ms` gần nhất, làm tròn mili giây. Chunk đầu dùng chính thời gian của nó.
@@ -175,11 +185,18 @@ Một buổi 3 giờ có thể có khoảng 30.000 từ. Worker ghi `speaker_lab
 
 Hai người nói cùng lúc trên một từ chỉ còn một nhãn. Đây là giới hạn của bản demo.
 
+Hướng tối ưu, cần đo:
+
+- Từ nằm ở khoảng trống giữa hai lượt nói đang nhận null. Gán cho lượt nói gần nhất khi cách dưới khoảng 500 ms sẽ giảm số câu không có nhãn.
+- Một câu của Whisper có thể chứa lời hai người nhưng chỉ nhận một nhãn. Đã có timestamp từng từ, nên có thể tách câu tại chỗ đổi nhãn. Việc này đổi id câu đã phát qua SSE, nên phải xong trước sự kiện `speakers`. Client đã tải lại transcript khi nhận sự kiện đó.
+
 Hồ sơ giọng thuộc tài khoản, tối đa 20 hồ sơ. Mỗi hồ sơ có tên hiển thị và một vector lấy từ cùng embedding model bên trong pipeline `speaker-diarization-3.1`. Ghi danh là tác vụ `enroll_voice` trên hàng `gpu`, xin `gpu:lock` cùng kiểu `retry` của PT1. Mẫu gửi lên dài 20 đến 40 giây. Sau VAD phải còn ít nhất 15 giây có tiếng. UI dẫn người dùng nói khoảng 30 giây.
 
 Với mỗi nhãn trong buổi, lấy tối đa 30 giây tiếng không chồng người khác, tính một vector, rồi L2-chuẩn hóa. Hồ sơ cũng được L2-chuẩn hóa trước khi lấy tích vô hướng. Hồ sơ ghi bằng pipeline khác với pipeline đang chạy thì bỏ qua và đánh dấu `stale` trên API.
 
 Gán tên khi điểm giống đạt `VOICE_MATCH_THRESHOLD`, mặc định `0.75`. Hai hồ sơ cùng chạm một cụm, hoặc một hồ sơ chạm hai cụm, thì chỉ gán cho điểm cao hơn khi cách điểm còn lại ít nhất `VOICE_MATCH_MARGIN`, mặc định `0.05`. Không đủ cách thì để nhãn trống tên. Ngưỡng này là điểm xuất phát để đo trên mẫu của nhóm, không phải độ chính xác đã chứng minh.
+
+Hướng tối ưu: mẫu ghi danh thu bằng micro gần, còn buổi họp thường thu từ xa, nên điểm giống có thể dưới ngưỡng dù đúng người. Cho một hồ sơ nhiều mẫu. Khi người dùng đổi tên tay một cụm, hỏi có lưu giọng của cụm đó vào hồ sơ không. Ghép cụm với hồ sơ bằng thuật toán Hungarian, tức ghép một-một tối ưu theo điểm, gọn hơn luật margin hai chiều.
 
 Alias có `source = manual` không bị bước này sửa. Alias do hồ sơ gán có `source = voice_profile` và được viết lại khi diarization chạy lại. Người dùng PATCH tên thì `source` chuyển thành `manual`.
 
@@ -391,13 +408,14 @@ stateDiagram-v2
   transcribing --> cancelled
   preprocessing --> failed
   transcribing --> failed
+  failed --> queued
 ```
 
 `queued` là lối vào của file tải lên. `capturing` là lối vào của phiên nghe. Cả hai gặp nhau ở `preprocessing`.
 
 `diarizing` đi tới `ready` cả khi gán người nói thất bại. Cảnh báo nằm ở cột `warnings` của job, không đổi trạng thái thành `failed`.
 
-`failed` dùng cho lỗi file, lỗi Whisper, hết VRAM lúc nạp Whisper, và lỗi worker. `POST .../retry` chỉ nhận job `failed`: xóa segment và word của pass 2, giữ pass 1, đưa job về `queued`.
+`failed` dùng cho lỗi file, lỗi Whisper, hết VRAM lúc nạp Whisper, và lỗi worker. `POST .../retry` chỉ nhận job `failed`: xóa segment và word của pass 2, xóa đánh dấu nằm trên các câu đó, đặt `segment_id` của việc `manual` trỏ vào chúng thành null, giữ pass 1, xóa `error_code`, `error_message`, `started_at`, `finished_at`, rồi đưa job về `queued` và đẩy lại `transcribe_upload`. Job live chạy lại trên Opus canonical của phiên.
 
 Hủy được khi job đang `queued`, `capturing`, `preprocessing`, hoặc `transcribing`. Với file tải lên, worker nhìn thấy cờ hủy giữa hai chunk thì dừng, nhả model và `gpu:lock`, giữ phần chữ đã ghi, và đặt `cancelled`. Với phiên đang `capturing`, hủy dừng thu, không chạy pass 2, nhả khóa, xóa PCM, đặt job `cancelled`, và giữ các câu pass 1 đã chốt. Xóa job thì gỡ luôn các dòng đó.
 
@@ -407,9 +425,11 @@ LLM không đổi trạng thái job. Mỗi lần bấm là một dòng `llm_runs
 
 ## 5. Sự kiện và tải lại trang
 
-Worker ghi `job_events` trước, rồi publish `{job_id, seq}` lên Redis. FastAPI stream các seq lớn hơn `after_seq` từ Postgres, sau đó nghe pub/sub. Seq bị hổng thì đọc bù từ Postgres.
+Worker ghi `job_events` trước, rồi publish `{job_id, seq}` lên kênh Redis `job:{job_id}:events`. Lệnh publish chạy trong hook `after_commit`, nên tin chỉ đi sau khi dòng sự kiện đọc được. Tin này chỉ để đánh thức SSE, nội dung luôn đọc từ Postgres. FastAPI stream các seq lớn hơn `after_seq` từ Postgres, sau đó nghe pub/sub. Seq bị hổng thì đọc bù từ Postgres.
 
 Trình duyệt dùng `fetch` kèm access token vì `EventSource` không gắn header `Authorization`. Response SSE mang `Cache-Control: no-cache, no-transform` và `X-Accel-Buffering: no`, và không nén gzip. Caddy đặt `flush_interval -1` trên `/api`. Chi tiết khung SSE nằm ở tài liệu API.
+
+LLM chưa đi qua kênh này. Trang hỏi lại `GET .../llm/{task}` đến khi run kết thúc. Hướng tối ưu: ghi tiến độ từng lát vào `job_events` để dùng chung SSE.
 
 Kênh live dùng WebSocket vì chiều PCM đi từ trình duyệt lên. Ticket trên query sống 60 giây, gắn một session, và dùng lại được đến hết hạn cho các lần nối lại của socket đó. File nghe lại dùng media token riêng, mô tả ở mục 7. REST vẫn dùng Bearer.
 
@@ -434,7 +454,7 @@ Content-Type: application/json
 
 `LLM_JSON_MODE=true` thì gửi `response_format`. Server trả 400 cho trường đó thì thử lại đúng một lần không có trường này. Nội dung lấy ở `choices[0].message.content`. Nếu server bọc JSON trong hàng rào markdown thì bỏ hàng rào đó trước khi parse. Validate bằng schema của tác vụ. Sai schema thì gửi thêm một lượt, kèm lỗi validate ở cuối user message. Vẫn sai thì `llm_runs.status = failed` với mã `llm_invalid_json`.
 
-Quá `LLM_TIMEOUT_SECONDS` thì mã `llm_timeout`. Thiếu `LLM_MODEL` thì `llm_not_configured` và không mở kết nối.
+Quá `LLM_TIMEOUT_SECONDS` thì mã `llm_timeout`. Lỗi kết nối, hoặc server LLM trả lỗi HTTP ngoài trường hợp 400 của `response_format`, thì mã `llm_upstream`. Thiếu `LLM_MODEL` thì `llm_not_configured` và không mở kết nối.
 
 Tác vụ này là `app.tasks.run_llm` trên hàng `io`. Các lát map chạy tuần tự. Shard đã `done` được giữ để reduce thử lại không phải gọi map lại.
 
@@ -445,6 +465,8 @@ Chạy trên pass đang hiển thị. Một lát đóng khi đủ 30 câu hoặc
 Mỗi lát là một dòng `llm_map_shards`. `input_start_ms` và `input_end_ms` lấy từ câu đầu và câu cuối của lát. Lát `done` thì ghi ngay `text_cleaned` của các id trong lát. `text_raw` và `text_edited` không đổi. Lát sau timeout hoặc JSON sai thì các lát đã ghi giữ nguyên, và run sang `failed`.
 
 `POST` lại tác vụ `clean` khi run trước đã `failed` chỉ gửi các câu còn `text_cleaned` null. Body `restart: true` xóa `text_cleaned` của pass đang làm rồi chạy lại từ đầu.
+
+Hướng tối ưu: lát trả thiếu hoặc sai một id thì nhận các id đúng và chỉ gửi lại câu còn thiếu, thay vì bỏ cả lát.
 
 System prompt:
 
@@ -461,6 +483,10 @@ Chỉ trả JSON theo dạng {"segments":[{"id":"...","text":"..."}]}
 ### 6.2. Biên bản theo mẫu
 
 Người dùng chọn mẫu trước khi gọi. `meeting` là biên bản cuộc họp. `lecture` là ghi chú bài giảng. Cả hai dùng cùng cách cắt lát: một lát đóng khi đạt 20 phút hoặc 3500 từ tính theo khoảng trắng, tùy mốc nào tới trước, và luôn cắt ở biên câu. Một câu dài hơn mức đó thành một lát riêng. Map và reduce dùng prompt của đúng mẫu đã chọn.
+
+Đếm theo khoảng trắng với tiếng Việt là đếm âm tiết. 3500 âm tiết là vài nghìn token, tùy tokenizer. Server như Ollama có ngữ cảnh mặc định nhỏ và cắt đầu vào mà không báo lỗi, nên ngữ cảnh của model phải được đặt lớn hơn một lát cộng prompt. Hướng tối ưu: tính trần lát theo token và theo ngữ cảnh của model đang cấu hình. Model ngữ cảnh đủ lớn thì gửi cả transcript một lần và bỏ bước map.
+
+Mốc `[MM:SS]` in số phút vượt 59 với bài dài hơn một giờ, ví dụ `[125:30]`. Hướng tối ưu: dùng `HH:MM:SS` khi bài dài hơn một giờ, hoặc đưa id câu vào đầu vào và yêu cầu LLM trả id câu nguồn cho mỗi ý. Cách sau cho biên bản tua được tới câu gốc và dễ kiểm chứng ý bị bịa.
 
 User message của cả hai bước gồm danh sách thuật ngữ của job, rồi đến nội dung lát hoặc JSON của các lát map.
 
@@ -533,6 +559,8 @@ Tab còn giữ file local thì có thể phát blob đó. Tải lại trang thì
 Mật khẩu lưu argon2id (`time_cost = 3`, `memory_cost = 65536`, `parallelism = 1`), độ dài 8 đến 128 ký tự. Email lưu chữ thường, duy nhất. Bản này không gửi email xác minh.
 
 Access token là JWT HS256, hết hạn sau 15 phút, đặt trong header `Authorization: Bearer`. Refresh token là chuỗi ngẫu nhiên 32 byte, database lưu SHA-256 của nó, hết hạn sau 7 ngày, xoay mỗi lần dùng.
+
+Trang lưu refresh token trong `localStorage` khi người dùng chọn ghi nhớ, ngược lại trong `sessionStorage`. Cả hai bị đọc được nếu trang dính XSS. Hướng tối ưu: trình duyệt chỉ gọi cùng origin qua Caddy, nên có thể chuyển refresh token sang cookie `HttpOnly; Secure; SameSite=Strict` giới hạn ở `/api/auth`. Access token vẫn giữ trong bộ nhớ. Đổi cách này là đổi hợp đồng ở tài liệu API.
 
 Mọi câu lệnh job, session, transcript, và file đều có `user_id` của token. Sai chủ sở hữu trả 404, cùng mã với id không tồn tại.
 
