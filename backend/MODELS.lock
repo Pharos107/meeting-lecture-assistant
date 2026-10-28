@@ -14,3 +14,10 @@ pyannote.audio==3.3.2
 numpy==1.26.4
 huggingface_hub<1.0
 
+# 2026-10-29, Windows, CPU, model tiny: faster-whisper 1.1.1 + ctranslate2 4.5.0 chạy được
+# normalize, speech_regions, và WhisperEngine.transcribe. Với huggingface_hub 2.x thì
+# faster-whisper không import được vì thiếu requests. pyannote và CUDA chưa kiểm.
+
+# Repo faster-whisper large-v3-turbo: mobiuslabsgmbh/faster-whisper-large-v3-turbo
+# Repo faster-whisper small: Systran/faster-whisper-small
+# Pipeline: pyannote/speaker-diarization-3.1
