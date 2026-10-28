@@ -130,7 +130,7 @@ Các nhánh lỗi: body không phải JSON object trả `bad_request`. Quá 60 r
 | Trang `/login`, `/register` | Có, gọi API thật |
 | Trang `/forgot-password` | Chỉ giao diện, giả lập chờ 600 ms. Đặt lại mật khẩu nằm ngoài phạm vi bản này |
 | Nút đăng nhập Google | Hiện thông báo chưa hỗ trợ |
-| Tự gọi refresh khi access token hết hạn | Chưa có. `lib/api.ts` còn rỗng |
+| Tự gọi refresh khi access token hết hạn | Có. `lib/api.ts` hẹn làm mới trước hạn 60 giây, gặp 401 thì làm mới rồi thử lại một lần, tải lại trang thì lấy access token bằng refresh token. Nhiều tab xoay token tuần tự qua `navigator.locks` |
 
 ## 4. F2. Tải file, PT1
 
@@ -208,10 +208,10 @@ Nhánh lỗi:
 | `POST /api/jobs`, kiểm field, ghi file tạm, enqueue | Có, có test |
 | `run_standard_pass`: stage, chunk, khử chồng, cờ hủy, diarization, alias, sự kiện | Có, test bằng hàm `transcribe` và `diarize` giả |
 | Lấy khóa, `retry` 5 giây, gia hạn khóa | Có |
-| FFmpeg, ffprobe, Silero, Whisper, pyannote thật | Chưa. `audio_processor.py`, `stt_engine.py`, `diarization.py` còn rỗng. `run_upload_job` giữ khóa rồi đặt job `failed` với `worker_failed` |
-| Ghi `audio_path`, `duration_ms` | Chưa, phụ thuộc bước trên |
-| Ghi nhãn bằng cập nhật hàng loạt | Chưa. Code gán thuộc tính từng đối tượng ORM rồi commit một lần |
-| Nén FFmpeg.wasm, trang `/jobs/new` | Chưa. `ffmpeg-compressor.ts` rỗng, trang trả `null`. Component `AudioUploader` đã có giao diện |
+| FFmpeg, ffprobe, Silero, Whisper, pyannote thật | Có. `run_upload_job` chuẩn hóa, VAD, nhận dạng, gán người nói. Test dùng FFmpeg thật, Whisper và pyannote giả. Đã chạy Whisper `tiny` trên CPU với faster-whisper 1.1.1. Chưa chạy `large-v3-turbo` trên CUDA và chưa chạy pyannote thật |
+| Ghi `audio_path`, `duration_ms` | Có. Xóa `/data/tmp/{job_id}/` sau khi có Opus. Chạy lại và lần giao lại của Celery dùng Opus canonical |
+| Ghi nhãn bằng cập nhật hàng loạt | Có. Hai lệnh `UPDATE` theo khóa chính, một cho từ, một cho câu |
+| Nén FFmpeg.wasm, trang `/jobs/new` | Có. WASM lỗi thì tải file gốc. Worker của ffmpeg.wasm chạy bản chép trong `public/ffmpeg`, vì webpack làm hỏng `import(coreURL)` trong worker đã bundle |
 
 ## 5. F3. SSE tiến độ và tải lại trang
 
@@ -253,7 +253,7 @@ Stream tự đóng khi gửi xong `done` hoặc `error`, hoặc khi job đã `re
 |---|---|
 | Endpoint SSE, header, đọc bù từ Postgres, pub/sub | Có, có test |
 | Đánh thức trong tiến trình khi chạy không có Redis | Có, dùng cho test |
-| Client SSE bằng `fetch`, `AdaptiveTypewriter` | Chưa. `typewriter-queue.ts` rỗng |
+| Client SSE bằng `fetch`, `AdaptiveTypewriter` | Có. Typewriter hẹn giờ theo mốc tuyệt đối: 50 từ với 2000 ms xả trong khoảng 1970 ms |
 
 ## 6. F4. Hủy, chạy lại, xóa
 
@@ -411,7 +411,7 @@ Media token hết hạn sau 5 phút. Trình phát nhận `404` thì trang xin to
 | Phần | Hiện trạng |
 |---|---|
 | Transcript, sửa câu, alias, đánh dấu, việc `manual`, media token, Range | Có, có test |
-| Trang `/jobs/[id]` | Chưa, trả `null`. `TranscriptLayout`, `AudioPlayerBar`, `SpeakerList`, `SelectionToolbar` có giao diện, xem ở trang mẫu `/components` |
+| Trang `/jobs/[id]` | Có. SSE, chạy chữ, nghe lại, đổi tên người nói, đánh dấu theo vùng bôi đen, tạo việc, LLM, xuất file, hủy, chạy lại, xóa |
 
 ## 9. F7. Hậu kỳ LLM
 
@@ -529,7 +529,7 @@ Không có `REDIS_URL` thì các key trên nằm trong bộ nhớ tiến trình.
 
 | Đường dẫn | Nội dung | Xóa khi |
 |---|---|---|
-| `/data/tmp/{job_id}/source.{ext}` | File người dùng tải lên | Nên xóa khi worker đã tạo Opus canonical. Code hiện chỉ xóa khi xóa job |
+| `/data/tmp/{job_id}/source.{ext}` | File người dùng tải lên | Worker đã tạo Opus canonical, hoặc xóa job |
 | `/data/tmp/{job_id}.f32` | PCM float32 cho model | Job sang `ready`, `failed`, `cancelled` |
 | `/data/audio/{job_id}.opus` | Bản nghe lại canonical | Xóa job |
 | `/data/tmp/{session_id}.pcm` | PCM s16le của phiên nghe | Session `finalized` hoặc `failed` |
@@ -537,32 +537,27 @@ Không có `REDIS_URL` thì các key trên nằm trong bộ nhớ tiến trình.
 
 ## 13. Khoảng trống giữa đặc tả và code
 
-Xếp theo mức chặn demo.
+Xếp theo mức chặn demo. Cập nhật 2026-10-29.
 
 | # | Mức | Khoảng trống | Ảnh hưởng | Chỗ sửa |
 |---|---|---|---|---|
-| 1 | Chặn | Worker chưa có FFmpeg, Silero, Whisper, pyannote | Mọi job PT1 sang `failed` với `worker_failed` | `services/audio_processor.py`, `stt_engine.py`, `diarization.py`, `pipeline.run_upload_job` |
 | 2 | Chặn | `run_live_session` rỗng | PT2 không có bản nháp. Bấm dừng để session ở `stopping`, job ở `capturing` | `worker.py`, một service đọc PCM và phát `draft` |
-| 3 | Chặn | Các trang `/jobs`, `/jobs/new`, `/jobs/[id]`, `/live`, `/voice-profiles` trả `null`. `/` chuyển tới trang mẫu `/components` | Người dùng đăng nhập xong vào trang trống | `frontend/src/app`, `lib/api.ts`, `typewriter-queue.ts`, `live-capture.ts`, `ffmpeg-compressor.ts` |
-| 4 | Cao | `enroll_voice` rỗng | Hồ sơ giọng không bao giờ `ready` | `worker.py`, `services/voice_profile.py` |
-| 5 | Cao | Client chưa tự refresh token | Phiên đăng nhập hỏng sau 15 phút | `lib/api.ts` |
-| 6 | Cao | Celery chưa đặt `task_acks_late`, `task_reject_on_worker_lost`, hạn cứng 6 giờ và 30 phút, `visibility_timeout` | Worker chết giữa job thì task mất. Bật `acks_late` mà giữ `visibility_timeout` mặc định 1 giờ thì task GPU dài hơn 1 giờ chạy hai lần | `worker.py`, xem môi trường mục 6 |
+| 3 | Chặn | Các trang `/live`, `/voice-profiles` trả `null` | Hai tính năng chưa dùng được từ giao diện | `frontend/src/app`, `live-capture.ts` |
+| 4 | Cao | `enroll_voice` rỗng | Hồ sơ giọng không bao giờ `ready` | `worker.py`, `services/voice_profile.py`. Vector phải tính cùng cách `diarization.cluster_vectors` |
+| 12 | Cao | Bộ phiên bản đã ghim chưa chạy trên card thật | `torch` 2.5.1 cu121, `ctranslate2` 4.5.0, `faster-whisper` 1.1.1, `pyannote.audio` 3.3.2 là ứng viên. Mới kiểm faster-whisper trên CPU | Build image, chạy một job có diarization trên GPU, ghi ngày vào `MODELS.lock` |
 | 7 | Trung bình | Nhả khóa khi mất heartbeat đang nằm ở FastAPI | Sau khi worker phiên có thật, hai nơi cùng quyết định nhả khóa | Chuyển về worker khi làm #2 |
-| 8 | Thấp | Gán nhãn người nói cập nhật từng đối tượng ORM | Bài 3 giờ giữ transaction lâu | `pipeline.run_standard_pass` |
 | 9 | Thấp | `rate_limit` đếm trong tiến trình | Nhiều bản uvicorn thì trần nhân lên | Chuyển sang Redis nếu chạy nhiều bản |
 | 10 | Thấp | `services/llm_client.py` rỗng, client nằm trong `llm_runner.py` | Lệch cây thư mục | Dời `http_chat` hoặc xóa file rỗng |
-| 11 | Thấp | File tải lên ở `/data/tmp/{job_id}/` không bị xóa sau khi có Opus | Volume đầy dần theo file gốc tới 500 MB mỗi job | Bước chuẩn hóa của #1 |
-| 12 | Cao | `requirements.txt` không ghim phiên bản | `ctranslate2` mới cần cuDNN 9, PyTorch cũ đi kèm cuDNN 8. Whisper và pyannote có thể không chạy chung image | `requirements.txt`, `MODELS.lock`, xem môi trường mục 5 |
-| 13 | Trung bình | `GET /transcript` gọi `load_words` cho từng câu | Khoảng 3.000 truy vấn cho bài 3 giờ | `routes_jobs.get_transcript` |
-| 14 | Thấp | `_append_event` đọc mọi `seq` của job để lấy max | Chậm dần theo số sự kiện | `pipeline._append_event`, dùng `max(seq)` |
-| 15 | Thấp | `llm_runner.clock` in `125:30` cho bài trên 1 giờ | Mốc biên bản khó đọc | Xem kiến trúc mục 6.2 |
+| 15 | Thấp | `llm_runner.clock` in `125:30` cho bài trên 1 giờ | Mốc biên bản khó đọc. Giao diện đã tua được cả hai dạng | Xem kiến trúc mục 6.2 |
+| 16 | Thấp | Bộ lọc chữ bịa mới là danh sách cụm cố định | Chỉ bỏ câu mà cả câu là cụm đã biết. Chưa đo trên bộ đối chiếu | `stt_engine.is_hallucination`, kiến trúc mục 2.4 |
+| 17 | Thấp | SSE không có Redis chỉ đánh thức trong cùng tiến trình | Worker ở tiến trình khác thì chữ tới sau tối đa 15 giây. Chỉ gặp khi chạy thử không có Redis | Không cần sửa cho triển khai Compose |
+
+Đã đóng ngày 2026-10-29: #1 pipeline PT1 thật, #3 phần `/jobs`, `/jobs/new`, `/jobs/[id]`, #5 tự làm mới token, #6 cấu hình Celery, #8 ghi nhãn hàng loạt, #11 xóa file gốc sau khi có Opus, #13 đọc từ trong một truy vấn, #14 `max(seq)`.
 
 ## 14. Thứ tự làm tiếp đề xuất
 
-1. #6, #12, #13. Việc nhỏ, tránh lỗi khó tìm.
-2. #1 kèm bộ lọc chữ bịa ở kiến trúc mục 2.4, và trang `/jobs/new`, `/jobs/[id]` có SSE. Đây là đường demo PT1 trọn vẹn.
-3. #5.
-4. Đo CER `large-v3-turbo` so với PhoWhisper theo ý tưởng mục 6, để chọn model bản chuẩn.
-5. Các hướng tối ưu về người nói và LLM ở kiến trúc mục 2.5 và 6.2, sau khi có số đo.
-6. #2 và trang `/live`, kèm cơ chế nhường GPU ở kiến trúc mục 1.
-7. #4 và trang `/voice-profiles`, rồi các mục còn lại.
+1. #12: build image và chạy một job PT1 có diarization trên card thật.
+2. Đo CER `large-v3-turbo` so với PhoWhisper theo ý tưởng mục 6, để chọn model bản chuẩn. Đo luôn #16.
+3. #2 và trang `/live`, kèm cơ chế nhường GPU ở kiến trúc mục 1. Làm #7 cùng lúc.
+4. #4 và trang `/voice-profiles`.
+5. Các hướng tối ưu về người nói và LLM ở kiến trúc mục 2.5 và 6.2, sau khi có số đo, rồi các mục còn lại.
