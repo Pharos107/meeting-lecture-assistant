@@ -51,6 +51,8 @@ type Progress = { stage: string; chunkIndex: number; chunkCount: number } | null
 
 const CANCELLABLE: JobStatus[] = ["queued", "capturing", "preprocessing", "transcribing"];
 const LLM_POLL_MS = 2_000;
+// id trên URL đi thẳng vào đường dẫn API, nên chỉ nhận đúng dạng UUID mà server cấp.
+const JOB_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const RECONNECT_MS = 3_000;
 /** Số từ đã hiện của câu đang chạy chữ. Câu không có trong map thì hiện đủ. */
 const ALL_WORDS = Number.MAX_SAFE_INTEGER;
@@ -70,16 +72,25 @@ function messageOf(caught: unknown, fallback: string) {
 }
 
 export default function JobPage() {
+  const params = useParams<{ id: string }>();
+  const valid = JOB_ID.test(params.id);
   return (
     <AppShell>
-      <JobView />
+      {valid ? (
+        <JobView jobId={params.id.toLowerCase()} />
+      ) : (
+        <div className="py-16 text-center">
+          <p className="text-sm text-rose-700">Không tìm thấy.</p>
+          <Link href="/jobs" className="mt-4 inline-block text-sm text-blue-700 hover:underline">
+            Về danh sách job
+          </Link>
+        </div>
+      )}
     </AppShell>
   );
 }
 
-function JobView() {
-  const params = useParams<{ id: string }>();
-  const jobId = params.id;
+function JobView({ jobId }: { jobId: string }) {
   const router = useRouter();
 
   const [job, setJob] = useState<JobDetail | null>(null);

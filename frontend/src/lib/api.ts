@@ -314,7 +314,7 @@ type StreamOptions = {
 /** Đọc SSE của job đến khi server đóng stream. Trả seq cuối đã nhận để nối lại. */
 export async function streamJobEvents(jobId: string, { afterSeq, signal, onEvent }: StreamOptions): Promise<number> {
   let lastSeq = afterSeq;
-  const res = await apiFetch(`/api/jobs/${jobId}/events?after_seq=${afterSeq}`, {
+  const res = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/events?after_seq=${afterSeq}`, {
     headers: { Accept: "text/event-stream" },
     signal,
   });
