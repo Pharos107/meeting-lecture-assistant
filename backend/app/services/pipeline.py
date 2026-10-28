@@ -4,6 +4,7 @@ import time
 import uuid
 from datetime import datetime, timezone
 
+from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
@@ -144,9 +145,31 @@ def _apply_voice_aliases(db: Session, job: Job, vectors: dict) -> None:
             current.source = "voice_profile"
 
 
+def _write_speaker_labels(
+    db: Session,
+    written_segments: list[tuple[Segment, list[Word]]],
+    turns: list[SpeakerTurn],
+) -> None:
+    """Ghi nhãn từ và câu bằng hai lệnh cập nhật hàng loạt theo khóa chính."""
+    word_rows: list[dict] = []
+    segment_rows: list[dict] = []
+    for segment, words in written_segments:
+        spans = []
+        for word in words:
+            label = label_for_word(word.start_ms, word.end_ms, turns)
+            word_rows.append({"id": word.id, "speaker_label": label})
+            spans.append(WordSpan(word.start_ms, word.end_ms, label))
+        segment_rows.append({"id": segment.id, "speaker_label": label_for_segment(spans)})
+    db.flush()
+    if word_rows:
+        db.execute(update(Word), word_rows)
+    if segment_rows:
+        db.execute(update(Segment), segment_rows)
+
+
 def _append_event(db: Session, job: Job, event_type: str, payload: dict) -> None:
-    current = db.query(JobEvent.seq).filter(JobEvent.job_id == job.id).all()
-    seq = max((row[0] for row in current), default=0) + 1
+    db.flush()
+    seq = (db.scalar(select(func.max(JobEvent.seq)).where(JobEvent.job_id == job.id)) or 0) + 1
     payload = dict(payload)
     payload["seq"] = seq
     db.add(
@@ -243,12 +266,7 @@ def run_standard_pass(
             turns = []
             vectors = {}
     if turns:
-        for segment, word_rows in written_segments:
-            spans = []
-            for word in word_rows:
-                word.speaker_label = label_for_word(word.start_ms, word.end_ms, turns)
-                spans.append(WordSpan(word.start_ms, word.end_ms, word.speaker_label))
-            segment.speaker_label = label_for_segment(spans)
+        _write_speaker_labels(db, written_segments, turns)
         _apply_voice_aliases(db, job, vectors)
         _append_event(db, job, "speakers", {})
     job.status = "ready"

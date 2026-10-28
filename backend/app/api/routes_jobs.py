@@ -197,6 +197,20 @@ def load_words(db: Session, segment_id: uuid.UUID) -> list[Word]:
     return list(db.scalars(select(Word).where(Word.segment_id == segment_id).order_by(Word.position)).all())
 
 
+def load_words_by_segment(db: Session, job: Job, pass_no: int) -> dict[uuid.UUID, list[Word]]:
+    """Đọc từ của cả pass trong một truy vấn."""
+    rows = db.scalars(
+        select(Word)
+        .join(Segment, Segment.id == Word.segment_id)
+        .where(Segment.job_id == job.id, Segment.pass_index == pass_no)
+        .order_by(Word.segment_id, Word.position)
+    ).all()
+    grouped: dict[uuid.UUID, list[Word]] = {}
+    for word in rows:
+        grouped.setdefault(word.segment_id, []).append(word)
+    return grouped
+
+
 def segment_json(segment: Segment, words: list[Word], aliases: dict[str, SpeakerAlias]) -> dict:
     return {
         "id": str(segment.id),
@@ -411,11 +425,11 @@ def get_transcript(job_id: str, request: Request, db: Session = Depends(get_db))
     job = owned_job(db, user, job_id)
     pass_no, segments = current_segments(db, job)
     aliases = load_aliases(db, job)
+    words_by_segment = load_words_by_segment(db, job, pass_no) if pass_no is not None else {}
     seen: list[str] = []
     rendered = []
     for segment in segments:
-        words = load_words(db, segment.id)
-        rendered.append(segment_json(segment, words, aliases))
+        rendered.append(segment_json(segment, words_by_segment.get(segment.id, []), aliases))
         if segment.speaker_label and segment.speaker_label not in seen:
             seen.append(segment.speaker_label)
     speakers = []

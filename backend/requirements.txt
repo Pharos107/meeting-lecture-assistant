@@ -1,5 +1,11 @@
-faster-whisper
-pyannote.audio>=3.1,<4
+# torch và torchaudio cài trước từ index CUDA, xem Dockerfile và MODELS.lock.
+# Bốn gói dưới đây phải đi cùng nhau: ctranslate2 4.5 cần cuDNN 9, torch 2.5.1 cu121 mang cuDNN 9.
+ctranslate2==4.5.0
+faster-whisper==1.1.1
+pyannote.audio==3.3.2
+numpy==1.26.4
+# Dòng 1.x bỏ requests (faster-whisper 1.1.1 cần) và bỏ use_auth_token (pyannote 3.3.2 cần).
+huggingface_hub<1.0
 fastapi
 uvicorn
 celery[redis]
