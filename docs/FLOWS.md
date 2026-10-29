@@ -208,7 +208,7 @@ Nhánh lỗi:
 | `POST /api/jobs`, kiểm field, ghi file tạm, enqueue | Có, có test |
 | `run_standard_pass`: stage, chunk, khử chồng, cờ hủy, diarization, alias, sự kiện | Có, test bằng hàm `transcribe` và `diarize` giả |
 | Lấy khóa, `retry` 5 giây, gia hạn khóa | Có |
-| FFmpeg, ffprobe, Silero, Whisper, pyannote thật | Có. `run_upload_job` chuẩn hóa, VAD, nhận dạng, gán người nói. Test dùng FFmpeg thật, Whisper và pyannote giả. Đã chạy Whisper `tiny` trên CPU với faster-whisper 1.1.1. Chưa chạy `large-v3-turbo` trên CUDA và chưa chạy pyannote thật |
+| FFmpeg, ffprobe, Silero, Whisper, pyannote thật | Có. `run_upload_job` chuẩn hóa, VAD, nhận dạng, gán người nói. Test dùng FFmpeg thật, Whisper và pyannote giả. Ngày 2026-10-29 đã chạy `large-v3-turbo` int8 và pyannote trên CUDA, RTX 4050 Laptop 6GB: bài 9 phút 41 giây xong sau 85 giây, bài 86 phút xong sau 545 giây, đỉnh VRAM toàn card khoảng 3,1GB. Số liệu ở `backend/MODELS.lock` |
 | Ghi `audio_path`, `duration_ms` | Có. Xóa `/data/tmp/{job_id}/` sau khi có Opus. Chạy lại và lần giao lại của Celery dùng Opus canonical |
 | Ghi nhãn bằng cập nhật hàng loạt | Có. Hai lệnh `UPDATE` theo khóa chính, một cho từ, một cho câu |
 | Nén FFmpeg.wasm, trang `/jobs/new` | Có. WASM lỗi thì tải file gốc. Worker của ffmpeg.wasm chạy bản chép trong `public/ffmpeg`, vì webpack làm hỏng `import(coreURL)` trong worker đã bundle |
@@ -544,7 +544,7 @@ Xếp theo mức chặn demo. Cập nhật 2026-10-29.
 | 2 | Chặn | `run_live_session` rỗng | PT2 không có bản nháp. Bấm dừng để session ở `stopping`, job ở `capturing` | `worker.py`, một service đọc PCM và phát `draft` |
 | 3 | Chặn | Các trang `/live`, `/voice-profiles` trả `null` | Hai tính năng chưa dùng được từ giao diện | `frontend/src/app`, `live-capture.ts` |
 | 4 | Cao | `enroll_voice` rỗng | Hồ sơ giọng không bao giờ `ready` | `worker.py`, `services/voice_profile.py`. Vector phải tính cùng cách `diarization.cluster_vectors` |
-| 12 | Cao | Bộ phiên bản đã ghim chưa chạy trên card thật | `torch` 2.5.1 cu121, `ctranslate2` 4.5.0, `faster-whisper` 1.1.1, `pyannote.audio` 3.3.2 là ứng viên. Mới kiểm faster-whisper trên CPU | Build image, chạy một job có diarization trên GPU, ghi ngày vào `MODELS.lock` |
+| 18 | Trung bình | Câu của Whisper chứa từ của nhiều nhãn | Trên GPU, 39/126 câu của bài 9 phút và 553/1287 câu của bài 86 phút có từ mang nhãn khác nhãn câu, kể cả từ null. Câu hiện cả câu dưới một người nói | Hướng tối ưu ở kiến trúc mục 2.5: tách câu tại chỗ đổi nhãn, gán từ null cho lượt gần nhất. Đo lại sau khi sửa |
 | 7 | Trung bình | Nhả khóa khi mất heartbeat đang nằm ở FastAPI | Sau khi worker phiên có thật, hai nơi cùng quyết định nhả khóa | Chuyển về worker khi làm #2 |
 | 9 | Thấp | `rate_limit` đếm trong tiến trình | Nhiều bản uvicorn thì trần nhân lên | Chuyển sang Redis nếu chạy nhiều bản |
 | 10 | Thấp | `services/llm_client.py` rỗng, client nằm trong `llm_runner.py` | Lệch cây thư mục | Dời `http_chat` hoặc xóa file rỗng |
@@ -552,12 +552,11 @@ Xếp theo mức chặn demo. Cập nhật 2026-10-29.
 | 16 | Thấp | Bộ lọc chữ bịa mới là danh sách cụm cố định | Chỉ bỏ câu mà cả câu là cụm đã biết. Chưa đo trên bộ đối chiếu | `stt_engine.is_hallucination`, kiến trúc mục 2.4 |
 | 17 | Thấp | SSE không có Redis chỉ đánh thức trong cùng tiến trình | Worker ở tiến trình khác thì chữ tới sau tối đa 15 giây. Chỉ gặp khi chạy thử không có Redis | Không cần sửa cho triển khai Compose |
 
-Đã đóng ngày 2026-10-29: #1 pipeline PT1 thật, #3 phần `/jobs`, `/jobs/new`, `/jobs/[id]`, #5 tự làm mới token, #6 cấu hình Celery, #8 ghi nhãn hàng loạt, #11 xóa file gốc sau khi có Opus, #13 đọc từ trong một truy vấn, #14 `max(seq)`.
+Đã đóng ngày 2026-10-29: #1 pipeline PT1 thật, #3 phần `/jobs`, `/jobs/new`, `/jobs/[id]`, #5 tự làm mới token, #6 cấu hình Celery, #8 ghi nhãn hàng loạt, #11 xóa file gốc sau khi có Opus, #13 đọc từ trong một truy vấn, #14 `max(seq)`, #12 bộ phiên bản chạy trên card thật. Lúc kiểm #12 đã sửa ba lỗi chỉ lộ ra trên GPU: image nền trixie làm `ctranslate2` không nạp được, pip thay torch cu121 bằng torch mới trên PyPI, và worker khởi tạo CUDA ở tiến trình cha nên tiến trình fork của Celery không nạp được Whisper.
 
 ## 14. Thứ tự làm tiếp đề xuất
 
-1. #12: build image và chạy một job PT1 có diarization trên card thật.
-2. Đo CER `large-v3-turbo` so với PhoWhisper theo ý tưởng mục 6, để chọn model bản chuẩn. Đo luôn #16.
-3. #2 và trang `/live`, kèm cơ chế nhường GPU ở kiến trúc mục 1. Làm #7 cùng lúc.
-4. #4 và trang `/voice-profiles`.
-5. Các hướng tối ưu về người nói và LLM ở kiến trúc mục 2.5 và 6.2, sau khi có số đo, rồi các mục còn lại.
+1. Đo CER `large-v3-turbo` so với PhoWhisper theo ý tưởng mục 6, để chọn model bản chuẩn. Đo luôn #16.
+2. #2 và trang `/live`, kèm cơ chế nhường GPU ở kiến trúc mục 1. Làm #7 cùng lúc.
+3. #4 và trang `/voice-profiles`.
+4. #18 và các hướng tối ưu về LLM ở kiến trúc mục 6.2, sau khi có số đo, rồi các mục còn lại.

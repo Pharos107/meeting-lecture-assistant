@@ -1,22 +1,37 @@
 # Bộ phiên bản dùng chung một image cho Whisper và pyannote.
-# Trạng thái: ứng viên, chưa chạy thử trên máy mục tiêu. Chạy một job PT1 có diarization
-# trên card thật rồi sửa dòng này thành ngày đã kiểm.
+# Trạng thái: đã kiểm trên card thật ngày 2026-10-29 (RTX 4050 Laptop 6GB, Docker trên WSL2).
 # Ngày ghi: 2026-10-29
+
+# Image nền: python:3.11-slim-bookworm (glibc 2.36). Trên trixie (glibc 2.41),
+# libctranslate2 4.5.0 không nạp được: "cannot enable executable stack".
 
 # Dòng pip cài PyTorch CUDA (chạy trước requirements.txt):
 pip install torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu121
 # Wheel này kéo nvidia-cublas-cu12 (libcublas.so.12) và nvidia-cudnn-cu12 9.1 (libcudnn.so.9).
 # LD_LIBRARY_PATH trong Dockerfile trỏ tới nvidia/cublas/lib và nvidia/cudnn/lib của site-packages.
+# requirements.txt ghim lại torch==2.5.1 và torchaudio==2.5.1. Thiếu hai dòng đó thì pip thay bằng
+# torch 2.15.0 và torchaudio 2.11.1 trên PyPI khi giải phụ thuộc của pyannote, và pyannote 3.3.2
+# không import được vì torchaudio mới không còn AudioMetaData.
 
 ctranslate2==4.5.0
 faster-whisper==1.1.1
 pyannote.audio==3.3.2
 numpy==1.26.4
 huggingface_hub<1.0
+# Bộ giải chọn kèm: speechbrain 1.1.1, lightning 2.6.6, torchmetrics 1.9.0, huggingface_hub 0.36.2.
 
 # 2026-10-29, Windows, CPU, model tiny: faster-whisper 1.1.1 + ctranslate2 4.5.0 chạy được
 # normalize, speech_regions, và WhisperEngine.transcribe. Với huggingface_hub 2.x thì
-# faster-whisper không import được vì thiếu requests. pyannote và CUDA chưa kiểm.
+# faster-whisper không import được vì thiếu requests.
+
+# 2026-10-29, RTX 4050 Laptop 6GB, driver 610.88, large-v3-turbo int8, pyannote trên cuda,
+# job PT1 qua API, không đặt num_speakers:
+# - Bài 9 phút 41 giây, 2 người nói: xong sau 85 giây. Nhận dạng 34 giây, diarization 39 giây.
+#   Ra 2 người nói, 126 câu.
+# - Bài 86 phút, 2 người nói: xong sau 545 giây. Chuẩn hóa 69 giây, nhận dạng 222 giây,
+#   diarization 250 giây. Ra 2 người nói chính và 2 cụm nhỏ 10 giây, 6 giây.
+# - Đỉnh VRAM toàn card khoảng 3,1GB, trong đó Windows giữ sẵn 1,2–1,4GB.
+# - Image backend 10,3GB.
 
 # Repo faster-whisper large-v3-turbo: mobiuslabsgmbh/faster-whisper-large-v3-turbo
 # Repo faster-whisper small: Systran/faster-whisper-small

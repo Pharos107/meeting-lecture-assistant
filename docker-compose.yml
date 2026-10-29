@@ -23,6 +23,7 @@ services:
 
   backend:
     build: ./backend
+    image: stt-backend:latest
     env_file: .env
     depends_on:
       postgres:
@@ -41,6 +42,7 @@ services:
 
   worker-gpu:
     build: ./backend
+    image: stt-backend:latest
     env_file: .env
     command: celery -A app.worker.celery_app worker --loglevel=info -Q gpu --concurrency=1 --prefetch-multiplier=1
     depends_on:
@@ -64,6 +66,7 @@ services:
 
   worker-io:
     build: ./backend
+    image: stt-backend:latest
     env_file: .env
     command: celery -A app.worker.celery_app worker --loglevel=info -Q io --concurrency=4 --prefetch-multiplier=1
     depends_on:

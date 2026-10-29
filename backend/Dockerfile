@@ -1,4 +1,5 @@
-FROM python:3.11-slim
+# Ghim bookworm (glibc 2.36). Trên trixie (glibc 2.41), ctranslate2 4.5.0 không nạp được vì đòi stack thực thi.
+FROM python:3.11-slim-bookworm
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \

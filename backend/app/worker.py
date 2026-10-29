@@ -2,6 +2,8 @@
 
 import logging
 import os
+import subprocess
+import sys
 
 from celery import Celery
 from celery.signals import celeryd_after_setup
@@ -10,6 +12,13 @@ log = logging.getLogger(__name__)
 
 GPU_TIME_LIMIT_S = 6 * 3600
 LLM_TIME_LIMIT_S = 30 * 60
+
+_GPU_PROBE = (
+    "import torch\n"
+    "if torch.cuda.is_available():\n"
+    "    p = torch.cuda.get_device_properties(0)\n"
+    "    print(f'{p.name}|{p.total_memory}')\n"
+)
 
 redis_url = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
 celery_app = Celery("meeting", broker=redis_url)
@@ -35,12 +44,14 @@ def check_gpu(sender, instance, **_kwargs) -> None:
     if os.environ.get("WHISPER_DEVICE", "cuda") != "cuda":
         log.warning("WHISPER_DEVICE khác cuda. Worker gpu chạy trên CPU, chỉ dùng để thử.")
         return
-    import torch
-
-    if not torch.cuda.is_available():
+    # Hỏi CUDA trong một tiến trình riêng. Tiến trình cha mà khởi tạo CUDA thì các tiến trình
+    # fork của Celery gặp "CUDA failed with error initialization error" khi nạp Whisper.
+    probe = subprocess.run([sys.executable, "-c", _GPU_PROBE], capture_output=True, text=True, timeout=120)
+    found = probe.stdout.strip()
+    if probe.returncode != 0 or not found:
         raise SystemExit("Worker gpu cần CUDA. Kiểm tra driver NVIDIA, Container Toolkit, và wheel PyTorch CUDA.")
-    props = torch.cuda.get_device_properties(0)
-    log.info("GPU %s, VRAM %.1f GB", props.name, props.total_memory / 1024**3)
+    name, total = found.rsplit("|", 1)
+    log.info("GPU %s, VRAM %.1f GB", name, int(total) / 1024**3)
 
 
 @celery_app.task(name="app.tasks.transcribe_upload", bind=True, max_retries=None, time_limit=GPU_TIME_LIMIT_S)
