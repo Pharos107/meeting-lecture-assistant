@@ -12,7 +12,9 @@ RUN apt-get update \
 
 WORKDIR /app
 
-# Dòng cài PyTorch CUDA chưa khóa. Ghi vào MODELS.lock cùng ngày build, rồi cài trước requirements.txt.
+# Dòng cài PyTorch CUDA giống MODELS.lock. Đổi số CUDA thì sửa luôn LD_LIBRARY_PATH ở trên.
+RUN pip install --no-cache-dir torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu121
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 

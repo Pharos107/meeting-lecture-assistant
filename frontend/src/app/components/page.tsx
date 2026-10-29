@@ -127,8 +127,8 @@ export default function ComponentsPage() {
         <Section file="audio-uploader.tsx" title="Tải file">
           <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
             <AudioUploader
-              onCreate={(fileName, vocabulary) =>
-                setUploadNote(`Đã nhận ${fileName}. Thuật ngữ: ${vocabulary || "không có"}.`)
+              onSubmit={({ file, vocabulary }) =>
+                setUploadNote(`Đã nhận ${file.name}. Thuật ngữ: ${vocabulary || "không có"}.`)
               }
             />
             <div className="rounded-3xl bg-white/80 p-5 text-sm leading-6 text-slate-600 ring-1 ring-sky-100">
@@ -176,7 +176,7 @@ export default function ComponentsPage() {
             currentMs={currentMs}
             durationMs={DURATION_MS}
             playing={playing}
-            selectedId={selectedId}
+            selection={selectedId ? { segmentId: selectedId, quote: "đoạn đang chọn" } : null}
             notice={notice}
             onModeChange={setMode}
             onTogglePlay={() => setPlaying((value) => !value)}

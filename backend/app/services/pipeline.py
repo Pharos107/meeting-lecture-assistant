@@ -1,14 +1,19 @@
 """Pipeline bản chuẩn: chunk, nhận dạng, khử chồng, gán người nói."""
 
+import logging
+import shutil
 import time
 import uuid
 from datetime import datetime, timezone
+from pathlib import Path
 
+from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
 from app.db import get_engine
-from app.models import Job, JobEvent, Segment, SpeakerAlias, VoiceProfile, Word
+from app.models import ActionItem, Highlight, Job, JobEvent, Segment, SpeakerAlias, VoiceProfile, Word
+from app.services.diarization import PIPELINE_MODEL
 from app.services.job_notify import install_job_notify, remember_job_event
 from app.services.speaker_align import (
     SpeakerTurn,
@@ -20,6 +25,8 @@ from app.services.speaker_align import (
     unpack_embedding,
 )
 from app.services.vad_chunker import TimedWord, build_chunks, keep_word
+
+logger = logging.getLogger(__name__)
 
 
 def _diarize_payload(result):
@@ -97,8 +104,6 @@ def _write_chunk(db: Session, job: Job, chunk, produced, chunks, position: int):
 
 
 def _apply_voice_aliases(db: Session, job: Job, vectors: dict) -> None:
-    from app.api.routes_voice import PIPELINE_MODEL
-
     settings = get_settings()
     rows = db.query(VoiceProfile).filter(VoiceProfile.user_id == job.user_id, VoiceProfile.status == "ready").all()
     profiles: list[VoiceProfileVector] = []
@@ -144,9 +149,31 @@ def _apply_voice_aliases(db: Session, job: Job, vectors: dict) -> None:
             current.source = "voice_profile"
 
 
+def _write_speaker_labels(
+    db: Session,
+    written_segments: list[tuple[Segment, list[Word]]],
+    turns: list[SpeakerTurn],
+) -> None:
+    """Ghi nhãn từ và câu bằng hai lệnh cập nhật hàng loạt theo khóa chính."""
+    word_rows: list[dict] = []
+    segment_rows: list[dict] = []
+    for segment, words in written_segments:
+        spans = []
+        for word in words:
+            label = label_for_word(word.start_ms, word.end_ms, turns)
+            word_rows.append({"id": word.id, "speaker_label": label})
+            spans.append(WordSpan(word.start_ms, word.end_ms, label))
+        segment_rows.append({"id": segment.id, "speaker_label": label_for_segment(spans)})
+    db.flush()
+    if word_rows:
+        db.execute(update(Word), word_rows)
+    if segment_rows:
+        db.execute(update(Segment), segment_rows)
+
+
 def _append_event(db: Session, job: Job, event_type: str, payload: dict) -> None:
-    current = db.query(JobEvent.seq).filter(JobEvent.job_id == job.id).all()
-    seq = max((row[0] for row in current), default=0) + 1
+    db.flush()
+    seq = (db.scalar(select(func.max(JobEvent.seq)).where(JobEvent.job_id == job.id)) or 0) + 1
     payload = dict(payload)
     payload["seq"] = seq
     db.add(
@@ -164,6 +191,14 @@ def _append_event(db: Session, job: Job, event_type: str, payload: dict) -> None
 install_job_notify()
 
 
+def _enter_preprocessing(db: Session, job: Job) -> None:
+    job.status = "preprocessing"
+    if job.started_at is None:
+        job.started_at = datetime.now(timezone.utc)
+    _append_event(db, job, "stage", {"stage": "preprocessing", "detail": "Chuẩn hóa âm thanh"})
+    db.commit()
+
+
 def run_standard_pass(
     db: Session,
     job: Job,
@@ -175,11 +210,8 @@ def run_standard_pass(
     """transcribe(chunk) trả các câu có start/end và words, tính bằng giây tương đối trong chunk."""
     if job.status == "cancelled":
         return
-    job.status = "preprocessing"
-    if job.started_at is None:
-        job.started_at = datetime.now(timezone.utc)
-    _append_event(db, job, "stage", {"stage": "preprocessing", "detail": "Chuẩn hóa âm thanh"})
-    db.commit()
+    if job.status != "preprocessing":
+        _enter_preprocessing(db, job)
 
     chunks = build_chunks(regions)
     if not chunks:
@@ -243,12 +275,7 @@ def run_standard_pass(
             turns = []
             vectors = {}
     if turns:
-        for segment, word_rows in written_segments:
-            spans = []
-            for word in word_rows:
-                word.speaker_label = label_for_word(word.start_ms, word.end_ms, turns)
-                spans.append(WordSpan(word.start_ms, word.end_ms, word.speaker_label))
-            segment.speaker_label = label_for_segment(spans)
+        _write_speaker_labels(db, written_segments, turns)
         _apply_voice_aliases(db, job, vectors)
         _append_event(db, job, "speakers", {})
     job.status = "ready"
@@ -257,7 +284,7 @@ def run_standard_pass(
     db.commit()
 
 
-def run_upload_job(job_id: str) -> str:
+def run_upload_job(job_id: str, *, engine_factory=None, diarize_fn=None, regions_fn=None) -> str:
     """Điểm vào của worker. Trả retry khi chưa giữ được gpu:lock."""
     from app.services.gpu_lock import get_gpu_lock
 
@@ -274,14 +301,128 @@ def run_upload_job(job_id: str) -> str:
     try:
         with Session(get_engine()) as db:
             job = db.get(Job, uuid.UUID(str(job_id)))
-            if job is None or job.status == "cancelled":
+            if job is None or job.status not in _RUNNABLE:
                 return "done"
-            job.status = "failed"
-            job.error_code = "worker_failed"
-            job.error_message = "Worker nhận dạng chưa được nối với model trên máy này."
-            job.finished_at = datetime.now(timezone.utc)
-            db.commit()
+            _process_upload(db, job, engine_factory or _whisper_engine, diarize_fn or _real_diarize, regions_fn)
         return "done"
     finally:
         keeper.stop(str(job_id))
         lock.release(str(job_id))
+
+
+_RUNNABLE = {"queued", "preprocessing", "transcribing", "diarizing"}
+
+
+def clear_pass(db: Session, job_id: uuid.UUID, pass_index: int) -> None:
+    """Xóa câu, từ, và đánh dấu của một pass. Việc manual giữ lại với segment_id null."""
+    segment_ids = list(
+        db.scalars(select(Segment.id).where(Segment.job_id == job_id, Segment.pass_index == pass_index)).all()
+    )
+    if not segment_ids:
+        return
+    db.query(Highlight).filter(Highlight.segment_id.in_(segment_ids)).delete(synchronize_session=False)
+    db.query(Word).filter(Word.segment_id.in_(segment_ids)).delete(synchronize_session=False)
+    db.query(ActionItem).filter(ActionItem.segment_id.in_(segment_ids)).update(
+        {ActionItem.segment_id: None},
+        synchronize_session=False,
+    )
+    db.query(Segment).filter(Segment.id.in_(segment_ids)).delete(synchronize_session=False)
+
+
+def _whisper_engine():
+    from app.services.stt_engine import WhisperEngine
+
+    return WhisperEngine()
+
+
+def _real_diarize(pcm, num_speakers):
+    from app.services.diarization import diarize
+
+    return diarize(pcm, num_speakers)
+
+
+def _real_regions(pcm):
+    from app.services.stt_engine import speech_regions
+
+    return speech_regions(pcm)
+
+
+def _upload_source(root: Path, job: Job) -> Path | None:
+    """File gốc trong /data/tmp/{job_id}/. Không còn thì dùng Opus canonical, ví dụ khi chạy lại."""
+    folder = root / "tmp" / str(job.id)
+    if folder.is_dir():
+        sources = sorted(path for path in folder.glob("source.*") if path.is_file())
+        if sources:
+            return sources[0]
+    opus = root / "audio" / f"{job.id}.opus"
+    return opus if opus.is_file() else None
+
+
+def _fail(db: Session, job: Job, code: str, message: str) -> None:
+    db.rollback()
+    db.refresh(job)
+    if job.status == "cancelled":
+        return
+    job.status = "failed"
+    job.error_code = code
+    job.error_message = message
+    job.finished_at = datetime.now(timezone.utc)
+    _append_event(db, job, "error", {"code": code, "message": message})
+    db.commit()
+
+
+def _process_upload(db: Session, job: Job, engine_factory, diarize_fn, regions_fn) -> None:
+    from app.services.audio_processor import MediaError, close_pcm, load_pcm, normalize, slice_pcm
+    from app.services.stt_engine import GpuOutOfMemory
+
+    settings = get_settings()
+    root = Path(settings.data_dir).resolve()
+    job_id = job.id
+    pcm_path = root / "tmp" / f"{job_id}.f32"
+    engine = None
+    pcm = None
+    try:
+        if job.status != "queued":
+            # Celery giao lại sau khi worker chết giữa job: xóa pass 2 dở rồi chạy lại.
+            clear_pass(db, job.id, 2)
+            db.commit()
+        _enter_preprocessing(db, job)
+        source = _upload_source(root, job)
+        if source is None:
+            raise MediaError("unsupported_media", "Không còn file âm thanh của job.")
+        audio = normalize(source, root / "audio" / f"{job.id}.opus", pcm_path, settings.max_duration_seconds)
+        job.audio_path = str(audio.opus_path)
+        job.duration_ms = audio.duration_ms
+        db.commit()
+        if source.parent.name == str(job.id):
+            shutil.rmtree(source.parent, ignore_errors=True)
+
+        pcm = load_pcm(pcm_path)
+        regions = (regions_fn or _real_regions)(pcm)
+
+        def transcribe(chunk):
+            nonlocal engine
+            if engine is None:
+                engine = engine_factory()
+            return engine.transcribe(slice_pcm(pcm, chunk.start, chunk.end), job.vocabulary)
+
+        def diarize():
+            nonlocal engine
+            if engine is not None:
+                engine.release()
+                engine = None
+            return diarize_fn(pcm, job.num_speakers)
+
+        run_standard_pass(db, job, regions=regions, transcribe=transcribe, diarize=diarize)
+    except MediaError as error:
+        _fail(db, job, error.code, error.message)
+    except GpuOutOfMemory:
+        _fail(db, job, "gpu_oom", "Không đủ VRAM để nạp model nhận dạng.")
+    except Exception:
+        logger.exception("Job %s lỗi khi nhận dạng.", job_id)
+        _fail(db, job, "worker_failed", "Worker gặp lỗi khi nhận dạng.")
+    finally:
+        if engine is not None:
+            engine.release()
+        close_pcm(pcm)
+        pcm_path.unlink(missing_ok=True)

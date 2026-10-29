@@ -1,6 +1,23 @@
-# Chưa khóa. Điền cùng ngày build image.
-# Dòng pip cài PyTorch CUDA:
+# Bộ phiên bản dùng chung một image cho Whisper và pyannote.
+# Trạng thái: ứng viên, chưa chạy thử trên máy mục tiêu. Chạy một job PT1 có diarization
+# trên card thật rồi sửa dòng này thành ngày đã kiểm.
+# Ngày ghi: 2026-10-29
+
+# Dòng pip cài PyTorch CUDA (chạy trước requirements.txt):
+pip install torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu121
+# Wheel này kéo nvidia-cublas-cu12 (libcublas.so.12) và nvidia-cudnn-cu12 9.1 (libcudnn.so.9).
+# LD_LIBRARY_PATH trong Dockerfile trỏ tới nvidia/cublas/lib và nvidia/cudnn/lib của site-packages.
+
+ctranslate2==4.5.0
+faster-whisper==1.1.1
+pyannote.audio==3.3.2
+numpy==1.26.4
+huggingface_hub<1.0
+
+# 2026-10-29, Windows, CPU, model tiny: faster-whisper 1.1.1 + ctranslate2 4.5.0 chạy được
+# normalize, speech_regions, và WhisperEngine.transcribe. Với huggingface_hub 2.x thì
+# faster-whisper không import được vì thiếu requests. pyannote và CUDA chưa kiểm.
+
 # Repo faster-whisper large-v3-turbo: mobiuslabsgmbh/faster-whisper-large-v3-turbo
 # Repo faster-whisper small: Systran/faster-whisper-small
-# pyannote.audio bản kiểm thử: 3.3.2
 # Pipeline: pyannote/speaker-diarization-3.1

@@ -18,11 +18,10 @@ from app.core.exceptions import ApiError
 from app.core.timeutil import iso_seconds
 from app.db import get_db
 from app.models import User, VoiceProfile
+from app.services.diarization import PIPELINE_MODEL
 from app.services.dispatch import enqueue
 
 router = APIRouter(prefix="/api", tags=["voice"], dependencies=[Depends(current_user)])
-
-PIPELINE_MODEL = "pyannote/speaker-diarization-3.1"
 
 
 def probe_sample(path: Path) -> tuple[int, int]:

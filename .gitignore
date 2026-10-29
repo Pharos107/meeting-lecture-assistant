@@ -47,3 +47,7 @@ Desktop.ini
 
 # Microsoft Office lock files
 ~$*
+
+# Core FFmpeg.wasm chép từ node_modules lúc build
+frontend/public/ffmpeg/*
+!frontend/public/ffmpeg/README.md

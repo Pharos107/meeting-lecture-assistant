@@ -20,6 +20,7 @@ from app.services.dispatch import enqueue
 from app.services.gpu_lock import get_gpu_lock, keeper
 from app.services.live_channel import close_session, unlink_pcm
 from app.services.housekeeping import purge_expired_secrets
+from app.services.pipeline import clear_pass
 from app.core.security import hash_refresh_token
 from app.core.timeutil import as_utc, iso_micros, iso_seconds
 from app.db import get_db
@@ -197,6 +198,20 @@ def load_words(db: Session, segment_id: uuid.UUID) -> list[Word]:
     return list(db.scalars(select(Word).where(Word.segment_id == segment_id).order_by(Word.position)).all())
 
 
+def load_words_by_segment(db: Session, job: Job, pass_no: int) -> dict[uuid.UUID, list[Word]]:
+    """Đọc từ của cả pass trong một truy vấn."""
+    rows = db.scalars(
+        select(Word)
+        .join(Segment, Segment.id == Word.segment_id)
+        .where(Segment.job_id == job.id, Segment.pass_index == pass_no)
+        .order_by(Word.segment_id, Word.position)
+    ).all()
+    grouped: dict[uuid.UUID, list[Word]] = {}
+    for word in rows:
+        grouped.setdefault(word.segment_id, []).append(word)
+    return grouped
+
+
 def segment_json(segment: Segment, words: list[Word], aliases: dict[str, SpeakerAlias]) -> dict:
     return {
         "id": str(segment.id),
@@ -371,17 +386,7 @@ def retry_job(job_id: str, request: Request, db: Session = Depends(get_db)) -> d
     job = owned_job(db, user, job_id)
     if job.status != "failed":
         raise invalid_state()
-    segment_ids = list(
-        db.scalars(select(Segment.id).where(Segment.job_id == job.id, Segment.pass_index == 2)).all()
-    )
-    if segment_ids:
-        db.query(Highlight).filter(Highlight.segment_id.in_(segment_ids)).delete(synchronize_session=False)
-        db.query(Word).filter(Word.segment_id.in_(segment_ids)).delete(synchronize_session=False)
-        db.query(ActionItem).filter(ActionItem.segment_id.in_(segment_ids)).update(
-            {ActionItem.segment_id: None},
-            synchronize_session=False,
-        )
-        db.query(Segment).filter(Segment.id.in_(segment_ids)).delete(synchronize_session=False)
+    clear_pass(db, job.id, 2)
     job.status = "queued"
     job.error_code = None
     job.error_message = None
@@ -411,11 +416,11 @@ def get_transcript(job_id: str, request: Request, db: Session = Depends(get_db))
     job = owned_job(db, user, job_id)
     pass_no, segments = current_segments(db, job)
     aliases = load_aliases(db, job)
+    words_by_segment = load_words_by_segment(db, job, pass_no) if pass_no is not None else {}
     seen: list[str] = []
     rendered = []
     for segment in segments:
-        words = load_words(db, segment.id)
-        rendered.append(segment_json(segment, words, aliases))
+        rendered.append(segment_json(segment, words_by_segment.get(segment.id, []), aliases))
         if segment.speaker_label and segment.speaker_label not in seen:
             seen.append(segment.speaker_label)
     speakers = []
