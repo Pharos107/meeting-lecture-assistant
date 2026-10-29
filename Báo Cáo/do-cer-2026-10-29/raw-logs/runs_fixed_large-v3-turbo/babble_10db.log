@@ -1,0 +1,29 @@
+upload 201 0.1 s
+job 1672ba6e-dddd-4155-b53d-46276e62dae7
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    6.1s] ('transcribing', None, None)
+[   36.2s] ('diarizing', None, None)
+[   64.4s] ('ready', None, None)
+elapsed 64.4 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 473760, "diarization_device": "cuda"}
+pass 2 segments 78 speakers ['SPEAKER_04', 'SPEAKER_01', 'SPEAKER_03', 'SPEAKER_02', 'SPEAKER_05', 'SPEAKER_00']
+  SPEAKER_03: 281s
+  SPEAKER_01: 53s
+  SPEAKER_04: 34s
+  SPEAKER_02: 24s
+  SPEAKER_05: 17s
+  SPEAKER_00: 16s
+words 1786 segments with >1 word speaker 18
+      0.0 SPEAKER_04: Thưa quý vị, tại kỳ họp thứ 2, Quốc hội đang thảo luận nhiều dự án luật quan trọng liên quan đến các lĩnh vực 
+      8.2 SPEAKER_04: Trong đó có dự án luật xử lý vi phạm hành chính sửa đổi, hướng tới nâng cao ý thức chấp hành pháp luật, thiết 
+     14.9 SPEAKER_04: đồng thời bảo vệ an ninh con người trước những hành vi vi phạm có thể gây ra những hiệu quả nghiêm trọng, lâu 
+     23.5 SPEAKER_01: Và để cùng trao đổi vấn đề này thì chương trình hôm nay đã mời tới trường quay ông Nguyễn Hải Long, đại biểu Q
+     37.5 SPEAKER_01: từ gấp độ lầm pháp và thực tiễn, vì sao việc nâng cao ý thức tự giác, chấp hành pháp luật
+     42.6 SPEAKER_01: cũng như là ý thức chúng ta giữ gìn trật tự thủy cương lại là yêu cầu quan trọng trong giai đoạn hiện nay ạ?
+     50.2 SPEAKER_03: Thì theo tôi, cái thông điệp quan trọng nhất mà của dự án luật,
+     55.9 SPEAKER_03: chẳng như bạn nói trong dự án vừa rồi là mọi người
+     58.5 SPEAKER_03: rất quan tâm là vi phạm bị xử lý nghiêm, mọi người đều bình đẳng trước pháp luật và quyết định xử phạt phải đư
+     67.3 SPEAKER_03: Thì tôi muốn nhấn mạnh những 4 vấn đề. Thứ nhất là mức phạt phải đủ sức gian đe. Trong giá luật thì cũng đã có
+     89.7 SPEAKER_03: Và thứ hai là phát hiện vi phạm kịp thời, thì luật cũng đã sử dụng và cho phép dụng các thiết bị về kỹ thuật đ
+     98.1 SPEAKER_03: Thứ ba là bảo đảm quyết định xử phạm được thực hiện trên thực tế, dụ như là bổ sung thêm những hình thức như l

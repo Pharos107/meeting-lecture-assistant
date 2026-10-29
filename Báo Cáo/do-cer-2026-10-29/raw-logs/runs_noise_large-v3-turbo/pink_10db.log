@@ -1,0 +1,29 @@
+upload 201 0.1 s
+job b98b2e9d-77a0-4c05-af5f-beef7ff0d561
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    6.0s] ('transcribing', None, None)
+[   33.1s] ('diarizing', None, None)
+[   58.3s] ('ready', None, None)
+elapsed 58.3 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 473760, "diarization_device": "cuda"}
+pass 2 segments 98 speakers ['SPEAKER_04', 'SPEAKER_00', 'SPEAKER_05', 'SPEAKER_03', 'SPEAKER_02', 'SPEAKER_01']
+  SPEAKER_05: 278s
+  SPEAKER_00: 59s
+  SPEAKER_04: 33s
+  SPEAKER_03: 23s
+  SPEAKER_01: 17s
+  SPEAKER_02: 17s
+words 1860 segments with >1 word speaker 37
+      0.4 SPEAKER_04: Thưa quý vị, tại kỳ họp thứ 2, Quốc hội đang thảo luận nhiều dự án luật quan trọng liên quan đến các lĩnh vực 
+      8.2 SPEAKER_04: Trong đó có dự án luật xử lý vi phạm hành chính sửa đổi, hướng tới nâng cao ý thức chấp hành pháp luật, kết lậ
+     23.6 SPEAKER_00: Và để cùng trao đổi về vấn đề này thì chương trình ngày hôm nay đã mời tới trường quay ông Nguyễn Hải Long, đạ
+     33.1 SPEAKER_00: Xin cảm ơn ông đã nhận lời mời tham gia chương trình ạ.
+     35.5 SPEAKER_05: Chào các bạn.
+     37.0 SPEAKER_00: Thưa ông, từ góc độ lập pháp và thực tiễn, vì sao việc nâng cao ý thức tự giác, chấp hành pháp luật cũng như l
+     49.8 SPEAKER_05: thì theo tôi
+     50.8 SPEAKER_05: cái thông điệp quan trọng nhất
+     52.7 SPEAKER_05: Mà của dự án luật
+     56.0 SPEAKER_05: Trong như bạn nói trong dự án vừa rồi
+     58.0 SPEAKER_05: Mọi người rất quan tâm
+     59.7 SPEAKER_05: Là vi phạm vệ định xử lý nghiêm

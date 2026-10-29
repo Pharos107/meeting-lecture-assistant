@@ -1,0 +1,28 @@
+upload 201 0.1 s
+job 7013c266-8f39-4663-aebc-88ea6cff9cda
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    6.0s] ('transcribing', None, None)
+[   31.2s] ('diarizing', None, None)
+[   52.3s] ('ready', None, None)
+elapsed 52.3 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 473760, "diarization_device": "cuda"}
+pass 2 segments 84 speakers ['SPEAKER_03', 'SPEAKER_01', 'SPEAKER_00', 'SPEAKER_04', 'SPEAKER_02']
+  SPEAKER_03: 313s
+  SPEAKER_01: 55s
+  SPEAKER_04: 23s
+  SPEAKER_00: 17s
+  SPEAKER_02: 17s
+words 1751 segments with >1 word speaker 25
+      0.4 SPEAKER_03: Thưa quý vị, tại kỳ họp thứ 2, quốc hội đang thảo luận về dự án luật quan trọng liên quan đến các lĩnh vực của
+      8.3 SPEAKER_03: Trong đó, có dự án luật xử lý vi phạm hành trí sửa đổi, đối với nâng cao ý thức chấp hành pháp luật, kết lập t
+     16.5 SPEAKER_03: giúp những hành vi vi phạm có thể gây ra những hợp quả nghiêm trọng lâu dài đến với tính mạng, sức khỏe và nơi
+     23.6 SPEAKER_01: Và để cùng trao đổi tấn đề này thì chương trình hôm nay đã mời tới trường quay ông Nguyễn Hải Long, đại biểu Q
+     33.1 SPEAKER_01: Thì cảm ơn ông đã nhận lời mời tham gia xin chuyển hả?
+     35.5 SPEAKER_00: Vâng, cô bạn.
+     37.0 SPEAKER_01: Thưa ông, từ góc độ lập pháp và thực tiễn, vì sao việc nâng cao ý thức tự xác, chấp hành pháp luật cũng như là
+     50.1 SPEAKER_03: Ừ thì theo tôi cái công việc quan trọng nhất mà của dự án ngược cái mầm cho như bạn hỏi trong
+     57.0 SPEAKER_03: gián vừa rồi và mọi người rất quan tâm đấy là vi phạm định xử lý nghiêm mọi người đều bình đẳng
+     63.4 SPEAKER_03: các pháp luật và quyết định trở phạt phải được thứ khi đến cùng thì tôi muốn nhấn mạnh những
+     68.4 SPEAKER_03: 4 vấn đề thì thứ nhất là mức phạt của điều chức gần đe thì trong dự án ngược thì cũng đã có nâng
+     73.0 SPEAKER_03: mức phạt lên và các bạn thấy là có cái mức phạt để nâng đến 4 lần như là mức phạt trong những vực

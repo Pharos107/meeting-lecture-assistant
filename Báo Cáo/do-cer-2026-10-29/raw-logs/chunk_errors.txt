@@ -1,0 +1,10 @@
+large-v3-turbo   phapluat ≤1 s: 169 từ, lỗi 7.1%  1–3 s: 362 từ, lỗi 8.6%  >3 s: 1391 từ, lỗi 7.3%
+large-v3-turbo   coso2    ≤1 s: 178 từ, lỗi 15.7%  1–3 s: 313 từ, lỗi 8.9%  >3 s: 1413 từ, lỗi 12.3%
+      mất (59.1, 86.2, 112, 'trong chunk', 'hai nghìn không trăm hai mươi sáu giảm tải cho các bệnh')
+      mất (98.6, 110.0, 25, 'trong chunk', 'những cái trường hợp cấp cứu mà đi lại gần thì nó')
+      mất (144.4, 153.7, 38, 'trong chunk', 'đi ra ngoài hà nội bọn em cũng phải đi từ năm')
+large-v3-turbo   thegioi  ≤1 s: 394 từ, lỗi 5.3%  1–3 s: 914 từ, lỗi 3.3%  >3 s: 3374 từ, lỗi 3.6%
+phowhisper-large phapluat ≤1 s: 168 từ, lỗi 7.1%  1–3 s: 365 từ, lỗi 7.9%  >3 s: 1389 từ, lỗi 7.8%
+phowhisper-large coso2    ≤1 s: 167 từ, lỗi 2.4%  1–3 s: 311 từ, lỗi 0.6%  >3 s: 1426 từ, lỗi 2.9%
+phowhisper-large thegioi  ≤1 s: 403 từ, lỗi 15.9%  1–3 s: 906 từ, lỗi 4.9%  >3 s: 3373 từ, lỗi 6.3%
+      mất (643.7, 645.5, 19, 'trong chunk', 'rõ rệt năm hai nghìn không trăm hai mươi lăm tổng số')

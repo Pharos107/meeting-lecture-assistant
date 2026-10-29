@@ -1,0 +1,35 @@
+upload 201 0.2 s
+job dfb75c74-e86e-4a36-820f-381dbcdff958
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   17.9s] ('transcribing', None, None)
+[  272.8s] ('diarizing', None, None)
+[  327.8s] ('ready', None, None)
+elapsed 327.8 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1245504, "diarization_device": "cuda"}
+pass 2 segments 91 speakers ['SPEAKER_03', 'SPEAKER_09', 'SPEAKER_10', 'SPEAKER_01', 'SPEAKER_08', 'SPEAKER_02', 'SPEAKER_05', 'SPEAKER_04', 'SPEAKER_11', 'SPEAKER_00', 'SPEAKER_07']
+  SPEAKER_03: 293s
+  SPEAKER_10: 212s
+  SPEAKER_05: 172s
+  SPEAKER_09: 151s
+  SPEAKER_08: 122s
+  SPEAKER_11: 71s
+  SPEAKER_04: 31s
+  SPEAKER_00: 25s
+  SPEAKER_02: 21s
+  SPEAKER_07: 21s
+  None: 3s
+  SPEAKER_01: 1s
+words 5330 segments with >1 word speaker 49
+      4.4 SPEAKER_03: chính phủ trung quốc cam kết tăng hỗ trợ các gia đình xây dựng xã hội thân thiện với sinh đẻ nhằm ứng phó thu 
+     11.1 SPEAKER_03: những bức ảnh chụp trên trang trọng thế hệ của tô hoài.
+     21.0 SPEAKER_09: xâm lược tại trung đông đang làm thay đổi bản đồ cung ứng khí tự nhiên hóa lỏng lng trên toàn cầu.
+     28.5 SPEAKER_10: trung quốc tăng tốc khai thác thị trường kinh tế tầm thấp cơ hội tỷ đô đi cùng thách thức về an toàn và thương
+     36.9 SPEAKER_03: cuộc bỏ phiếu trong vòng hai cuộc bầu cử tổng thống bờ ra xin đã kết thúc cách đây hơn một giờ đồng hồ thời gi
+     63.0 SPEAKER_03: sáu mươi triệu cử tri brazil đủ điều kiện tham gia bỏ phiếu để lựa chọn
+     66.3 SPEAKER_03: người lãnh đạo nền kinh tế lớn nhất mỹ latinh trong định cử tới tổng thống nua đại diện đảng lao động chủ trươ
+     87.8 SPEAKER_01: nguyễn thiện kiêu và nguyễn thiện trang.
+     91.5 SPEAKER_03: ngoại trưởng i ran áp bát a rắc chi ngày hôm qua tuyên bố tê hê ran sẽ không thay đổi chính sách ngay cả khi m
+    113.7 SPEAKER_03: hạn chế gây phân hóa bệnh tâm thần và tâm hồn trong cơ thể trẻ nhỏ có thể dẫn đến đau đớn thận tâm thần và tâm
+    114.1 SPEAKER_03: ông cũng cho rằng xung đột đã tạo ra những thay đổi căn bản trong khu vực do các bên phải chấp nhận thực tế mớ
+    132.2 SPEAKER_03: các tác giả và truyền thông tin cao cấp thông báo vấn đề tiêu cực triều tiên sẽ trở thành báo cáo thông báo th

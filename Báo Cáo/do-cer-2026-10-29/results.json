@@ -1,0 +1,4223 @@
+{
+ "large-v3-turbo": {
+  "phapluat": {
+   "ref_words": 1922,
+   "ref_speakers": 6,
+   "raw": {
+    "hyp_words": 1887,
+    "wer": 0.08324661810613944,
+    "sub": 57,
+    "del": 69,
+    "ins": 34,
+    "cer": 0.06385307711019217,
+    "wer_nofill": 0.07162383816293057,
+    "cer_nofill": 0.05350108018807981,
+    "terms": {
+     "term_cer": 0.10552763819095477,
+     "term_exact": 18,
+     "term_total": 30,
+     "per_term": {
+      "Nguyễn Hải Long": [
+       2,
+       2
+      ],
+      "Quốc hội": [
+       4,
+       4
+      ],
+      "xử lý vi phạm hành chính": [
+       1,
+       2
+      ],
+      "phòng cháy chữa cháy": [
+       0,
+       5
+      ],
+      "kỷ cương": [
+       2,
+       4
+      ],
+      "răn đe": [
+       0,
+       2
+      ],
+      "an ninh con người": [
+       2,
+       2
+      ],
+      "chung cư mini": [
+       0,
+       1
+      ],
+      "ngộ độc bánh mì": [
+       1,
+       1
+      ],
+      "ngân sách Nhà nước": [
+       0,
+       1
+      ],
+      "chất độc da cam": [
+       1,
+       1
+      ],
+      "an toàn bức xạ": [
+       1,
+       1
+      ],
+      "hạt nhân": [
+       1,
+       1
+      ],
+      "nước ngầm": [
+       1,
+       1
+      ],
+      "phóng xạ": [
+       1,
+       1
+      ],
+      "niêm phong": [
+       1,
+       1
+      ]
+     }
+    }
+   },
+   "filtered": {
+    "hyp_words": 1872,
+    "wer": 0.07544224765868887,
+    "sub": 57,
+    "del": 69,
+    "ins": 19,
+    "cer": 0.05521770858671856,
+    "wer_nofill": 0.0634226353198469,
+    "cer_nofill": 0.04447833269792858,
+    "terms": {
+     "term_cer": 0.10552763819095477,
+     "term_exact": 18,
+     "term_total": 30,
+     "per_term": {
+      "Nguyễn Hải Long": [
+       2,
+       2
+      ],
+      "Quốc hội": [
+       4,
+       4
+      ],
+      "xử lý vi phạm hành chính": [
+       1,
+       2
+      ],
+      "phòng cháy chữa cháy": [
+       0,
+       5
+      ],
+      "kỷ cương": [
+       2,
+       4
+      ],
+      "răn đe": [
+       0,
+       2
+      ],
+      "an ninh con người": [
+       2,
+       2
+      ],
+      "chung cư mini": [
+       0,
+       1
+      ],
+      "ngộ độc bánh mì": [
+       1,
+       1
+      ],
+      "ngân sách Nhà nước": [
+       0,
+       1
+      ],
+      "chất độc da cam": [
+       1,
+       1
+      ],
+      "an toàn bức xạ": [
+       1,
+       1
+      ],
+      "hạt nhân": [
+       1,
+       1
+      ],
+      "nước ngầm": [
+       1,
+       1
+      ],
+      "phóng xạ": [
+       1,
+       1
+      ],
+      "niêm phong": [
+       1,
+       1
+      ]
+     }
+    }
+   },
+   "flagged_segments": [
+    {
+     "start": 78.512,
+     "dur": 0.82,
+     "text": "Hãy subscribe cho kênh La La School Để không bỏ lỡ những video hấp dẫn"
+    }
+   ],
+   "speakers": {
+    "accuracy": 0.9681597409606044,
+    "purity": 0.9961132704053304,
+    "aligned": 1853,
+    "null_words": 52,
+    "ref_speakers": 6,
+    "hyp_speakers": 6,
+    "mapping": {
+     "MC Nam": "SPEAKER_04",
+     "MC Nữ": "SPEAKER_01",
+     "Người dân 1": "SPEAKER_02",
+     "Người dân 2": "SPEAKER_05",
+     "Người dân 3": "SPEAKER_00",
+     "Ông Nguyễn Hải Long": "SPEAKER_03"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "SPEAKER_01",
+     "SPEAKER_02",
+     "SPEAKER_03",
+     "SPEAKER_04",
+     "SPEAKER_05",
+     "None"
+    ],
+    "rows": [
+     "MC Nam",
+     "MC Nữ",
+     "Người dân 1",
+     "Người dân 2",
+     "Người dân 3",
+     "Ông Nguyễn Hải Long"
+    ],
+    "matrix": [
+     [
+      0,
+      0,
+      0,
+      7,
+      151,
+      0,
+      0
+     ],
+     [
+      0,
+      268,
+      0,
+      0,
+      0,
+      0,
+      7
+     ],
+     [
+      0,
+      0,
+      116,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      65,
+      3
+     ],
+     [
+      93,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      1101,
+      0,
+      0,
+      42
+     ]
+    ]
+   },
+   "repeats": [],
+   "seg_stats": {
+    "median_seg_s": 3.98,
+    "max_seg_s": 14.52,
+    "upper_ratio": 0.0170023109937273,
+    "punct_per_100w": 4.457572502685284,
+    "digit_tokens": 19
+   },
+   "top_subs": [
+    [
+     "kỷ",
+     "kỳ",
+     2
+    ],
+    [
+     "răn",
+     "gian",
+     2
+    ],
+    [
+     "hậu",
+     "hồ",
+     2
+    ],
+    [
+     "dỡ",
+     "rỡ",
+     2
+    ],
+    [
+     "cái",
+     "cả",
+     2
+    ],
+    [
+     "hậu",
+     "hiệu",
+     1
+    ],
+    [
+     "cho",
+     "trong",
+     1
+    ],
+    [
+     "thời",
+     "dự",
+     1
+    ],
+    [
+     "gian",
+     "án",
+     1
+    ],
+    [
+     "đến",
+     "những",
+     1
+    ],
+    [
+     "lên",
+     "đến",
+     1
+    ],
+    [
+     "chữa",
+     "chứ",
+     1
+    ],
+    [
+     "cúp",
+     "cấp",
+     1
+    ],
+    [
+     "là",
+     "đã",
+     1
+    ],
+    [
+     "tư",
+     "bốn",
+     1
+    ],
+    [
+     "siết",
+     "xếp",
+     1
+    ],
+    [
+     "trong",
+     "cho",
+     1
+    ],
+    [
+     "tế",
+     "thế",
+     1
+    ],
+    [
+     "chung",
+     "trung",
+     1
+    ],
+    [
+     "lợi",
+     "dợ",
+     1
+    ],
+    [
+     "ích",
+     "ít",
+     1
+    ],
+    [
+     "dứt",
+     "tứt",
+     1
+    ],
+    [
+     "xảy",
+     "chảy",
+     1
+    ],
+    [
+     "về",
+     "với",
+     1
+    ],
+    [
+     "hiện",
+     "hôm",
+     1
+    ],
+    [
+     "tính",
+     "thứ",
+     1
+    ],
+    [
+     "chất",
+     "nhất",
+     1
+    ],
+    [
+     "xử",
+     "sử",
+     1
+    ],
+    [
+     "phạt",
+     "phản",
+     1
+    ],
+    [
+     "vận",
+     "còn",
+     1
+    ]
+   ],
+   "top_dels": [
+    [
+     "ấy",
+     7
+    ],
+    [
+     "cái",
+     7
+    ],
+    [
+     "là",
+     7
+    ],
+    [
+     "thì",
+     4
+    ],
+    [
+     "vâng",
+     3
+    ],
+    [
+     "mà",
+     3
+    ],
+    [
+     "cũng",
+     3
+    ],
+    [
+     "thực",
+     3
+    ],
+    [
+     "ạ",
+     3
+    ],
+    [
+     "phải",
+     3
+    ],
+    [
+     "ra",
+     3
+    ],
+    [
+     "các",
+     2
+    ],
+    [
+     "ngày",
+     1
+    ],
+    [
+     "lên",
+     1
+    ],
+    [
+     "người",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "95bab45f-bc17-4b87-8f02-6a1409cd2c9e",
+    "elapsed": 70.8,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 9.1,
+     "diarizing": 35.9,
+     "ready": 70.8
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 473760,
+    "diarization_device": "cuda"
+   },
+   "segments": 95
+  },
+  "coso2": {
+   "ref_words": 1904,
+   "ref_speakers": 10,
+   "raw": {
+    "hyp_words": 1722,
+    "wer": 0.12027310924369748,
+    "sub": 47,
+    "del": 182,
+    "ins": 0,
+    "cer": 0.10323984526112186,
+    "wer_nofill": 0.11361200428724544,
+    "cer_nofill": 0.0970204383156858,
+    "terms": {
+     "term_cer": 0.11730769230769231,
+     "term_exact": 36,
+     "term_total": 44,
+     "per_term": {
+      "Nguyễn Văn Thắng": [
+       1,
+       1
+      ],
+      "EVN": [
+       2,
+       2
+      ],
+      "Bộ Công Thương": [
+       3,
+       3
+      ],
+      "Bộ Tài chính": [
+       1,
+       1
+      ],
+      "Bộ Tư pháp": [
+       1,
+       1
+      ],
+      "thuế tiêu thụ đặc biệt": [
+       0,
+       1
+      ],
+      "giá bán lẻ điện": [
+       2,
+       2
+      ],
+      "Bệnh viện Nhi Trung ương": [
+       0,
+       1
+      ],
+      "Bạch Mai": [
+       2,
+       4
+      ],
+      "Phụ sản Trung ương": [
+       1,
+       2
+      ],
+      "Ninh Bình": [
+       3,
+       3
+      ],
+      "nhồi máu cơ tim": [
+       0,
+       2
+      ],
+      "mạch vành": [
+       0,
+       1
+      ],
+      "bảo hiểm y tế": [
+       1,
+       1
+      ],
+      "Tổ chức Y tế Thế giới": [
+       1,
+       1
+      ],
+      "tế bào gốc tạo máu": [
+       2,
+       2
+      ],
+      "ghép gan": [
+       1,
+       1
+      ],
+      "ghép thận": [
+       1,
+       1
+      ],
+      "mô tạng": [
+       1,
+       1
+      ],
+      "Bộ Giáo dục và Đào tạo": [
+       2,
+       2
+      ],
+      "Ngữ văn": [
+       3,
+       3
+      ],
+      "dân tộc nội trú": [
+       1,
+       1
+      ],
+      "Núi Một": [
+       3,
+       3
+      ],
+      "Quy Nhơn": [
+       2,
+       2
+      ],
+      "Gia Lai": [
+       1,
+       1
+      ],
+      "sạt lở": [
+       1,
+       1
+      ]
+     }
+    }
+   },
+   "filtered": {
+    "hyp_words": 1707,
+    "wer": 0.1207983193277311,
+    "sub": 33,
+    "del": 197,
+    "ins": 0,
+    "cer": 0.10892166344294003,
+    "wer_nofill": 0.11414790996784566,
+    "cer_nofill": 0.10280719034720512,
+    "terms": {
+     "term_cer": 0.11730769230769231,
+     "term_exact": 36,
+     "term_total": 44,
+     "per_term": {
+      "Nguyễn Văn Thắng": [
+       1,
+       1
+      ],
+      "EVN": [
+       2,
+       2
+      ],
+      "Bộ Công Thương": [
+       3,
+       3
+      ],
+      "Bộ Tài chính": [
+       1,
+       1
+      ],
+      "Bộ Tư pháp": [
+       1,
+       1
+      ],
+      "thuế tiêu thụ đặc biệt": [
+       0,
+       1
+      ],
+      "giá bán lẻ điện": [
+       2,
+       2
+      ],
+      "Bệnh viện Nhi Trung ương": [
+       0,
+       1
+      ],
+      "Bạch Mai": [
+       2,
+       4
+      ],
+      "Phụ sản Trung ương": [
+       1,
+       2
+      ],
+      "Ninh Bình": [
+       3,
+       3
+      ],
+      "nhồi máu cơ tim": [
+       0,
+       2
+      ],
+      "mạch vành": [
+       0,
+       1
+      ],
+      "bảo hiểm y tế": [
+       1,
+       1
+      ],
+      "Tổ chức Y tế Thế giới": [
+       1,
+       1
+      ],
+      "tế bào gốc tạo máu": [
+       2,
+       2
+      ],
+      "ghép gan": [
+       1,
+       1
+      ],
+      "ghép thận": [
+       1,
+       1
+      ],
+      "mô tạng": [
+       1,
+       1
+      ],
+      "Bộ Giáo dục và Đào tạo": [
+       2,
+       2
+      ],
+      "Ngữ văn": [
+       3,
+       3
+      ],
+      "dân tộc nội trú": [
+       1,
+       1
+      ],
+      "Núi Một": [
+       3,
+       3
+      ],
+      "Quy Nhơn": [
+       2,
+       2
+      ],
+      "Gia Lai": [
+       1,
+       1
+      ],
+      "sạt lở": [
+       1,
+       1
+      ]
+     }
+    }
+   },
+   "flagged_segments": [
+    {
+     "start": 61.028,
+     "dur": 1.8,
+     "text": "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn"
+    }
+   ],
+   "speakers": {
+    "accuracy": 0.8236672524897481,
+    "purity": 1.0,
+    "aligned": 1707,
+    "null_words": 51,
+    "ref_speakers": 8,
+    "hyp_speakers": 9,
+    "mapping": {
+     "BTV Nam": "SPEAKER_01",
+     "BTV Nữ 1": "SPEAKER_04",
+     "BTV Nữ 2": "SPEAKER_02",
+     "Bác sĩ Tim mạch": "SPEAKER_07",
+     "Chuyên gia Giáo dục": "SPEAKER_08",
+     "Đại diện Bệnh viện Bạch Mai": "SPEAKER_09",
+     "Đại diện Bộ Y tế": "SPEAKER_00",
+     "Đại diện cơ sở khám chữa bệnh": "SPEAKER_06"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "SPEAKER_01",
+     "SPEAKER_02",
+     "SPEAKER_03",
+     "SPEAKER_04",
+     "SPEAKER_06",
+     "SPEAKER_07",
+     "SPEAKER_08",
+     "SPEAKER_09",
+     "None"
+    ],
+    "rows": [
+     "BTV Nam",
+     "BTV Nữ 1",
+     "BTV Nữ 2",
+     "Bác sĩ Tim mạch",
+     "Chuyên gia Giáo dục",
+     "Đại diện Bệnh viện Bạch Mai",
+     "Đại diện Bộ Y tế",
+     "Đại diện cơ sở khám chữa bệnh"
+    ],
+    "matrix": [
+     [
+      0,
+      312,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      15
+     ],
+     [
+      0,
+      0,
+      0,
+      250,
+      256,
+      0,
+      0,
+      0,
+      0,
+      6
+     ],
+     [
+      0,
+      0,
+      384,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      83,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      147,
+      0,
+      14
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      68,
+      4
+     ],
+     [
+      108,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      48,
+      0,
+      0,
+      0,
+      6
+     ]
+    ]
+   },
+   "repeats": [],
+   "seg_stats": {
+    "median_seg_s": 5.72,
+    "max_seg_s": 13.16,
+    "upper_ratio": 0.02491036044536705,
+    "punct_per_100w": 7.519708914493632,
+    "digit_tokens": 59
+   },
+   "top_subs": [
+    [
+     "rà",
+     "ra",
+     3
+    ],
+    [
+     "nhồi",
+     "nhỏ",
+     2
+    ],
+    [
+     "vân",
+     "v",
+     2
+    ],
+    [
+     "san",
+     "săn",
+     2
+    ],
+    [
+     "suất",
+     "xuất",
+     1
+    ],
+    [
+     "thụ",
+     "tụ",
+     1
+    ],
+    [
+     "tiếng",
+     "tuyến",
+     1
+    ],
+    [
+     "thiếu",
+     "chiều",
+     1
+    ],
+    [
+     "trầm",
+     "chậm",
+     1
+    ],
+    [
+     "mạch",
+     "bành",
+     1
+    ],
+    [
+     "vành",
+     "bành",
+     1
+    ],
+    [
+     "bạch",
+     "bệnh",
+     1
+    ],
+    [
+     "trú",
+     "chú",
+     1
+    ],
+    [
+     "ùn",
+     "ủn",
+     1
+    ],
+    [
+     "giường",
+     "dường",
+     1
+    ],
+    [
+     "xác",
+     "sát",
+     1
+    ],
+    [
+     "nhấn",
+     "nhân",
+     1
+    ],
+    [
+     "xác",
+     "sắc",
+     1
+    ],
+    [
+     "tư",
+     "bốn",
+     1
+    ],
+    [
+     "nên",
+     "trên",
+     1
+    ],
+    [
+     "trung",
+     "dung",
+     1
+    ],
+    [
+     "sở",
+     "sợ",
+     1
+    ],
+    [
+     "trường",
+     "trưởng",
+     1
+    ],
+    [
+     "m",
+     "mét",
+     1
+    ],
+    [
+     "phường",
+     "phương",
+     1
+    ],
+    [
+     "dời",
+     "rời",
+     1
+    ],
+    [
+     "độ",
+     "đội",
+     1
+    ],
+    [
+     "đô",
+     "đồ",
+     1
+    ]
+   ],
+   "top_dels": [
+    [
+     "cái",
+     13
+    ],
+    [
+     "bệnh",
+     7
+    ],
+    [
+     "đi",
+     5
+    ],
+    [
+     "cho",
+     4
+    ],
+    [
+     "các",
+     4
+    ],
+    [
+     "viện",
+     4
+    ],
+    [
+     "trung",
+     4
+    ],
+    [
+     "năm",
+     3
+    ],
+    [
+     "hai",
+     3
+    ],
+    [
+     "ương",
+     3
+    ],
+    [
+     "đến",
+     3
+    ],
+    [
+     "gần",
+     3
+    ],
+    [
+     "là",
+     3
+    ],
+    [
+     "cơ",
+     3
+    ],
+    [
+     "khám",
+     3
+    ]
+   ],
+   "run": {
+    "job_id": "bf03529e-c881-47e1-b3f9-5a10893becf0",
+    "elapsed": 55.8,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 8.8,
+     "diarizing": 29.9,
+     "ready": 55.8
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 509136,
+    "diarization_device": "cuda"
+   },
+   "segments": 69
+  },
+  "thegioi": {
+   "ref_words": 4682,
+   "ref_speakers": 12,
+   "raw": {
+    "hyp_words": 4673,
+    "wer": 0.03673643741990602,
+    "sub": 141,
+    "del": 20,
+    "ins": 11,
+    "cer": 0.018739918398330013,
+    "wer_nofill": 0.03537735849056604,
+    "cer_nofill": 0.017472030468935966,
+    "terms": {
+     "term_cer": 0.08323563892145369,
+     "term_exact": 91,
+     "term_total": 115,
+     "per_term": {
+      "Brazil": [
+       2,
+       2
+      ],
+      "Lula": [
+       2,
+       2
+      ],
+      "Bolsonaro": [
+       2,
+       2
+      ],
+      "São Paulo": [
+       0,
+       2
+      ],
+      "Santa Catarina": [
+       1,
+       1
+      ],
+      "Mỹ Latinh": [
+       0,
+       1
+      ],
+      "Araghchi": [
+       0,
+       1
+      ],
+      "Tehran": [
+       2,
+       2
+      ],
+      "Hormuz": [
+       3,
+       4
+      ],
+      "Donald Trump": [
+       1,
+       1
+      ],
+      "Pakistan": [
+       1,
+       1
+      ],
+      "Hamas": [
+       2,
+       2
+      ],
+      "Palestine": [
+       1,
+       1
+      ],
+      "Qatar": [
+       8,
+       9
+      ],
+      "Cheniere": [
+       0,
+       3
+      ],
+      "Louisiana": [
+       1,
+       1
+      ],
+      "Texas": [
+       1,
+       1
+      ],
+      "Ras Laffan": [
+       0,
+       1
+      ],
+      "LNG": [
+       13,
+       14
+      ],
+      "Venezuela": [
+       2,
+       2
+      ],
+      "Caracas": [
+       1,
+       1
+      ],
+      "Babet": [
+       0,
+       2
+      ],
+      "Scotland": [
+       3,
+       3
+      ],
+      "Amazon Web Services": [
+       0,
+       2
+      ],
+      "ASEAN": [
+       3,
+       3
+      ],
+      "Indonesia": [
+       2,
+       2
+      ],
+      "Malaysia": [
+       2,
+       2
+      ],
+      "Singapore": [
+       2,
+       2
+      ],
+      "Sydney": [
+       4,
+       4
+      ],
+      "Jetstar": [
+       1,
+       1
+      ],
+      "Gold Coast": [
+       0,
+       1
+      ],
+      "Phúc Kiến": [
+       1,
+       1
+      ],
+      "Tỷ Quy": [
+       0,
+       2
+      ],
+      "Hồ Bắc": [
+       1,
+       1
+      ],
+      "Quảng Tây": [
+       1,
+       1
+      ],
+      "Thâm Quyến": [
+       1,
+       1
+      ],
+      "Thượng Hải": [
+       1,
+       1
+      ],
+      "Bogotá": [
+       0,
+       1
+      ],
+      "Colombia": [
+       1,
+       1
+      ],
+      "Gwangju": [
+       0,
+       2
+      ],
+      "Washi": [
+       8,
+       8
+      ],
+      "Toyama": [
+       1,
+       1
+      ],
+      "Yatsuo": [
+       0,
+       3
+      ],
+      "Muromachi": [
+       1,
+       1
+      ],
+      "Meiji": [
+       1,
+       1
+      ],
+      "kinh tế tầm thấp": [
+       5,
+       5
+      ],
+      "khí tự nhiên hóa lỏng": [
+       4,
+       4
+      ],
+      "drone": [
+       5,
+       5
+      ]
+     }
+    }
+   },
+   "filtered": {
+    "hyp_words": 4673,
+    "wer": 0.03673643741990602,
+    "sub": 141,
+    "del": 20,
+    "ins": 11,
+    "cer": 0.018739918398330013,
+    "wer_nofill": 0.03537735849056604,
+    "cer_nofill": 0.017472030468935966,
+    "terms": {
+     "term_cer": 0.08323563892145369,
+     "term_exact": 91,
+     "term_total": 115,
+     "per_term": {
+      "Brazil": [
+       2,
+       2
+      ],
+      "Lula": [
+       2,
+       2
+      ],
+      "Bolsonaro": [
+       2,
+       2
+      ],
+      "São Paulo": [
+       0,
+       2
+      ],
+      "Santa Catarina": [
+       1,
+       1
+      ],
+      "Mỹ Latinh": [
+       0,
+       1
+      ],
+      "Araghchi": [
+       0,
+       1
+      ],
+      "Tehran": [
+       2,
+       2
+      ],
+      "Hormuz": [
+       3,
+       4
+      ],
+      "Donald Trump": [
+       1,
+       1
+      ],
+      "Pakistan": [
+       1,
+       1
+      ],
+      "Hamas": [
+       2,
+       2
+      ],
+      "Palestine": [
+       1,
+       1
+      ],
+      "Qatar": [
+       8,
+       9
+      ],
+      "Cheniere": [
+       0,
+       3
+      ],
+      "Louisiana": [
+       1,
+       1
+      ],
+      "Texas": [
+       1,
+       1
+      ],
+      "Ras Laffan": [
+       0,
+       1
+      ],
+      "LNG": [
+       13,
+       14
+      ],
+      "Venezuela": [
+       2,
+       2
+      ],
+      "Caracas": [
+       1,
+       1
+      ],
+      "Babet": [
+       0,
+       2
+      ],
+      "Scotland": [
+       3,
+       3
+      ],
+      "Amazon Web Services": [
+       0,
+       2
+      ],
+      "ASEAN": [
+       3,
+       3
+      ],
+      "Indonesia": [
+       2,
+       2
+      ],
+      "Malaysia": [
+       2,
+       2
+      ],
+      "Singapore": [
+       2,
+       2
+      ],
+      "Sydney": [
+       4,
+       4
+      ],
+      "Jetstar": [
+       1,
+       1
+      ],
+      "Gold Coast": [
+       0,
+       1
+      ],
+      "Phúc Kiến": [
+       1,
+       1
+      ],
+      "Tỷ Quy": [
+       0,
+       2
+      ],
+      "Hồ Bắc": [
+       1,
+       1
+      ],
+      "Quảng Tây": [
+       1,
+       1
+      ],
+      "Thâm Quyến": [
+       1,
+       1
+      ],
+      "Thượng Hải": [
+       1,
+       1
+      ],
+      "Bogotá": [
+       0,
+       1
+      ],
+      "Colombia": [
+       1,
+       1
+      ],
+      "Gwangju": [
+       0,
+       2
+      ],
+      "Washi": [
+       8,
+       8
+      ],
+      "Toyama": [
+       1,
+       1
+      ],
+      "Yatsuo": [
+       0,
+       3
+      ],
+      "Muromachi": [
+       1,
+       1
+      ],
+      "Meiji": [
+       1,
+       1
+      ],
+      "kinh tế tầm thấp": [
+       5,
+       5
+      ],
+      "khí tự nhiên hóa lỏng": [
+       4,
+       4
+      ],
+      "drone": [
+       5,
+       5
+      ]
+     }
+    }
+   },
+   "flagged_segments": [],
+   "speakers": {
+    "accuracy": 0.79000429000429,
+    "purity": 0.9639600521059488,
+    "aligned": 4662,
+    "null_words": 56,
+    "ref_speakers": 12,
+    "hyp_speakers": 12,
+    "mapping": {
+     "BTV Nam 1": "SPEAKER_03",
+     "BTV Nữ 1": "SPEAKER_10",
+     "Chuyên gia Năng lượng Mỹ (Lồng tiếng nam)": "SPEAKER_09",
+     "Nghệ nhân Làm giấy Washi (Lồng tiếng nam)": "SPEAKER_00",
+     "Nông dân vận hành Drone (Lồng tiếng nam)": "SPEAKER_01",
+     "Nữ Nghệ nhân Nhuộm giấy (Lồng tiếng nữ)": "SPEAKER_07",
+     "Phóng viên Nam Thường trú": "SPEAKER_11",
+     "Phóng viên Nữ 1": "SPEAKER_08",
+     "Phóng viên Nữ 2": "SPEAKER_05",
+     "Đại diện Doanh nghiệp Taxi bay (Lồng tiếng nam)": "SPEAKER_06",
+     "Đại diện Huyện Tỷ Quy (Lồng tiếng nam)": "SPEAKER_04",
+     "Đại diện Mua hàng LNG Quốc tế (Lồng tiếng nam)": "SPEAKER_02"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "SPEAKER_01",
+     "SPEAKER_02",
+     "SPEAKER_03",
+     "SPEAKER_04",
+     "SPEAKER_05",
+     "SPEAKER_06",
+     "SPEAKER_07",
+     "SPEAKER_08",
+     "SPEAKER_09",
+     "SPEAKER_10",
+     "SPEAKER_11",
+     "None"
+    ],
+    "rows": [
+     "BTV Nam 1",
+     "BTV Nữ 1",
+     "Chuyên gia Năng lượng Mỹ (Lồng tiếng nam)",
+     "Nghệ nhân Làm giấy Washi (Lồng tiếng nam)",
+     "Nông dân vận hành Drone (Lồng tiếng nam)",
+     "Nữ Nghệ nhân Nhuộm giấy (Lồng tiếng nữ)",
+     "Phóng viên Nam Thường trú",
+     "Phóng viên Nữ 1",
+     "Phóng viên Nữ 2",
+     "Đại diện Doanh nghiệp Taxi bay (Lồng tiếng nam)",
+     "Đại diện Huyện Tỷ Quy (Lồng tiếng nam)",
+     "Đại diện Mua hàng LNG Quốc tế (Lồng tiếng nam)"
+    ],
+    "matrix": [
+     [
+      0,
+      0,
+      0,
+      1135,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      125,
+      0,
+      0,
+      627,
+      884,
+      0,
+      22
+     ],
+     [
+      0,
+      0,
+      37,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      56,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      0,
+      0,
+      37,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      64,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      264,
+      4
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      532,
+      0,
+      0,
+      0,
+      9
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      62,
+      643,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      17
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      33,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      1,
+      0,
+      57,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      47,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "repeats": [],
+   "seg_stats": {
+    "median_seg_s": 4.58,
+    "max_seg_s": 13.92,
+    "upper_ratio": 0.028964194373401534,
+    "punct_per_100w": 7.1569703622392975,
+    "digit_tokens": 76
+   },
+   "top_subs": [
+    [
+     "dài",
+     "giải",
+     4
+    ],
+    [
+     "biên",
+     "bế",
+     3
+    ],
+    [
+     "são",
+     "sao",
+     2
+    ],
+    [
+     "flávio",
+     "flavio",
+     2
+    ],
+    [
+     "cheniere",
+     "shineri",
+     2
+    ],
+    [
+     "dào",
+     "rào",
+     2
+    ],
+    [
+     "chiến",
+     "chế",
+     2
+    ],
+    [
+     "services",
+     "service",
+     2
+    ],
+    [
+     "ràng",
+     "giang",
+     2
+    ],
+    [
+     "tỷ",
+     "tỉ",
+     2
+    ],
+    [
+     "gwangju",
+     "chu",
+     2
+    ],
+    [
+     "suy",
+     "tư",
+     1
+    ],
+    [
+     "da",
+     "de",
+     1
+    ],
+    [
+     "thời",
+     "thực",
+     1
+    ],
+    [
+     "tiết",
+     "tế",
+     1
+    ],
+    [
+     "đi",
+     "định",
+     1
+    ],
+    [
+     "latinh",
+     "latin",
+     1
+    ],
+    [
+     "nhiệm",
+     "địa",
+     1
+    ],
+    [
+     "kỳ",
+     "quy",
+     1
+    ],
+    [
+     "tới",
+     "tế",
+     1
+    ],
+    [
+     "cứng",
+     "cưng",
+     1
+    ],
+    [
+     "chi",
+     "tri",
+     1
+    ],
+    [
+     "điều",
+     "được",
+     1
+    ],
+    [
+     "araghchi",
+     "ngày",
+     1
+    ],
+    [
+     "nối",
+     "đối",
+     1
+    ],
+    [
+     "eo",
+     "của",
+     1
+    ],
+    [
+     "ngỏ",
+     "ngò",
+     1
+    ],
+    [
+     "eo",
+     "quay",
+     1
+    ],
+    [
+     "biển",
+     "bên",
+     1
+    ],
+    [
+     "đầu",
+     "đồng",
+     1
+    ]
+   ],
+   "top_dels": [
+    [
+     "thì",
+     7
+    ],
+    [
+     "là",
+     3
+    ],
+    [
+     "qua",
+     2
+    ],
+    [
+     "và",
+     2
+    ],
+    [
+     "cho",
+     2
+    ],
+    [
+     "mà",
+     2
+    ],
+    [
+     "người",
+     1
+    ],
+    [
+     "triệu",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "dd6f80c9-44f2-497f-af5c-cfd4e51be397",
+    "elapsed": 146.5,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 17.8,
+     "diarizing": 82.7,
+     "ready": 146.5
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 1245504,
+    "diarization_device": "cuda"
+   },
+   "segments": 209
+  }
+ },
+ "phowhisper-large": {
+  "phapluat": {
+   "ref_words": 1922,
+   "ref_speakers": 6,
+   "raw": {
+    "hyp_words": 2348,
+    "wer": 0.29500520291363164,
+    "sub": 37,
+    "del": 52,
+    "ins": 478,
+    "cer": 0.2966431525176356,
+    "wer_nofill": 0.2903225806451613,
+    "cer_nofill": 0.29914855763121107,
+    "terms": {
+     "term_cer": 0.04773869346733668,
+     "term_exact": 25,
+     "term_total": 30,
+     "per_term": {
+      "Nguyễn Hải Long": [
+       2,
+       2
+      ],
+      "Quốc hội": [
+       4,
+       4
+      ],
+      "xử lý vi phạm hành chính": [
+       1,
+       2
+      ],
+      "phòng cháy chữa cháy": [
+       2,
+       5
+      ],
+      "kỷ cương": [
+       4,
+       4
+      ],
+      "răn đe": [
+       2,
+       2
+      ],
+      "an ninh con người": [
+       2,
+       2
+      ],
+      "chung cư mini": [
+       0,
+       1
+      ],
+      "ngộ độc bánh mì": [
+       1,
+       1
+      ],
+      "ngân sách Nhà nước": [
+       1,
+       1
+      ],
+      "chất độc da cam": [
+       1,
+       1
+      ],
+      "an toàn bức xạ": [
+       1,
+       1
+      ],
+      "hạt nhân": [
+       1,
+       1
+      ],
+      "nước ngầm": [
+       1,
+       1
+      ],
+      "phóng xạ": [
+       1,
+       1
+      ],
+      "niêm phong": [
+       1,
+       1
+      ]
+     }
+    }
+   },
+   "filtered": {
+    "hyp_words": 1930,
+    "wer": 0.07752341311134235,
+    "sub": 37,
+    "del": 52,
+    "ins": 60,
+    "cer": 0.05850158112381416,
+    "wer_nofill": 0.06178239475123018,
+    "cer_nofill": 0.04994281357224552,
+    "terms": {
+     "term_cer": 0.04773869346733668,
+     "term_exact": 25,
+     "term_total": 30,
+     "per_term": {
+      "Nguyễn Hải Long": [
+       2,
+       2
+      ],
+      "Quốc hội": [
+       4,
+       4
+      ],
+      "xử lý vi phạm hành chính": [
+       1,
+       2
+      ],
+      "phòng cháy chữa cháy": [
+       2,
+       5
+      ],
+      "kỷ cương": [
+       4,
+       4
+      ],
+      "răn đe": [
+       2,
+       2
+      ],
+      "an ninh con người": [
+       2,
+       2
+      ],
+      "chung cư mini": [
+       0,
+       1
+      ],
+      "ngộ độc bánh mì": [
+       1,
+       1
+      ],
+      "ngân sách Nhà nước": [
+       1,
+       1
+      ],
+      "chất độc da cam": [
+       1,
+       1
+      ],
+      "an toàn bức xạ": [
+       1,
+       1
+      ],
+      "hạt nhân": [
+       1,
+       1
+      ],
+      "nước ngầm": [
+       1,
+       1
+      ],
+      "phóng xạ": [
+       1,
+       1
+      ],
+      "niêm phong": [
+       1,
+       1
+      ]
+     }
+    }
+   },
+   "flagged_segments": [
+    {
+     "start": 22.776,
+     "dur": 0.24,
+     "text": "những bức ảnh chụp từ đầu năm một nghìn chín trăm bảy chín trăm năm một nghìn chín năm bảy chín."
+    },
+    {
+     "start": 48.96,
+     "dur": 0.12,
+     "text": "ngoài ra tôi còn tham gia vào các cuộc thi thể thao khác trong năm nay."
+    },
+    {
+     "start": 166.196,
+     "dur": 0.16,
+     "text": "ngoài tác phẩm nghệ thuật cô còn tham gia các cuộc thi tập thể thao truyền hình trong công nghệ môn thể thao truyền hình trên mạng thể thao việt nam."
+    },
+    {
+     "start": 191.14,
+     "dur": 0.02,
+     "text": "ngoại giao trẻ em ngay từ khi thầy giáo còn tích cực."
+    },
+    {
+     "start": 191.16,
+     "dur": 0.14,
+     "text": "ngoại giao trẻ em ngay từ khi thầy giáo còn tích cực tuyệt vọng ở học trò của gia đình tôi rất vui lòng học trò với gia đình tôi rất vui lòng chăm sóc từ thiên tai của gia đình tôi rất vui lòng chăm sóc từ thiên tai của gia đình tôi."
+    },
+    {
+     "start": 250.032,
+     "dur": 0.32,
+     "text": "ngày thứ hai là một ngày tuyệt vời cho các tác giả và truyền thông việt nam trên toàn thế giới."
+    },
+    {
+     "start": 277.5,
+     "dur": 0.16,
+     "text": "nhiều người còn gặp phải khó khăn trong việc kiểm soát máy tính trực tiếp."
+    },
+    {
+     "start": 300.876,
+     "dur": 0.22,
+     "text": "nhiều bà mẹ trong giai đoạn trình diễn đều không rõ nguyên nhân của vụ tai nạn giao thông ở trong lãnh thổ nhĩ kỳ hai bà con gái bị thương rất nghiêm trọng trong lãnh thổ nhĩ kỳ hai bà con gái bị thương rất nghiêm trọng."
+    },
+    {
+     "start": 334.092,
+     "dur": 0.22,
+     "text": "ngoài tác phẩm truyền thống trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ trung quốc gia tiêu thụ tr"
+    },
+    {
+     "start": 374.68,
+     "dur": 0.24,
+     "text": "một trong những nguyên nhân khiến trẻ trở thành thiên tai là sự thay đổi trong tâm hồn trong tư thế."
+    },
+    {
+     "start": 403.028,
+     "dur": 0.08,
+     "text": "những bức ảnh thể hiện trong một đoạn trích truyện ngắn được thành công bằng một đoạn trích truyện ngắn trực tiếp."
+    },
+    {
+     "start": 459.18,
+     "dur": 0.14,
+     "text": "những bức tranh tích cực tuyệt vời đã tạo nên sự thiêng liêng của tác giả và truyền hình trong tâm trạng truyền thông trung quốc."
+    },
+    {
+     "start": 473.604,
+     "dur": 0.12,
+     "text": "các tác giả và truyền thông trung tiếp tục tìm kiếm những tác giả và truyền thông tiếp tục tìm kiếm những tác giả và truyền thông trung tiếp tục tìm kiếm những tác giả và truyền thông tiếp tục."
+    }
+   ],
+   "speakers": {
+    "accuracy": 0.9609625668449198,
+    "purity": 0.996119733924612,
+    "aligned": 1870,
+    "null_words": 66,
+    "ref_speakers": 6,
+    "hyp_speakers": 6,
+    "mapping": {
+     "MC Nam": "SPEAKER_04",
+     "MC Nữ": "SPEAKER_01",
+     "Người dân 1": "SPEAKER_02",
+     "Người dân 2": "SPEAKER_05",
+     "Người dân 3": "SPEAKER_00",
+     "Ông Nguyễn Hải Long": "SPEAKER_03"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "SPEAKER_01",
+     "SPEAKER_02",
+     "SPEAKER_03",
+     "SPEAKER_04",
+     "SPEAKER_05",
+     "None"
+    ],
+    "rows": [
+     "MC Nam",
+     "MC Nữ",
+     "Người dân 1",
+     "Người dân 2",
+     "Người dân 3",
+     "Ông Nguyễn Hải Long"
+    ],
+    "matrix": [
+     [
+      0,
+      0,
+      0,
+      7,
+      155,
+      0,
+      0
+     ],
+     [
+      0,
+      271,
+      0,
+      0,
+      0,
+      0,
+      10
+     ],
+     [
+      0,
+      0,
+      111,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      62,
+      4
+     ],
+     [
+      92,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      1106,
+      0,
+      0,
+      52
+     ]
+    ]
+   },
+   "repeats": [],
+   "seg_stats": {
+    "median_seg_s": 22.9,
+    "max_seg_s": 29.48,
+    "upper_ratio": 0.0,
+    "punct_per_100w": 1.405451448040886,
+    "digit_tokens": 0
+   },
+   "top_subs": [
+    [
+     "ấy",
+     "ý",
+     4
+    ],
+    [
+     "hậu",
+     "hiệu",
+     3
+    ],
+    [
+     "là",
+     "đã",
+     2
+    ],
+    [
+     "cái",
+     "các",
+     2
+    ],
+    [
+     "cho",
+     "trông",
+     1
+    ],
+    [
+     "thời",
+     "dự",
+     1
+    ],
+    [
+     "gian",
+     "án",
+     1
+    ],
+    [
+     "đến",
+     "những",
+     1
+    ],
+    [
+     "lên",
+     "đến",
+     1
+    ],
+    [
+     "ta",
+     "mới",
+     1
+    ],
+    [
+     "dụng",
+     "dùng",
+     1
+    ],
+    [
+     "cúp",
+     "cấp",
+     1
+    ],
+    [
+     "trong",
+     "cho",
+     1
+    ],
+    [
+     "tế",
+     "thế",
+     1
+    ],
+    [
+     "mini",
+     "ni",
+     1
+    ],
+    [
+     "tư",
+     "bốn",
+     1
+    ],
+    [
+     "là",
+     "à",
+     1
+    ],
+    [
+     "nay",
+     "này",
+     1
+    ],
+    [
+     "chất",
+     "nhất",
+     1
+    ],
+    [
+     "là",
+     "và",
+     1
+    ],
+    [
+     "các",
+     "cái",
+     1
+    ],
+    [
+     "tới",
+     "với",
+     1
+    ],
+    [
+     "mới",
+     "không",
+     1
+    ],
+    [
+     "ra",
+     "tế",
+     1
+    ],
+    [
+     "này",
+     "để",
+     1
+    ],
+    [
+     "đặc",
+     "tác",
+     1
+    ],
+    [
+     "là",
+     "ờ",
+     1
+    ],
+    [
+     "hàng",
+     "rằng",
+     1
+    ],
+    [
+     "mà",
+     "và",
+     1
+    ],
+    [
+     "những",
+     "cái",
+     1
+    ]
+   ],
+   "top_dels": [
+    [
+     "cái",
+     8
+    ],
+    [
+     "mươi",
+     4
+    ],
+    [
+     "phải",
+     3
+    ],
+    [
+     "cũng",
+     2
+    ],
+    [
+     "nghìn",
+     2
+    ],
+    [
+     "trăm",
+     2
+    ],
+    [
+     "là",
+     2
+    ],
+    [
+     "của",
+     2
+    ],
+    [
+     "mà",
+     2
+    ],
+    [
+     "về",
+     1
+    ],
+    [
+     "lên",
+     1
+    ],
+    [
+     "người",
+     1
+    ],
+    [
+     "nó",
+     1
+    ],
+    [
+     "sử",
+     1
+    ],
+    [
+     "một",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "69a97768-ebca-4b42-9eff-663bcf07ae54",
+    "elapsed": 159.8,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 10.8,
+     "diarizing": 124.9,
+     "ready": 159.8
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 473760,
+    "diarization_device": "cuda"
+   },
+   "segments": 36
+  },
+  "coso2": {
+   "ref_words": 1904,
+   "ref_speakers": 10,
+   "raw": {
+    "hyp_words": 2316,
+    "wer": 0.24054621848739496,
+    "sub": 22,
+    "del": 12,
+    "ins": 424,
+    "cer": 0.24335106382978725,
+    "wer_nofill": 0.24383708467309753,
+    "cer_nofill": 0.24661413444964295,
+    "terms": {
+     "term_cer": 0.013461538461538462,
+     "term_exact": 41,
+     "term_total": 44,
+     "per_term": {
+      "Nguyễn Văn Thắng": [
+       1,
+       1
+      ],
+      "EVN": [
+       0,
+       2
+      ],
+      "Bộ Công Thương": [
+       3,
+       3
+      ],
+      "Bộ Tài chính": [
+       1,
+       1
+      ],
+      "Bộ Tư pháp": [
+       1,
+       1
+      ],
+      "thuế tiêu thụ đặc biệt": [
+       1,
+       1
+      ],
+      "giá bán lẻ điện": [
+       2,
+       2
+      ],
+      "Bệnh viện Nhi Trung ương": [
+       1,
+       1
+      ],
+      "Bạch Mai": [
+       4,
+       4
+      ],
+      "Phụ sản Trung ương": [
+       2,
+       2
+      ],
+      "Ninh Bình": [
+       3,
+       3
+      ],
+      "nhồi máu cơ tim": [
+       2,
+       2
+      ],
+      "mạch vành": [
+       0,
+       1
+      ],
+      "bảo hiểm y tế": [
+       1,
+       1
+      ],
+      "Tổ chức Y tế Thế giới": [
+       1,
+       1
+      ],
+      "tế bào gốc tạo máu": [
+       2,
+       2
+      ],
+      "ghép gan": [
+       1,
+       1
+      ],
+      "ghép thận": [
+       1,
+       1
+      ],
+      "mô tạng": [
+       1,
+       1
+      ],
+      "Bộ Giáo dục và Đào tạo": [
+       2,
+       2
+      ],
+      "Ngữ văn": [
+       3,
+       3
+      ],
+      "dân tộc nội trú": [
+       1,
+       1
+      ],
+      "Núi Một": [
+       3,
+       3
+      ],
+      "Quy Nhơn": [
+       2,
+       2
+      ],
+      "Gia Lai": [
+       1,
+       1
+      ],
+      "sạt lở": [
+       1,
+       1
+      ]
+     }
+    }
+   },
+   "filtered": {
+    "hyp_words": 1904,
+    "wer": 0.02468487394957983,
+    "sub": 21,
+    "del": 13,
+    "ins": 13,
+    "cer": 0.01764990328820116,
+    "wer_nofill": 0.023579849946409433,
+    "cer_nofill": 0.0168677665599606,
+    "terms": {
+     "term_cer": 0.013461538461538462,
+     "term_exact": 41,
+     "term_total": 44,
+     "per_term": {
+      "Nguyễn Văn Thắng": [
+       1,
+       1
+      ],
+      "EVN": [
+       0,
+       2
+      ],
+      "Bộ Công Thương": [
+       3,
+       3
+      ],
+      "Bộ Tài chính": [
+       1,
+       1
+      ],
+      "Bộ Tư pháp": [
+       1,
+       1
+      ],
+      "thuế tiêu thụ đặc biệt": [
+       1,
+       1
+      ],
+      "giá bán lẻ điện": [
+       2,
+       2
+      ],
+      "Bệnh viện Nhi Trung ương": [
+       1,
+       1
+      ],
+      "Bạch Mai": [
+       4,
+       4
+      ],
+      "Phụ sản Trung ương": [
+       2,
+       2
+      ],
+      "Ninh Bình": [
+       3,
+       3
+      ],
+      "nhồi máu cơ tim": [
+       2,
+       2
+      ],
+      "mạch vành": [
+       0,
+       1
+      ],
+      "bảo hiểm y tế": [
+       1,
+       1
+      ],
+      "Tổ chức Y tế Thế giới": [
+       1,
+       1
+      ],
+      "tế bào gốc tạo máu": [
+       2,
+       2
+      ],
+      "ghép gan": [
+       1,
+       1
+      ],
+      "ghép thận": [
+       1,
+       1
+      ],
+      "mô tạng": [
+       1,
+       1
+      ],
+      "Bộ Giáo dục và Đào tạo": [
+       2,
+       2
+      ],
+      "Ngữ văn": [
+       3,
+       3
+      ],
+      "dân tộc nội trú": [
+       1,
+       1
+      ],
+      "Núi Một": [
+       3,
+       3
+      ],
+      "Quy Nhơn": [
+       2,
+       2
+      ],
+      "Gia Lai": [
+       1,
+       1
+      ],
+      "sạt lở": [
+       1,
+       1
+      ]
+     }
+    }
+   },
+   "flagged_segments": [
+    {
+     "start": 83.608,
+     "dur": 0.24,
+     "text": "đó là lý do tại sao chúng ta lại gặp nhau trong thời gian tới."
+    },
+    {
+     "start": 108.968,
+     "dur": 0.36,
+     "text": "học trò tiếp theo trong tiếng nói việt nam tiếp theo đấu tranh tiếp theo đấu tranh việt nam trên toàn thế giới."
+    },
+    {
+     "start": 162.86,
+     "dur": 0.2,
+     "text": "nhiều bà mẹ truyền thống đề nghị trước khi tiêu thụ thuốc từ trung quốc trở lại."
+    },
+    {
+     "start": 184.744,
+     "dur": 0.06,
+     "text": "những thông tin tiếp theo sẽ được chia sẻ trên các trang mạng thông tin tiếp theo."
+    },
+    {
+     "start": 215.568,
+     "dur": 0.18,
+     "text": "ngoài tình yêu thương gia đình anh còn yêu thương gia đình bạn thân thật sự lãng mạn như trò đùa của cặp nam diễn viên."
+    },
+    {
+     "start": 228.416,
+     "dur": 0.14,
+     "text": "các tác giả và truyền thông trung quốc tế đã đưa ra câu hỏi về tác giả và truyền thông trung quốc tế."
+    },
+    {
+     "start": 253.8,
+     "dur": 0.3,
+     "text": "một số doanh nghiệp đã tiến hành khai thác thuốc tiêu chuẩn trên khu vực địa phương."
+    },
+    {
+     "start": 279.172,
+     "dur": 0.4,
+     "text": "nhiều bà mẹ truyền thống đề nghị cho thai vệ thổ nhĩ kỳ như trong đoạn trích truyện ngắn như trên thế kỷ hai mươi."
+    },
+    {
+     "start": 301.456,
+     "dur": 0.32,
+     "text": "hàng sáu tháng từ năm một nghìn tám trăm năm một nghìn tám bốn năm một nghìn tám bốn tám trăm năm một nghìn tám bốn tám bốn tám."
+    },
+    {
+     "start": 330.892,
+     "dur": 0.26,
+     "text": "những bức ảnh chụp từ đầu năm một nghìn chín trăm bảy nhăm đến nay đã thu hút khán giả hàng tám triệu lượt theo dõi."
+    },
+    {
+     "start": 381.044,
+     "dur": 0.14,
+     "text": "ngày thứ hai trở lại là ngày tuyệt vời cho tác giả và tác phẩm nghệ thuật."
+    },
+    {
+     "start": 400.512,
+     "dur": 0.3,
+     "text": "nhiều bức ảnh trước thị trường thi đấu cũng đã thu hút nhiều ý kiến từ khán giả và khán giả trước."
+    },
+    {
+     "start": 434.456,
+     "dur": 0.22,
+     "text": "đây là một trong những trường hợp quan trọng nhất để thực hiện các hoạt động tiêu thụ trẻ em trong tổng hợp đồng tỷ đồng tiền tỷ đồng trên thế giới."
+    },
+    {
+     "start": 462.924,
+     "dur": 0.26,
+     "text": "ngoài tình trạng ăn kiêng thì khách hàng cũng có thể ăn theo nhiều hướng dẫn từ khu vực ăn kiêng."
+    },
+    {
+     "start": 488.508,
+     "dur": 0.36,
+     "text": "hàng trăm tình nguyện viên trung quốc đã tập trung tìm kiếm cách cứu hộ trong vụ tấn công ở biển đông."
+    },
+    {
+     "start": 508.64,
+     "dur": 0.2,
+     "text": "người tham gia cuộc thi sẽ có thể tham gia trước khi kết thúc phần kỳ lạ của phần kỳ thi hoàn toàn chưa hoàn toàn chín trăm phần kỳ thi chưa hoàn toàn bảy trăm phần kỳ thi chưa hoàn toàn bốn trăm phần kỳ thi chưa hoàn toàn bốn trăm phần kỳ thi chưa hoàn toàn bốn trăm phần kỳ thi chưa hoàn toàn bốn trăm phần kỳ thi chưa hoàn toàn bốn trăm phần kỳ thi chưa."
+    }
+   ],
+   "speakers": {
+    "accuracy": 0.8260179799048123,
+    "purity": 0.9806308799114555,
+    "aligned": 1891,
+    "null_words": 84,
+    "ref_speakers": 10,
+    "hyp_speakers": 10,
+    "mapping": {
+     "BTV Nam": "SPEAKER_01",
+     "BTV Nữ 1": "SPEAKER_04",
+     "BTV Nữ 2": "SPEAKER_02",
+     "Bác sĩ Tim mạch": "SPEAKER_07",
+     "Chuyên gia Giáo dục": "SPEAKER_08",
+     "Người nhà bệnh nhân": "SPEAKER_05",
+     "Nữ bệnh nhân": "SPEAKER_03",
+     "Đại diện Bệnh viện Bạch Mai": "SPEAKER_09",
+     "Đại diện Bộ Y tế": "SPEAKER_00",
+     "Đại diện cơ sở khám chữa bệnh": "SPEAKER_06"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "SPEAKER_01",
+     "SPEAKER_02",
+     "SPEAKER_03",
+     "SPEAKER_04",
+     "SPEAKER_05",
+     "SPEAKER_06",
+     "SPEAKER_07",
+     "SPEAKER_08",
+     "SPEAKER_09",
+     "None"
+    ],
+    "rows": [
+     "BTV Nam",
+     "BTV Nữ 1",
+     "BTV Nữ 2",
+     "Bác sĩ Tim mạch",
+     "Chuyên gia Giáo dục",
+     "Người nhà bệnh nhân",
+     "Nữ bệnh nhân",
+     "Đại diện Bệnh viện Bạch Mai",
+     "Đại diện Bộ Y tế",
+     "Đại diện cơ sở khám chữa bệnh"
+    ],
+    "matrix": [
+     [
+      0,
+      309,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      18
+     ],
+     [
+      0,
+      0,
+      0,
+      245,
+      364,
+      0,
+      0,
+      0,
+      0,
+      0,
+      16
+     ],
+     [
+      0,
+      0,
+      373,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      16
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      88,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      152,
+      0,
+      18
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      20,
+      0,
+      0,
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      0,
+      35,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      68,
+      4
+     ],
+     [
+      107,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      46,
+      0,
+      0,
+      0,
+      8
+     ]
+    ]
+   },
+   "repeats": [],
+   "seg_stats": {
+    "median_seg_s": 24.34,
+    "max_seg_s": 29.24,
+    "upper_ratio": 0.0,
+    "punct_per_100w": 1.5544041450777202,
+    "digit_tokens": 0
+   },
+   "top_subs": [
+    [
+     "evn",
+     "en",
+     2
+    ],
+    [
+     "mạch",
+     "hành",
+     1
+    ],
+    [
+     "vành",
+     "bánh",
+     1
+    ],
+    [
+     "đi",
+     "thì",
+     1
+    ],
+    [
+     "cũng",
+     "cứ",
+     1
+    ],
+    [
+     "không",
+     "giờ",
+     1
+    ],
+    [
+     "ba",
+     "rưỡi",
+     1
+    ],
+    [
+     "mươi",
+     "giờ",
+     1
+    ],
+    [
+     "lại",
+     "để",
+     1
+    ],
+    [
+     "đấy",
+     "để",
+     1
+    ],
+    [
+     "ngoại",
+     "gọi",
+     1
+    ],
+    [
+     "thì",
+     "vì",
+     1
+    ],
+    [
+     "giống",
+     "giúp",
+     1
+    ],
+    [
+     "lăm",
+     "nhăm",
+     1
+    ],
+    [
+     "tổ",
+     "tổng",
+     1
+    ],
+    [
+     "nên",
+     "trên",
+     1
+    ],
+    [
+     "trung",
+     "dung",
+     1
+    ],
+    [
+     "từ",
+     "tới",
+     1
+    ],
+    [
+     "tư",
+     "bốn",
+     1
+    ],
+    [
+     "m",
+     "mét",
+     1
+    ]
+   ],
+   "top_dels": [
+    [
+     "mươi",
+     3
+    ],
+    [
+     "cái",
+     1
+    ],
+    [
+     "ạ",
+     1
+    ],
+    [
+     "đến",
+     1
+    ],
+    [
+     "đi",
+     1
+    ],
+    [
+     "thì",
+     1
+    ],
+    [
+     "một",
+     1
+    ],
+    [
+     "hiện",
+     1
+    ],
+    [
+     "thế",
+     1
+    ],
+    [
+     "là",
+     1
+    ],
+    [
+     "cho",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "077a597a-5363-4445-9f62-3f522cff1655",
+    "elapsed": 149.9,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 8.8,
+     "diarizing": 124.9,
+     "ready": 149.9
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 509136,
+    "diarization_device": "cuda"
+   },
+   "segments": 39
+  },
+  "thegioi": {
+   "ref_words": 4682,
+   "ref_speakers": 12,
+   "raw": {
+    "hyp_words": 5330,
+    "wer": 0.18624519436138404,
+    "sub": 154,
+    "del": 35,
+    "ins": 683,
+    "cer": 0.15727298605180756,
+    "wer_nofill": 0.18524871355060035,
+    "cer_nofill": 0.15658176624613188,
+    "terms": {
+     "term_cer": 0.30128956623681125,
+     "term_exact": 58,
+     "term_total": 115,
+     "per_term": {
+      "Brazil": [
+       1,
+       2
+      ],
+      "Lula": [
+       0,
+       2
+      ],
+      "Bolsonaro": [
+       0,
+       2
+      ],
+      "São Paulo": [
+       0,
+       2
+      ],
+      "Santa Catarina": [
+       0,
+       1
+      ],
+      "Mỹ Latinh": [
+       1,
+       1
+      ],
+      "Araghchi": [
+       0,
+       1
+      ],
+      "Tehran": [
+       0,
+       2
+      ],
+      "Hormuz": [
+       0,
+       4
+      ],
+      "Donald Trump": [
+       0,
+       1
+      ],
+      "Pakistan": [
+       1,
+       1
+      ],
+      "Hamas": [
+       0,
+       2
+      ],
+      "Palestine": [
+       0,
+       1
+      ],
+      "Qatar": [
+       8,
+       9
+      ],
+      "Cheniere": [
+       0,
+       3
+      ],
+      "Louisiana": [
+       0,
+       1
+      ],
+      "Texas": [
+       1,
+       1
+      ],
+      "Ras Laffan": [
+       0,
+       1
+      ],
+      "LNG": [
+       8,
+       14
+      ],
+      "Venezuela": [
+       2,
+       2
+      ],
+      "Caracas": [
+       1,
+       1
+      ],
+      "Babet": [
+       0,
+       2
+      ],
+      "Scotland": [
+       1,
+       3
+      ],
+      "Amazon Web Services": [
+       0,
+       2
+      ],
+      "ASEAN": [
+       3,
+       3
+      ],
+      "Indonesia": [
+       2,
+       2
+      ],
+      "Malaysia": [
+       2,
+       2
+      ],
+      "Singapore": [
+       1,
+       2
+      ],
+      "Sydney": [
+       4,
+       4
+      ],
+      "Jetstar": [
+       1,
+       1
+      ],
+      "Gold Coast": [
+       0,
+       1
+      ],
+      "Phúc Kiến": [
+       1,
+       1
+      ],
+      "Tỷ Quy": [
+       2,
+       2
+      ],
+      "Hồ Bắc": [
+       1,
+       1
+      ],
+      "Quảng Tây": [
+       1,
+       1
+      ],
+      "Thâm Quyến": [
+       1,
+       1
+      ],
+      "Thượng Hải": [
+       1,
+       1
+      ],
+      "Bogotá": [
+       0,
+       1
+      ],
+      "Colombia": [
+       0,
+       1
+      ],
+      "Gwangju": [
+       0,
+       2
+      ],
+      "Washi": [
+       4,
+       8
+      ],
+      "Toyama": [
+       0,
+       1
+      ],
+      "Yatsuo": [
+       0,
+       3
+      ],
+      "Muromachi": [
+       1,
+       1
+      ],
+      "Meiji": [
+       0,
+       1
+      ],
+      "kinh tế tầm thấp": [
+       5,
+       5
+      ],
+      "khí tự nhiên hóa lỏng": [
+       4,
+       4
+      ],
+      "drone": [
+       0,
+       5
+      ]
+     }
+    }
+   },
+   "filtered": {
+    "hyp_words": 4780,
+    "wer": 0.06877402819307989,
+    "sub": 152,
+    "del": 36,
+    "ins": 134,
+    "cer": 0.0375272796280482,
+    "wer_nofill": 0.06839622641509434,
+    "cer_nofill": 0.03737205427279219,
+    "terms": {
+     "term_cer": 0.2989449003516999,
+     "term_exact": 58,
+     "term_total": 115,
+     "per_term": {
+      "Brazil": [
+       1,
+       2
+      ],
+      "Lula": [
+       0,
+       2
+      ],
+      "Bolsonaro": [
+       0,
+       2
+      ],
+      "São Paulo": [
+       0,
+       2
+      ],
+      "Santa Catarina": [
+       0,
+       1
+      ],
+      "Mỹ Latinh": [
+       1,
+       1
+      ],
+      "Araghchi": [
+       0,
+       1
+      ],
+      "Tehran": [
+       0,
+       2
+      ],
+      "Hormuz": [
+       0,
+       4
+      ],
+      "Donald Trump": [
+       0,
+       1
+      ],
+      "Pakistan": [
+       1,
+       1
+      ],
+      "Hamas": [
+       0,
+       2
+      ],
+      "Palestine": [
+       0,
+       1
+      ],
+      "Qatar": [
+       8,
+       9
+      ],
+      "Cheniere": [
+       0,
+       3
+      ],
+      "Louisiana": [
+       0,
+       1
+      ],
+      "Texas": [
+       1,
+       1
+      ],
+      "Ras Laffan": [
+       0,
+       1
+      ],
+      "LNG": [
+       8,
+       14
+      ],
+      "Venezuela": [
+       2,
+       2
+      ],
+      "Caracas": [
+       1,
+       1
+      ],
+      "Babet": [
+       0,
+       2
+      ],
+      "Scotland": [
+       1,
+       3
+      ],
+      "Amazon Web Services": [
+       0,
+       2
+      ],
+      "ASEAN": [
+       3,
+       3
+      ],
+      "Indonesia": [
+       2,
+       2
+      ],
+      "Malaysia": [
+       2,
+       2
+      ],
+      "Singapore": [
+       1,
+       2
+      ],
+      "Sydney": [
+       4,
+       4
+      ],
+      "Jetstar": [
+       1,
+       1
+      ],
+      "Gold Coast": [
+       0,
+       1
+      ],
+      "Phúc Kiến": [
+       1,
+       1
+      ],
+      "Tỷ Quy": [
+       2,
+       2
+      ],
+      "Hồ Bắc": [
+       1,
+       1
+      ],
+      "Quảng Tây": [
+       1,
+       1
+      ],
+      "Thâm Quyến": [
+       1,
+       1
+      ],
+      "Thượng Hải": [
+       1,
+       1
+      ],
+      "Bogotá": [
+       0,
+       1
+      ],
+      "Colombia": [
+       0,
+       1
+      ],
+      "Gwangju": [
+       0,
+       2
+      ],
+      "Washi": [
+       4,
+       8
+      ],
+      "Toyama": [
+       0,
+       1
+      ],
+      "Yatsuo": [
+       0,
+       3
+      ],
+      "Muromachi": [
+       1,
+       1
+      ],
+      "Meiji": [
+       0,
+       1
+      ],
+      "kinh tế tầm thấp": [
+       5,
+       5
+      ],
+      "khí tự nhiên hóa lỏng": [
+       4,
+       4
+      ],
+      "drone": [
+       0,
+       5
+      ]
+     }
+    }
+   },
+   "flagged_segments": [
+    {
+     "start": 11.14,
+     "dur": 0.26,
+     "text": "những bức ảnh chụp trên trang trọng thế hệ của tô hoài."
+    },
+    {
+     "start": 113.66,
+     "dur": 0.3,
+     "text": "hạn chế gây phân hóa bệnh tâm thần và tâm hồn trong cơ thể trẻ nhỏ có thể dẫn đến đau đớn thận tâm thần và tâm hồn trong cơ thể trẻ nhỏ có thể dẫn đến đau đớn thận tâm."
+    },
+    {
+     "start": 132.172,
+     "dur": 0.28,
+     "text": "các tác giả và truyền thông tin cao cấp thông báo vấn đề tiêu cực triều tiên sẽ trở thành báo cáo thông báo thời gian truyền thông tin cao cấp thông báo thời gian truyền thông báo thời gian truyền thông báo thời gian truyền thông báo thời gian truyền thông báo thời gian truyền thông báo thời gian truyền thông báo thời gian truyền thông báo thời gian truyền thông báo thời gian truyền thông báo thời g"
+    },
+    {
+     "start": 161.02,
+     "dur": 0.14,
+     "text": "ngoài tác phẩm truyền thống trung quốc còn có các tác phẩm truyền thống tiếp theo như đấu truyện truyền thống tiếp theo."
+    },
+    {
+     "start": 182.028,
+     "dur": 0.14,
+     "text": "những bức ảnh chụp từ đầu năm một nghìn chín trăm bảy chín trăm năm một nghìn chín hai mươi ba tám bảy chín trăm năm một nghìn chín hai mươi ba tám."
+    },
+    {
+     "start": 182.168,
+     "dur": 0.08,
+     "text": "đây là một trong những trường hợp quan trọng nhất để thực hiện các hoạt động tiêu thụ trẻ em trong thời gian tới."
+    },
+    {
+     "start": 252.92,
+     "dur": 0.3,
+     "text": "ngày thứ hai đến mùa thu mới trở dậy thì mùa thu mới trở dậy thì mùa thu mới trở dậy thì mùa thu mới trở dậy thì mùa thu mới trở dậy."
+    },
+    {
+     "start": 301.456,
+     "dur": 0.22,
+     "text": "các tác giả và truyền thông tin cao cấp thông qua các tác giả và truyền thông tin cao cấp thông qua các tác giả và truyền thông tin cao cấp thông qua các tác giả và truyền thống tin."
+    },
+    {
+     "start": 324.828,
+     "dur": 0.36,
+     "text": "nếu bạn thích thế thì làm thế nào để chúng ta có được những kỷ niệm tình tứ thiêng liêng tâm tưu tới mọi người."
+    },
+    {
+     "start": 369.956,
+     "dur": 0.48,
+     "text": "hàng trăm tình nguyện viên đã bị thương trong vụ tấn công trên địa bàn tỉnh ninh bình."
+    },
+    {
+     "start": 389.62,
+     "dur": 0.18,
+     "text": "hàng trăm tình nguyện viên được hỗ trợ tại hải quân trung quốc trung quốc hải quân trung quốc hải quân trung quốc hải quân."
+    },
+    {
+     "start": 480.156,
+     "dur": 0.44,
+     "text": "ngày thứ hai là một ngày tuyệt vời vì chúng ta có thể tận hưởng những kỷ niệm trong truyện ngắn."
+    },
+    {
+     "start": 604.368,
+     "dur": 0.16,
+     "text": "các tác giả và truyền thông sẽ tiếp tục đăng kí các tác giả và truyền thông để đăng kí các tác giả."
+    },
+    {
+     "start": 612.884,
+     "dur": 0.24,
+     "text": "một số trường hợp xâm phạm tội ác đã bị cáo buộc thiếu thốn trái đất của doanh nghiệp trung quốc."
+    },
+    {
+     "start": 749.804,
+     "dur": 0.46,
+     "text": "nhiều bà mẹ truyền thống thiếu thốn trách nhiệm trước khi thi đấu trong giai đoạn vừa kết thúc."
+    },
+    {
+     "start": 774.48,
+     "dur": 0.06,
+     "text": "các tác giả và truyền thông trung quốc tế từ châu âu đến thế kỷ hai mươi đã triển khai các tác giả và truyền thông trung quốc tế."
+    },
+    {
+     "start": 796.368,
+     "dur": 0.28,
+     "text": "những bức tranh tuyệt vời được thể hiện trên mọi mặt trận đấu tại mỗi đội tuyển."
+    },
+    {
+     "start": 932.204,
+     "dur": 0.28,
+     "text": "những thủ tướng thế giới đã tuyên bố các thông tin trên và đề nghị các thông tin trên đối với mỹ."
+    },
+    {
+     "start": 1050.32,
+     "dur": 0.7,
+     "text": "hàng trăm tình nguyện viên trung ương tới hà tĩnh để đón nhận tiết lộ vấn đề."
+    },
+    {
+     "start": 1081.144,
+     "dur": 0.24,
+     "text": "đây là một trong những trường hợp quan trọng nhất để thực hiện các hoạt động tiêu thụ thu nhập khu vực khu vực trong thị trường."
+    }
+   ],
+   "speakers": {
+    "accuracy": 0.7767972449418855,
+    "purity": 0.9634361233480176,
+    "aligned": 4646,
+    "null_words": 106,
+    "ref_speakers": 12,
+    "hyp_speakers": 12,
+    "mapping": {
+     "BTV Nam 1": "SPEAKER_03",
+     "BTV Nữ 1": "SPEAKER_10",
+     "Chuyên gia Năng lượng Mỹ (Lồng tiếng nam)": "SPEAKER_09",
+     "Nghệ nhân Làm giấy Washi (Lồng tiếng nam)": "SPEAKER_00",
+     "Nông dân vận hành Drone (Lồng tiếng nam)": "SPEAKER_01",
+     "Nữ Nghệ nhân Nhuộm giấy (Lồng tiếng nữ)": "SPEAKER_07",
+     "Phóng viên Nam Thường trú": "SPEAKER_11",
+     "Phóng viên Nữ 1": "SPEAKER_08",
+     "Phóng viên Nữ 2": "SPEAKER_05",
+     "Đại diện Doanh nghiệp Taxi bay (Lồng tiếng nam)": "SPEAKER_06",
+     "Đại diện Huyện Tỷ Quy (Lồng tiếng nam)": "SPEAKER_04",
+     "Đại diện Mua hàng LNG Quốc tế (Lồng tiếng nam)": "SPEAKER_02"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "SPEAKER_01",
+     "SPEAKER_02",
+     "SPEAKER_03",
+     "SPEAKER_04",
+     "SPEAKER_05",
+     "SPEAKER_06",
+     "SPEAKER_07",
+     "SPEAKER_08",
+     "SPEAKER_09",
+     "SPEAKER_10",
+     "SPEAKER_11",
+     "None"
+    ],
+    "rows": [
+     "BTV Nam 1",
+     "BTV Nữ 1",
+     "Chuyên gia Năng lượng Mỹ (Lồng tiếng nam)",
+     "Nghệ nhân Làm giấy Washi (Lồng tiếng nam)",
+     "Nông dân vận hành Drone (Lồng tiếng nam)",
+     "Nữ Nghệ nhân Nhuộm giấy (Lồng tiếng nữ)",
+     "Phóng viên Nam Thường trú",
+     "Phóng viên Nữ 1",
+     "Phóng viên Nữ 2",
+     "Đại diện Doanh nghiệp Taxi bay (Lồng tiếng nam)",
+     "Đại diện Huyện Tỷ Quy (Lồng tiếng nam)",
+     "Đại diện Mua hàng LNG Quốc tế (Lồng tiếng nam)"
+    ],
+    "matrix": [
+     [
+      0,
+      0,
+      0,
+      1112,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      126,
+      0,
+      0,
+      634,
+      879,
+      0,
+      26
+     ],
+     [
+      0,
+      0,
+      37,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      55,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      0,
+      0,
+      36,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      61,
+      0,
+      0,
+      1,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      257,
+      9
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      516,
+      0,
+      0,
+      0,
+      24
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      61,
+      625,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      36
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      33,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      56,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3
+     ],
+     [
+      1,
+      0,
+      47,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "repeats": [],
+   "seg_stats": {
+    "median_seg_s": 18.1,
+    "max_seg_s": 29.98,
+    "upper_ratio": 0.0,
+    "punct_per_100w": 1.3320825515947468,
+    "digit_tokens": 0
+   },
+   "top_subs": [
+    [
+     "drone",
+     "rôn",
+     5
+    ],
+    [
+     "lng",
+     "gi",
+     3
+    ],
+    [
+     "são",
+     "pa",
+     2
+    ],
+    [
+     "paulo",
+     "lô",
+     2
+    ],
+    [
+     "flávio",
+     "na",
+     2
+    ],
+    [
+     "bolsonaro",
+     "rô",
+     2
+    ],
+    [
+     "tehran",
+     "ran",
+     2
+    ],
+    [
+     "israel",
+     "ren",
+     2
+    ],
+    [
+     "eo",
+     "biển",
+     2
+    ],
+    [
+     "biển",
+     "hom",
+     2
+    ],
+    [
+     "iran",
+     "ran",
+     2
+    ],
+    [
+     "hamas",
+     "ma",
+     2
+    ],
+    [
+     "cheniere",
+     "chile",
+     2
+    ],
+    [
+     "lng",
+     "di",
+     2
+    ],
+    [
+     "scotland",
+     "len",
+     2
+    ],
+    [
+     "logistics",
+     "tích",
+     2
+    ],
+    [
+     "gwangju",
+     "tru",
+     2
+    ],
+    [
+     "washi",
+     "si",
+     2
+    ],
+    [
+     "suy",
+     "thu",
+     1
+    ],
+    [
+     "xung",
+     "xâm",
+     1
+    ],
+    [
+     "đột",
+     "lược",
+     1
+    ],
+    [
+     "brazil",
+     "xin",
+     1
+    ],
+    [
+     "lula",
+     "đờ",
+     1
+    ],
+    [
+     "da",
+     "xin",
+     1
+    ],
+    [
+     "silva",
+     "va",
+     1
+    ],
+    [
+     "salvador",
+     "đo",
+     1
+    ],
+    [
+     "thời",
+     "thực",
+     1
+    ],
+    [
+     "tiết",
+     "tế",
+     1
+    ],
+    [
+     "đi",
+     "để",
+     1
+    ],
+    [
+     "santa",
+     "ri",
+     1
+    ]
+   ],
+   "top_dels": [
+    [
+     "mươi",
+     7
+    ],
+    [
+     "hai",
+     3
+    ],
+    [
+     "nghìn",
+     2
+    ],
+    [
+     "không",
+     2
+    ],
+    [
+     "trăm",
+     2
+    ],
+    [
+     "đòi",
+     1
+    ],
+    [
+     "một",
+     1
+    ],
+    [
+     "f",
+     1
+    ],
+    [
+     "trên",
+     1
+    ],
+    [
+     "về",
+     1
+    ],
+    [
+     "rõ",
+     1
+    ],
+    [
+     "rệt",
+     1
+    ],
+    [
+     "năm",
+     1
+    ],
+    [
+     "lăm",
+     1
+    ],
+    [
+     "tổng",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "dfb75c74-e86e-4a36-820f-381dbcdff958",
+    "elapsed": 327.8,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 17.9,
+     "diarizing": 272.8,
+     "ready": 327.8
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 1245504,
+    "diarization_device": "cuda"
+   },
+   "segments": 91
+  }
+ }
+}

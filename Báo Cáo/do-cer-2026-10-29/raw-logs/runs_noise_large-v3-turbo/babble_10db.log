@@ -1,0 +1,29 @@
+upload 201 0.1 s
+job a71b9423-95d1-4028-81cd-c8b175015f2a
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    8.1s] ('transcribing', None, None)
+[   32.2s] ('diarizing', None, None)
+[   55.4s] ('ready', None, None)
+elapsed 55.4 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 473760, "diarization_device": "cuda"}
+pass 2 segments 75 speakers ['SPEAKER_04', 'SPEAKER_01', 'SPEAKER_03', 'SPEAKER_02', 'SPEAKER_05', 'SPEAKER_00']
+  SPEAKER_03: 275s
+  SPEAKER_01: 43s
+  SPEAKER_04: 34s
+  SPEAKER_02: 24s
+  SPEAKER_05: 17s
+  SPEAKER_00: 16s
+words 1729 segments with >1 word speaker 19
+      0.0 SPEAKER_04: Thưa quý vị, tại kỳ họp thứ 2, Quốc hội đang thảo luận nhiều dự án luật quan trọng liên quan đến các lĩnh vực 
+      8.2 SPEAKER_04: Trong đó có dự án luật xử lý vi phạm hành chính sửa đổi, hướng tới nâng cao ý thức chấp hành pháp luật, thiết 
+     14.9 SPEAKER_04: đồng thời bảo vệ an ninh con người trước những hành vi vi phạm có thể gây ra những hiệu quả nghiêm trọng, lâu 
+     23.5 SPEAKER_01: Và để cùng trao đổi vấn đề này thì chương trình hôm nay đã mời tới trường quay ông Nguyễn Hải Long, đại biểu Q
+     37.5 SPEAKER_01: Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn
+     58.5 SPEAKER_03: rất quan tâm là vi phạm bị xử lý nghiêm, mọi người đều bình đẳng trước pháp luật và quyết định xử phạt phải đư
+     67.3 SPEAKER_03: Thì tôi muốn nhấn mạnh những 4 vấn đề. Thứ nhất là mức phạt phải đủ sức gian đe. Trong giá luật thì cũng đã có
+     89.7 SPEAKER_03: Và thứ hai là phát hiện vi phạm kịp thời, thì luật cũng đã sử dụng và cho phép dụng các thiết bị về kỹ thuật đ
+     98.1 SPEAKER_03: Thứ ba là bảo đảm quyết định xử phạm được thực hiện trên thực tế, dụ như là bổ sung thêm những hình thức như l
+    112.6 SPEAKER_03: Và thứ tư là phải xếp chặt lại kể cương của khán bộ công chức làm thi hành nhiệm vụ
+    117.9 SPEAKER_03: Và tôi cho rằng là pháp
+    119.2 SPEAKER_03: luật muốn thực hiện nghiêm minh thì phải nghiêm minh trong xử lý và công bằng cho áp dụng và thuận thiện trong

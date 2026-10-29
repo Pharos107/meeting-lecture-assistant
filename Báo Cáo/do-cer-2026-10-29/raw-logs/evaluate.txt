@@ -1,0 +1,6 @@
+large-v3-turbo   phapluat  raw WER 8.32% CER 6.39% | filtered WER 7.54% CER 5.52% nofill 6.34% termCER 10.55% exact 18/30 spk 96.82% flagged 1 time 70.8s
+large-v3-turbo   coso2     raw WER 12.03% CER 10.32% | filtered WER 12.08% CER 10.89% nofill 11.41% termCER 11.73% exact 36/44 spk 82.37% flagged 1 time 55.8s
+large-v3-turbo   thegioi   raw WER 3.67% CER 1.87% | filtered WER 3.67% CER 1.87% nofill 3.54% termCER 8.32% exact 91/115 spk 79.00% flagged 0 time 146.5s
+phowhisper-large phapluat  raw WER 29.50% CER 29.66% | filtered WER 7.75% CER 5.85% nofill 6.18% termCER 4.77% exact 25/30 spk 96.10% flagged 13 time 159.8s
+phowhisper-large coso2     raw WER 24.05% CER 24.34% | filtered WER 2.47% CER 1.76% nofill 2.36% termCER 1.35% exact 41/44 spk 82.60% flagged 16 time 149.9s
+phowhisper-large thegioi   raw WER 18.62% CER 15.73% | filtered WER 6.88% CER 3.75% nofill 6.84% termCER 29.89% exact 58/115 spk 77.68% flagged 20 time 327.8s

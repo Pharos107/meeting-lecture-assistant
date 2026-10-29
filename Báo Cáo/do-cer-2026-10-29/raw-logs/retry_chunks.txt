@@ -1,0 +1,54 @@
+
+######## chunk 58.73–83.88
+--- hiện tại: 1 câu, có chữ 1.8/25.1s, 0.7s
+      61.1-  62.8 nsp=0.00 lp=-0.12 | Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn
+--- tắt ngưỡng no_speech/logprob: 1 câu, có chữ 1.8/25.1s, 0.4s
+      61.1-  62.8 nsp=0.00 lp=-0.12 | Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn
+--- temperature dự phòng: 1 câu, có chữ 1.8/25.1s, 0.4s
+      61.1-  62.8 nsp=0.00 lp=-0.12 | Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn
+--- hallucination_silence 2s: 4 câu, có chữ 21.6/25.1s, 1.6s
+      61.3-  66.5 nsp=0.00 lp=-0.06 | Giảm tài cho các bệnh viện tuyến trung ương, đưa dịch vụ y tế chất lượng cao đến gần hơn với người dân.
+      66.7-  69.2 nsp=0.00 lp=-0.06 | Đây là mục tiêu của việc mở rộng các cơ sở khám chữa bệnh.
+      69.3-  76.1 nsp=0.00 lp=-0.06 | Sau một thời gian đi vào hoạt động, cơ sở 2 của các bệnh viện như Bệnh viện Nhi Trung ương, Bạch Mai và Phụ sả
+      76.4-  83.6 nsp=0.00 lp=-0.06 | Nhiều người bệnh được cấp cứu, điều trị chuyên sâu kịp thời, ngay gần nơi họ sinh sống, giảm thời gian di chuy
+--- từng vùng VAD riêng (2 vùng):
+      58.7-  60.8 | Hãy đăng ký kênh để ủng hộ kênh của mình nhé!
+      61.2-  83.9 | giảm tài cho các bệnh viện tuyến trung ương, đưa dịch vụ y tế chất lượng cao đến gần hơn với người dân. Đây là mục tiêu 
+
+######## chunk 86.01–109.35
+--- hiện tại: 2 câu, có chữ 12.2/23.3s, 0.9s
+      86.0-  92.2 nsp=0.00 lp=-0.06 | Bệnh nhân này vừa được cấp cứu và can thiệp tim mạch. Chỉ sau vài giờ, bệnh nhân đã hoàn toàn tỉnh táo.
+      92.8-  98.8 nsp=0.00 lp=-0.06 | Gia đình cho biết, may mắn là quãng đường từ nhà đến Bệnh viện Bạch Mai cơ sở Ninh Bình chỉ vài cây số.
+--- tắt ngưỡng no_speech/logprob: 2 câu, có chữ 12.2/23.3s, 0.9s
+      86.0-  92.2 nsp=0.00 lp=-0.06 | Bệnh nhân này vừa được cấp cứu và can thiệp tim mạch. Chỉ sau vài giờ, bệnh nhân đã hoàn toàn tỉnh táo.
+      92.8-  98.8 nsp=0.00 lp=-0.06 | Gia đình cho biết, may mắn là quãng đường từ nhà đến Bệnh viện Bạch Mai cơ sở Ninh Bình chỉ vài cây số.
+--- temperature dự phòng: 2 câu, có chữ 12.2/23.3s, 0.9s
+      86.0-  92.2 nsp=0.00 lp=-0.06 | Bệnh nhân này vừa được cấp cứu và can thiệp tim mạch. Chỉ sau vài giờ, bệnh nhân đã hoàn toàn tỉnh táo.
+      92.8-  98.8 nsp=0.00 lp=-0.06 | Gia đình cho biết, may mắn là quãng đường từ nhà đến Bệnh viện Bạch Mai cơ sở Ninh Bình chỉ vài cây số.
+--- hallucination_silence 2s: 2 câu, có chữ 12.2/23.3s, 0.9s
+      86.0-  92.2 nsp=0.00 lp=-0.06 | Bệnh nhân này vừa được cấp cứu và can thiệp tim mạch. Chỉ sau vài giờ, bệnh nhân đã hoàn toàn tỉnh táo.
+      92.8-  98.8 nsp=0.00 lp=-0.06 | Gia đình cho biết, may mắn là quãng đường từ nhà đến Bệnh viện Bạch Mai cơ sở Ninh Bình chỉ vài cây số.
+--- từng vùng VAD riêng (5 vùng):
+      86.0-  92.7 | Bệnh nhân này vừa được cấp cứu và can thiệp tim mạch. Chỉ sau vài giờ, bệnh nhân đã hoàn toàn tỉnh táo.
+      92.8-  99.2 | Gia đình cho biết may mắn là quãng đường từ nhà đến Bệnh viện Bạch Mai cơ sở Ninh Bình chỉ vài cây số.
+     100.2- 104.0 | những trường hợp cấp cứu mà đi lại gần thì nó sẽ
+     104.4- 107.4 | giúp cho bệnh nhân có cơ hội để...
+     107.9- 109.3 | Sức khỏe tốt hơn
+
+######## chunk 137.4–163.08
+--- hiện tại: 2 câu, có chữ 16.4/25.7s, 0.8s
+     137.4- 144.4 nsp=0.00 lp=-0.06 | Tại Bệnh viện Phụ sản Trung ương cơ sở 2, dù mới hoạt động, mỗi ngày đã có gần 400 lượt khám và 15 ca phẫu thu
+     153.5- 162.8 nsp=0.00 lp=-0.06 | Sau 3 tháng hoạt động, Bệnh viện Bạch Mai cơ sở Ninh Bình đã có 150.000 lượt khám ngoại trú, hơn 12.000 lượt c
+--- tắt ngưỡng no_speech/logprob: 2 câu, có chữ 16.4/25.7s, 0.8s
+     137.4- 144.4 nsp=0.00 lp=-0.06 | Tại Bệnh viện Phụ sản Trung ương cơ sở 2, dù mới hoạt động, mỗi ngày đã có gần 400 lượt khám và 15 ca phẫu thu
+     153.5- 162.8 nsp=0.00 lp=-0.06 | Sau 3 tháng hoạt động, Bệnh viện Bạch Mai cơ sở Ninh Bình đã có 150.000 lượt khám ngoại trú, hơn 12.000 lượt c
+--- temperature dự phòng: 2 câu, có chữ 16.4/25.7s, 0.8s
+     137.4- 144.4 nsp=0.00 lp=-0.06 | Tại Bệnh viện Phụ sản Trung ương cơ sở 2, dù mới hoạt động, mỗi ngày đã có gần 400 lượt khám và 15 ca phẫu thu
+     153.5- 162.8 nsp=0.00 lp=-0.06 | Sau 3 tháng hoạt động, Bệnh viện Bạch Mai cơ sở Ninh Bình đã có 150.000 lượt khám ngoại trú, hơn 12.000 lượt c
+--- hallucination_silence 2s: 2 câu, có chữ 16.4/25.7s, 0.8s
+     137.4- 144.4 nsp=0.00 lp=-0.06 | Tại Bệnh viện Phụ sản Trung ương cơ sở 2, dù mới hoạt động, mỗi ngày đã có gần 400 lượt khám và 15 ca phẫu thu
+     153.5- 162.8 nsp=0.00 lp=-0.06 | Sau 3 tháng hoạt động, Bệnh viện Bạch Mai cơ sở Ninh Bình đã có 150.000 lượt khám ngoại trú, hơn 12.000 lượt c
+--- từng vùng VAD riêng (3 vùng):
+     137.4- 144.7 | Tại Bệnh viện Phụ sản Trung ương cơ sở 2, dù mới hoạt động, mỗi ngày đã có gần 400 lượt khám và 15 ca phẫu thuật.
+     145.0- 152.7 | Đi ra ngoài Hà Nội bọn em có phải đi từ 5h sáng hay 4h30 giờ sáng hay ra để xếp hàng hàng dài để được lượt khám, delay đ
+     153.6- 163.1 | Sau 3 tháng hoạt động, Bệnh viện Bạch Mai cơ sở Ninh Bình đã có 150.000 lượt khám ngoại chú, hơn 12.000 lượt cấp cứu và 

@@ -1,0 +1,30 @@
+upload 201 0.1 s
+job de388ea9-ca35-4725-b60d-5a352d03019f
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    4.0s] ('transcribing', None, None)
+[   16.1s] ('diarizing', None, None)
+[   40.3s] ('ready', None, None)
+elapsed 40.3 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 473760, "diarization_device": "cuda"}
+pass 2 segments 27 speakers ['SPEAKER_01', 'SPEAKER_08', 'SPEAKER_05', 'SPEAKER_07', 'SPEAKER_00', 'SPEAKER_04', 'SPEAKER_02']
+  SPEAKER_05: 133s
+  SPEAKER_07: 31s
+  SPEAKER_00: 19s
+  SPEAKER_04: 9s
+  SPEAKER_02: 6s
+  SPEAKER_08: 5s
+  SPEAKER_01: 2s
+words 498 segments with >1 word speaker 23
+      1.7 SPEAKER_01: Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn
+     37.2 SPEAKER_08: Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn
+     62.5 SPEAKER_05: Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn
+     95.9 SPEAKER_05: Các bạn hãy đăng ký kênh để ủng hộ kênh của chúng mình nhé.
+    116.0 SPEAKER_05: Các bạn hãy đăng ký kênh để ủng hộ kênh của mình nhé.
+    145.6 SPEAKER_05: thì chưa chắc là người đã đánh chịu ổ quả, trong khi nếu người không có lỗi thì đã đánh chịu ổ quả của khuẩn.
+    154.8 SPEAKER_05: Thì ví dụ như khi trái trung cơ mới đi tại Hà Nội, các bạn thấy rằng là chủ công trình xây dựng trái quy định 
+    164.8 SPEAKER_05: Có bất định sự phạm, bố tháo rỡ nhưng bị gợi ít quá lớn, không tháo rỡ.
+    170.0 SPEAKER_05: Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn
+    178.9 SPEAKER_05: Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn
+    203.0 SPEAKER_05: Các bạn hãy đăng ký kênh để ủng hộ kênh của mình nhé.
+    236.9 SPEAKER_07: Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn
