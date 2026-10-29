@@ -16,18 +16,33 @@ VAD_PARAMETERS = {
     "speech_pad_ms": 200,
 }
 MAX_PROMPT_CHARS = 800
+# Bỏ câu bịa sau khoảng lặng dài hơn mức này. Cần word_timestamps=True.
+HALLUCINATION_SILENCE_S = 2.0
+# Người nói nhanh nhất đo được khoảng 8,5 từ/giây. Câu bịa của Whisper dồn hàng chục từ vào dưới 1 giây.
+MAX_WORDS_PER_SECOND = 12
+MIN_WORDS_FOR_RATE = 4
 
 # Câu Whisper hay bịa ở đoạn ồn hoặc lặng. Chỉ bỏ khi cả câu chỉ là cụm này.
 _HALLUCINATED = (
     "hãy đăng ký kênh",
     "hãy subscribe cho kênh",
-    "đăng ký kênh để ủng hộ",
+    "đăng ký kênh để",
     "cảm ơn các bạn đã theo dõi",
     "cảm ơn các bạn đã xem",
     "hẹn gặp lại các bạn trong những video tiếp theo",
     "nhớ like share và đăng ký kênh",
     "subscribe",
 )
+# Lời mời đăng ký kênh: bỏ cả câu ngắn mở đầu bằng cụm này, dù phần đuôi dài, như
+# "Hãy subscribe cho kênh La La School để không bỏ lỡ những video hấp dẫn".
+_CALL_TO_ACTION = (
+    "hãy subscribe",
+    "hãy đăng ký kênh",
+    "hãy đăng kí kênh",
+    "các bạn hãy đăng ký kênh",
+    "các bạn hãy đăng kí kênh",
+)
+_CALL_TO_ACTION_MAX_WORDS = 20
 
 
 class GpuOutOfMemory(Exception):
@@ -41,6 +56,7 @@ def _plain(text: str) -> str:
 
 
 _HALLUCINATED_PLAIN = tuple(_plain(item) for item in _HALLUCINATED)
+_CALL_TO_ACTION_PLAIN = tuple(_plain(item) for item in _CALL_TO_ACTION)
 
 
 def is_hallucination(text: str) -> bool:
@@ -50,7 +66,32 @@ def is_hallucination(text: str) -> bool:
     for phrase in _HALLUCINATED_PLAIN:
         if plain == phrase or (plain.startswith(phrase) and len(plain) - len(phrase) <= 25):
             return True
+    if len(plain.split()) <= _CALL_TO_ACTION_MAX_WORDS and plain.startswith(_CALL_TO_ACTION_PLAIN):
+        return True
     return False
+
+
+def too_fast(text: str, start: float, end: float) -> bool:
+    """Câu bịa ở cuối cửa sổ 30 giây có mốc vài phần trăm giây mà mang hàng chục từ."""
+    count = len(text.split())
+    if count < MIN_WORDS_FOR_RATE:
+        return False
+    return count / max(end - start, 0.01) > MAX_WORDS_PER_SECOND
+
+
+def collect_words(raw_words) -> list[dict]:
+    """Ghép mảnh không có dấu cách đầu vào từ trước, để "150" ".000" thành "150.000"."""
+    words: list[dict] = []
+    for word in raw_words or []:
+        text = word.word.strip()
+        if not text:
+            continue
+        if words and not word.word[:1].isspace():
+            words[-1]["text"] += text
+            words[-1]["end"] = float(word.end)
+            continue
+        words.append({"text": text, "start": float(word.start), "end": float(word.end)})
+    return words
 
 
 def speech_regions(pcm: np.ndarray) -> list[tuple[float, float]]:
@@ -117,17 +158,14 @@ class WhisperEngine:
             compression_ratio_threshold=2.4,
             log_prob_threshold=-1.0,
             no_speech_threshold=0.6,
+            hallucination_silence_threshold=HALLUCINATION_SILENCE_S,
             initial_prompt=prompt_or_none(vocabulary),
         )
         produced: list[dict] = []
         for segment in segments:
-            if is_hallucination(segment.text):
+            if is_hallucination(segment.text) or too_fast(segment.text, segment.start, segment.end):
                 continue
-            words = [
-                {"text": word.word.strip(), "start": float(word.start), "end": float(word.end)}
-                for word in (segment.words or [])
-                if word.word.strip()
-            ]
+            words = collect_words(segment.words)
             produced.append(
                 {
                     "start": float(segment.start),
