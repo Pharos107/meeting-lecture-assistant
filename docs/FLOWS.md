@@ -544,19 +544,20 @@ Xếp theo mức chặn demo. Cập nhật 2026-10-29.
 | 2 | Chặn | `run_live_session` rỗng | PT2 không có bản nháp. Bấm dừng để session ở `stopping`, job ở `capturing` | `worker.py`, một service đọc PCM và phát `draft` |
 | 3 | Chặn | Các trang `/live`, `/voice-profiles` trả `null` | Hai tính năng chưa dùng được từ giao diện | `frontend/src/app`, `live-capture.ts` |
 | 4 | Cao | `enroll_voice` rỗng | Hồ sơ giọng không bao giờ `ready` | `worker.py`, `services/voice_profile.py`. Vector phải tính cùng cách `diarization.cluster_vectors` |
+| 19 | Trung bình | `large-v3-turbo` bỏ qua lời phỏng vấn hiện trường ngắn nằm giữa chunk | Bài tin y tế còn 14,5 giây tiếng nói không ra chữ sau khi sửa #16. Model bỏ với `no_speech_prob` bằng 0, nên ngưỡng và dải `temperature` không cứu được. Nhận dạng riêng từng vùng VAD thì lấy lại được | Thử bước vá: vùng VAD trên 1,5 giây không có từ nào thì nhận dạng riêng vùng đó. Đo lại trên bộ đối chiếu |
+| 20 | Trung bình | Nền có người nói làm mất chữ | Trộn tiếng người nói lẫn nhau: WER 13% ở 10 dB, 30% ở 5 dB, gần như mất hết ở 0 dB. Nhiễu đều chịu được tới 10 dB. Lọc nhiễu `afftdn` chỉ giúp nhiễu đều mạnh | Đo trên ghi âm họp thật. Cân nhắc #19 và tách nguồn trước khi nhận dạng |
 | 18 | Trung bình | Câu của Whisper chứa từ của nhiều nhãn | Trên GPU, 39/126 câu của bài 9 phút và 553/1287 câu của bài 86 phút có từ mang nhãn khác nhãn câu, kể cả từ null. Câu hiện cả câu dưới một người nói | Hướng tối ưu ở kiến trúc mục 2.5: tách câu tại chỗ đổi nhãn, gán từ null cho lượt gần nhất. Đo lại sau khi sửa |
 | 7 | Trung bình | Nhả khóa khi mất heartbeat đang nằm ở FastAPI | Sau khi worker phiên có thật, hai nơi cùng quyết định nhả khóa | Chuyển về worker khi làm #2 |
 | 9 | Thấp | `rate_limit` đếm trong tiến trình | Nhiều bản uvicorn thì trần nhân lên | Chuyển sang Redis nếu chạy nhiều bản |
 | 10 | Thấp | `services/llm_client.py` rỗng, client nằm trong `llm_runner.py` | Lệch cây thư mục | Dời `http_chat` hoặc xóa file rỗng |
 | 15 | Thấp | `llm_runner.clock` in `125:30` cho bài trên 1 giờ | Mốc biên bản khó đọc. Giao diện đã tua được cả hai dạng | Xem kiến trúc mục 6.2 |
-| 16 | Thấp | Bộ lọc chữ bịa mới là danh sách cụm cố định | Chỉ bỏ câu mà cả câu là cụm đã biết. Chưa đo trên bộ đối chiếu | `stt_engine.is_hallucination`, kiến trúc mục 2.4 |
 | 17 | Thấp | SSE không có Redis chỉ đánh thức trong cùng tiến trình | Worker ở tiến trình khác thì chữ tới sau tối đa 15 giây. Chỉ gặp khi chạy thử không có Redis | Không cần sửa cho triển khai Compose |
 
-Đã đóng ngày 2026-10-29: #1 pipeline PT1 thật, #3 phần `/jobs`, `/jobs/new`, `/jobs/[id]`, #5 tự làm mới token, #6 cấu hình Celery, #8 ghi nhãn hàng loạt, #11 xóa file gốc sau khi có Opus, #13 đọc từ trong một truy vấn, #14 `max(seq)`, #12 bộ phiên bản chạy trên card thật. Lúc kiểm #12 đã sửa ba lỗi chỉ lộ ra trên GPU: image nền trixie làm `ctranslate2` không nạp được, pip thay torch cu121 bằng torch mới trên PyPI, và worker khởi tạo CUDA ở tiến trình cha nên tiến trình fork của Celery không nạp được Whisper.
+Đã đóng ngày 2026-10-29: #1 pipeline PT1 thật, #3 phần `/jobs`, `/jobs/new`, `/jobs/[id]`, #5 tự làm mới token, #6 cấu hình Celery, #8 ghi nhãn hàng loạt, #11 xóa file gốc sau khi có Opus, #13 đọc từ trong một truy vấn, #14 `max(seq)`, #12 bộ phiên bản chạy trên card thật. Lúc kiểm #12 đã sửa ba lỗi chỉ lộ ra trên GPU: image nền trixie làm `ctranslate2` không nạp được, pip thay torch cu121 bằng torch mới trên PyPI, và worker khởi tạo CUDA ở tiến trình cha nên tiến trình fork của Celery không nạp được Whisper. Cũng ngày đó đóng #16: bộ lọc chữ bịa thêm `hallucination_silence_threshold`, ngưỡng tốc độ nói và luật lời mời đăng ký kênh, kèm sửa chữ số bị tách thành `150 .000`. Số đo ở kiến trúc mục 2.4 và trong `Báo Cáo/`.
 
 ## 14. Thứ tự làm tiếp đề xuất
 
-1. Đo CER `large-v3-turbo` so với PhoWhisper theo ý tưởng mục 6, để chọn model bản chuẩn. Đo luôn #16.
+1. Đo CER `large-v3-turbo` so với PhoWhisper trên ghi âm họp và bài giảng do nhóm thu, theo ý tưởng mục 6. Vòng đầu trên tin VTV24 ở `Báo Cáo/`. Đo kèm #19 và #20.
 2. #2 và trang `/live`, kèm cơ chế nhường GPU ở kiến trúc mục 1. Làm #7 cùng lúc.
 3. #4 và trang `/voice-profiles`.
 4. #18 và các hướng tối ưu về LLM ở kiến trúc mục 6.2, sau khi có số đo, rồi các mục còn lại.
