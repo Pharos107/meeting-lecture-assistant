@@ -1,4 +1,7 @@
 # torch và torchaudio cài trước từ index CUDA, xem Dockerfile và MODELS.lock.
+# Ghim lại ở đây để pip không thay bản cu121 bằng torch mới nhất trên PyPI khi giải phụ thuộc của pyannote.
+torch==2.5.1
+torchaudio==2.5.1
 # Bốn gói dưới đây phải đi cùng nhau: ctranslate2 4.5 cần cuDNN 9, torch 2.5.1 cu121 mang cuDNN 9.
 ctranslate2==4.5.0
 faster-whisper==1.1.1

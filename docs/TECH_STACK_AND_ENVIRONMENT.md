@@ -327,7 +327,7 @@ volumes:
 
 ### Image backend
 
-- Nền `python:3.11-slim`. Image này không có CUDA ở `/usr/lib`.
+- Nền `python:3.11-slim-bookworm`. Image này không có CUDA ở `/usr/lib`. Không dùng tag `python:3.11-slim` không kèm bản Debian: tag đó đã sang trixie với glibc 2.41, và glibc này từ chối nạp `libctranslate2` 4.5.0 vì thư viện đòi stack thực thi.
 - Cài `ffmpeg` bằng apt.
 - Cài PyTorch bản CUDA từ index wheel mà trang PyTorch chỉ định cho driver của máy. Wheel CPU mặc định trên PyPI không dùng cho worker.
 - Sau đó cài phần còn lại trong `requirements.txt`.
