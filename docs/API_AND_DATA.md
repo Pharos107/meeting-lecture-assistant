@@ -1,8 +1,8 @@
 # API và dữ liệu
 
 **Dự án:** Hệ thống trợ lý chuyển đổi, tóm tắt và trích xuất biên bản cuộc họp / bài giảng tiếng Việt  
-**Phiên bản:** 1.3  
-**Ngày:** 2026-10-16  
+**Phiên bản:** 1.4  
+**Ngày:** 2026-10-28  
 **Vai trò của file này:** Hợp đồng để viết client và server. Hành vi pipeline nằm ở [kiến trúc](ARCHITECTURE_SPEC.md).
 
 Thời gian trong JSON là số nguyên mili giây, mốc 0 là đầu file hoặc đầu phiên nghe. Chuỗi thời gian người đọc, dạng `MM:SS` hoặc `HH:MM:SS`, chỉ xuất hiện trong nội dung biên bản và file xuất.
@@ -41,7 +41,9 @@ Thời gian trong JSON là số nguyên mili giây, mốc 0 là đầu file ho�
 | 422 | `validation` | Sai field, kèm `fields` là map tên field sang câu lỗi |
 | 422 | `duration_exceeded` | Dài hơn 3 giờ hoặc PCM ước lượng vượt 800 MB |
 | 422 | `llm_not_configured` | Chưa có `LLM_MODEL` |
+| 429 | `rate_limited` | Quá 60 request mỗi phút từ một IP trên `register`, `login`, hoặc `POST /api/jobs` |
 | 502 | `llm_invalid_json` | Hai lần liên tiếp không ra JSON đúng schema |
+| 502 | `llm_upstream` | Không kết nối được server LLM, hoặc server trả lỗi HTTP |
 | 503 | `gpu_oom` | Không nạp được Whisper trong phần VRAM còn lại |
 | 504 | `llm_timeout` | Hết hạn một request LLM |
 
@@ -112,6 +114,8 @@ Trả object `user`.
 { "job_id": "7c1a6b4e-3e0a-4f5b-9c1d-2a8e5f0b6d11", "status": "queued" }
 ```
 
+File đi trong một request. Mất kết nối giữa chừng thì phải tải lại từ đầu. Hướng tối ưu: tải theo phần và tiếp tục được, ví dụ giao thức tus.
+
 ### `GET /api/jobs`
 
 ```json
@@ -143,7 +147,7 @@ Nhận `queued`, `capturing`, `preprocessing`, và `transcribing`. `202` và bod
 
 ### `POST /api/jobs/{job_id}/retry`
 
-Chỉ khi `failed`. `202` và body job ở trạng thái `queued`.
+Chỉ khi `failed`. Xóa câu và từ pass 2 cùng đánh dấu trên các câu đó. Việc `manual` gắn với câu bị xóa giữ lại với `segment_id = null`. Pass 1 giữ nguyên. `202` và body job ở trạng thái `queued`. Giao diện phải cảnh báo trước khi gọi, vì đánh dấu trên pass 2 mất theo.
 
 ### `DELETE /api/jobs/{job_id}`
 
@@ -220,6 +224,8 @@ Sự kiện `chunk` của PT1 thuộc pass 2. Pass 1 của phiên nghe đi qua W
 `speaker_name` là alias nếu có, ngược lại bằng `speaker_label`. Null khi câu chưa được gán. `source` của người nói là `manual`, `voice_profile`, hoặc null khi chưa có tên.
 
 `words` rỗng ở pass 1.
+
+Server đọc từ của cả job trong một truy vấn rồi nhóm theo `segment_id`. Không truy vấn từ theo từng câu, vì bài 3 giờ có khoảng 3.000 câu.
 
 ### `PATCH /api/jobs/{job_id}/segments/{segment_id}`
 
@@ -321,6 +327,19 @@ Tin server gửi, toàn bộ là text JSON:
 Cùng một `segment_id` với `stable: false` nghĩa là thay bong bóng đang mở. `stable: true` chốt câu đó.
 
 Sau `hello_ok` của một lần nối lại, server gửi thêm một tin `draft` với `stable: false` nếu Redis còn `live:{session_id}:open_draft`. Không còn key thì không gửi tin giả.
+
+`code` của tin `error`:
+
+| `code` | Khi |
+|---|---|
+| `unauthorized` | Ticket sai, hết hạn, thuộc session khác, hoặc session không còn `capturing` |
+| `gpu_busy` | `gpu:lock` đang thuộc id khác |
+| `hello_timeout` | Không có tin `hello` trong 5 giây |
+| `bad_request` | Tin đầu không phải `hello` với `sample_rate` 16000, khung PCM lẻ byte hoặc ngoài 20–200 ms, hoặc tin text không đọc được |
+| `payload_too_large` | Tổng PCM của phiên vượt `MAX_DURATION_SECONDS` |
+| `invalid_state` | Phiên đã đóng trong lúc socket xin quyền ghi |
+
+Mỗi lần nối lại, socket mới giành quyền ghi PCM. Socket cũ thôi ghi và đóng mà không gửi `error`.
 
 Server đóng socket sau `stopped` hoặc `error`.
 
