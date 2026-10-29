@@ -54,6 +54,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | 1.3 | 2026-10-16 | Khóa đặc tả PT1, PT2, hồ sơ giọng, hai mẫu biên bản |
 | 1.4 | 2026-10-28 | Thêm [`FLOWS.md`](FLOWS.md). Thêm các đoạn "Hướng tối ưu" từ lượt đánh giá thiết kế vào kiến trúc, API, môi trường, và ý tưởng. Khóa thêm yêu cầu cấu hình: `visibility_timeout` của Celery, ghim phiên bản torch, ctranslate2, faster-whisper, pyannote, mã lỗi `llm_upstream`, đọc từ của transcript trong một truy vấn. Làm rõ FFmpeg.wasm đang là bản đơn luồng. Ghi rõ những gì code đã làm mà đặc tả chưa nói: mã `429 rate_limited`, mã lỗi WebSocket, kênh `job:{job_id}:events`, cạnh `failed → queued` và việc dọn đánh dấu khi chạy lại. Cập nhật cây thư mục theo repo. Không đổi quyết định D1–D16 |
 | 1.4.1 | 2026-10-29 | Code: pipeline PT1 thật, các trang job, tự làm mới token, cấu hình Celery. Ghim bộ ứng viên torch 2.5.1 cu121, ctranslate2 4.5.0, faster-whisper 1.1.1, pyannote.audio 3.3.2, `huggingface_hub<1.0`. Cập nhật hiện trạng ở [`FLOWS.md`](FLOWS.md). Không đổi quyết định D1–D16 |
+| 1.4.2 | 2026-10-29 | Bộ phiên bản đã chạy một job PT1 có diarization trên RTX 4050 Laptop 6GB. Image nền ghim `python:3.11-slim-bookworm`. `requirements.txt` ghim lại torch và torchaudio. Worker kiểm GPU trong tiến trình riêng. Thêm #18 ở [`FLOWS.md`](FLOWS.md). Không đổi quyết định D1–D16 |
 
 ## Việc còn mở
 
