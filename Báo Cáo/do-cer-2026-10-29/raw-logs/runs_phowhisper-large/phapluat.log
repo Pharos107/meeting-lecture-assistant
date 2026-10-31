@@ -1,0 +1,30 @@
+upload 201 0.1 s
+job 69a97768-ebca-4b42-9eff-663bcf07ae54
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   10.8s] ('transcribing', None, None)
+[  124.9s] ('diarizing', None, None)
+[  159.8s] ('ready', None, None)
+elapsed 159.8 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 473760, "diarization_device": "cuda"}
+pass 2 segments 36 speakers ['SPEAKER_04', 'SPEAKER_01', 'SPEAKER_03', 'SPEAKER_02', 'SPEAKER_05', 'SPEAKER_00']
+  SPEAKER_03: 316s
+  SPEAKER_01: 57s
+  SPEAKER_02: 24s
+  SPEAKER_04: 24s
+  SPEAKER_05: 23s
+  SPEAKER_00: 12s
+  None: 1s
+words 2348 segments with >1 word speaker 25
+      0.4 SPEAKER_04: thưa quý vị tại kỳ họp thứ hai thì quốc hội đang thảo luận nhiều dự án luật quan trọng liên quan đến các lĩnh 
+     22.8 SPEAKER_04: những bức ảnh chụp từ đầu năm một nghìn chín trăm bảy chín trăm năm một nghìn chín năm bảy chín.
+     23.6 SPEAKER_01: và để cùng trao đổi vấn đề này thì chương trình ngày hôm nay đã mời tới trường quay ông nguyễn hải long đại bi
+     49.0 None: ngoài ra tôi còn tham gia vào các cuộc thi thể thao khác trong năm nay.
+     50.1 SPEAKER_03: thì theo tôi à cái thông điệp quan trọng nhất mà của dự án luật đã mà trông như bạn nói trong dự án vừa rồi là
+     79.4 SPEAKER_03: ờ về à phòng cháy chữa cháy đã nâng từ năm mươi triệu đến hai trăm triệu.
+     84.1 SPEAKER_03: mà với những mức phạt như vậy thì có doanh nghiệp mới sẵn sàng vi phạm bởi vì lợi ích nhiều hơn và thứ hai là 
+    113.5 SPEAKER_03: là phải siết chặt lại kỷ cương của cán bộ công chức làm thực thi hành nhiệm vụ và tôi cho rằng là pháp luật mu
+    140.4 SPEAKER_04: thế nào về cái mục tiêu này ạ.
+    142.0 SPEAKER_03: thì tôi cho rằng ý là xuất phát từ thế thôi là người vi phạm thì thì à chắc chưa chắc là người đã gánh chịu hậ
+    166.2 None: ngoài tác phẩm nghệ thuật cô còn tham gia các cuộc thi tập thể thao truyền hình trong công nghệ môn thể thao t
+    166.5 SPEAKER_03: buộc tháo dỡ nhưng vì lợi ích quá lớn họ không tháo dỡ rồi cuối cùng thì tám năm sau năm hai không hai ba đã x

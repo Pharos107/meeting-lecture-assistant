@@ -113,7 +113,7 @@ Các bước:
 
 `vad_filter` trong lời gọi Whisper để `False`, vì bước này đã cắt xong.
 
-Hướng tối ưu, cần đo trước khi khóa: luật gộp khoảng lặng không quá 2 giây tạo nhiều chunk ngắn khi người nói hay ngắt. Chunk vài giây thiếu ngữ cảnh và dễ sinh chữ bịa. Phương án thay là ghép các vùng có tiếng tới gần 30 giây, cắt bỏ phần lặng giữa chúng, và giữ bảng ánh xạ để quy timestamp về thời gian gốc. Chỉ đổi khi CER trên bộ đối chiếu tốt hơn.
+Hướng tối ưu, cần đo trước khi khóa: luật gộp khoảng lặng không quá 2 giây tạo nhiều chunk ngắn khi người nói hay ngắt. Chunk vài giây thiếu ngữ cảnh và dễ sinh chữ bịa. Phương án thay là ghép các vùng có tiếng tới gần 30 giây, cắt bỏ phần lặng giữa chúng, và giữ bảng ánh xạ để quy timestamp về thời gian gốc. Chỉ đổi khi CER trên bộ đối chiếu tốt hơn. Số đo ngày 2026-10-29: chunk trung vị 24–25 giây, lỗi trong 1 giây quanh mép chunk chỉ cao hơn giữa chunk vài điểm. Hạ trần chunk từ 30 xuống 15 giây làm WER tệ hơn ở 4/5 trường hợp thử, ví dụ nhiễu hồng 0 dB từ 24,9% lên 39,3%, nên giữ trần 30 giây.
 
 ### 2.4. Nhận dạng bản chuẩn
 
@@ -142,6 +142,7 @@ segments, info = model.transcribe(
     compression_ratio_threshold=2.4,
     log_prob_threshold=-1.0,
     no_speech_threshold=0.6,
+    hallucination_silence_threshold=2.0,
     initial_prompt=vocabulary_or_none,
 )
 ```
@@ -152,7 +153,15 @@ segments, info = model.transcribe(
 
 Với `temperature=0.0` một mức, `compression_ratio_threshold` gần như không có tác dụng: ngưỡng này chỉ quyết định có giải mã lại ở mức temperature cao hơn. `log_prob_threshold` vẫn được dùng cùng `no_speech_threshold` để bỏ đoạn không có tiếng.
 
-Whisper tiếng Việt hay sinh câu không có trong audio ở đoạn ồn hoặc lặng, kiểu "Hãy đăng ký kênh…" hoặc "Cảm ơn các bạn đã theo dõi". Hướng tối ưu, cần đo: dùng dải `temperature=(0.0, 0.2, 0.4)`, bật `hallucination_silence_threshold`, bỏ câu có `no_speech_prob` cao đi cùng `avg_logprob` thấp, và lọc theo danh sách cụm hay bị bịa. Bản nháp PT2 cần bộ lọc này hơn cả vì audio ngắn.
+Whisper tiếng Việt hay sinh câu không có trong audio ở đoạn ồn hoặc lặng, kiểu "Hãy đăng ký kênh…" hoặc "Cảm ơn các bạn đã theo dõi". Câu bịa còn che phần còn lại của chunk: model nhảy mốc thời gian qua lời thật phía sau. Worker xử lý bằng ba lớp:
+
+1. `hallucination_silence_threshold=2.0`: faster-whisper bỏ câu bịa nằm sau khoảng lặng dài hơn 2 giây, rồi giải mã lại từ sau khoảng lặng. Lớp này lấy lại được lời thật bị câu bịa che.
+2. Bỏ câu có từ 4 từ trở lên mà nói nhanh hơn 12 từ/giây. Người nói nhanh nhất đo được khoảng 8,5 từ/giây. Câu bịa ở cuối cửa sổ 30 giây dồn hàng chục từ vào dưới 1 giây.
+3. Bỏ câu theo danh sách cụm: câu chỉ gồm cụm đã biết, cộng đuôi không quá 25 ký tự. Câu không quá 20 từ mở đầu bằng lời mời đăng ký kênh ("hãy subscribe", "hãy đăng ký kênh", "các bạn hãy đăng ký kênh") thì bỏ dù đuôi dài. Câu thật nhắc tới việc đăng ký kênh ở giữa câu được giữ.
+
+Số đo ngày 2026-10-29 trên 3 bản tin VTV24 (37 phút) với `large-v3-turbo`: CER gộp giảm từ 4,72% xuống 3,46%, không còn câu bịa nào. Bản trộn tiếng người nói lẫn nhau ở 10 dB giảm từ 16,39% xuống 12,96% WER. Hai bài sạch không đổi. Dải `temperature` và ngưỡng `no_speech_prob`, `avg_logprob` đã thử và không lấy lại được lời bị bỏ, vì model bỏ với `no_speech_prob` bằng 0. Bản nháp PT2 cần bộ lọc này hơn cả vì audio ngắn.
+
+Word của faster-whisper có dấu cách đầu. Mảnh không có dấu cách đầu, như `.000` sau `150` hoặc `%` sau `0`, được ghép vào từ đứng trước, kể cả thời gian kết thúc. Nếu không ghép, chữ của câu ghép từ các word bằng dấu cách sẽ thành `150 .000`.
 
 Sau mỗi chunk, cộng offset, khử chồng lấn, ghi segment và word của pass 2, ghi sự kiện `chunk`, rồi publish số thứ tự. Giữa các chunk, worker đọc cờ hủy.
 

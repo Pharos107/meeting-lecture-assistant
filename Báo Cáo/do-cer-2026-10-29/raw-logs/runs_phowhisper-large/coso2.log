@@ -1,0 +1,32 @@
+upload 201 0.1 s
+job 077a597a-5363-4445-9f62-3f522cff1655
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    8.8s] ('transcribing', None, None)
+[  124.9s] ('diarizing', None, None)
+[  149.9s] ('ready', None, None)
+elapsed 149.9 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 509136, "diarization_device": "cuda"}
+pass 2 segments 39 speakers ['SPEAKER_04', 'SPEAKER_03', 'SPEAKER_07', 'SPEAKER_09', 'SPEAKER_01', 'SPEAKER_00', 'SPEAKER_02', 'SPEAKER_08']
+  SPEAKER_01: 93s
+  SPEAKER_03: 92s
+  SPEAKER_02: 87s
+  SPEAKER_04: 83s
+  SPEAKER_08: 55s
+  SPEAKER_00: 27s
+  SPEAKER_07: 25s
+  SPEAKER_09: 21s
+  None: 2s
+words 2316 segments with >1 word speaker 28
+      0.7 SPEAKER_04: kết luận cuộc họp về các kịch bản điều hành giá xăng dầu và điện vào hôm nay phó thủ tướng chính phủ nguyễn vă
+     26.8 SPEAKER_04: tiến độ giảm giá điện từ ngày mùng một tháng mười một năm hai nghìn không trăm hai mươi sáu.
+     30.4 SPEAKER_04: báo cáo cấp có thẩm quyền đối với những nội dung vượt thẩm quyền bộ tài chính chủ trì phối hợp với bộ công thư
+     55.5 SPEAKER_04: xét quyết định theo quy định của pháp luật hoàn thành trước ngày mùng một tháng mười một năm
+     59.3 SPEAKER_04: hai nghìn không trăm hai mươi sáu giảm tải cho các bệnh viện tuyến trung ương đưa dịch vụ y tế chất lượng cao 
+     83.6 None: đó là lý do tại sao chúng ta lại gặp nhau trong thời gian tới.
+     86.0 SPEAKER_03: bệnh nhân này vừa được cấp cứu và can thiệp tim mạch chỉ sau vài giờ bệnh nhân đã hoàn toàn tỉnh táo gia đình 
+    109.0 None: học trò tiếp theo trong tiếng nói việt nam tiếp theo đấu tranh tiếp theo đấu tranh việt nam trên toàn thế giới
+    109.8 SPEAKER_07: với nhồi máu cơ tim cấp thì thời gian là vàng và mỗi tiếng chậm trễ thì cái vùng cơ tim thiếu máu nó sẽ càng t
+    134.7 SPEAKER_03: một đội ngũ một chuẩn mực chuyên môn.
+    137.4 SPEAKER_03: tại bệnh viện phụ sản trung ương cơ sở hai dù mới hoạt động mỗi ngày đã có gần bốn trăm lượt khám và mười lăm 
+    162.9 SPEAKER_03: nhiều bà mẹ truyền thống đề nghị trước khi tiêu thụ thuốc từ trung quốc trở lại.

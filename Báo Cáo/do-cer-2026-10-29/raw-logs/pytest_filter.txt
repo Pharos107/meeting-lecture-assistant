@@ -1,0 +1,9 @@
+tests/test_upload_job.py::HallucinationFilterTests::test_call_to_action_with_long_tail_is_dropped PASSED [ 16%]
+tests/test_upload_job.py::HallucinationFilterTests::test_impossible_speech_rate_is_dropped PASSED [ 33%]
+tests/test_upload_job.py::HallucinationFilterTests::test_known_phrases_are_dropped PASSED [ 50%]
+tests/test_upload_job.py::HallucinationFilterTests::test_prompt_is_trimmed PASSED [ 66%]
+tests/test_upload_job.py::HallucinationFilterTests::test_real_sentences_are_kept PASSED [ 83%]
+tests/test_upload_job.py::HallucinationFilterTests::test_word_pieces_without_space_join_previous_word PASSED [100%]
+======================= 6 passed, 9 deselected in 0.71s =======================
+..............................................                           [100%]
+46 passed in 7.50s

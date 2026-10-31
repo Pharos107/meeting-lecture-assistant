@@ -6,6 +6,7 @@ import subprocess
 import tempfile
 import unittest
 import uuid
+from types import SimpleNamespace
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
@@ -22,7 +23,7 @@ from app.models import Base, Job, JobEvent, Segment, User, Word
 from app.services import audio_processor
 from app.services.pipeline import clear_pass, run_upload_job
 from app.services.speaker_align import SpeakerTurn
-from app.services.stt_engine import GpuOutOfMemory, is_hallucination, prompt_or_none
+from app.services.stt_engine import GpuOutOfMemory, collect_words, is_hallucination, prompt_or_none, too_fast
 
 HAS_FFMPEG = shutil.which("ffmpeg") is not None and shutil.which("ffprobe") is not None
 DATA_DIR = tempfile.mkdtemp(prefix="stt-upload-")
@@ -232,9 +233,33 @@ class HallucinationFilterTests(unittest.TestCase):
         self.assertTrue(is_hallucination("Hãy đăng ký kênh để không bỏ lỡ video mới!"))
         self.assertTrue(is_hallucination("Cảm ơn các bạn đã theo dõi."))
 
+    def test_call_to_action_with_long_tail_is_dropped(self) -> None:
+        # Hai câu bịa đo được trên bản tin VTV24, đuôi dài hơn 25 ký tự.
+        self.assertTrue(is_hallucination("Hãy subscribe cho kênh La La School Để không bỏ lỡ những video hấp dẫn"))
+        self.assertTrue(is_hallucination("Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn"))
+        self.assertTrue(is_hallucination("Các bạn hãy đăng ký kênh để ủng hộ kênh của chúng mình nhé."))
+        self.assertTrue(is_hallucination("Đăng ký kênh để nhận thông tin."))
+
     def test_real_sentences_are_kept(self) -> None:
         self.assertFalse(is_hallucination("Hôm nay chúng ta bàn về việc đăng ký kênh phân phối mới cho quý sau."))
+        self.assertFalse(is_hallucination("Khách hàng subscribe gói năm tăng 20% so với cùng kỳ."))
         self.assertFalse(is_hallucination(""))
+
+    def test_impossible_speech_rate_is_dropped(self) -> None:
+        # Câu bịa của PhoWhisper ở cuối chunk: 21 từ trong 0,24 giây.
+        text = "những bức ảnh chụp từ đầu năm một nghìn chín trăm bảy chín trăm năm một nghìn chín năm bảy chín."
+        self.assertTrue(too_fast(text, 22.78, 23.02))
+        self.assertFalse(too_fast("Thưa quý vị, tại kỳ họp thứ 2, Quốc hội đang thảo luận", 0.4, 4.0))
+        self.assertFalse(too_fast("Chào các bạn.", 35.5, 35.6))
+
+    def test_word_pieces_without_space_join_previous_word(self) -> None:
+        def piece(text: str, start: float, end: float) -> SimpleNamespace:
+            return SimpleNamespace(word=text, start=start, end=end)
+
+        words = collect_words([piece(" có", 0.0, 0.2), piece(" 150", 0.2, 0.6), piece(".000", 0.6, 0.9),
+                               piece(" lượt", 0.9, 1.1), piece(" 0", 1.1, 1.3), piece("%", 1.3, 1.4), piece(" ", 1.4, 1.4)])
+        self.assertEqual([w["text"] for w in words], ["có", "150.000", "lượt", "0%"])
+        self.assertEqual((words[1]["start"], words[1]["end"]), (0.2, 0.9))
 
     def test_prompt_is_trimmed(self) -> None:
         self.assertIsNone(prompt_or_none("   "))

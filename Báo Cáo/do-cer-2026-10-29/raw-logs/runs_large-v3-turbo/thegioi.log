@@ -1,0 +1,34 @@
+upload 201 0.2 s
+job dd6f80c9-44f2-497f-af5c-cfd4e51be397
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   17.8s] ('transcribing', None, None)
+[   82.7s] ('diarizing', None, None)
+[  146.5s] ('ready', None, None)
+elapsed 146.5 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1245504, "diarization_device": "cuda"}
+pass 2 segments 209 speakers ['SPEAKER_03', 'SPEAKER_09', 'SPEAKER_10', 'SPEAKER_06', 'SPEAKER_08', 'SPEAKER_02', 'SPEAKER_05', 'SPEAKER_04', 'SPEAKER_11', 'SPEAKER_00', 'SPEAKER_07']
+  SPEAKER_03: 250s
+  SPEAKER_10: 190s
+  SPEAKER_05: 155s
+  SPEAKER_09: 143s
+  SPEAKER_08: 114s
+  SPEAKER_11: 70s
+  SPEAKER_04: 43s
+  SPEAKER_06: 27s
+  SPEAKER_02: 18s
+  SPEAKER_07: 16s
+  SPEAKER_00: 14s
+words 4555 segments with >1 word speaker 55
+      4.4 SPEAKER_03: Chính phủ Trung Quốc cam kết tăng hỗ trợ các gia đình xây dựng xã hội thân thiện với sinh đẻ
+      8.6 SPEAKER_03: nhằm ứng phó tư giảm dân số và lực lượng lao động.
+     21.0 SPEAKER_09: Xung đột tại Trung Đông đang làm thay đổi bản đồ cung ứng khí tự nhiên hóa lỏng LNG trên toàn cầu.
+     28.5 SPEAKER_10: Trung Quốc tăng tốc khai thác thị trường kinh tế tầm thấp, cơ hội tỷ đô đi cùng thách thức về an toàn và thươn
+     36.9 SPEAKER_06: Cuộc bỏ phiếu trong vòng 2 cuộc bầu cử Tổng thống Brazil đã kết thúc cách đây hơn 1 giờ đồng hồ.
+     41.8 SPEAKER_06: Thời gian bỏ phiếu đã được kéo dài thêm 2 tiếng, theo đề nghị của cả 2 bên.
+     46.0 SPEAKER_03: Tổng thống Lula de Silva lo ngại các sự cố ảnh hưởng đến mạng lưới xe buýt công cộng
+     50.8 SPEAKER_03: tại 2 thành phố lớn là Sao Paulo và Salvador.
+     53.5 SPEAKER_03: Trong khi đó, ứng cử viên đối lập Flavio Bolsonaro lại bày tỏ lo ngại,
+     57.2 SPEAKER_03: thực tế xấu ảnh hưởng đến cử tri định bỏ phiếu tại Sao Paulo và bang Santa Catarina.
+     62.3 SPEAKER_03: Gần 160 triệu cử tri Brazil đủ điều kiện tham gia bỏ phiếu để lựa chọn
+     66.5 SPEAKER_03: lãnh đạo, nền kinh tế lớn nhất Mỹ Latin trong địa quy tế.

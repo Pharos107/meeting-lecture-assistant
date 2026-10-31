@@ -1,0 +1,32 @@
+upload 201 0.1 s
+job 055bf512-e29b-4366-846c-a9ce9a5f36fd
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    8.1s] ('transcribing', None, None)
+[   32.2s] ('diarizing', None, None)
+[   57.3s] ('ready', None, None)
+elapsed 57.3 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 509136, "diarization_device": "cuda"}
+pass 2 segments 72 speakers ['SPEAKER_04', 'SPEAKER_03', 'SPEAKER_07', 'SPEAKER_09', 'SPEAKER_06', 'SPEAKER_01', 'SPEAKER_00', 'SPEAKER_02', 'SPEAKER_08']
+  SPEAKER_02: 90s
+  SPEAKER_01: 80s
+  SPEAKER_04: 79s
+  SPEAKER_03: 62s
+  SPEAKER_08: 52s
+  SPEAKER_00: 24s
+  SPEAKER_09: 21s
+  SPEAKER_07: 18s
+  SPEAKER_06: 12s
+words 1726 segments with >1 word speaker 34
+      0.7 SPEAKER_04: Kết luận cuộc họp về các kịch bản điều hành giá xăng dầu và điện vào hôm nay,
+      4.8 SPEAKER_04: Phó Thủ tướng Chính phủ Nguyễn Văn Thắng yêu cầu EVN ra soát tính toán có phương án giảm giá bán lẻ điện bình 
+     10.5 SPEAKER_04: áp dụng từ ngày 1 tháng 11 năm 2026 đến hết ngày 31 tháng 3 năm 2027 theo đúng quy định của pháp luật.
+     18.6 SPEAKER_04: Báo cáo Bộ Công Thương kiểm tra ra soát và cho ý kiến.
+     21.6 SPEAKER_04: Bộ Công Thương chủ trì có ý kiến đối với phương án giá bán lẻ điện bình quân của EVN
+     25.9 SPEAKER_04: để đáp ứng tiến độ giảm giá điện từ ngày 1 tháng 11 năm 2026.
+     30.5 SPEAKER_04: Báo cáo cấp có thẩm quyền đối với những nội dung vượt thẩm quyền
+     33.8 SPEAKER_04: Bộ Tài chính chủ trì phối hợp với Bộ Công thương, Bộ Tư pháp và các cơ quan có liên quan
+     38.1 SPEAKER_04: ra soát cơ sở pháp lý thẩm quyền, đánh giá đầy đủ tác động và tính khả thi
+     42.8 SPEAKER_04: của phương án giảm thuế xuất, thuế tiêu tụ đặc biệt đối với xăng các loại về 0%
+     48.1 SPEAKER_04: từ ngày 1-11-2026 đến hết ngày 31-3-2027
+     53.6 SPEAKER_04: Báo cáo cấp có thẩm quyền xem xét quyết định theo quy định của pháp luật

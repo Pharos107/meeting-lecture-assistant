@@ -1,0 +1,30 @@
+upload 201 0.1 s
+job d532e647-eef8-4243-af1a-88ab2df2f52d
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    5.0s] ('transcribing', None, None)
+[   36.2s] ('diarizing', None, None)
+[   64.4s] ('ready', None, None)
+elapsed 64.4 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 473760, "diarization_device": "cuda"}
+pass 2 segments 89 speakers ['SPEAKER_06', 'SPEAKER_02', 'SPEAKER_07', 'SPEAKER_05', 'SPEAKER_03', 'SPEAKER_04', 'SPEAKER_00']
+  SPEAKER_07: 217s
+  SPEAKER_02: 53s
+  SPEAKER_03: 23s
+  SPEAKER_06: 22s
+  SPEAKER_00: 19s
+  SPEAKER_04: 13s
+  SPEAKER_05: 11s
+words 1519 segments with >1 word speaker 14
+      0.0 SPEAKER_06: Thưa quý vị, tại kỳ họp thứ 2, quốc hội đang thảo luận nhiều dự án luật quan trọng liên quan đến các lĩnh vực 
+      8.2 SPEAKER_06: Trong đó thì có dự án luật xử lý vi phạm hành chính sở đổi, hướng tới nâng cao ý thức chấp hành pháp luật,
+     13.5 SPEAKER_06: thiết lập trật tự, kỳ cương, đồng thời bảo vệ an ninh con người trước những hành vi vi phạm có thể gây ra nhữn
+     19.7 SPEAKER_06: lâu dài đối với tính mạng, sức khỏe và đôi trường sống.
+     23.5 SPEAKER_02: Và để chúng trao đổi vấn đề này thì chương trình hôm nay đã mới tới trưởng quay ông Nguyễn Hải Long, đại biểu 
+     37.5 SPEAKER_02: từ các đội lấm phát và thực tiễn, vì sao việc nâng cao ý thức tự giác, chất hành pháp luật
+     42.6 SPEAKER_02: cũng như là ý thức chúng ta giữ gìn trật tự thử cương lại là yêu cầu quan trọng trong giai đoạn hiện nay ạ?
+     50.0 SPEAKER_07: Thì theo tôi, cái thông điệp quan trọng nhất của dự án hóa luật
+     54.0 SPEAKER_07: đó là, như bạn nói trong thề án vừa rồi, mọi người
+     58.5 SPEAKER_07: rất quan tâm là vi phạm bị xử lý nghiêm, mọi người đều bình đẳng trước pháp luật và quyết định xử phạt được từ
+     67.2 SPEAKER_07: Tôi muốn những 4 vấn đề. Thứ nhất là mức phạt phải đủ sức nhan đen.
+     71.5 SPEAKER_07: Trong gián luật thì chúng ta có nâng mức phạt lên và các bạn thấy là có mức phạt phải nâng đến 4 lần.

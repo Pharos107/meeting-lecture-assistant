@@ -1,0 +1,1573 @@
+{
+ "sạch": {
+  "raw": {
+   "hyp_words": 1887,
+   "wer": 0.08324661810613944,
+   "sub": 57,
+   "del": 69,
+   "ins": 34,
+   "cer": 0.06385307711019217,
+   "wer_nofill": 0.07162383816293057,
+   "cer_nofill": 0.05350108018807981,
+   "terms": {
+    "term_cer": 0.10552763819095477,
+    "term_exact": 18,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      2,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      2,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      1,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      1,
+      1
+     ]
+    }
+   }
+  },
+  "filtered": {
+   "hyp_words": 1872,
+   "wer": 0.07544224765868887,
+   "sub": 57,
+   "del": 69,
+   "ins": 19,
+   "cer": 0.05521770858671856,
+   "wer_nofill": 0.0634226353198469,
+   "cer_nofill": 0.04447833269792858,
+   "terms": {
+    "term_cer": 0.10552763819095477,
+    "term_exact": 18,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      2,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      2,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      1,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      1,
+      1
+     ]
+    }
+   }
+  },
+  "flagged": [
+   "Hãy subscribe cho kênh La La School Để không bỏ lỡ những video hấp dẫn"
+  ],
+  "vad_hit": 1.0,
+  "vad_extra": 0.0,
+  "speech_without_text": 2.1520000000000437,
+  "speakers": 6,
+  "spk_acc": 0.9681597409606044,
+  "elapsed": 70.8
+ },
+ "pink_20db": {
+  "raw": {
+   "hyp_words": 1882,
+   "wer": 0.09053069719042664,
+   "sub": 76,
+   "del": 69,
+   "ins": 29,
+   "cer": 0.06567745074191195,
+   "wer_nofill": 0.07818480043739748,
+   "cer_nofill": 0.05426356589147287,
+   "terms": {
+    "term_cer": 0.12814070351758794,
+    "term_exact": 16,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      2,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      0,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      1,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      1,
+      1
+     ]
+    }
+   }
+  },
+  "filtered": {
+   "hyp_words": 1875,
+   "wer": 0.08792924037460978,
+   "sub": 74,
+   "del": 71,
+   "ins": 24,
+   "cer": 0.06360982729262953,
+   "wer_nofill": 0.0754510661563696,
+   "cer_nofill": 0.05210318973185919,
+   "terms": {
+    "term_cer": 0.12814070351758794,
+    "term_exact": 16,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      2,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      0,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      1,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      1,
+      1
+     ]
+    }
+   }
+  },
+  "flagged": [
+   "Đăng ký kênh để nhận thông tin."
+  ],
+  "vad_hit": 0.9866430182399439,
+  "vad_extra": 0.7900000000000205,
+  "speech_without_text": 2.1720000000000255,
+  "speakers": 6,
+  "spk_acc": 0.9675850891410048,
+  "elapsed": 72.3
+ },
+ "pink_10db": {
+  "raw": {
+   "hyp_words": 1883,
+   "wer": 0.09833506763787721,
+   "sub": 92,
+   "del": 68,
+   "ins": 29,
+   "cer": 0.07188032108975918,
+   "wer_nofill": 0.0896664844177146,
+   "cer_nofill": 0.06557377049180328,
+   "terms": {
+    "term_cer": 0.13316582914572864,
+    "term_exact": 15,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      1,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      0,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      1,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      1,
+      1
+     ]
+    }
+   }
+  },
+  "filtered": {
+   "hyp_words": 1883,
+   "wer": 0.09833506763787721,
+   "sub": 92,
+   "del": 68,
+   "ins": 29,
+   "cer": 0.07188032108975918,
+   "wer_nofill": 0.0896664844177146,
+   "cer_nofill": 0.06557377049180328,
+   "terms": {
+    "term_cer": 0.13316582914572864,
+    "term_exact": 15,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      1,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      0,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      1,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      1,
+      1
+     ]
+    }
+   }
+  },
+  "flagged": [],
+  "vad_hit": 0.9840154152707524,
+  "vad_extra": 1.5100000000002183,
+  "speech_without_text": 2.1720000000000255,
+  "speakers": 6,
+  "spk_acc": 0.9681769147788565,
+  "elapsed": 58.3
+ },
+ "pink_5db": {
+  "raw": {
+   "hyp_words": 1868,
+   "wer": 0.13787721123829344,
+   "sub": 153,
+   "del": 83,
+   "ins": 29,
+   "cer": 0.09535392848455364,
+   "wer_nofill": 0.12903225806451613,
+   "cer_nofill": 0.08870250349472614,
+   "terms": {
+    "term_cer": 0.17336683417085427,
+    "term_exact": 14,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      1,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      1,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      0,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      0,
+      1
+     ]
+    }
+   }
+  },
+  "filtered": {
+   "hyp_words": 1868,
+   "wer": 0.13787721123829344,
+   "sub": 153,
+   "del": 83,
+   "ins": 29,
+   "cer": 0.09535392848455364,
+   "wer_nofill": 0.12903225806451613,
+   "cer_nofill": 0.08870250349472614,
+   "terms": {
+    "term_cer": 0.17336683417085427,
+    "term_exact": 14,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      1,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      1,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      0,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      0,
+      1
+     ]
+    }
+   }
+  },
+  "flagged": [],
+  "vad_hit": 0.9845409358645907,
+  "vad_extra": 2.880000000000223,
+  "speech_without_text": 2.288000000000011,
+  "speakers": 6,
+  "spk_acc": 0.9760739532354541,
+  "elapsed": 56.2
+ },
+ "pink_0db": {
+  "raw": {
+   "hyp_words": 1772,
+   "wer": 0.24869927159209157,
+   "sub": 278,
+   "del": 175,
+   "ins": 25,
+   "cer": 0.18535636098272926,
+   "wer_nofill": 0.2378348824494259,
+   "cer_nofill": 0.17676960223662472,
+   "terms": {
+    "term_cer": 0.2864321608040201,
+    "term_exact": 11,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      1,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      0,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      0,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      1,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      0,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      0,
+      1
+     ]
+    }
+   }
+  },
+  "filtered": {
+   "hyp_words": 1757,
+   "wer": 0.24921956295525494,
+   "sub": 264,
+   "del": 190,
+   "ins": 25,
+   "cer": 0.19046460715154465,
+   "wer_nofill": 0.2383816293056315,
+   "cer_nofill": 0.18210700216037615,
+   "terms": {
+    "term_cer": 0.2864321608040201,
+    "term_exact": 11,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      1,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      0,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      0,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      1,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      0,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      0,
+      1
+     ]
+    }
+   }
+  },
+  "flagged": [
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn"
+  ],
+  "vad_hit": 0.9876283693533905,
+  "vad_extra": 4.490000000000123,
+  "speech_without_text": 16.25,
+  "speakers": 5,
+  "spk_acc": 0.8920323325635104,
+  "elapsed": 52.3
+ },
+ "babble_20db": {
+  "raw": {
+   "hyp_words": 1782,
+   "wer": 0.12695109261186263,
+   "sub": 68,
+   "del": 158,
+   "ins": 18,
+   "cer": 0.10411092191680857,
+   "wer_nofill": 0.11700382722799343,
+   "cer_nofill": 0.09543779387469818,
+   "terms": {
+    "term_cer": 0.12562814070351758,
+    "term_exact": 17,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      2,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      1,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      1,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      1,
+      1
+     ]
+    }
+   }
+  },
+  "filtered": {
+   "hyp_words": 1782,
+   "wer": 0.12695109261186263,
+   "sub": 68,
+   "del": 158,
+   "ins": 18,
+   "cer": 0.10411092191680857,
+   "wer_nofill": 0.11700382722799343,
+   "cer_nofill": 0.09543779387469818,
+   "terms": {
+    "term_cer": 0.12562814070351758,
+    "term_exact": 17,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      2,
+      2
+     ],
+     "Quốc hội": [
+      4,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      1,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      1,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      1,
+      1
+     ]
+    }
+   }
+  },
+  "flagged": [],
+  "vad_hit": 0.9884166502441478,
+  "vad_extra": 3.430000000000348,
+  "speech_without_text": 19.928000000000054,
+  "speakers": 5,
+  "spk_acc": 0.9778911564625851,
+  "elapsed": 54.3
+ },
+ "babble_10db": {
+  "raw": {
+   "hyp_words": 1752,
+   "wer": 0.16389177939646202,
+   "sub": 105,
+   "del": 190,
+   "ins": 20,
+   "cer": 0.13159815130138652,
+   "wer_nofill": 0.15144887916894478,
+   "cer_nofill": 0.12072690303723471,
+   "terms": {
+    "term_cer": 0.18592964824120603,
+    "term_exact": 15,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      2,
+      2
+     ],
+     "Quốc hội": [
+      2,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      1,
+      5
+     ],
+     "kỷ cương": [
+      1,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      0,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      1,
+      1
+     ]
+    }
+   }
+  },
+  "filtered": {
+   "hyp_words": 1737,
+   "wer": 0.16389177939646202,
+   "sub": 90,
+   "del": 205,
+   "ins": 20,
+   "cer": 0.1374361469228898,
+   "wer_nofill": 0.15144887916894478,
+   "cer_nofill": 0.12682678866437921,
+   "terms": {
+    "term_cer": 0.18592964824120603,
+    "term_exact": 15,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      2,
+      2
+     ],
+     "Quốc hội": [
+      2,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      1,
+      5
+     ],
+     "kỷ cương": [
+      1,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      2,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      0,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      1,
+      1
+     ],
+     "phóng xạ": [
+      1,
+      1
+     ],
+     "niêm phong": [
+      1,
+      1
+     ]
+    }
+   }
+  },
+  "flagged": [
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn"
+  ],
+  "vad_hit": 0.998489128292715,
+  "vad_extra": 13.680000000000064,
+  "speech_without_text": 29.13400000000001,
+  "speakers": 6,
+  "spk_acc": 0.9854397204426325,
+  "elapsed": 55.4
+ },
+ "babble_5db": {
+  "raw": {
+   "hyp_words": 1381,
+   "wer": 0.4136316337148803,
+   "sub": 216,
+   "del": 560,
+   "ins": 19,
+   "cer": 0.3409146193140355,
+   "wer_nofill": 0.4062329141607436,
+   "cer_nofill": 0.3333333333333333,
+   "terms": {
+    "term_cer": 0.38190954773869346,
+    "term_exact": 10,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      2,
+      2
+     ],
+     "Quốc hội": [
+      2,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      1,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      1,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      0,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      0,
+      1
+     ],
+     "phóng xạ": [
+      0,
+      1
+     ],
+     "niêm phong": [
+      0,
+      1
+     ]
+    }
+   }
+  },
+  "filtered": {
+   "hyp_words": 1292,
+   "wer": 0.4162330905306972,
+   "sub": 134,
+   "del": 648,
+   "ins": 18,
+   "cer": 0.3679153490634882,
+   "wer_nofill": 0.40896664844177144,
+   "cer_nofill": 0.3609098996060491,
+   "terms": {
+    "term_cer": 0.3844221105527638,
+    "term_exact": 10,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      2,
+      2
+     ],
+     "Quốc hội": [
+      2,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      1,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      1,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      1,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      1,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      0,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      0,
+      1
+     ],
+     "phóng xạ": [
+      0,
+      1
+     ],
+     "niêm phong": [
+      0,
+      1
+     ]
+    }
+   }
+  },
+  "flagged": [
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Các bạn hãy đăng ký kênh để ủng hộ kênh của chúng mình nhé.",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn"
+  ],
+  "vad_hit": 1.0,
+  "vad_extra": 16.990000000000066,
+  "speech_without_text": 138.21200000000002,
+  "speakers": 8,
+  "spk_acc": 0.9442700156985872,
+  "elapsed": 53.2
+ },
+ "babble_0db": {
+  "raw": {
+   "hyp_words": 499,
+   "wer": 0.899063475546306,
+   "sub": 295,
+   "del": 1428,
+   "ins": 5,
+   "cer": 0.8064947701289225,
+   "wer_nofill": 0.8972115910333516,
+   "cer_nofill": 0.8023891218706316,
+   "terms": {
+    "term_cer": 0.8492462311557789,
+    "term_exact": 2,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      0,
+      2
+     ],
+     "Quốc hội": [
+      0,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      0,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      0,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      0,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      0,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      0,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      0,
+      1
+     ],
+     "phóng xạ": [
+      0,
+      1
+     ],
+     "niêm phong": [
+      0,
+      1
+     ]
+    }
+   }
+  },
+  "filtered": {
+   "hyp_words": 273,
+   "wer": 0.913111342351717,
+   "sub": 96,
+   "del": 1654,
+   "ins": 5,
+   "cer": 0.8795913403064948,
+   "wer_nofill": 0.9119737561509021,
+   "cer_nofill": 0.8774939636548481,
+   "terms": {
+    "term_cer": 0.8743718592964824,
+    "term_exact": 2,
+    "term_total": 30,
+    "per_term": {
+     "Nguyễn Hải Long": [
+      0,
+      2
+     ],
+     "Quốc hội": [
+      0,
+      4
+     ],
+     "xử lý vi phạm hành chính": [
+      0,
+      2
+     ],
+     "phòng cháy chữa cháy": [
+      0,
+      5
+     ],
+     "kỷ cương": [
+      0,
+      4
+     ],
+     "răn đe": [
+      0,
+      2
+     ],
+     "an ninh con người": [
+      0,
+      2
+     ],
+     "chung cư mini": [
+      0,
+      1
+     ],
+     "ngộ độc bánh mì": [
+      0,
+      1
+     ],
+     "ngân sách Nhà nước": [
+      0,
+      1
+     ],
+     "chất độc da cam": [
+      0,
+      1
+     ],
+     "an toàn bức xạ": [
+      1,
+      1
+     ],
+     "hạt nhân": [
+      1,
+      1
+     ],
+     "nước ngầm": [
+      0,
+      1
+     ],
+     "phóng xạ": [
+      0,
+      1
+     ],
+     "niêm phong": [
+      0,
+      1
+     ]
+    }
+   }
+  },
+  "flagged": [
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Các bạn hãy đăng ký kênh để ủng hộ kênh của chúng mình nhé.",
+   "Các bạn hãy đăng ký kênh để ủng hộ kênh của mình nhé.",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Các bạn hãy đăng ký kênh để ủng hộ kênh của mình nhé.",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Hãy subscribe cho kênh La La School Để không bỏ",
+   "Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn",
+   "Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn"
+  ],
+  "vad_hit": 1.0,
+  "vad_extra": 17.070000000000107,
+  "speech_without_text": 372.88,
+  "speakers": 6,
+  "spk_acc": 0.6194029850746269,
+  "elapsed": 40.3
+ }
+}
