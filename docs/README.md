@@ -61,6 +61,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | 1.6 | 2026-11-02 | LLM chuyển sang hỏi đáp trên transcript: đổi D2, D10, D12, D16, viết lại kiến trúc mục 6, API mục 10, và F7. Bỏ chuẩn hóa bằng LLM, biên bản theo mẫu, `text_cleaned`, `llm_runs`, `llm_map_shards`, `worker-io`. Thêm bảng `chat_messages`, migration `0003_chat`. Chưa chạy với model thật, xem #23 ở [`FLOWS.md`](FLOWS.md) |
 | 1.6.1 | 2026-11-02 | Chọn `gemini-3.5-flash-lite`, cập nhật D2. Thêm mã `llm_rate_limited`. Thiếu `LLM_API_KEY` cũng trả `llm_not_configured` |
 | 1.6.2 | 2026-11-02 | Gộp đoạn Whisper cắt giữa câu sau khi gán người nói, kiến trúc mục 2.5 |
+| 1.6.3 | 2026-11-02 | Panel công cụ của trang job đổi được độ rộng, kiến trúc mục 2.7 |
 
 ## Việc còn mở
 

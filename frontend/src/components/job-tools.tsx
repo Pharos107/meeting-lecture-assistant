@@ -1,9 +1,35 @@
 "use client";
 
-import type { ReactNode } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+  type PointerEvent,
+  type ReactNode,
+} from "react";
 import { Bookmark, Sparkles, Users, X } from "lucide-react";
 
 export type ToolId = "assistant" | "notes" | "speakers";
+
+const PANEL_WIDTH_KEY = "job_panel_width";
+const PANEL_DEFAULT_WIDTH = 340;
+const PANEL_MIN_WIDTH = 300;
+const RAIL_WIDTH = 52;
+// Kéo rộng tới đâu thì cột chữ vẫn còn chừng này, kể cả khi panel đè lên chữ.
+const TRANSCRIPT_MIN_WIDTH = 340;
+const KEY_STEP_PX = 24;
+
+function readPanelWidth() {
+  try {
+    const saved = Number(localStorage.getItem(PANEL_WIDTH_KEY));
+    return saved >= PANEL_MIN_WIDTH ? saved : PANEL_DEFAULT_WIDTH;
+  } catch {
+    return PANEL_DEFAULT_WIDTH;
+  }
+}
 
 const TOOLS: { id: ToolId; label: string; icon: ReactNode }[] = [
   { id: "assistant", label: "Trợ lý AI", icon: <Sparkles className="size-5" /> },
@@ -61,9 +87,56 @@ type JobToolPanelProps = {
   children: ReactNode;
 };
 
-/** Panel của công cụ đang mở. Rộng từ 1280 px thì nằm cạnh chữ, hẹp hơn thì đè lên, điện thoại là tấm trượt từ đáy. */
+/**
+ * Panel của công cụ đang mở. Rộng từ 1280 px thì nằm cạnh chữ, hẹp hơn thì đè lên, điện thoại là tấm trượt từ đáy.
+ * Từ 1024 px người dùng kéo mép trái để đổi độ rộng, các công cụ dùng chung một độ rộng.
+ */
 export function JobToolPanel({ tool, fill = false, onClose, children }: JobToolPanelProps) {
   const label = TOOLS.find((item) => item.id === tool)?.label;
+  const panel = useRef<HTMLElement>(null);
+  const drag = useRef<{ startX: number; startWidth: number } | null>(null);
+  const [width, setWidth] = useState(readPanelWidth);
+  const [maxWidth, setMaxWidth] = useState(PANEL_DEFAULT_WIDTH);
+  // Giữ riêng độ rộng đã chọn: màn hẹp lại thì panel co theo, rộng ra thì trở về đúng cỡ cũ.
+  const shownWidth = Math.min(width, maxWidth);
+
+  useLayoutEffect(() => {
+    const area = panel.current?.parentElement;
+    if (!area) return;
+    const measure = () => setMaxWidth(Math.max(PANEL_MIN_WIDTH, area.clientWidth - RAIL_WIDTH - TRANSCRIPT_MIN_WIDTH));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(area);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(PANEL_WIDTH_KEY, String(width));
+    } catch {
+      // Không ghi được thì panel về độ rộng mặc định ở lần mở sau.
+    }
+  }, [width]);
+
+  function resize(next: number) {
+    setWidth(Math.round(Math.min(Math.max(next, PANEL_MIN_WIDTH), maxWidth)));
+  }
+
+  function startDrag(event: PointerEvent<HTMLDivElement>) {
+    if (event.button !== 0) return;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    drag.current = { startX: event.clientX, startWidth: shownWidth };
+  }
+
+  function moveDrag(event: PointerEvent<HTMLDivElement>) {
+    if (drag.current) resize(drag.current.startWidth + drag.current.startX - event.clientX);
+  }
+
+  function resizeByKey(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "ArrowLeft") resize(shownWidth + KEY_STEP_PX);
+    else if (event.key === "ArrowRight") resize(shownWidth - KEY_STEP_PX);
+  }
+
   return (
     <>
       <button
@@ -73,9 +146,31 @@ export function JobToolPanel({ tool, fill = false, onClose, children }: JobToolP
         className="fixed inset-0 z-30 size-full bg-slate-900/40 lg:hidden"
       />
       <aside
+        ref={panel}
         aria-label={label}
-        className={`fixed inset-x-0 bottom-0 z-30 flex ${fill ? "h-[75dvh]" : "max-h-[75dvh]"} flex-col rounded-t-3xl bg-white shadow-2xl lg:absolute lg:inset-y-0 lg:left-auto lg:right-[52px] lg:h-auto lg:max-h-none lg:w-[340px] lg:rounded-none lg:border-l lg:border-sky-100 xl:static xl:shrink-0 xl:shadow-none`}
+        style={{ "--panel-width": `${shownWidth}px` } as CSSProperties}
+        className={`fixed inset-x-0 bottom-0 z-30 flex ${fill ? "h-[75dvh]" : "max-h-[75dvh]"} flex-col rounded-t-3xl bg-white shadow-2xl lg:absolute lg:inset-y-0 lg:left-auto lg:right-[52px] lg:h-auto lg:max-h-none lg:w-(--panel-width) lg:rounded-none lg:border-l lg:border-sky-100 xl:relative xl:right-0 xl:shrink-0 xl:shadow-none`}
       >
+        <div
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Đổi độ rộng panel"
+          aria-valuemin={PANEL_MIN_WIDTH}
+          aria-valuemax={maxWidth}
+          aria-valuenow={shownWidth}
+          tabIndex={0}
+          title="Kéo để đổi độ rộng, bấm đúp để về mặc định"
+          onPointerDown={startDrag}
+          onPointerMove={moveDrag}
+          onPointerUp={() => (drag.current = null)}
+          onPointerCancel={() => (drag.current = null)}
+          onDoubleClick={() => resize(PANEL_DEFAULT_WIDTH)}
+          onKeyDown={resizeByKey}
+          className="group absolute inset-y-0 -left-1.5 z-10 hidden w-3 cursor-col-resize touch-none select-none items-center justify-center outline-none lg:flex"
+        >
+          <span className="h-full w-0.5 group-hover:bg-blue-300 group-focus-visible:bg-blue-500 group-active:bg-blue-500" />
+          <span className="absolute h-10 w-1 rounded-full bg-slate-300 group-hover:bg-blue-500 group-focus-visible:bg-blue-500 group-active:bg-blue-500" />
+        </div>
         <div className="flex items-center justify-between px-4 py-3">
           <h2 className="text-sm font-semibold text-slate-900">{label}</h2>
           <button

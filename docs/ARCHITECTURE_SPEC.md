@@ -291,7 +291,8 @@ Mọi trang sau đăng nhập dùng chung một khung ở layout `(app)`, cao b�
 
 - Vùng trái là menu điều hướng: bản ghi mới, ghi trực tiếp, các bản ghi gần đây, hồ sơ giọng, tài khoản. Nút hamburger thu menu còn dãy biểu tượng. Mặc định menu mở, riêng trang job thì thu gọn. Mỗi loại trang nhớ lựa chọn riêng.
 - Vùng giữa là nội dung. Ở trang job gồm tiêu đề, transcript rộng tối đa 768 px, và trình phát cố định ở đáy cột. Transcript và trình phát vẫn là hai vùng nhìn của D15.
-- Vùng phải chỉ có ở trang job: dãy biểu tượng công cụ, bấm thì mở panel rộng 340 px, mỗi lúc một panel. Các công cụ là `Trợ lý AI`, `Đánh dấu và việc`, `Người nói`. Xuất file nằm ở tiêu đề vì thao tác trên cả bản ghi.
+- Vùng phải chỉ có ở trang job: dãy biểu tượng công cụ, bấm thì mở panel, mỗi lúc một panel. Các công cụ là `Trợ lý AI`, `Đánh dấu và việc`, `Người nói`. Xuất file nằm ở tiêu đề vì thao tác trên cả bản ghi.
+- Từ 1024 px panel rộng mặc định 340 px, người dùng kéo mép trái hoặc dùng phím mũi tên khi mép đang được chọn để đổi độ rộng, bấm đúp để về mặc định. Rộng tối thiểu 300 px, và cột chữ luôn còn ít nhất 340 px. Các công cụ dùng chung một độ rộng, lưu theo trình duyệt.
 - Từ 1280 px panel nằm cạnh chữ. Từ 1024 px đến dưới 1280 px panel đè lên chữ. Dưới 1024 px menu trái là ngăn kéo, dãy biểu tượng nằm dưới trình phát, panel là tấm trượt từ đáy.
 - Panel `Trợ lý AI` gồm lịch sử hỏi đáp, câu hỏi gợi ý, và ô nhập. Mở lại bản ghi đã có lịch sử hỏi đáp trên màn từ 1280 px thì panel mở sẵn.
 
