@@ -48,6 +48,7 @@ const CANCELLABLE: JobStatus[] = ["queued", "capturing", "preprocessing", "trans
 const NOTICE_MS = 5_000;
 const JUMP_HIGHLIGHT_MS = 2_000;
 const PLAYBACK_RATES = [1, 1.25, 1.5, 2, 0.75];
+const MEDIA_TOKEN_TTL_MS = 5 * 60_000;
 // id trên URL đi thẳng vào đường dẫn API, nên chỉ nhận đúng dạng UUID mà server cấp.
 const JOB_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const RECONNECT_MS = 3_000;
@@ -112,6 +113,9 @@ function JobView({ jobId }: { jobId: string }) {
   const [playing, setPlaying] = useState(false);
   const [rate, setRate] = useState(1);
   const [audioDurationMs, setAudioDurationMs] = useState(0);
+  const mediaLoaded = useRef(false);
+  const mediaRetriedAt = useRef(0);
+  const resumeAtRef = useRef<number | null>(null);
 
   const chatShown = useRef(false);
   const passRef = useRef<number | null>(null);
@@ -278,12 +282,19 @@ function JobView({ jobId }: { jobId: string }) {
   }, [hasAudio, loadMedia]);
 
   function onAudioError() {
-    // Token sống 5 phút. Hết hạn thì xin token mới và giữ vị trí đang nghe.
-    const audio = audioRef.current;
-    const resumeAt = audio?.currentTime ?? 0;
-    void loadMedia().then(() => {
-      if (audioRef.current) audioRef.current.currentTime = resumeAt;
-    });
+    setPlaying(false);
+    // src chưa nạp được lần nào là thiếu file, còn lỗi lại ngay sau khi vừa xin token thì token
+    // không phải nguyên nhân. Xin thêm chỉ thành vòng lặp request, nên dừng nghe lại ở đây.
+    const now = Date.now();
+    if (!mediaLoaded.current || now - mediaRetriedAt.current < MEDIA_TOKEN_TTL_MS) {
+      setAudioSrc(null);
+      return;
+    }
+    // Token sống 5 phút. Hết hạn thì xin token mới, vị trí đang nghe khôi phục khi src mới nạp xong.
+    mediaLoaded.current = false;
+    mediaRetriedAt.current = now;
+    resumeAtRef.current = audioRef.current?.currentTime ?? 0;
+    void loadMedia();
   }
 
   function seek(ms: number) {
@@ -694,6 +705,11 @@ function JobView({ jobId }: { jobId: string }) {
           preload="metadata"
           onTimeUpdate={(event) => setCurrentMs(Math.round(event.currentTarget.currentTime * 1000))}
           onLoadedMetadata={(event) => {
+            mediaLoaded.current = true;
+            if (resumeAtRef.current !== null) {
+              event.currentTarget.currentTime = resumeAtRef.current;
+              resumeAtRef.current = null;
+            }
             event.currentTarget.playbackRate = rate;
             const seconds = event.currentTarget.duration;
             if (Number.isFinite(seconds)) setAudioDurationMs(Math.round(seconds * 1000));
