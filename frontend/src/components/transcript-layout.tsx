@@ -27,7 +27,7 @@ type TranscriptLayoutProps = {
 export function TranscriptLayout(props: TranscriptLayoutProps) {
   return (
     <section className="flex min-h-0 flex-1 flex-col">
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="scrollbar-soft min-h-0 flex-1 overflow-y-auto">
         <div className="mx-auto w-full max-w-3xl px-4 pb-6 pt-3 sm:px-6">
           {props.banner}
 

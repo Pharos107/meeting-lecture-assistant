@@ -117,7 +117,7 @@ export function ChatPanel({ chat, canAsk, durationMs, onSeekStamp }: ChatPanelPr
           const box = event.currentTarget;
           stick.current = box.scrollHeight - box.scrollTop - box.clientHeight < STICK_BOTTOM_PX;
         }}
-        className="min-h-0 flex-1 space-y-3 overflow-y-auto"
+        className="scrollbar-thread -mr-4 min-h-0 flex-1 space-y-3 overflow-y-auto pr-2 [scrollbar-gutter:stable]"
       >
         {messages.length === 0 ? (
           canAsk ? (
