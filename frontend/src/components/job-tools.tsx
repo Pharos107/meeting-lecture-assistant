@@ -166,10 +166,10 @@ export function JobToolPanel({ tool, fill = false, onClose, children }: JobToolP
           onPointerCancel={() => (drag.current = null)}
           onDoubleClick={() => resize(PANEL_DEFAULT_WIDTH)}
           onKeyDown={resizeByKey}
-          className="group absolute inset-y-0 -left-1.5 z-10 hidden w-3 cursor-col-resize touch-none select-none items-center justify-center outline-none lg:flex"
+          className="group absolute inset-y-0 left-0 z-10 hidden w-2.5 cursor-col-resize touch-none select-none items-center outline-none lg:flex"
         >
           <span className="h-full w-0.5 group-hover:bg-blue-300 group-focus-visible:bg-blue-500 group-active:bg-blue-500" />
-          <span className="absolute h-10 w-1 rounded-full bg-slate-300 group-hover:bg-blue-500 group-focus-visible:bg-blue-500 group-active:bg-blue-500" />
+          <span className="absolute left-0.5 h-10 w-1 rounded-full bg-slate-200 group-hover:bg-blue-500 group-focus-visible:bg-blue-500 group-active:bg-blue-500" />
         </div>
         <div className="flex items-center justify-between px-4 py-3">
           <h2 className="text-sm font-semibold text-slate-900">{label}</h2>
@@ -182,7 +182,7 @@ export function JobToolPanel({ tool, fill = false, onClose, children }: JobToolP
             <X className="size-4" />
           </button>
         </div>
-        <div className={`min-h-0 flex-1 px-4 pb-4 ${fill ? "flex flex-col" : "overflow-y-auto"}`}>{children}</div>
+        <div className={`min-h-0 flex-1 px-4 pb-4 ${fill ? "flex flex-col" : "scrollbar-thread overflow-y-auto"}`}>{children}</div>
       </aside>
     </>
   );

@@ -56,6 +56,42 @@ textarea {
   font: inherit;
 }
 
+/* Viền trong suốt thu nét vẽ lại nhưng vẫn giữ vùng bấm rộng hơn nét. */
+.scrollbar-soft {
+  --scrollbar-line: 6px;
+}
+
+.scrollbar-thread {
+  --scrollbar-line: 2px;
+}
+
+.scrollbar-soft::-webkit-scrollbar,
+.scrollbar-thread::-webkit-scrollbar {
+  width: calc(var(--scrollbar-line) + 6px);
+}
+
+.scrollbar-soft::-webkit-scrollbar-thumb,
+.scrollbar-thread::-webkit-scrollbar-thumb {
+  min-height: 40px;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: #bae6fd padding-box;
+}
+
+.scrollbar-soft::-webkit-scrollbar-thumb:hover,
+.scrollbar-thread::-webkit-scrollbar-thumb:hover {
+  background-color: #60a5fa;
+}
+
+/* Chrome bỏ qua ::-webkit-scrollbar khi có scrollbar-color, nên chỉ đặt cho trình duyệt không có nó. */
+@supports not selector(::-webkit-scrollbar) {
+  .scrollbar-soft,
+  .scrollbar-thread {
+    scrollbar-width: thin;
+    scrollbar-color: #bae6fd transparent;
+  }
+}
+
 @layer base {
   .theme {
     --font-heading: var(--font-sans);

@@ -651,38 +651,40 @@ function JobView({ jobId }: { jobId: string }) {
   return (
     <div className="relative flex h-full flex-col overflow-hidden lg:flex-row">
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <header className="mx-auto flex w-full max-w-3xl items-center gap-3 px-4 pt-3 sm:px-6">
-          <div className="min-w-0 flex-1">
-            <h1 className="truncate text-lg font-bold tracking-tight text-[#0f2744]">{job.title}</h1>
-            <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
-              <JobStatusBadge status={job.status} />
-              <span>{new Date(job.created_at).toLocaleString("vi-VN")}</span>
-              {job.duration_ms != null ? <span>· {formatMs(job.duration_ms)}</span> : null}
-              {job.diarization_device === "cpu" ? <span>· người nói chạy trên CPU</span> : null}
-              {pass === 1 ? <span>· bản nháp</span> : null}
+        <header className="border-b border-sky-100 bg-white">
+          <div className="mx-auto flex w-full max-w-3xl items-center gap-3 px-4 py-2.5 sm:px-6">
+            <div className="min-w-0 flex-1">
+              <h1 className="truncate text-lg font-bold tracking-tight text-[#0f2744]">{job.title}</h1>
+              <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
+                <JobStatusBadge status={job.status} />
+                <span>{new Date(job.created_at).toLocaleString("vi-VN")}</span>
+                {job.duration_ms != null ? <span>· {formatMs(job.duration_ms)}</span> : null}
+                {job.diarization_device === "cpu" ? <span>· người nói chạy trên CPU</span> : null}
+                {pass === 1 ? <span>· bản nháp</span> : null}
+              </div>
             </div>
-          </div>
-          <div className="flex shrink-0 items-center gap-2">
-            {CANCELLABLE.includes(job.status) ? (
-              <HeaderButton onClick={() => void cancelJob()} icon={<Square className="size-4" />}>
-                Hủy
-              </HeaderButton>
-            ) : null}
-            {job.status === "failed" ? (
-              <HeaderButton onClick={() => void retryJob()} icon={<RotateCcw className="size-4" />}>
-                Chạy lại
-              </HeaderButton>
-            ) : null}
-            <ExportMenu disabled={!canEdit} onExport={(format) => void exportFile(format)} />
-            <button
-              type="button"
-              onClick={() => void deleteJob()}
-              aria-label="Xóa bản ghi"
-              title="Xóa bản ghi"
-              className="rounded-full p-2 text-rose-600 hover:bg-rose-50"
-            >
-              <Trash2 className="size-4" />
-            </button>
+            <div className="flex shrink-0 items-center gap-2">
+              {CANCELLABLE.includes(job.status) ? (
+                <HeaderButton onClick={() => void cancelJob()} icon={<Square className="size-4" />}>
+                  Hủy
+                </HeaderButton>
+              ) : null}
+              {job.status === "failed" ? (
+                <HeaderButton onClick={() => void retryJob()} icon={<RotateCcw className="size-4" />}>
+                  Chạy lại
+                </HeaderButton>
+              ) : null}
+              <ExportMenu disabled={!canEdit} onExport={(format) => void exportFile(format)} />
+              <button
+                type="button"
+                onClick={() => void deleteJob()}
+                aria-label="Xóa bản ghi"
+                title="Xóa bản ghi"
+                className="rounded-full p-2 text-rose-600 hover:bg-rose-50"
+              >
+                <Trash2 className="size-4" />
+              </button>
+            </div>
           </div>
         </header>
 
