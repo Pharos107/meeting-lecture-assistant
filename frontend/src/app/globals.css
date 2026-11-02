@@ -56,6 +56,36 @@ textarea {
   font: inherit;
 }
 
+/* Giá trị mặc định của cài đặt đọc. useReaderPrefs đặt đè trên khung trang. */
+:root {
+  --reader-size: 14px;
+  --reader-align: left;
+  --reader-width: 48rem;
+  --reader-selection: #bfdbfe;
+  --reader-mark: #fbbf24;
+}
+
+.reader-text {
+  font-family: var(--reader-font, inherit);
+  font-size: var(--reader-size);
+  line-height: 2;
+  text-align: var(--reader-align);
+}
+
+/* SelectionPaint vẽ vùng bôi đen thay cho trình duyệt. */
+.reader-surface ::selection {
+  background: transparent;
+}
+
+.reader-mark {
+  padding-block: 0.1em;
+  border-radius: 0.375rem;
+  background: color-mix(in srgb, var(--reader-mark) 40%, transparent);
+  color: inherit;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 /* Viền trong suốt thu nét vẽ lại nhưng vẫn giữ vùng bấm rộng hơn nét. */
 .scrollbar-soft {
   --scrollbar-line: 6px;

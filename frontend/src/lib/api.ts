@@ -364,6 +364,31 @@ function parseFrame(frame: string): (Record<string, unknown> & { type: string })
   }
 }
 
+// ----- Chia sẻ bằng liên kết -----
+
+export type ShareState = { enabled: boolean; token: string | null; url: string | null };
+
+export type SharedSegment = { start_ms: number; end_ms: number; text: string; speaker: string | null };
+
+export type SharedJob = {
+  title: string;
+  duration_ms: number | null;
+  created_at: string;
+  segments: SharedSegment[];
+};
+
+/** Không đi qua apiFetch: người mở liên kết có thể chưa có tài khoản, không được đẩy họ về /login. */
+export async function fetchShared(token: string): Promise<SharedJob> {
+  let res: Response;
+  try {
+    res = await fetch(`/api/shared/${encodeURIComponent(token)}`);
+  } catch {
+    throw new ApiRequestError(0, "network_error", "Không kết nối được máy chủ.");
+  }
+  if (!res.ok) throw await readError(res);
+  return (await res.json()) as SharedJob;
+}
+
 // ----- Hỏi đáp. Chữ trả lời đi trên SSE của chính request hỏi -----
 
 export type ChatStatus = "streaming" | "done" | "stopped" | "failed";

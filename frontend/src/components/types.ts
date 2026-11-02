@@ -4,6 +4,12 @@ export type Word = {
   endMs: number;
 };
 
+export type SegmentMark = {
+  startMs: number;
+  endMs: number;
+  quote: string;
+};
+
 export type Segment = {
   id: string;
   speakerLabel: string;
@@ -12,7 +18,7 @@ export type Segment = {
   textRaw: string;
   textEdited: string | null;
   words: Word[];
-  marked: boolean;
+  marks: SegmentMark[];
 };
 
 export type Speaker = {

@@ -40,12 +40,13 @@ export function ExportMenu({ disabled = false, onExport }: { disabled?: boolean;
       <button
         type="button"
         disabled={disabled}
+        aria-label="Xuất file"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
-        className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+        className="inline-flex h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Download className="size-4" />
-        <span className="hidden sm:inline">Xuất file</span>
+        <span className="hidden text-sm font-medium @xl:inline">Xuất file</span>
         <ChevronDown className="size-4" />
       </button>
       {open ? (

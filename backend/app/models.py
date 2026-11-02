@@ -248,6 +248,19 @@ class MediaToken(Base):
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
+class JobShare(Base):
+    __tablename__ = "job_shares"
+
+    job_id: Mapped[uuid.UUID] = mapped_column(
+        Uuid(as_uuid=True),
+        ForeignKey("jobs.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    # Không băm như media_tokens: chủ bản ghi phải lấy lại được đúng liên kết đã gửi đi.
+    token: Mapped[str] = mapped_column(Text, unique=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
 class WsTicket(Base):
     __tablename__ = "ws_tickets"
     __table_args__ = (Index("ws_tickets_session_idx", "session_id"),)
