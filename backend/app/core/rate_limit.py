@@ -42,6 +42,8 @@ login_attempts = SlidingWindow(60)
 register_attempts = SlidingWindow(60)
 upload_attempts = SlidingWindow(60)
 chat_attempts = SlidingWindow(60)
+# Cao hơn các cửa khác: đứng sau Caddy thì mọi người xem liên kết có thể chung một IP.
+share_views = SlidingWindow(600)
 
 
 def client_key(request: Request) -> str:

@@ -249,6 +249,39 @@ Chỉ khi job `ready`, hoặc job `failed` mà transcript đang trả pass 1.
 
 Chuỗi rỗng xóa alias. Có chữ thì `source` của alias thành `manual`. `200` trả `{ "label": "SPEAKER_00", "display_name": "An", "source": "manual" }`.
 
+### `GET /api/jobs/{job_id}/share`
+
+`200` trả trạng thái chia sẻ. Đang tắt thì `enabled` là `false`, hai trường còn lại là `null`.
+
+```json
+{ "enabled": true, "token": "...", "url": "/shared/..." }
+```
+
+### `PUT /api/jobs/{job_id}/share`
+
+Bật chia sẻ, `200` trả cùng dạng. Gọi lại khi đang bật thì giữ nguyên token. Job chưa `ready` trả `409 invalid_state`.
+
+### `DELETE /api/jobs/{job_id}/share`
+
+Tắt chia sẻ, `204`. Liên kết cũ hết hiệu lực ngay. Bật lại sinh token mới. Gọi khi đang tắt vẫn trả `204`.
+
+### `GET /api/shared/{token}`
+
+Không cần đăng nhập. Token không tồn tại, đã tắt, hoặc job không còn `ready` đều trả `404`. Giới hạn 600 request mỗi phút theo IP, vượt thì `429 rate_limited`. Header `Cache-Control: no-store` và `X-Robots-Tag: noindex`.
+
+```json
+{
+  "title": "Họp giao ban",
+  "duration_ms": 600000,
+  "created_at": "2026-11-02T01:00:00Z",
+  "segments": [
+    { "start_ms": 0, "end_ms": 1800, "text": "Xin chào", "speaker": "An" }
+  ]
+}
+```
+
+`text` là `text_edited`, nếu null thì `text_raw`. `speaker` là tên hiển thị. Phản hồi không có id job, thông tin chủ, từng từ, đánh dấu, việc, hỏi đáp, hay đường dẫn audio.
+
 ## 6. Audio
 
 ### `POST /api/jobs/{job_id}/media-token`
@@ -680,6 +713,12 @@ create table media_tokens (
   expires_at timestamptz not null
 );
 
+create table job_shares (
+  job_id uuid primary key references jobs (id) on delete cascade,
+  token text not null unique,
+  created_at timestamptz not null
+);
+
 create table ws_tickets (
   token_hash text primary key,
   session_id uuid not null references live_sessions (id) on delete cascade,
@@ -732,6 +771,6 @@ create index media_tokens_job_idx on media_tokens (job_id);
 create index ws_tickets_session_idx on ws_tickets (session_id);
 ```
 
-`warnings` là mảng object `{ "code", "message" }`. Token media và ticket WebSocket lưu SHA-256 của chuỗi gửi cho client.
+`warnings` là mảng object `{ "code", "message" }`. Token media và ticket WebSocket lưu SHA-256 của chuỗi gửi cho client. Token của `job_shares` lưu nguyên văn, vì chủ bản ghi phải lấy lại được đúng liên kết đã gửi. Đọc được bảng này cũng đã đọc được transcript, nên băm token không che thêm gì.
 
 `audio_path` trỏ tới `/data/audio/{job_id}.opus` trong volume. `pcm_path` trỏ tới file tạm của phiên và được xóa khi phiên sang `finalized` hoặc `failed`. `sample_path` của hồ sơ giọng trỏ tới `/data/voice/{user_id}/{profile_id}.opus` và được xóa cùng hồ sơ.

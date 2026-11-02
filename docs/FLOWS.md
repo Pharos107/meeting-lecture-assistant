@@ -409,7 +409,8 @@ Media token hết hạn sau 5 phút. Trình phát nhận `404` thì trang xin to
 | Phần | Hiện trạng |
 |---|---|
 | Transcript, sửa câu, alias, đánh dấu, việc `manual`, media token, Range | Có, có test |
-| Trang `/jobs/[id]` | Có, theo khung ba vùng ở kiến trúc mục 2.7. SSE, chạy chữ, nghe lại, đổi tên người nói, đánh dấu theo vùng bôi đen, tạo việc, hỏi trợ lý, xuất file, hủy, chạy lại, xóa. Chưa có ô sửa câu, xem #21 |
+| Trang `/jobs/[id]` | Có, theo khung ba vùng ở kiến trúc mục 2.7. SSE, chạy chữ, nghe lại, đổi tên người nói, đánh dấu theo vùng bôi đen, tạo việc, hỏi trợ lý, xuất file, chia sẻ, cài đặt hiển thị, hủy, chạy lại, xóa. Chưa có ô sửa câu, xem #21 |
+| Liên kết chia sẻ, bảng `job_shares`, trang `/shared/[token]` | Có, có test API, đã chạy qua trình duyệt với backend trên SQLite |
 
 ## 9. F7. Hỏi đáp với LLM
 

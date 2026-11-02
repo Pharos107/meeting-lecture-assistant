@@ -35,7 +35,7 @@ const INITIAL_SEGMENTS: Segment[] = [
     endMs: 18_400,
     textRaw: "Mình chốt phạm vi demo gồm tải file và nghe trực tiếp.",
     textEdited: null,
-    marked: false,
+    marks: [],
     words: words("Mình chốt phạm vi demo gồm tải file và nghe trực tiếp.", 1_200, 18_400),
   },
   {
@@ -45,7 +45,7 @@ const INITIAL_SEGMENTS: Segment[] = [
     endMs: 41_000,
     textRaw: "Phần người nói chạy pyannote sau khi Whisper đã nhả GPU.",
     textEdited: null,
-    marked: false,
+    marks: [],
     words: words("Phần người nói chạy pyannote sau khi Whisper đã nhả GPU.", 19_000, 41_000),
   },
   {
@@ -55,7 +55,7 @@ const INITIAL_SEGMENTS: Segment[] = [
     endMs: 68_000,
     textRaw: "Bôi đen một đoạn trong câu để đánh dấu hoặc tạo việc tại mốc đó.",
     textEdited: "Bôi đen một đoạn trong câu để đánh dấu hoặc tạo việc cần làm.",
-    marked: true,
+    marks: [{ startMs: 42_500, endMs: 68_000, quote: "đánh dấu hoặc tạo việc" }],
     words: words("Bôi đen một đoạn trong câu để đánh dấu hoặc tạo việc tại mốc đó.", 42_500, 68_000),
   },
   {
@@ -65,7 +65,7 @@ const INITIAL_SEGMENTS: Segment[] = [
     endMs: 92_000,
     textRaw: "Khi dừng nghe, bản chuẩn quét lại cả file rồi mới thay bản nháp.",
     textEdited: null,
-    marked: false,
+    marks: [],
     words: words("Khi dừng nghe, bản chuẩn quét lại cả file rồi mới thay bản nháp.", 69_200, 92_000),
   },
 ];
@@ -104,7 +104,13 @@ export default function ComponentsPage() {
 
   function mark(marked: boolean) {
     if (!selectedId) return;
-    setSegments((current) => current.map((segment) => (segment.id === selectedId ? { ...segment, marked } : segment)));
+    setSegments((current) =>
+      current.map((segment) =>
+        segment.id === selectedId
+          ? { ...segment, marks: marked ? [{ startMs: segment.startMs, endMs: segment.endMs, quote: segment.textEdited ?? segment.textRaw }] : [] }
+          : segment,
+      ),
+    );
     setNotice(marked ? "Đã đánh dấu đoạn đang chọn." : "Đã bỏ đánh dấu.");
   }
 
@@ -145,7 +151,6 @@ export default function ComponentsPage() {
             />
             <SpeakerList speakers={speakers} onRename={rename} />
             <SelectionToolbar
-              quote="đánh dấu hoặc tạo việc"
               onMark={() => mark(true)}
               onUnmark={() => mark(false)}
               onCreateTask={() => setTaskNote("Việc mới: đánh dấu hoặc tạo việc · mốc 0:42")}
@@ -162,7 +167,7 @@ export default function ComponentsPage() {
               speakers={speakers}
               segments={segments}
               currentMs={currentMs}
-              selection={selectedId ? { segmentId: selectedId, quote: "đoạn đang chọn" } : null}
+              selection={selectedId ? { segmentId: selectedId, quote: "đoạn đang chọn", startMs: 0, endMs: DURATION_MS } : null}
               onSeek={setCurrentMs}
               onSelect={(segmentId) => setSelectedId(segmentId)}
               onMark={() => mark(true)}

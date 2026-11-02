@@ -3,16 +3,18 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { RotateCcw, Square, Trash2 } from "lucide-react";
+import { RotateCcw, Share2, Square, Trash2 } from "lucide-react";
 import { AudioPlayerBar } from "@/components/audio-player-bar";
 import { ChatPanel, useJobChat } from "@/components/chat-panel";
 import { ExportMenu } from "@/components/export-menu";
 import { JobStatusBadge } from "@/components/job-status-badge";
 import { JobToolPanel, JobToolRail, type ToolId } from "@/components/job-tools";
+import { ReaderSettingsMenu } from "@/components/reader-settings";
+import { ShareDialog } from "@/components/share-dialog";
 import { SpeakerList } from "@/components/speaker-list";
 import { TaskDialog, type TaskDraft } from "@/components/task-dialog";
 import { TranscriptLayout, type TranscriptSelection } from "@/components/transcript-layout";
-import type { ExportFormat, Segment, Speaker } from "@/components/types";
+import type { ExportFormat, Segment, SegmentMark, Speaker } from "@/components/types";
 import { useWorkspace } from "@/components/workspace-provider";
 import {
   ACTIVE_STATUSES,
@@ -29,6 +31,7 @@ import {
   type Transcript,
 } from "@/lib/api";
 import { formatMs, stampToMs } from "@/lib/format";
+import { useReaderPrefs } from "@/lib/reader-prefs";
 import { AdaptiveTypewriter } from "@/lib/typewriter-queue";
 
 type Highlight = { id: string; segment_id: string; quote: string; start_ms: number; end_ms: number };
@@ -41,7 +44,6 @@ type ActionItem = {
   deadline: string;
   source: string;
 };
-type Selected = TranscriptSelection & { startMs: number; endMs: number };
 type Progress = { stage: string; chunkIndex: number; chunkCount: number } | null;
 
 const CANCELLABLE: JobStatus[] = ["queued", "capturing", "preprocessing", "transcribing"];
@@ -98,13 +100,15 @@ function JobView({ jobId }: { jobId: string }) {
   const [highlights, setHighlights] = useState<Highlight[]>([]);
   const [actions, setActions] = useState<ActionItem[]>([]);
   const [progress, setProgress] = useState<Progress>(null);
-  const [selection, setSelection] = useState<Selected | null>(null);
+  const [selection, setSelection] = useState<TranscriptSelection | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [tool, setTool] = useState<ToolId | null>(null);
   const [jumpedId, setJumpedId] = useState<string | null>(null);
   const [taskDraft, setTaskDraft] = useState<TaskDraft | null>(null);
   const [taskSaving, setTaskSaving] = useState(false);
   const [taskError, setTaskError] = useState<string | null>(null);
+  const [shareOpen, setShareOpen] = useState(false);
+  const reader = useReaderPrefs();
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
@@ -141,6 +145,16 @@ function JobView({ jobId }: { jobId: string }) {
     const timer = setTimeout(() => setJumpedId(null), JUMP_HIGHLIGHT_MS);
     return () => clearTimeout(timer);
   }, [jumpedId]);
+
+  // Câu chỉ đọc vùng chọn lúc thả chuột, nên bấm ra ngoài câu phải tự đóng thanh đang nổi.
+  useEffect(() => {
+    if (!selection) return;
+    const dropWhenCollapsed = () => {
+      if (window.getSelection()?.isCollapsed) setSelection(null);
+    };
+    document.addEventListener("selectionchange", dropWhenCollapsed);
+    return () => document.removeEventListener("selectionchange", dropWhenCollapsed);
+  }, [selection]);
 
   const chat = useJobChat(jobId, setNotice);
 
@@ -537,7 +551,11 @@ function JobView({ jobId }: { jobId: string }) {
   // ----- Dựng dữ liệu cho layout -----
 
   const shownSegments: Segment[] = useMemo(() => {
-    const marked = new Set(highlights.map((row) => row.segment_id));
+    const marks = new Map<string, SegmentMark[]>();
+    for (const row of highlights) {
+      const mark = { startMs: row.start_ms, endMs: row.end_ms, quote: row.quote };
+      marks.set(row.segment_id, [...(marks.get(row.segment_id) ?? []), mark]);
+    }
     return segments.flatMap((segment) => {
       const shown = visible[segment.id] ?? ALL_WORDS;
       if (shown === 0) return [];
@@ -552,7 +570,7 @@ function JobView({ jobId }: { jobId: string }) {
           textRaw: partial ? words.map((word) => word.text).join(" ") : segment.text_raw,
           textEdited: segment.text_edited ?? null,
           words,
-          marked: marked.has(segment.id),
+          marks: marks.get(segment.id) ?? [],
         },
       ];
     });
@@ -649,21 +667,21 @@ function JobView({ jobId }: { jobId: string }) {
     );
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden lg:flex-row">
+    <div style={reader.style} className="relative flex h-full flex-col overflow-hidden lg:flex-row">
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <header className="border-b border-sky-100 bg-white">
-          <div className="mx-auto flex w-full max-w-3xl items-center gap-3 px-4 py-2.5 sm:px-6">
+        <header className="@container border-b border-sky-100 bg-white">
+          <div className="flex w-full items-center gap-3 px-4 py-2.5 sm:px-6">
             <div className="min-w-0 flex-1">
               <h1 className="truncate text-lg font-bold tracking-tight text-[#0f2744]">{job.title}</h1>
               <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
                 <JobStatusBadge status={job.status} />
-                <span>{new Date(job.created_at).toLocaleString("vi-VN")}</span>
+                <span className="hidden @md:inline">{new Date(job.created_at).toLocaleString("vi-VN")}</span>
                 {job.duration_ms != null ? <span>· {formatMs(job.duration_ms)}</span> : null}
                 {job.diarization_device === "cpu" ? <span>· người nói chạy trên CPU</span> : null}
                 {pass === 1 ? <span>· bản nháp</span> : null}
               </div>
             </div>
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex shrink-0 items-center gap-1.5">
               {CANCELLABLE.includes(job.status) ? (
                 <HeaderButton onClick={() => void cancelJob()} icon={<Square className="size-4" />}>
                   Hủy
@@ -674,13 +692,25 @@ function JobView({ jobId }: { jobId: string }) {
                   Chạy lại
                 </HeaderButton>
               ) : null}
+              <button
+                type="button"
+                disabled={job.status !== "ready"}
+                onClick={() => setShareOpen(true)}
+                aria-label="Chia sẻ"
+                title={job.status === "ready" ? "Chia sẻ bằng liên kết" : "Chia sẻ mở khi bản ghi sẵn sàng"}
+                className="inline-flex h-9 items-center gap-1.5 rounded-full bg-blue-600 px-3 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Share2 className="size-4" />
+                <span className="hidden text-sm font-medium @xl:inline">Chia sẻ</span>
+              </button>
               <ExportMenu disabled={!canEdit} onExport={(format) => void exportFile(format)} />
+              <ReaderSettingsMenu reader={reader} />
               <button
                 type="button"
                 onClick={() => void deleteJob()}
                 aria-label="Xóa bản ghi"
                 title="Xóa bản ghi"
-                className="rounded-full p-2 text-rose-600 hover:bg-rose-50"
+                className="flex size-9 items-center justify-center rounded-full text-rose-600 hover:bg-rose-50"
               >
                 <Trash2 className="size-4" />
               </button>
@@ -775,6 +805,8 @@ function JobView({ jobId }: { jobId: string }) {
           onClose={() => setTaskDraft(null)}
         />
       ) : null}
+
+      {shareOpen ? <ShareDialog jobId={jobId} title={job.title} onClose={() => setShareOpen(false)} /> : null}
     </div>
   );
 }
@@ -814,10 +846,10 @@ function HeaderButton({ children, icon, onClick }: { children: string; icon: Rea
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
+      className="inline-flex h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 text-slate-700 hover:bg-slate-50"
     >
       {icon}
-      {children}
+      <span className="text-sm">{children}</span>
     </button>
   );
 }

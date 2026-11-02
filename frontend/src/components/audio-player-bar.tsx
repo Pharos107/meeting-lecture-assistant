@@ -75,7 +75,7 @@ export function AudioPlayerBar({
               <span
                 key={`${ms}-${index}`}
                 aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 h-3 w-0.5 -translate-y-1/2 rounded-full bg-amber-400"
+                className="pointer-events-none absolute top-1/2 h-3 w-0.5 -translate-y-1/2 rounded-full bg-(--reader-mark)"
                 style={{ left: `${(Math.min(ms, durationMs) / durationMs) * 100}%` }}
               />
             ))

@@ -152,6 +152,7 @@ meeting-lecture-assistant/
 │       │   ├── routes_live.py
 │       │   ├── routes_voice.py
 │       │   ├── routes_chat.py
+│       │   ├── routes_share.py   # liên kết chia sẻ, có một route công khai
 │       │   └── routes_export.py
 │       ├── services/
 │       │   ├── audio_processor.py
@@ -184,6 +185,7 @@ meeting-lecture-assistant/
         │   ├── register/page.tsx
         │   ├── forgot-password/page.tsx   # chỉ giao diện, chưa có API
         │   ├── components/page.tsx        # trang mẫu component, không phải tính năng
+        │   ├── shared/[token]/page.tsx    # trang công khai của liên kết chia sẻ
         │   └── (app)/                     # các trang sau đăng nhập, chung khung ba vùng
         │       ├── layout.tsx
         │       ├── jobs/page.tsx
@@ -201,6 +203,9 @@ meeting-lecture-assistant/
         │   ├── job-tools.tsx              # dãy biểu tượng và panel công cụ
         │   ├── chat-panel.tsx             # panel Trợ lý AI
         │   ├── export-menu.tsx
+        │   ├── reader-settings.tsx        # menu Cài đặt hiển thị
+        │   ├── share-dialog.tsx
+        │   ├── shared-transcript.tsx
         │   ├── live-transcript.tsx
         │   ├── audio-player-bar.tsx
         │   ├── speaker-list.tsx
@@ -211,6 +216,7 @@ meeting-lecture-assistant/
             ├── api.ts
             ├── auth.ts
             ├── ffmpeg-compressor.ts
+            ├── reader-prefs.ts            # cài đặt đọc lưu theo trình duyệt
             ├── typewriter-queue.ts
             └── live-capture.ts
 ```

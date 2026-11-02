@@ -47,6 +47,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | D15 | Trang job là hai vùng: trình phát và transcript. Bôi đen một đoạn trong câu để đánh dấu hoặc tạo việc cần làm tại mốc đó. |
 | D16 | LLM chỉ dùng để người dùng hỏi về nội dung transcript của một bản ghi. Không có tác vụ biên bản theo mẫu. Lịch sử hỏi đáp lưu theo bản ghi. |
 | D17 | Trang sau đăng nhập là khung ba vùng: menu điều hướng bên trái, nội dung ở giữa, dãy công cụ của job bên phải. Tạo bản ghi là hộp thoại, không chuyển trang. |
+| D18 | Chia sẻ một bản ghi bằng liên kết chỉ đọc, ai có liên kết cũng xem được mà không cần đăng nhập. Chỉ gồm transcript và tên người nói. Chủ tắt được bất cứ lúc nào. |
 
 ## Lịch sử phiên bản
 
@@ -62,6 +63,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | 1.6.1 | 2026-11-02 | Chọn `gemini-3.5-flash-lite`, cập nhật D2. Thêm mã `llm_rate_limited`. Thiếu `LLM_API_KEY` cũng trả `llm_not_configured` |
 | 1.6.2 | 2026-11-02 | Gộp đoạn Whisper cắt giữa câu sau khi gán người nói, kiến trúc mục 2.5 |
 | 1.6.3 | 2026-11-02 | Panel công cụ của trang job đổi được độ rộng, kiến trúc mục 2.7 |
+| 1.7 | 2026-11-02 | Thêm D18: liên kết chia sẻ chỉ đọc, bảng `job_shares`, migration `0004_share`, API mục 5, kiến trúc mục 2.7 và mục 8. Thanh tiêu đề trang job chiếm trọn cột, thêm `Cài đặt hiển thị` |
 
 ## Việc còn mở
 

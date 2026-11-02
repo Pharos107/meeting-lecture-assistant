@@ -290,15 +290,19 @@ Trang transcript hiện `text_raw` và bấm từng từ. Câu đã có `text_ed
 Mọi trang sau đăng nhập dùng chung một khung ở layout `(app)`, cao bằng màn hình, mỗi vùng tự cuộn.
 
 - Vùng trái là menu điều hướng: bản ghi mới, ghi trực tiếp, các bản ghi gần đây, hồ sơ giọng, tài khoản. Nút hamburger thu menu còn dãy biểu tượng. Mặc định menu mở, riêng trang job thì thu gọn. Mỗi loại trang nhớ lựa chọn riêng.
-- Vùng giữa là nội dung. Ở trang job gồm tiêu đề, transcript rộng tối đa 768 px, và trình phát cố định ở đáy cột. Transcript và trình phát vẫn là hai vùng nhìn của D15.
+- Vùng giữa là nội dung. Ở trang job gồm thanh tiêu đề, transcript rộng tối đa 768 px, và trình phát cố định ở đáy cột. Transcript và trình phát vẫn là hai vùng nhìn của D15.
+- Thanh tiêu đề trang job chiếm trọn chiều ngang cột: tiêu đề bên trái, các nút Chia sẻ, Xuất file, Cài đặt hiển thị, Xóa bên phải. Cột hẹp thì nút chỉ còn biểu tượng.
+- `Cài đặt hiển thị` đổi cỡ chữ từ 12 đến 24 px, phông chữ, căn chữ trái, giữa, hoặc đều hai bên, độ rộng cột chữ, màu bôi đen, và màu đánh dấu. Cài đặt lưu theo trình duyệt, áp dụng cho mọi bản ghi và cho trang xem liên kết chia sẻ. Phông chữ chỉ dùng phông có sẵn trên máy.
 - Vùng phải chỉ có ở trang job: dãy biểu tượng công cụ, bấm thì mở panel, mỗi lúc một panel. Các công cụ là `Trợ lý AI`, `Đánh dấu và việc`, `Người nói`. Xuất file nằm ở tiêu đề vì thao tác trên cả bản ghi.
 - Từ 1024 px panel rộng mặc định 340 px, người dùng kéo mép trái hoặc dùng phím mũi tên khi mép đang được chọn để đổi độ rộng, bấm đúp để về mặc định. Rộng tối thiểu 300 px, và cột chữ luôn còn ít nhất 340 px. Các công cụ dùng chung một độ rộng, lưu theo trình duyệt.
 - Từ 1280 px panel nằm cạnh chữ. Từ 1024 px đến dưới 1280 px panel đè lên chữ. Dưới 1024 px menu trái là ngăn kéo, dãy biểu tượng nằm dưới trình phát, panel là tấm trượt từ đáy.
 - Panel `Trợ lý AI` gồm lịch sử hỏi đáp, câu hỏi gợi ý, và ô nhập. Mở lại bản ghi đã có lịch sử hỏi đáp trên màn từ 1280 px thì panel mở sẵn.
 
+Chia sẻ là một công tắc trong hộp thoại, mỗi bản ghi có tối đa một liên kết `/shared/{token}`. Ai có liên kết cũng đọc được transcript và tên người nói mà không cần đăng nhập, không sửa được gì. Người xem không nghe được âm thanh, không thấy đánh dấu, việc, hay lịch sử hỏi đáp. Chủ bản ghi tắt công tắc thì liên kết hết hiệu lực ngay, bật lại có liên kết mới. Liên kết không có hạn dùng và trang không cho công cụ tìm kiếm lập chỉ mục.
+
 Tạo bản ghi là hộp thoại trên trang đang xem, không chuyển trang. Bấm bắt đầu thì hộp thoại đóng, việc nén và tải lên chạy nền trong tab, tiến độ hiện ở menu trái, lần lượt từng file. Tiến trình nằm ở layout nên chuyển trang không ngắt, còn tải lại hoặc đóng tab thì mất, vì vậy trình duyệt cảnh báo trước khi rời trang. `/jobs/new` chỉ còn mở hộp thoại rồi về `/jobs`.
 
-Mỗi câu render với `data-segment-id` và `data-start-ms`. Mỗi từ của bản gốc có thêm `data-end-ms`. Click không kèm vùng bôi đen thì tua như mục 2.6. Thả chuột mà vùng chọn nằm trọn trong một câu và có chữ thì hiện thanh: Đánh dấu, Bỏ đánh dấu, Tạo việc. Vùng chọn trải qua hai câu thì bỏ qua.
+Mỗi câu render với `data-segment-id` và `data-start-ms`. Mỗi từ của bản gốc có thêm `data-end-ms`. Click không kèm vùng bôi đen thì tua như mục 2.6. Thả chuột mà vùng chọn nằm trọn trong một câu và có chữ thì hiện thanh nổi cạnh vùng chọn, không đẩy các câu khác. `Đánh dấu` hiện khi vùng chọn còn chữ chưa đánh dấu, `Bỏ đánh dấu` hiện khi có chữ đã đánh dấu, `Tạo việc` luôn hiện. Đánh dấu chỉ tô đúng các từ đã chọn, không tô cả câu. Câu không có mốc từng từ thì tô theo trích đoạn đã lưu. Vùng chọn trải qua hai câu thì bỏ qua.
 
 Đánh dấu lưu `quote`, `start_ms`, `end_ms`. Nếu từ của bản gốc phủ được vùng chọn thì hai mốc là từ đầu và từ cuối. Không phủ được thì dùng mốc của cả câu. Tạo việc mở form với nội dung sẵn là đoạn vừa chọn, `start_ms` của câu, và lưu thành việc `source = manual`.
 
@@ -567,7 +571,7 @@ Access token là JWT HS256, hết hạn sau 15 phút, đặt trong header `Autho
 
 Trang lưu refresh token trong `localStorage` khi người dùng chọn ghi nhớ, ngược lại trong `sessionStorage`. Cả hai bị đọc được nếu trang dính XSS. Hướng tối ưu: trình duyệt chỉ gọi cùng origin qua Caddy, nên có thể chuyển refresh token sang cookie `HttpOnly; Secure; SameSite=Strict` giới hạn ở `/api/auth`. Access token vẫn giữ trong bộ nhớ. Đổi cách này là đổi hợp đồng ở tài liệu API.
 
-Mọi câu lệnh job, session, transcript, và file đều có `user_id` của token. Sai chủ sở hữu trả 404, cùng mã với id không tồn tại.
+Mọi câu lệnh job, session, transcript, và file đều có `user_id` của token. Sai chủ sở hữu trả 404, cùng mã với id không tồn tại. Ngoại lệ duy nhất là `GET /api/shared/{token}`: token 32 byte ngẫu nhiên chính là quyền đọc, nên ai có liên kết đều xem được cho đến khi chủ tắt, và người nhận có thể gửi tiếp cho người khác.
 
 Log có `job_id` và `user_id`. Log không chứa nội dung transcript, câu hỏi, câu trả lời, PCM, mật khẩu, hay token.
 
