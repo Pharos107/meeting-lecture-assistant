@@ -404,7 +404,7 @@ sequenceDiagram
 
 Chữ hiện của một câu: `text_edited`, nếu null thì `text_raw`. Câu chưa sửa bấm được từng từ.
 
-Media token hết hạn sau 5 phút. Trình phát nhận `404` thì trang xin token mới và gán lại `src` tại `currentTime` cũ.
+Media token hết hạn sau 5 phút. Trình phát nhận `404` thì trang xin token mới và gán lại `src` tại `currentTime` cũ. Trang chỉ xin lại khi `src` trước đã nạp được và lần xin lại gần nhất đã quá 5 phút. Không thì nó dừng nghe lại, nút phát báo chưa có file, còn transcript vẫn đọc được.
 
 | Phần | Hiện trạng |
 |---|---|
