@@ -64,17 +64,6 @@ services:
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
 
-  worker-io:
-    build: ./backend
-    image: stt-backend:latest
-    env_file: .env
-    command: celery -A app.worker.celery_app worker --loglevel=info -Q io --concurrency=4 --prefetch-multiplier=1
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-
   frontend:
     build: ./frontend
     expose:

@@ -24,7 +24,7 @@ from app.services.pipeline import clear_pass
 from app.core.security import hash_refresh_token
 from app.core.timeutil import as_utc, iso_micros, iso_seconds
 from app.db import get_db
-from app.models import ActionItem, Highlight, Job, LiveSession, MediaToken, Segment, SpeakerAlias, User, Word
+from app.models import ActionItem, ChatMessage, Highlight, Job, LiveSession, MediaToken, Segment, SpeakerAlias, User, Word
 
 router = APIRouter(prefix="/api", tags=["jobs"], dependencies=[Depends(current_user)])
 media_router = APIRouter(prefix="/api", tags=["media"])
@@ -219,7 +219,6 @@ def segment_json(segment: Segment, words: list[Word], aliases: dict[str, Speaker
         "start_ms": segment.start_ms,
         "end_ms": segment.end_ms,
         "text_raw": segment.text_raw,
-        "text_cleaned": segment.text_cleaned,
         "text_edited": segment.text_edited,
         "speaker_label": segment.speaker_label,
         "speaker_name": speaker_name(segment.speaker_label, aliases),
@@ -387,6 +386,7 @@ def retry_job(job_id: str, request: Request, db: Session = Depends(get_db)) -> d
     if job.status != "failed":
         raise invalid_state()
     clear_pass(db, job.id, 2)
+    db.query(ChatMessage).filter(ChatMessage.job_id == job.id).delete(synchronize_session=False)
     job.status = "queued"
     job.error_code = None
     job.error_message = None

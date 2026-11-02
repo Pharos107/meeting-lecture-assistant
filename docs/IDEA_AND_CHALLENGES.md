@@ -9,13 +9,13 @@
 
 Buổi học và cuộc họp kéo dài từ vài chục phút đến vài giờ. Ghi chép tay dễ mất ý, mất mốc thời gian, và tốn thêm một lượt tổng hợp việc cần làm.
 
-Hệ thống nhận tiếng Việt từ file hoặc từ phiên nghe trực tiếp, ra văn bản có mốc thời gian và nhãn người nói, rồi tạo biên bản khi người dùng yêu cầu.
+Hệ thống nhận tiếng Việt từ file hoặc từ phiên nghe trực tiếp, ra văn bản có mốc thời gian và nhãn người nói, rồi cho người dùng hỏi về nội dung văn bản đó. Tên đề tài vẫn có "biên bản": nội dung kiểu biên bản, như các ý chính và việc cần làm, lấy bằng cách hỏi trợ lý.
 
 Ba phần việc đi cùng nhau:
 
 - Nhận dạng tiếng nói, gắn thời gian tới từng từ ở bản chuẩn.
 - Gắn nhãn người nói trên cùng timeline, và điền tên thật khi giọng khớp hồ sơ đã ghi.
-- Hậu kỳ bằng LLM theo lệnh của người dùng: chuẩn hóa câu, và biên bản theo mẫu cuộc họp hoặc mẫu bài giảng.
+- Hỏi đáp bằng LLM trên transcript: ví dụ "Trong cuộc họp có những nội dung gì?", "Có những nhiệm vụ gì cần đề ra?".
 
 ## 2. Phạm vi
 
@@ -26,8 +26,8 @@ Ba phần việc đi cùng nhau:
 - PT2 theo pha kép: bản nháp trong lúc nghe, rồi bản chuẩn quét lại cả file khi ngắt.
 - Diarization trên file đã thu, sau bước nhận dạng, kèm hồ sơ giọng của chính tài khoản.
 - Trang xem job hai vùng, đánh dấu đoạn chữ, và tạo việc cần làm từ câu đang chọn.
-- Hai mẫu biên bản: cuộc họp doanh nghiệp, và ghi chú bài giảng.
-- LLM qua giao thức tương thích OpenAI. Tên model cấu hình lúc triển khai.
+- Trợ lý hỏi đáp theo từng bản ghi: câu hỏi gợi ý, câu trả lời kèm mốc thời gian bấm để tua, lịch sử lưu theo bản ghi.
+- LLM là API cloud theo giao thức tương thích OpenAI. Tên model cấu hình lúc triển khai.
 - Xuất Markdown, DOCX, PDF, SRT, VTT.
 - Xóa job và file âm thanh theo tài khoản chủ sở hữu.
 
@@ -35,8 +35,11 @@ Ba phần việc đi cùng nhau:
 
 - Xác minh email, đăng nhập mạng xã hội, và phân quyền quản trị.
 - Lưu video gốc trên server. Sau khi xử lý, máy chủ chỉ giữ Opus mono 16 kHz.
-- Sửa từng từ bên trong một câu đã được người dùng hoặc LLM viết lại. Khi câu đã đổi, bấm câu sẽ tua theo mốc của cả câu.
+- Sửa từng từ bên trong một câu đã được người dùng viết lại. Khi câu đã đổi, bấm câu sẽ tua theo mốc của cả câu.
 - Tự gọi LLM khi nhận dạng xong.
+- Chuẩn hóa văn bản. Việc này làm được bằng code, dùng LLM là lãng phí. Nếu cần sẽ làm bằng luật ở bản sau.
+- Biên bản theo mẫu và xuất biên bản ra file.
+- Hỏi trên nhiều bản ghi cùng lúc.
 - Chạy Whisper và pyannote cùng lúc.
 - Cam kết một tỉ lệ phần trăm độ chính xác trước khi đo. Bản chuẩn của pha 2 được đo, không ghi sẵn một ngưỡng như 95%.
 - Nhận ra người nói chưa từng ghi hồ sơ giọng trong tài khoản này.
@@ -45,7 +48,7 @@ PT2 dùng hộp thoại chia sẻ màn hình của Chromium và ô chia sẻ âm
 
 ### Thứ tự triển khai
 
-PT1 trọn vẹn là phần lõi của bản demo: tải file, chữ hiện dần, sửa, biên bản, xuất file. PT2 và hồ sơ giọng làm sau khi PT1 chạy hết đường trên máy mục tiêu. Hiện trạng từng phần nằm ở [phân tích luồng](FLOWS.md#13-khoảng-trống-giữa-đặc-tả-và-code).
+PT1 trọn vẹn là phần lõi của bản demo: tải file, chữ hiện dần, sửa, hỏi đáp, xuất file. PT2 và hồ sơ giọng làm sau khi PT1 chạy hết đường trên máy mục tiêu. Hiện trạng từng phần nằm ở [phân tích luồng](FLOWS.md#13-khoảng-trống-giữa-đặc-tả-và-code).
 
 ## 3. Hai phương thức
 
@@ -64,12 +67,12 @@ PT1 trọn vẹn là phần lõi của bản demo: tải file, chữ hiện dầ
 
 1. Đăng ký và đăng nhập bằng email và mật khẩu.
 2. Tải file `.mp3`, `.wav`, `.m4a`, `.aac`, `.ogg`, `.opus`, `.flac`, `.mp4`, `.mkv`, `.webm`, `.mov`.
-3. Nhập danh sách thuật ngữ, tối đa 800 ký tự, để đưa vào prompt của Whisper và của LLM.
-4. Xem chữ bản chuẩn hiện dần, tua audio bằng cách bấm từ trên bản gốc. Nút gạt chuyển giữa bản gốc và bản đã chuẩn hóa mà không xóa kết quả chuẩn hóa.
+3. Nhập danh sách thuật ngữ, tối đa 800 ký tự, để đưa vào prompt của Whisper và ngữ cảnh của trợ lý.
+4. Xem chữ bản chuẩn hiện dần, tua audio bằng cách bấm từ trên bản gốc.
 5. Sửa câu, đổi tên hiển thị của `SPEAKER_00`, `SPEAKER_01`, và các nhãn khác.
 6. Ghi hồ sơ giọng khoảng 30 giây. Những buổi sau, cụm giọng đủ giống hồ sơ được gán tên đã đặt, ví dụ "Lê Hải Đăng", thay cho nhãn `SPEAKER_00`. Đổi tên tay trên một buổi vẫn được.
-7. Xem job trên hai vùng: bên trái là trình phát bám thời gian, bên phải là transcript. Bấm từ trên bản gốc để tua. Bôi đen một đoạn trong câu để đánh dấu, hoặc tạo một việc cần làm tại mốc của câu đó.
-8. Bấm chuẩn hóa văn bản. Khi tạo biên bản, chọn một mẫu: biên bản cuộc họp doanh nghiệp, hoặc ghi chú bài giảng.
+7. Xem job trên hai vùng: transcript và trình phát bám thời gian ở đáy, trong khung ba vùng ở [kiến trúc mục 2.7](ARCHITECTURE_SPEC.md#27-khung-ba-vùng-đánh-dấu-và-việc-tại-câu). Bấm từ trên bản gốc để tua. Bôi đen một đoạn trong câu để đánh dấu, hoặc tạo một việc cần làm tại mốc của câu đó.
+8. Hỏi trợ lý về nội dung bản ghi, bằng câu tự gõ hoặc câu hỏi gợi ý. Câu trả lời hiện dần, có mốc thời gian bấm để tua. Lịch sử giữ lại khi mở lại bản ghi và xóa được.
 9. Tải Markdown, DOCX, PDF, SRT, hoặc VTT.
 10. Mở phiên nghe trực tiếp, theo dõi bản nháp, bấm dừng để chạy bản chuẩn.
 11. Xóa một job của chính mình.
@@ -96,7 +99,11 @@ Server gửi một cụm từ sau mỗi chunk. Frontend giữ một nhịp cố 
 
 ### Hội thoại dài với LLM
 
-Một buổi vài giờ tạo ra bản chữ dài. Hậu kỳ tóm tắt cắt theo từng lát khoảng 20 phút, tóm tắt từng lát, rồi hợp các lát thành một biên bản. Đầu ra là JSON có schema cố định, nên đổi model không đổi phần tích hợp.
+Một buổi vài giờ tạo ra bản chữ dài. Câu hỏi như "có những nội dung gì" cần cả buổi, nên mỗi câu hỏi gửi cả transcript cho model. Vì vậy model phải có ngữ cảnh lớn, và chi phí tăng theo độ dài bản ghi. Transcript vượt ngữ cảnh thì báo lỗi, không cắt bớt trong im lặng.
+
+Transcript do máy nhận dạng nên câu trả lời có thể lặp lại lỗi chữ. Mỗi ý kèm mốc thời gian để người dùng nghe lại kiểm chứng.
+
+Model chạy trên cloud, nên câu hỏi và transcript rời khỏi máy mỗi lần hỏi. Giao diện phải ghi rõ điều này, và LLM không bao giờ tự chạy.
 
 ### Người nói và câu nói chồng nhau
 
@@ -124,9 +131,10 @@ Sau khi có các cụm, worker so vector giọng của từng cụm với hồ s
 - Phiên PT2 hiện câu nháp trong lúc thu. Sau khi dừng, pass 2 thay thế phần hiển thị khi nó hoàn tất, gồm chữ, ngắt câu, và nhãn người nói.
 - Một hồ sơ giọng đã ghi được gán vào đúng cụm trong một file ngắn có cùng người nói. Alias người dùng đã sửa tay không bị lần chạy lại diarization ghi đè.
 - Bôi đen một đoạn, đánh dấu, tải lại trang, dấu còn. Tạo việc từ câu đó còn sau khi tải lại, và tua tới mốc của câu.
-- Mẫu cuộc họp và mẫu bài giảng trả hai dạng JSON khác nhau. JSON sai dạng bị từ chối sau đúng một lần thử lại.
-- Chuẩn hóa và biên bản chỉ chạy khi người dùng bấm, qua endpoint tương thích OpenAI.
-- Xóa job xóa luôn file Opus và các bản chữ.
+- Hỏi "Có những nhiệm vụ gì cần đề ra?" trên một cuộc họp có giao việc thì câu trả lời liệt kê các việc đó kèm mốc tua được. Hỏi điều transcript không đề cập thì trợ lý nói không có thông tin.
+- Lịch sử hỏi đáp còn sau khi tải lại trang. Người dùng A không đọc được lịch sử của người dùng B.
+- LLM chỉ chạy khi người dùng hỏi, qua endpoint tương thích OpenAI.
+- Xóa job xóa luôn file Opus, các bản chữ, và lịch sử hỏi đáp.
 
 ### Đo rồi mới ghi vào báo cáo
 
@@ -135,5 +143,6 @@ Các con số dưới đây là việc phải đo, không phải mốc đã đ�
 - CER của pass 2 trên bộ đối chiếu do nhóm thu: ít nhất 3 đoạn tiếng Việt, tổng thời lượng ít nhất 30 phút, có transcript người làm. Báo cáo CER toàn bộ và CER trên danh sách tên riêng, thuật ngữ. Chạy cùng bộ này với `large-v3-turbo` và PhoWhisper đã chuyển sang CTranslate2 `int8`, kèm thời gian xử lý, để chọn model bản chuẩn.
 - Với diarization, nếu có file RTTM đối chiếu thì báo cáo DER. Nếu chưa có, nghe lại 10 phút được rút ngẫu nhiên và ghi số chỗ gán nhầm.
 - Với PT2, đo thời gian từ lúc hết một câu nói đến sự kiện nháp ổn định, trên câu không dài quá 8 giây. Mục tiêu thiết kế là trong 3 giây khi GPU đang dành cho phiên đó. Báo cáo số đo được, kể cả lần trượt mục tiêu.
+- Với hỏi đáp, soạn sẵn bộ câu hỏi có đáp án trên bộ đối chiếu, gồm cả câu mà transcript không có đáp án. Báo cáo tỉ lệ trả lời đúng, tỉ lệ mốc thời gian đúng, số câu bị bịa, thời gian tới chữ đầu tiên, và chi phí mỗi câu hỏi.
 
 Bộ đối chiếu và bảng số đo để trong thư mục báo cáo khi nhóm chạy thí nghiệm. Chúng không nằm trong repo mã nguồn nếu audio gốc là dữ liệu riêng của buổi họp.

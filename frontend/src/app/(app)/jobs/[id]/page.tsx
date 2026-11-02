@@ -3,13 +3,17 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, RotateCcw, Square, Trash2 } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
+import { RotateCcw, Square, Trash2 } from "lucide-react";
+import { AudioPlayerBar } from "@/components/audio-player-bar";
+import { ChatPanel, useJobChat } from "@/components/chat-panel";
+import { ExportMenu } from "@/components/export-menu";
 import { JobStatusBadge } from "@/components/job-status-badge";
-import { MinutesView, stampToMs, type LectureNotes, type MeetingMinutes } from "@/components/minutes-view";
+import { JobToolPanel, JobToolRail, type ToolId } from "@/components/job-tools";
+import { SpeakerList } from "@/components/speaker-list";
 import { TaskDialog, type TaskDraft } from "@/components/task-dialog";
 import { TranscriptLayout, type TranscriptSelection } from "@/components/transcript-layout";
-import type { ExportFormat, MinutesTemplate, Segment, Speaker, TranscriptMode } from "@/components/types";
+import type { ExportFormat, Segment, Speaker } from "@/components/types";
+import { useWorkspace } from "@/components/workspace-provider";
 import {
   ACTIVE_STATUSES,
   apiFetch,
@@ -24,7 +28,7 @@ import {
   type JobStatus,
   type Transcript,
 } from "@/lib/api";
-import { formatMs } from "@/lib/format";
+import { formatMs, stampToMs } from "@/lib/format";
 import { AdaptiveTypewriter } from "@/lib/typewriter-queue";
 
 type Highlight = { id: string; segment_id: string; quote: string; start_ms: number; end_ms: number };
@@ -37,20 +41,13 @@ type ActionItem = {
   deadline: string;
   source: string;
 };
-type LlmRun = {
-  run_id: string;
-  task: "clean" | "summarize";
-  status: "running" | "done" | "failed";
-  template?: MinutesTemplate | null;
-  result?: MeetingMinutes | LectureNotes | null;
-  error_code?: string;
-  error_message?: string;
-};
 type Selected = TranscriptSelection & { startMs: number; endMs: number };
 type Progress = { stage: string; chunkIndex: number; chunkCount: number } | null;
 
 const CANCELLABLE: JobStatus[] = ["queued", "capturing", "preprocessing", "transcribing"];
-const LLM_POLL_MS = 2_000;
+const NOTICE_MS = 5_000;
+const JUMP_HIGHLIGHT_MS = 2_000;
+const PLAYBACK_RATES = [1, 1.25, 1.5, 2, 0.75];
 // id trên URL đi thẳng vào đường dẫn API, nên chỉ nhận đúng dạng UUID mà server cấp.
 const JOB_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const RECONNECT_MS = 3_000;
@@ -73,25 +70,24 @@ function messageOf(caught: unknown, fallback: string) {
 
 export default function JobPage() {
   const params = useParams<{ id: string }>();
-  const valid = JOB_ID.test(params.id);
-  return (
-    <AppShell>
-      {valid ? (
-        <JobView jobId={params.id.toLowerCase()} />
-      ) : (
-        <div className="py-16 text-center">
-          <p className="text-sm text-rose-700">Không tìm thấy.</p>
-          <Link href="/jobs" className="mt-4 inline-block text-sm text-blue-700 hover:underline">
-            Về danh sách job
-          </Link>
-        </div>
-      )}
-    </AppShell>
-  );
+  if (!JOB_ID.test(params.id)) {
+    return (
+      <div className="py-16 text-center">
+        <p className="text-sm text-rose-700">Không tìm thấy.</p>
+        <Link href="/jobs" className="mt-4 inline-block text-sm text-blue-700 hover:underline">
+          Về danh sách bản ghi
+        </Link>
+      </div>
+    );
+  }
+  // Đổi bản ghi trong menu giữ nguyên route, nên key buộc dựng lại toàn bộ trạng thái của job.
+  const jobId = params.id.toLowerCase();
+  return <JobView key={jobId} jobId={jobId} />;
 }
 
 function JobView({ jobId }: { jobId: string }) {
   const router = useRouter();
+  const { refreshJobs } = useWorkspace();
 
   const [job, setJob] = useState<JobDetail | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -101,12 +97,11 @@ function JobView({ jobId }: { jobId: string }) {
   const [visible, setVisible] = useState<Record<string, number>>({});
   const [highlights, setHighlights] = useState<Highlight[]>([]);
   const [actions, setActions] = useState<ActionItem[]>([]);
-  const [minutes, setMinutes] = useState<LlmRun | null>(null);
   const [progress, setProgress] = useState<Progress>(null);
-  const [mode, setMode] = useState<TranscriptMode>("raw");
   const [selection, setSelection] = useState<Selected | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  const [llmBusy, setLlmBusy] = useState(false);
+  const [tool, setTool] = useState<ToolId | null>(null);
+  const [jumpedId, setJumpedId] = useState<string | null>(null);
   const [taskDraft, setTaskDraft] = useState<TaskDraft | null>(null);
   const [taskSaving, setTaskSaving] = useState(false);
   const [taskError, setTaskError] = useState<string | null>(null);
@@ -115,8 +110,10 @@ function JobView({ jobId }: { jobId: string }) {
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
   const [currentMs, setCurrentMs] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [rate, setRate] = useState(1);
   const [audioDurationMs, setAudioDurationMs] = useState(0);
 
+  const chatShown = useRef(false);
   const passRef = useRef<number | null>(null);
   const knownIds = useRef(new Set<string>());
   const renameTimers = useRef(new Map<string, ReturnType<typeof setTimeout>>());
@@ -132,6 +129,27 @@ function JobView({ jobId }: { jobId: string }) {
     });
   }
   useEffect(() => () => typewriterRef.current?.dispose(), []);
+
+  useEffect(() => {
+    if (!notice) return;
+    const timer = setTimeout(() => setNotice(null), NOTICE_MS);
+    return () => clearTimeout(timer);
+  }, [notice]);
+
+  useEffect(() => {
+    if (!jumpedId) return;
+    const timer = setTimeout(() => setJumpedId(null), JUMP_HIGHLIGHT_MS);
+    return () => clearTimeout(timer);
+  }, [jumpedId]);
+
+  const chat = useJobChat(jobId, setNotice);
+
+  // Đã có lịch sử hỏi đáp thì mở sẵn trên màn đủ rộng. Điện thoại giữ transcript, vì panel là tấm che chữ.
+  useEffect(() => {
+    if (chat.messages.length === 0 || chatShown.current) return;
+    chatShown.current = true;
+    if (window.matchMedia("(min-width: 1280px)").matches) setTool((current) => current ?? "assistant");
+  }, [chat.messages.length]);
 
   // ----- Tải dữ liệu -----
 
@@ -159,11 +177,6 @@ function JobView({ jobId }: { jobId: string }) {
     ]);
     setHighlights(highlightPage.items);
     setActions(actionPage.items);
-    try {
-      setMinutes(await apiJson<LlmRun>(`/api/jobs/${jobId}/llm/summarize`));
-    } catch {
-      setMinutes(null);
-    }
   }, [jobId]);
 
   useEffect(() => {
@@ -214,15 +227,18 @@ function JobView({ jobId }: { jobId: string }) {
           typewriterRef.current?.markStreamComplete();
           setProgress(null);
           void loadJob();
-          void loadTranscript();
+          // Server gộp câu khi xong, nên số từ đã đếm cho chạy chữ không còn khớp với câu mới.
+          void loadTranscript().then(() => setVisible({}));
+          void refreshJobs();
           break;
         case "error":
           setProgress(null);
           void loadJob();
+          void refreshJobs();
           break;
       }
     },
-    [loadJob, loadTranscript],
+    [loadJob, loadTranscript, refreshJobs],
   );
 
   const active = job ? ACTIVE_STATUSES.includes(job.status) : false;
@@ -276,14 +292,33 @@ function JobView({ jobId }: { jobId: string }) {
     if (audio && audioSrc) audio.currentTime = ms / 1000;
   }
 
+  /** Tua rồi đưa câu tại mốc đó ra giữa khung chữ, cho các điều khiển nằm ngoài transcript. */
+  function jumpTo(ms: number) {
+    seek(ms);
+    const target = segments.filter((row) => row.start_ms <= ms).at(-1) ?? segments[0];
+    if (!target) return;
+    // Trên điện thoại panel là tấm che chữ, phải đóng thì mới thấy câu vừa tới.
+    if (!window.matchMedia("(min-width: 1024px)").matches) setTool(null);
+    setJumpedId(target.id);
+    document
+      .querySelector(`[data-segment-id="${CSS.escape(target.id)}"]`)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
   function togglePlay() {
     const audio = audioRef.current;
     if (!audio || !audioSrc) {
-      setNotice("Chưa có file nghe lại cho job này.");
+      setNotice("Chưa có file nghe lại cho bản ghi này.");
       return;
     }
     if (audio.paused) void audio.play();
     else audio.pause();
+  }
+
+  function cycleRate() {
+    const next = PLAYBACK_RATES[(PLAYBACK_RATES.indexOf(rate) + 1) % PLAYBACK_RATES.length];
+    setRate(next);
+    if (audioRef.current) audioRef.current.playbackRate = next;
   }
 
   // ----- Người nói -----
@@ -331,7 +366,7 @@ function JobView({ jobId }: { jobId: string }) {
     }
     if (!canEdit) {
       setSelection(null);
-      setNotice("Đánh dấu và tạo việc mở khi job sẵn sàng.");
+      setNotice("Đánh dấu và tạo việc mở khi bản ghi sẵn sàng.");
       return;
     }
     const segment = segments.find((row) => row.id === segmentId);
@@ -399,6 +434,15 @@ function JobView({ jobId }: { jobId: string }) {
     }
   }
 
+  async function deleteHighlight(id: string) {
+    try {
+      await apiJson<void>(`/api/jobs/${jobId}/highlights/${id}`, { method: "DELETE" });
+      setHighlights((current) => current.filter((row) => row.id !== id));
+    } catch (caught) {
+      setNotice(messageOf(caught, "Không bỏ được đánh dấu."));
+    }
+  }
+
   function openTask() {
     if (!selection) return;
     const segment = segments.find((row) => row.id === selection.segmentId);
@@ -434,42 +478,14 @@ function JobView({ jobId }: { jobId: string }) {
     }
   }
 
-  // ----- LLM và xuất file -----
-
-  async function runLlm(body: { task: "clean" | "summarize"; template?: MinutesTemplate }) {
-    if (llmBusy) return;
-    setLlmBusy(true);
-    setNotice(body.task === "clean" ? "Đang chuẩn hóa văn bản…" : "Đang lập biên bản…");
-    try {
-      await apiJson(`/api/jobs/${jobId}/llm`, { method: "POST", body: JSON.stringify(body) });
-      let run: LlmRun;
-      do {
-        await sleep(LLM_POLL_MS);
-        run = await apiJson<LlmRun>(`/api/jobs/${jobId}/llm/${body.task}`);
-      } while (run.status === "running");
-      if (run.status === "failed") {
-        setNotice(run.error_message ?? "Tác vụ LLM thất bại.");
-      } else if (body.task === "clean") {
-        await loadTranscript();
-        setMode("cleaned");
-        setNotice("Đã chuẩn hóa văn bản.");
-      } else {
-        setMinutes(run);
-        setNotice("Đã lập biên bản.");
-      }
-    } catch (caught) {
-      setNotice(messageOf(caught, "Không chạy được tác vụ LLM."));
-    } finally {
-      setLlmBusy(false);
-    }
-  }
+  // ----- Xuất file -----
 
   async function exportFile(format: ExportFormat) {
     try {
       const res = await apiFetch(`/api/jobs/${jobId}/exports`, {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify({ format, text: mode === "raw" ? "raw" : "auto", include_speakers: true }),
+        body: JSON.stringify({ format, text: "auto", include_speakers: true }),
       });
       if (!res.ok) throw await readError(res);
       const blob = await res.blob();
@@ -490,28 +506,31 @@ function JobView({ jobId }: { jobId: string }) {
     try {
       setJob(await apiJson<JobDetail>(`/api/jobs/${jobId}/cancel`, { method: "POST" }));
       setProgress(null);
+      void refreshJobs();
     } catch (caught) {
-      setNotice(messageOf(caught, "Không hủy được job."));
+      setNotice(messageOf(caught, "Không hủy được bản ghi."));
     }
   }
 
   async function retryJob() {
-    if (!window.confirm("Chạy lại sẽ xóa transcript bản chuẩn và các đánh dấu trên đó. Tiếp tục?")) return;
+    if (!window.confirm("Chạy lại sẽ xóa transcript bản chuẩn, các đánh dấu trên đó, và lịch sử hỏi đáp. Tiếp tục?")) return;
     try {
       setJob(await apiJson<JobDetail>(`/api/jobs/${jobId}/retry`, { method: "POST" }));
-      await Promise.all([loadTranscript(), loadSide()]);
+      await Promise.all([loadTranscript(), loadSide(), chat.reload()]);
+      void refreshJobs();
     } catch (caught) {
-      setNotice(messageOf(caught, "Không chạy lại được job."));
+      setNotice(messageOf(caught, "Không chạy lại được bản ghi."));
     }
   }
 
   async function deleteJob() {
-    if (!window.confirm("Xóa job, transcript, và file âm thanh? Không hoàn tác được.")) return;
+    if (!window.confirm("Xóa bản ghi, transcript, và file âm thanh? Không hoàn tác được.")) return;
     try {
       await apiJson<void>(`/api/jobs/${jobId}`, { method: "DELETE" });
+      await refreshJobs();
       router.push("/jobs");
     } catch (caught) {
-      setNotice(messageOf(caught, "Không xóa được job."));
+      setNotice(messageOf(caught, "Không xóa được bản ghi."));
     }
   }
 
@@ -531,7 +550,6 @@ function JobView({ jobId }: { jobId: string }) {
           startMs: segment.start_ms,
           endMs: segment.end_ms,
           textRaw: partial ? words.map((word) => word.text).join(" ") : segment.text_raw,
-          textCleaned: segment.text_cleaned ?? null,
           textEdited: segment.text_edited ?? null,
           words,
           marked: marked.has(segment.id),
@@ -553,159 +571,198 @@ function JobView({ jobId }: { jobId: string }) {
   if (!job) return <p className="py-16 text-center text-sm text-slate-500">Đang tải job…</p>;
 
   const durationMs = job.duration_ms ?? audioDurationMs;
-  const banner = active ? (
-    <div className="mt-4 rounded-2xl bg-blue-50 px-4 py-3 text-sm text-blue-900">
-      <div className="flex justify-between gap-3">
-        <span>{STATUS_LABELS[job.status]}</span>
-        {progress && progress.chunkCount > 0 ? (
-          <span>
-            Đoạn {progress.chunkIndex + 1}/{progress.chunkCount}
-          </span>
-        ) : null}
-      </div>
-      {progress && progress.chunkCount > 0 ? (
-        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-blue-100">
-          <div
-            className="h-full rounded-full bg-blue-600 transition-[width]"
-            style={{ width: `${Math.round(((progress.chunkIndex + 1) / progress.chunkCount) * 100)}%` }}
-          />
-        </div>
-      ) : null}
-      {pass === 1 ? <p className="mt-1 text-xs text-blue-700">Đang hiện bản nháp. Bản chuẩn thay vào khi có câu đầu tiên.</p> : null}
-    </div>
-  ) : null;
-
-  const sidebar = (
+  const banner = (
     <>
-      {minutes?.status === "done" && minutes.result && minutes.template ? (
-        <MinutesView
-          template={minutes.template}
-          result={minutes.result}
-          onSeekStamp={(stamp) => {
-            const ms = stampToMs(stamp);
-            if (ms !== null) seek(ms);
-          }}
-        />
+      {job.status === "failed" && job.error_message ? (
+        <p className="mb-3 rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{job.error_message}</p>
       ) : null}
-      {actions.length > 0 ? (
-        <section className="rounded-3xl bg-white p-4 ring-1 ring-sky-100">
-          <h2 className="text-sm font-semibold text-slate-900">Việc tại câu</h2>
-          <ul className="mt-2 space-y-2 text-sm">
-            {actions.map((item) => (
-              <li key={item.id} className="flex items-start gap-2">
-                <button
-                  type="button"
-                  onClick={() => seek(item.start_ms)}
-                  className="rounded bg-sky-50 px-1.5 font-mono text-xs text-blue-700 hover:bg-sky-100"
-                >
-                  {formatMs(item.start_ms)}
-                </button>
-                <span className="min-w-0 flex-1 text-slate-700">
-                  {item.task}
-                  {item.owner ? <span className="text-slate-500"> · {item.owner}</span> : null}
-                  {item.deadline ? <span className="text-slate-500"> · hạn {item.deadline}</span> : null}
-                </span>
-                <button
-                  type="button"
-                  aria-label="Xóa việc"
-                  onClick={() => void deleteAction(item.id)}
-                  className="text-slate-400 hover:text-rose-600"
-                >
-                  <Trash2 className="size-4" />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </section>
+      {job.warnings.map((warning, index) => (
+        <p key={`${warning.code}-${index}`} className="mb-3 rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          {warning.message}
+        </p>
+      ))}
+      {active ? (
+        <div className="mb-3 rounded-2xl bg-blue-50 px-4 py-3 text-sm text-blue-900">
+          <div className="flex justify-between gap-3">
+            <span>{STATUS_LABELS[job.status]}</span>
+            {progress && progress.chunkCount > 0 ? (
+              <span>
+                Đoạn {progress.chunkIndex + 1}/{progress.chunkCount}
+              </span>
+            ) : null}
+          </div>
+          {progress && progress.chunkCount > 0 ? (
+            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-blue-100">
+              <div
+                className="h-full rounded-full bg-blue-600 transition-[width]"
+                style={{ width: `${Math.round(((progress.chunkIndex + 1) / progress.chunkCount) * 100)}%` }}
+              />
+            </div>
+          ) : null}
+          {pass === 1 ? <p className="mt-1 text-xs text-blue-700">Đang hiện bản nháp. Bản chuẩn thay vào khi có câu đầu tiên.</p> : null}
+        </div>
       ) : null}
     </>
   );
 
+  const notesTool =
+    highlights.length === 0 && actions.length === 0 ? (
+      <p className="text-sm leading-6 text-slate-500">Bôi đen một đoạn trong transcript để đánh dấu hoặc tạo việc tại mốc đó.</p>
+    ) : (
+      <div className="space-y-4">
+        {highlights.length > 0 ? (
+          <section>
+            <h3 className="text-xs font-semibold text-slate-400">Đoạn đã đánh dấu</h3>
+            <ul className="mt-2 space-y-2 text-sm">
+              {[...highlights]
+                .sort((first, second) => first.start_ms - second.start_ms)
+                .map((item) => (
+                  <NoteRow key={item.id} ms={item.start_ms} label="Bỏ đánh dấu" onSeek={jumpTo} onDelete={() => void deleteHighlight(item.id)}>
+                    {item.quote}
+                  </NoteRow>
+                ))}
+            </ul>
+          </section>
+        ) : null}
+        {actions.length > 0 ? (
+          <section>
+            <h3 className="text-xs font-semibold text-slate-400">Việc tại câu</h3>
+            <ul className="mt-2 space-y-2 text-sm">
+              {actions.map((item) => (
+                <NoteRow key={item.id} ms={item.start_ms} label="Xóa việc" onSeek={jumpTo} onDelete={() => void deleteAction(item.id)}>
+                  {item.task}
+                  {item.owner ? <span className="text-slate-500"> · {item.owner}</span> : null}
+                  {item.deadline ? <span className="text-slate-500"> · hạn {item.deadline}</span> : null}
+                </NoteRow>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+      </div>
+    );
+
+  const speakersTool =
+    speakers.length > 0 ? (
+      <SpeakerList speakers={speakers} onRename={renameSpeaker} />
+    ) : (
+      <p className="text-sm leading-6 text-slate-500">Người nói hiện sau khi nhận dạng xong.</p>
+    );
+
   return (
-    <div>
-      <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0">
-          <Link href="/jobs" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-blue-700">
-            <ArrowLeft className="size-3.5" />
-            Danh sách job
-          </Link>
-          <h1 className="mt-1 truncate text-2xl font-bold tracking-tight text-[#0f2744]">{job.title}</h1>
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-            <JobStatusBadge status={job.status} />
-            <span>{new Date(job.created_at).toLocaleString("vi-VN")}</span>
-            {job.duration_ms != null ? <span>· {formatMs(job.duration_ms)}</span> : null}
-            {job.diarization_device === "cpu" ? <span>· người nói chạy trên CPU</span> : null}
-            {pass === 1 ? <span>· bản nháp</span> : null}
+    <div className="relative flex h-full flex-col overflow-hidden lg:flex-row">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+        <header className="mx-auto flex w-full max-w-3xl items-center gap-3 px-4 pt-3 sm:px-6">
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate text-lg font-bold tracking-tight text-[#0f2744]">{job.title}</h1>
+            <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
+              <JobStatusBadge status={job.status} />
+              <span>{new Date(job.created_at).toLocaleString("vi-VN")}</span>
+              {job.duration_ms != null ? <span>· {formatMs(job.duration_ms)}</span> : null}
+              {job.diarization_device === "cpu" ? <span>· người nói chạy trên CPU</span> : null}
+              {pass === 1 ? <span>· bản nháp</span> : null}
+            </div>
           </div>
-        </div>
-        <div className="flex gap-2">
-          {CANCELLABLE.includes(job.status) ? (
-            <HeaderButton onClick={() => void cancelJob()} icon={<Square className="size-4" />}>
-              Hủy
-            </HeaderButton>
-          ) : null}
-          {job.status === "failed" ? (
-            <HeaderButton onClick={() => void retryJob()} icon={<RotateCcw className="size-4" />}>
-              Chạy lại
-            </HeaderButton>
-          ) : null}
-          <HeaderButton onClick={() => void deleteJob()} icon={<Trash2 className="size-4" />} danger>
-            Xóa
-          </HeaderButton>
-        </div>
+          <div className="flex shrink-0 items-center gap-2">
+            {CANCELLABLE.includes(job.status) ? (
+              <HeaderButton onClick={() => void cancelJob()} icon={<Square className="size-4" />}>
+                Hủy
+              </HeaderButton>
+            ) : null}
+            {job.status === "failed" ? (
+              <HeaderButton onClick={() => void retryJob()} icon={<RotateCcw className="size-4" />}>
+                Chạy lại
+              </HeaderButton>
+            ) : null}
+            <ExportMenu disabled={!canEdit} onExport={(format) => void exportFile(format)} />
+            <button
+              type="button"
+              onClick={() => void deleteJob()}
+              aria-label="Xóa bản ghi"
+              title="Xóa bản ghi"
+              className="rounded-full p-2 text-rose-600 hover:bg-rose-50"
+            >
+              <Trash2 className="size-4" />
+            </button>
+          </div>
+        </header>
+
+        <audio
+          ref={audioRef}
+          src={audioSrc ?? undefined}
+          preload="metadata"
+          onTimeUpdate={(event) => setCurrentMs(Math.round(event.currentTarget.currentTime * 1000))}
+          onLoadedMetadata={(event) => {
+            event.currentTarget.playbackRate = rate;
+            const seconds = event.currentTarget.duration;
+            if (Number.isFinite(seconds)) setAudioDurationMs(Math.round(seconds * 1000));
+          }}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          onEnded={() => setPlaying(false)}
+          onError={onAudioError}
+          className="hidden"
+        />
+
+        <TranscriptLayout
+          speakers={speakers}
+          segments={shownSegments}
+          currentMs={currentMs}
+          selection={selection}
+          jumpedId={jumpedId}
+          banner={banner}
+          emptyText={active ? "Chữ sẽ hiện ở đây khi đoạn đầu tiên nhận dạng xong." : "Transcript trống."}
+          onSeek={seek}
+          onSelect={readSelection}
+          onMark={() => void mark()}
+          onUnmark={() => void unmark()}
+          onCreateTask={openTask}
+        />
+
+        <AudioPlayerBar
+          currentMs={currentMs}
+          durationMs={durationMs}
+          playing={playing}
+          rate={rate}
+          marks={highlights.map((item) => item.start_ms)}
+          onToggle={togglePlay}
+          onSeek={jumpTo}
+          onCycleRate={cycleRate}
+        />
       </div>
 
-      {job.status === "failed" && job.error_message ? (
-        <p className="mb-4 rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{job.error_message}</p>
+      {tool ? (
+        <JobToolPanel tool={tool} fill={tool === "assistant"} onClose={() => setTool(null)}>
+          {tool === "assistant" ? (
+            <ChatPanel
+              chat={chat}
+              canAsk={canEdit}
+              durationMs={durationMs}
+              onSeekStamp={(stamp) => {
+                const ms = stampToMs(stamp);
+                if (ms !== null) jumpTo(ms);
+              }}
+            />
+          ) : tool === "notes" ? (
+            notesTool
+          ) : (
+            speakersTool
+          )}
+        </JobToolPanel>
       ) : null}
-      {job.warnings.map((warning, index) => (
-        <p key={`${warning.code}-${index}`} className="mb-4 rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          {warning.message}
+      <JobToolRail
+        active={tool}
+        badges={{ notes: highlights.length + actions.length }}
+        onToggle={(next) => setTool((current) => (current === next ? null : next))}
+      />
+
+      {notice ? (
+        <p
+          role="status"
+          className="absolute bottom-32 left-1/2 z-40 max-w-[90%] -translate-x-1/2 rounded-full bg-slate-900 px-4 py-2 text-center text-sm text-white shadow-lg lg:bottom-20"
+        >
+          {notice}
         </p>
-      ))}
-
-      <audio
-        ref={audioRef}
-        src={audioSrc ?? undefined}
-        preload="metadata"
-        onTimeUpdate={(event) => setCurrentMs(Math.round(event.currentTarget.currentTime * 1000))}
-        onLoadedMetadata={(event) => {
-          const seconds = event.currentTarget.duration;
-          if (Number.isFinite(seconds)) setAudioDurationMs(Math.round(seconds * 1000));
-        }}
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-        onEnded={() => setPlaying(false)}
-        onError={onAudioError}
-        className="hidden"
-      />
-
-      <TranscriptLayout
-        title={job.title}
-        speakers={speakers}
-        segments={shownSegments}
-        mode={mode}
-        currentMs={currentMs}
-        durationMs={durationMs}
-        playing={playing}
-        selection={selection}
-        notice={notice}
-        aiDisabled={!canEdit || llmBusy}
-        banner={banner}
-        sidebar={sidebar}
-        emptyText={active ? "Chữ sẽ hiện ở đây khi đoạn đầu tiên nhận dạng xong." : "Transcript trống."}
-        onModeChange={setMode}
-        onTogglePlay={togglePlay}
-        onSeek={seek}
-        onRenameSpeaker={renameSpeaker}
-        onSelect={readSelection}
-        onMark={() => void mark()}
-        onUnmark={() => void unmark()}
-        onCreateTask={openTask}
-        onNormalize={() => void runLlm({ task: "clean" })}
-        onMinutes={(template) => void runLlm({ task: "summarize", template })}
-        onExport={(format) => void exportFile(format)}
-      />
+      ) : null}
 
       {taskDraft ? (
         <TaskDialog
@@ -720,24 +777,42 @@ function JobView({ jobId }: { jobId: string }) {
   );
 }
 
-function HeaderButton({
+function NoteRow({
+  ms,
+  label,
+  onSeek,
+  onDelete,
   children,
-  icon,
-  danger = false,
-  onClick,
 }: {
-  children: string;
-  icon: React.ReactNode;
-  danger?: boolean;
-  onClick: () => void;
+  ms: number;
+  label: string;
+  onSeek: (ms: number) => void;
+  onDelete: () => void;
+  children: React.ReactNode;
 }) {
+  return (
+    <li className="flex items-start gap-2">
+      <button
+        type="button"
+        onClick={() => onSeek(ms)}
+        className="rounded bg-sky-50 px-1.5 font-mono text-xs text-blue-700 hover:bg-sky-100"
+      >
+        {formatMs(ms)}
+      </button>
+      <span className="min-w-0 flex-1 text-slate-700">{children}</span>
+      <button type="button" aria-label={label} title={label} onClick={onDelete} className="text-slate-400 hover:text-rose-600">
+        <Trash2 className="size-4" />
+      </button>
+    </li>
+  );
+}
+
+function HeaderButton({ children, icon, onClick }: { children: string; icon: React.ReactNode; onClick: () => void }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 text-sm ${
-        danger ? "border-rose-100 text-rose-600 hover:bg-rose-50" : "border-slate-200 text-slate-700 hover:bg-slate-50"
-      }`}
+      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50"
     >
       {icon}
       {children}

@@ -5,7 +5,7 @@
 **Ngày:** 2026-10-28  
 **Vai trò của file này:** Hợp đồng để viết client và server. Hành vi pipeline nằm ở [kiến trúc](ARCHITECTURE_SPEC.md).
 
-Thời gian trong JSON là số nguyên mili giây, mốc 0 là đầu file hoặc đầu phiên nghe. Chuỗi thời gian người đọc, dạng `MM:SS` hoặc `HH:MM:SS`, chỉ xuất hiện trong nội dung biên bản và file xuất.
+Thời gian trong JSON là số nguyên mili giây, mốc 0 là đầu file hoặc đầu phiên nghe. Chuỗi thời gian người đọc, dạng `MM:SS` hoặc `HH:MM:SS`, chỉ xuất hiện trong câu trả lời của trợ lý và file xuất.
 
 ## 1. Quy ước
 
@@ -35,17 +35,20 @@ Thời gian trong JSON là số nguyên mili giây, mốc 0 là đầu file ho�
 | 401 | `unauthorized` | Thiếu token, token hết hạn, hoặc sai mật khẩu |
 | 404 | `not_found` | Không có bản ghi, hoặc bản ghi thuộc người khác |
 | 409 | `gpu_busy` | Mở phiên nghe khi khóa GPU đang bị giữ |
-| 409 | `invalid_state` | Hủy, sửa, hoặc gọi LLM khi trạng thái không cho phép |
+| 409 | `invalid_state` | Hủy, sửa, hoặc hỏi trợ lý khi trạng thái không cho phép |
+| 409 | `chat_busy` | Bản ghi đang có một câu trả lời chạy |
 | 413 | `file_too_large` | Vượt 64 MB Opus hoặc 500 MB file gốc |
 | 415 | `unsupported_media` | Không có stream audio |
 | 422 | `validation` | Sai field, kèm `fields` là map tên field sang câu lỗi |
 | 422 | `duration_exceeded` | Dài hơn 3 giờ hoặc PCM ước lượng vượt 800 MB |
-| 422 | `llm_not_configured` | Chưa có `LLM_MODEL` |
-| 429 | `rate_limited` | Quá 60 request mỗi phút từ một IP trên `register`, `login`, hoặc `POST /api/jobs` |
-| 502 | `llm_invalid_json` | Hai lần liên tiếp không ra JSON đúng schema |
-| 502 | `llm_upstream` | Không kết nối được server LLM, hoặc server trả lỗi HTTP |
+| 422 | `llm_not_configured` | Chưa có `LLM_MODEL` hoặc `LLM_API_KEY` |
+| 422 | `llm_context_exceeded` | Transcript và lịch sử vượt ngữ cảnh của model |
+| 429 | `rate_limited` | Quá 60 request mỗi phút từ một IP trên `register`, `login`, `POST /api/jobs`, hoặc `POST .../chat/messages` |
+| 502 | `llm_upstream` | Không kết nối được server LLM, hoặc server trả lỗi HTTP khác 429 |
 | 503 | `gpu_oom` | Không nạp được Whisper trong phần VRAM còn lại |
-| 504 | `llm_timeout` | Hết hạn một request LLM |
+| 504 | `llm_timeout` | Server LLM im lặng quá `LLM_TIMEOUT_SECONDS` |
+
+`llm_rate_limited` chỉ đi bằng sự kiện `error` của SSE hỏi đáp, vì lỗi xảy ra sau khi stream đã mở.
 
 Lỗi nghiệp vụ trong lúc chạy job không trả trên request tải file. Chúng nằm ở `jobs.error_code` và sự kiện `error`.
 
@@ -147,11 +150,11 @@ Nhận `queued`, `capturing`, `preprocessing`, và `transcribing`. `202` và bod
 
 ### `POST /api/jobs/{job_id}/retry`
 
-Chỉ khi `failed`. Xóa câu và từ pass 2 cùng đánh dấu trên các câu đó. Việc `manual` gắn với câu bị xóa giữ lại với `segment_id = null`. Pass 1 giữ nguyên. `202` và body job ở trạng thái `queued`. Giao diện phải cảnh báo trước khi gọi, vì đánh dấu trên pass 2 mất theo.
+Chỉ khi `failed`. Xóa câu và từ pass 2 cùng đánh dấu trên các câu đó, và xóa lịch sử hỏi đáp. Việc `manual` gắn với câu bị xóa giữ lại với `segment_id = null`. Pass 1 giữ nguyên. `202` và body job ở trạng thái `queued`. Giao diện phải cảnh báo trước khi gọi, vì đánh dấu và lịch sử hỏi đáp mất theo.
 
 ### `DELETE /api/jobs/{job_id}`
 
-Xóa job, segment, word, sự kiện, lần chạy LLM, alias, đánh dấu, việc manual, session nghe gắn với job, file Opus, và file tạm. Hồ sơ giọng của tài khoản không bị xóa theo job. Nếu job đang `capturing`, worker dừng thu, không chạy pass 2, và nhả `gpu:lock` trước khi các dòng bị xóa. `204`.
+Xóa job, segment, word, sự kiện, lịch sử hỏi đáp, alias, đánh dấu, việc manual, session nghe gắn với job, file Opus, và file tạm. Hồ sơ giọng của tài khoản không bị xóa theo job. Nếu job đang `capturing`, worker dừng thu, không chạy pass 2, và nhả `gpu:lock` trước khi các dòng bị xóa. `204`.
 
 ## 4. SSE tiến độ
 
@@ -208,7 +211,6 @@ Sự kiện `chunk` của PT1 thuộc pass 2. Pass 1 của phiên nghe đi qua W
       "start_ms": 25400,
       "end_ms": 29800,
       "text_raw": "...",
-      "text_cleaned": null,
       "text_edited": null,
       "speaker_label": "SPEAKER_00",
       "speaker_name": "An",
@@ -430,7 +432,7 @@ Cả hai nhóm chỉ nhận job `ready`, hoặc job `failed` khi transcript đan
 }
 ```
 
-Danh sách này chỉ chứa việc `manual`. Việc do mẫu cuộc họp sinh ra nằm trong kết quả LLM của lần `summarize` mới nhất.
+Danh sách này chỉ chứa việc `manual`. Câu trả lời của trợ lý không tự thành việc.
 
 ### `POST /api/jobs/{job_id}/actions`
 
@@ -448,71 +450,73 @@ Cùng các field `task`, `owner`, `deadline`. `200`.
 
 `204`.
 
-## 10. LLM
+## 10. Hỏi đáp
 
-### `POST /api/jobs/{job_id}/llm`
+### `POST /api/jobs/{job_id}/chat/messages`
 
 Chỉ khi job `ready`, hoặc `failed` với transcript pass 1 còn đọc được.
 
 ```json
-{ "task": "summarize", "template": "meeting", "restart": false }
+{ "question": "Có những nhiệm vụ gì cần đề ra?" }
 ```
 
-`task` là `clean` hoặc `summarize`. `template` bắt buộc khi `task` là `summarize`, và chỉ được `meeting` hoặc `lecture`. `restart` chỉ có hiệu lực với `clean`: `true` thì xóa `text_cleaned` của pass đang làm trước khi chạy. Mặc định `false`, và lần chạy sau một lần `failed` chỉ gửi các câu còn `text_cleaned` null.
+`question` từ 1 đến 2000 ký tự sau khi bỏ khoảng trắng hai đầu. Transcript trống trả `invalid_state`. Request mang `Accept: text/event-stream` và Bearer.
 
-Run thực thi trên hàng Celery `io`, không trên hàng `gpu`. `202`:
+Lỗi kiểm tra trước khi gọi LLM trả JSON như các API khác, gồm `validation`, `invalid_state`, `chat_busy`, `llm_not_configured`, `llm_context_exceeded`, và `rate_limited`. Khi đó không tạo tin nhắn nào.
 
-```json
-{ "run_id": "...", "task": "summarize", "status": "running" }
+Qua bước kiểm tra, response là SSE với các header như mục 4. Đóng kết nối là dừng câu trả lời.
+
+```text
+event: start
+data: {"question_id":"...","answer_id":"..."}
+
+event: delta
+data: {"text":"Có ba việc cần làm:"}
+
+event: done
+data: {"answer_id":"...","model":"tên-trong-LLM_MODEL"}
+
 ```
 
-Một job chỉ có một run `running`. Run thứ hai trả `invalid_state`.
+| `event` | `data` |
+|---|---|
+| `start` | `question_id`, `answer_id` |
+| `delta` | `text`, là mảnh chữ tiếp theo |
+| `done` | `answer_id`, `model` |
+| `error` | `code` (`llm_upstream`, `llm_timeout`, `llm_rate_limited`), `message`. Phần đã nhận vẫn được lưu, tin nhắn ở trạng thái `failed` |
 
-### `GET /api/jobs/{job_id}/llm/{task}`
+SSE này không có `seq` và không nối lại được. Kết nối rớt thì client đọc lại lịch sử.
 
-`task` trên path là `clean` hoặc `summarize`. Trả lần chạy mới nhất của tác vụ đó.
+### `GET /api/jobs/{job_id}/chat/messages`
 
-`clean` thành công:
+Trả tối đa 200 tin nhắn gần nhất, cũ trước.
 
 ```json
 {
-  "run_id": "...",
-  "task": "clean",
-  "status": "done",
-  "model": "tên-trong-LLM_MODEL",
-  "result": null
-}
-```
-
-Chữ đã ghi vào `text_cleaned`. Client tải lại transcript.
-
-`summarize` thành công kèm `"template": "meeting"` hoặc `"lecture"`.
-
-Mẫu `meeting`, `result` là:
-
-```json
-{
-  "objective": "...",
-  "open_issues": [{ "timestamp": "12:04", "text": "..." }],
-  "decisions": [{ "timestamp": "12:08", "text": "..." }],
-  "actions": [
-    { "timestamp": "12:10", "owner": "An", "task": "Gửi biên bản", "deadline": "thứ Sáu" }
+  "items": [
+    {
+      "id": "...",
+      "role": "user",
+      "content": "Có những nhiệm vụ gì cần đề ra?",
+      "status": "done",
+      "created_at": "2026-11-02T08:00:00Z"
+    },
+    {
+      "id": "...",
+      "role": "assistant",
+      "content": "- Anh Minh gửi báo cáo cuối vào thứ Sáu [00:31]",
+      "status": "done",
+      "created_at": "2026-11-02T08:00:01Z"
+    }
   ]
 }
 ```
 
-Mẫu `lecture`, `result` là:
+`role` là `user` hoặc `assistant`. `status` là `streaming`, `done`, `stopped`, hoặc `failed`. Khi `failed`, thêm `error_code`. Mốc trong `content` là chuỗi `[MM:SS]` hoặc `[HH:MM:SS]`.
 
-```json
-{
-  "overview": "...",
-  "concepts": [{ "timestamp": "05:10", "term": "chunk", "explanation": "..." }],
-  "examples": [{ "timestamp": "08:00", "text": "..." }],
-  "exam_notes": [{ "timestamp": "40:00", "text": "..." }]
-}
-```
+### `DELETE /api/jobs/{job_id}/chat/messages`
 
-`status` còn có `running` và `failed`. Khi `failed`, thêm `error_code` và `error_message`.
+Xóa toàn bộ lịch sử hỏi đáp của bản ghi. Có câu trả lời đang chạy thì trả `chat_busy`. `204`.
 
 ## 11. Xuất file
 
@@ -525,10 +529,10 @@ Mẫu `lecture`, `result` là:
 | Field | Giá trị |
 |---|---|
 | `format` | `md`, `docx`, `pdf`, `srt`, `vtt` |
-| `text` | `auto`, `raw`, `cleaned`, `edited` |
+| `text` | `auto`, `raw` |
 | `include_speakers` | boolean, mặc định `true` |
 
-`auto` dùng đúng thứ tự hiện chữ của kiến trúc. `edited` hoặc `cleaned` mà câu không có lớp đó thì rơi về lớp bên dưới, cùng thứ tự ấy.
+`auto` dùng `text_edited` nếu câu có bản sửa, ngược lại `text_raw`. `raw` luôn dùng `text_raw`.
 
 Thành công `200` là file tải về.
 
@@ -540,7 +544,7 @@ Thành công `200` là file tải về.
 | `srt` | `application/x-subrip; charset=utf-8` | `{title}.srt` |
 | `vtt` | `text/vtt; charset=utf-8` | `{title}.vtt` |
 
-Markdown và DOCX của transcript là các câu theo thời gian. Nếu job có lần `summarize` thành công mới nhất, phần biên bản đứng trước transcript và dựng theo `template` của lần đó. Mẫu `meeting` có mục tiêu, vấn đề tồn đọng, quyết định, và việc do LLM đề xuất. Mẫu `lecture` có tóm tắt, khái niệm, ví dụ, và dặn dò ôn. Việc `manual` là một mục riêng sau biên bản khi danh sách không rỗng. Các đoạn đánh dấu thành một mục nữa, mỗi dòng có mốc và `quote`. PDF nhúng Noto Sans.
+Markdown và DOCX của transcript là các câu theo thời gian. Việc `manual` là một mục riêng đứng trước transcript khi danh sách không rỗng. Các đoạn đánh dấu thành một mục nữa, mỗi dòng có mốc và `quote`. Lịch sử hỏi đáp không đưa vào file xuất. PDF nhúng Noto Sans.
 
 SRT và VTT là các câu, một cue một câu. `include_speakers: true` và câu có tên thì dòng chữ bắt đầu bằng tên và dấu hai chấm.
 
@@ -624,7 +628,6 @@ create table segments (
   start_ms integer not null,
   end_ms integer not null,
   text_raw text not null,
-  text_cleaned text,
   text_edited text,
   speaker_label text,
   unique (job_id, pass, position)
@@ -659,29 +662,16 @@ create table job_events (
   unique (job_id, seq)
 );
 
-create table llm_runs (
+create table chat_messages (
   id uuid primary key,
   job_id uuid not null references jobs (id) on delete cascade,
-  task text not null check (task in ('clean', 'summarize')),
-  template text check (template in ('meeting', 'lecture')),
-  status text not null check (status in ('running', 'done', 'failed')),
+  role text not null check (role in ('user', 'assistant')),
+  content text not null default '',
+  status text not null check (status in ('streaming', 'done', 'stopped', 'failed')),
   model_name text,
-  result jsonb,
   error_code text,
-  error_message text,
   created_at timestamptz not null,
-  finished_at timestamptz,
-  check (task = 'clean' or template is not null)
-);
-
-create table llm_map_shards (
-  run_id uuid not null references llm_runs (id) on delete cascade,
-  shard_index integer not null,
-  input_start_ms integer not null,
-  input_end_ms integer not null,
-  status text not null check (status in ('running', 'done', 'failed')),
-  result jsonb,
-  primary key (run_id, shard_index)
+  updated_at timestamptz not null
 );
 
 create table media_tokens (
@@ -736,7 +726,8 @@ create index live_sessions_job_idx on live_sessions (job_id);
 create index voice_profiles_user_idx on voice_profiles (user_id);
 create index highlights_job_idx on highlights (job_id, created_at);
 create index action_items_job_idx on action_items (job_id, created_at);
-create index llm_runs_job_task_created_idx on llm_runs (job_id, task, created_at desc);
+create index chat_messages_job_created_idx on chat_messages (job_id, created_at);
+create unique index chat_messages_one_streaming_idx on chat_messages (job_id) where status = 'streaming';
 create index media_tokens_job_idx on media_tokens (job_id);
 create index ws_tickets_session_idx on ws_tickets (session_id);
 ```

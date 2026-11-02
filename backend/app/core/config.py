@@ -43,7 +43,8 @@ class Settings:
     llm_api_key: str
     llm_model: str
     llm_timeout_seconds: int
-    llm_json_mode: bool
+    llm_max_context_tokens: int
+    llm_max_output_tokens: int
     voice_match_threshold: float
     voice_match_margin: float
     max_voice_bytes: int
@@ -72,7 +73,8 @@ def get_settings() -> Settings:
         llm_api_key=os.environ.get("LLM_API_KEY", ""),
         llm_model=os.environ.get("LLM_MODEL", ""),
         llm_timeout_seconds=int(os.environ.get("LLM_TIMEOUT_SECONDS", "120")),
-        llm_json_mode=os.environ.get("LLM_JSON_MODE", "true").lower() in {"1", "true", "yes"},
+        llm_max_context_tokens=int(os.environ.get("LLM_MAX_CONTEXT_TOKENS", "128000")),
+        llm_max_output_tokens=int(os.environ.get("LLM_MAX_OUTPUT_TOKENS", "2000")),
         voice_match_threshold=float(os.environ.get("VOICE_MATCH_THRESHOLD", "0.75")),
         voice_match_margin=float(os.environ.get("VOICE_MATCH_MARGIN", "0.05")),
         max_voice_bytes=int(os.environ.get("MAX_VOICE_BYTES", "33554432")),

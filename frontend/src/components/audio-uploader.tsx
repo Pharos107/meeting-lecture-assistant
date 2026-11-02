@@ -49,7 +49,7 @@ export function AudioUploader({ busy = false, status, progress, error, fieldErro
       }}
     >
       <div>
-        <h2 className="text-xl font-semibold text-slate-900">Tải file ghi âm</h2>
+        <h2 className="text-xl font-semibold text-slate-900">Bản ghi mới</h2>
         <p className="mt-1 max-w-md text-sm leading-6 text-slate-500">
           Audio hoặc video. Trình duyệt nén sang Opus khi làm được. Trần file gốc 500 MB, bản Opus 64 MB, thời lượng 3 giờ.
         </p>
@@ -106,41 +106,45 @@ export function AudioUploader({ busy = false, status, progress, error, fieldErro
       </label>
       {fieldErrors.title ? <p className="mt-1 text-xs text-rose-600">{fieldErrors.title}</p> : null}
 
-      <label className="mt-4 block text-sm font-medium text-slate-700" htmlFor="vocabulary">
-        Thuật ngữ gợi ý
-        <textarea
-          id="vocabulary"
-          value={vocabulary}
-          maxLength={MAX_VOCAB}
-          disabled={busy}
-          placeholder="Tên riêng, thuật ngữ hay xuất hiện, cách nhau bằng dấu phẩy"
-          onChange={(event) => setVocabulary(event.target.value)}
-          rows={3}
-          className="mt-2 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-normal text-slate-800 outline-none ring-blue-500 focus:bg-white focus:ring-2"
-        />
-      </label>
-      <div className="mt-1 flex justify-between text-xs">
-        <span className="text-rose-600">{fieldErrors.vocabulary ?? ""}</span>
-        <span className="text-slate-400">
-          {vocabulary.length}/{MAX_VOCAB}
-        </span>
-      </div>
+      <details className="mt-4 text-sm" open={Boolean(fieldErrors.vocabulary || fieldErrors.num_speakers) || speakersInvalid}>
+        <summary className="cursor-pointer font-medium text-slate-700">Tùy chọn nâng cao</summary>
 
-      <label className="mt-3 block text-sm font-medium text-slate-700" htmlFor="num_speakers">
-        Số người nói <span className="font-normal text-slate-400">(không bắt buộc)</span>
-        <input
-          id="num_speakers"
-          inputMode="numeric"
-          value={speakers}
-          disabled={busy}
-          placeholder="Tự đoán"
-          onChange={(event) => setSpeakers(event.target.value.replace(/[^0-9]/g, ""))}
-          className="mt-2 w-32 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-normal text-slate-800 outline-none ring-blue-500 focus:bg-white focus:ring-2"
-        />
-      </label>
-      {speakersInvalid || fieldErrors.num_speakers ? (
-        <p className="mt-1 text-xs text-rose-600">{fieldErrors.num_speakers ?? "Số người nói phải từ 1 đến 20."}</p>
-      ) : null}
+        <label className="mt-3 block text-sm font-medium text-slate-700" htmlFor="vocabulary">
+          Thuật ngữ gợi ý
+          <textarea
+            id="vocabulary"
+            value={vocabulary}
+            maxLength={MAX_VOCAB}
+            disabled={busy}
+            placeholder="Tên riêng, thuật ngữ hay xuất hiện, cách nhau bằng dấu phẩy"
+            onChange={(event) => setVocabulary(event.target.value)}
+            rows={3}
+            className="mt-2 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-normal text-slate-800 outline-none ring-blue-500 focus:bg-white focus:ring-2"
+          />
+        </label>
+        <div className="mt-1 flex justify-between text-xs">
+          <span className="text-rose-600">{fieldErrors.vocabulary ?? ""}</span>
+          <span className="text-slate-400">
+            {vocabulary.length}/{MAX_VOCAB}
+          </span>
+        </div>
+
+        <label className="mt-3 block text-sm font-medium text-slate-700" htmlFor="num_speakers">
+          Số người nói <span className="font-normal text-slate-400">(không bắt buộc)</span>
+          <input
+            id="num_speakers"
+            inputMode="numeric"
+            value={speakers}
+            disabled={busy}
+            placeholder="Tự đoán"
+            onChange={(event) => setSpeakers(event.target.value.replace(/[^0-9]/g, ""))}
+            className="mt-2 w-32 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-normal text-slate-800 outline-none ring-blue-500 focus:bg-white focus:ring-2"
+          />
+        </label>
+        {speakersInvalid || fieldErrors.num_speakers ? (
+          <p className="mt-1 text-xs text-rose-600">{fieldErrors.num_speakers ?? "Số người nói phải từ 1 đến 20."}</p>
+        ) : null}
+      </details>
 
       {status ? (
         <div className="mt-5">
@@ -164,7 +168,7 @@ export function AudioUploader({ busy = false, status, progress, error, fieldErro
           disabled={!file || busy || speakersInvalid}
           className="flex-1 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {busy ? "Đang xử lý…" : "Tạo job"}
+          {busy ? "Đang xử lý…" : "Bắt đầu chuyển chữ"}
         </button>
         {busy && onCancel ? (
           <button

@@ -7,7 +7,7 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-from sqlalchemy import func, select, update
+from sqlalchemy import delete, func, select, update
 from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
@@ -15,6 +15,7 @@ from app.db import get_engine
 from app.models import ActionItem, Highlight, Job, JobEvent, Segment, SpeakerAlias, VoiceProfile, Word
 from app.services.diarization import PIPELINE_MODEL
 from app.services.job_notify import install_job_notify, remember_job_event
+from app.services.sentence_merge import should_merge
 from app.services.speaker_align import (
     SpeakerTurn,
     VoiceProfileVector,
@@ -153,8 +154,8 @@ def _write_speaker_labels(
     db: Session,
     written_segments: list[tuple[Segment, list[Word]]],
     turns: list[SpeakerTurn],
-) -> None:
-    """Ghi nhãn từ và câu bằng hai lệnh cập nhật hàng loạt theo khóa chính."""
+) -> dict[uuid.UUID, str | None]:
+    """Ghi nhãn từ và câu bằng hai lệnh cập nhật hàng loạt theo khóa chính. Trả nhãn của từng câu."""
     word_rows: list[dict] = []
     segment_rows: list[dict] = []
     for segment, words in written_segments:
@@ -169,6 +170,47 @@ def _write_speaker_labels(
         db.execute(update(Word), word_rows)
     if segment_rows:
         db.execute(update(Segment), segment_rows)
+    return {row["id"]: row["speaker_label"] for row in segment_rows}
+
+
+def _merge_sentences(
+    db: Session,
+    written_segments: list[tuple[Segment, list[Word]]],
+    labels: dict[uuid.UUID, str | None],
+) -> None:
+    """Gom các đoạn Whisper cắt giữa câu. Chạy sau khi có nhãn để không gộp qua hai người nói."""
+    if not written_segments:
+        return
+    merged = [written_segments[0]]
+    dropped: list[uuid.UUID] = []
+    moved: list[dict] = []
+    for segment, words in written_segments[1:]:
+        head, head_words = merged[-1]
+        if not should_merge(
+            head.text_raw,
+            head.start_ms,
+            head.end_ms,
+            labels.get(head.id),
+            segment.text_raw,
+            segment.start_ms,
+            segment.end_ms,
+            labels.get(segment.id),
+        ):
+            merged.append((segment, words))
+            continue
+        head.text_raw = f"{head.text_raw} {segment.text_raw}"
+        head.end_ms = segment.end_ms
+        for word in words:
+            moved.append({"id": word.id, "segment_id": head.id, "position": len(head_words)})
+            head_words.append(word)
+        dropped.append(segment.id)
+    if not dropped:
+        return
+    db.flush()
+    if moved:
+        db.execute(update(Word), moved)
+    # Khóa ngoại của words có cascade, nên phải dời từ xong rồi mới xóa câu.
+    db.execute(delete(Segment).where(Segment.id.in_(dropped)))
 
 
 def _append_event(db: Session, job: Job, event_type: str, payload: dict) -> None:
@@ -274,8 +316,9 @@ def run_standard_pass(
             _append_event(db, job, "warning", {"code": "diarization_failed", "message": "Không gán được người nói."})
             turns = []
             vectors = {}
+    labels = _write_speaker_labels(db, written_segments, turns) if turns else {}
+    _merge_sentences(db, written_segments, labels)
     if turns:
-        _write_speaker_labels(db, written_segments, turns)
         _apply_voice_aliases(db, job, vectors)
         _append_event(db, job, "speakers", {})
     job.status = "ready"

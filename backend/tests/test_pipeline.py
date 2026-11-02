@@ -22,12 +22,11 @@ from app.db import get_engine
 from app.models import (
     ActionItem,
     Base,
+    ChatMessage,
     Highlight,
     Job,
     JobEvent,
     LiveSession,
-    LlmMapShard,
-    LlmRun,
     MediaToken,
     RefreshToken,
     Segment,
@@ -53,8 +52,7 @@ def clear_rows() -> None:
             Segment,
             SpeakerAlias,
             JobEvent,
-            LlmMapShard,
-            LlmRun,
+            ChatMessage,
             MediaToken,
             WsTicket,
             LiveSession,
@@ -125,6 +123,62 @@ class PipelineTests(unittest.TestCase):
             self.assertEqual(job.status, "cancelled")
             rows = db.query(Segment).filter(Segment.job_id == job.id).all()
             self.assertEqual([row.text_raw for row in rows], ["xin chào"])
+        finally:
+            db.close()
+
+    def test_fragments_become_sentences_and_words_follow(self) -> None:
+        db, job = self._job()
+
+        def piece(text: str, start: float, end: float) -> dict:
+            parts = text.split()
+            step = (end - start) / len(parts)
+            return {
+                "text": text,
+                "start": start,
+                "end": end,
+                "words": [
+                    {"text": part, "start": start + step * index, "end": start + step * (index + 1)}
+                    for index, part in enumerate(parts)
+                ],
+            }
+
+        def transcribe(_chunk):
+            return [
+                piece("Trọng", 0.0, 0.5),
+                piece("tâm trước mắt là thực thi,", 0.5, 3.0),
+                piece("Giải quyết nguồn gây cháy.", 3.2, 5.0),
+                piece("và câu này đã sang câu khác.", 5.1, 7.0),
+                piece("Câu của người khác", 7.1, 9.0),
+                piece("vẫn tách riêng.", 9.0, 10.0),
+            ]
+
+        def diarize():
+            return [
+                SpeakerTurn(0, 7050, "SPEAKER_00"),
+                SpeakerTurn(7050, 9000, "SPEAKER_01"),
+                SpeakerTurn(9000, 10000, "SPEAKER_02"),
+            ]
+
+        try:
+            run_standard_pass(db, job, regions=[(0, 10)], transcribe=transcribe, diarize=diarize)
+            db.expire_all()
+            rows = db.query(Segment).filter(Segment.job_id == job.id).order_by(Segment.position).all()
+            self.assertEqual(
+                [row.text_raw for row in rows],
+                [
+                    "Trọng tâm trước mắt là thực thi, Giải quyết nguồn gây cháy.",
+                    "và câu này đã sang câu khác.",
+                    "Câu của người khác",
+                    "vẫn tách riêng.",
+                ],
+            )
+            first = rows[0]
+            self.assertEqual((first.start_ms, first.end_ms), (0, 5000))
+            self.assertEqual(first.speaker_label, "SPEAKER_00")
+            words = db.query(Word).filter(Word.segment_id == first.id).order_by(Word.position).all()
+            self.assertEqual(" ".join(word.text for word in words), first.text_raw)
+            self.assertEqual([word.position for word in words], list(range(len(words))))
+            self.assertEqual(db.query(Word).count(), sum(len(row.text_raw.split()) for row in rows))
         finally:
             db.close()
 

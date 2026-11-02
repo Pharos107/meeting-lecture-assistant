@@ -41,6 +41,7 @@ class SlidingWindow:
 login_attempts = SlidingWindow(60)
 register_attempts = SlidingWindow(60)
 upload_attempts = SlidingWindow(60)
+chat_attempts = SlidingWindow(60)
 
 
 def client_key(request: Request) -> str:

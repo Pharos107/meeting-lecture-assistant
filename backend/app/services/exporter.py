@@ -11,28 +11,14 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.api.routes_jobs import current_segments, load_aliases, speaker_name
-from app.models import ActionItem, Highlight, Job, LlmRun, Segment
+from app.models import ActionItem, Highlight, Job, Segment
 
 _FONT = Path(__file__).resolve().parents[2] / "assets" / "fonts" / "NotoSans-Regular.ttf"
 
 
 def choose_text(segment: Segment, mode: str) -> str:
-    if mode == "raw":
-        return segment.text_raw
-    if mode == "cleaned":
-        if segment.text_cleaned is not None:
-            return segment.text_cleaned
-        return segment.text_raw
-    if mode == "edited":
-        if segment.text_edited is not None:
-            return segment.text_edited
-        if segment.text_cleaned is not None:
-            return segment.text_cleaned
-        return segment.text_raw
-    if segment.text_edited is not None:
+    if mode != "raw" and segment.text_edited is not None:
         return segment.text_edited
-    if segment.text_cleaned is not None:
-        return segment.text_cleaned
     return segment.text_raw
 
 
@@ -95,29 +81,8 @@ def render_vtt(segments, aliases, mode: str, include_speakers: bool) -> str:
     return f"WEBVTT\n\n{body}"
 
 
-def _lines_of(items: list, formatter) -> list[str]:
-    return [formatter(item) for item in items if formatter(item)]
-
-
 def document_sections(db: Session, job: Job, segments: list[Segment], aliases: dict, mode: str, include_speakers: bool) -> list[tuple[str, list[str]]]:
     sections: list[tuple[str, list[str]]] = []
-    run = db.scalar(
-        select(LlmRun)
-        .where(LlmRun.job_id == job.id, LlmRun.task == "summarize", LlmRun.status == "done")
-        .order_by(LlmRun.created_at.desc())
-    )
-    result = run.result if run is not None and isinstance(run.result, dict) else None
-    if run is not None and run.template == "meeting" and result is not None:
-        sections.append(("Mục tiêu", [str(result.get("objective") or "")]))
-        sections.append(("Vấn đề tồn đọng", _lines_of(result.get("open_issues") or [], _stamp_text)))
-        sections.append(("Quyết định", _lines_of(result.get("decisions") or [], _stamp_text)))
-        sections.append(("Việc do biên bản đề xuất", _lines_of(result.get("actions") or [], _meeting_action)))
-    elif run is not None and run.template == "lecture" and result is not None:
-        sections.append(("Tóm tắt", [str(result.get("overview") or "")]))
-        sections.append(("Khái niệm", _lines_of(result.get("concepts") or [], _concept)))
-        sections.append(("Ví dụ", _lines_of(result.get("examples") or [], _stamp_text)))
-        sections.append(("Dặn dò ôn", _lines_of(result.get("exam_notes") or [], _stamp_text)))
-
     actions = list(
         db.scalars(
             select(ActionItem).where(ActionItem.job_id == job.id, ActionItem.source == "manual")
@@ -145,28 +110,6 @@ def document_sections(db: Session, job: Job, segments: list[Segment], aliases: d
     ]
     sections.append(("Transcript", transcript))
     return sections
-
-
-def _stamp_text(item: dict) -> str:
-    if not isinstance(item, dict):
-        return ""
-    return f"{item.get('timestamp') or ''} {item.get('text') or ''}".strip()
-
-
-def _meeting_action(item: dict) -> str:
-    if not isinstance(item, dict):
-        return ""
-    extra = " — ".join(part for part in (item.get("owner") or "", item.get("deadline") or "") if part)
-    line = f"{item.get('timestamp') or ''} {item.get('task') or ''}".strip()
-    if extra:
-        return f"{line} — {extra}"
-    return line
-
-
-def _concept(item: dict) -> str:
-    if not isinstance(item, dict):
-        return ""
-    return f"{item.get('timestamp') or ''} {item.get('term') or ''}: {item.get('explanation') or ''}".strip()
 
 
 def render_markdown(sections: list[tuple[str, list[str]]]) -> str:

@@ -1,4 +1,4 @@
-"""Xuất transcript và biên bản."""
+"""Xuất transcript."""
 
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import Response
@@ -13,7 +13,7 @@ from app.services.exporter import content_disposition, export_job
 router = APIRouter(prefix="/api", tags=["export"], dependencies=[Depends(current_user)])
 
 _FORMATS = {"md", "docx", "pdf", "srt", "vtt"}
-_TEXT = {"auto", "raw", "cleaned", "edited"}
+_TEXT = {"auto", "raw"}
 
 
 @router.post("/jobs/{job_id}/exports", openapi_extra=request_body(ExportBody))
