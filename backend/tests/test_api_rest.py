@@ -1,4 +1,4 @@
-"""SSE, xuất file, LLM, nghe trực tiếp, và hồ sơ giọng."""
+"""SSE, xuất file, nghe trực tiếp, và hồ sơ giọng."""
 
 import json
 import os
@@ -11,7 +11,6 @@ import zipfile
 from datetime import datetime, timezone
 from io import BytesIO
 from pathlib import Path
-from types import SimpleNamespace
 
 os.environ["DATABASE_URL"] = "sqlite://"
 os.environ["JWT_SECRET"] = "t" * 32
@@ -19,7 +18,6 @@ os.environ["DATA_DIR"] = tempfile.mkdtemp(prefix="stt-rest-")
 os.environ["REDIS_URL"] = ""
 os.environ["LLM_MODEL"] = ""
 
-import httpx
 from fastapi.testclient import TestClient
 from starlette.websockets import WebSocketDisconnect
 from sqlalchemy.orm import Session
@@ -34,12 +32,11 @@ from app.main import app
 from app.models import (
     ActionItem,
     Base,
+    ChatMessage,
     Highlight,
     Job,
     JobEvent,
     LiveSession,
-    LlmMapShard,
-    LlmRun,
     MediaToken,
     RefreshToken,
     Segment,
@@ -60,7 +57,6 @@ from app.services.live_channel import (
     writer_current,
 )
 from app.services.live_heartbeat import clear_heartbeats
-from app.services.llm_runner import LlmTimeout, LlmUpstream, execute_llm_run, http_chat, shard_segments
 
 get_settings.cache_clear()
 Base.metadata.create_all(get_engine())
@@ -78,8 +74,7 @@ def clear_rows() -> None:
             Segment,
             SpeakerAlias,
             JobEvent,
-            LlmMapShard,
-            LlmRun,
+            ChatMessage,
             MediaToken,
             WsTicket,
             LiveSession,
@@ -130,18 +125,6 @@ def parse_sse(body: str) -> list[dict]:
                 item["data"] = json.loads(line[6:])
         frames.append(item)
     return frames
-
-
-class ShardTests(unittest.TestCase):
-    def test_clean_and_summary_boundaries(self) -> None:
-        sentences = [SimpleNamespace(text_raw="một", start_ms=index, end_ms=index + 1) for index in range(31)]
-        shards = shard_segments(sentences, max_sentences=30, max_words=600)
-        self.assertEqual([len(shard) for shard in shards], [30, 1])
-        long = SimpleNamespace(text_raw=" ".join(["từ"] * 601), start_ms=0, end_ms=1000)
-        follow = SimpleNamespace(text_raw="sau", start_ms=1000, end_ms=2000)
-        parts = shard_segments([long, follow], max_words=600)
-        self.assertEqual(len(parts), 2)
-        self.assertEqual(len(parts[0]), 1)
 
 
 class ApiRestTests(unittest.TestCase):
@@ -226,7 +209,6 @@ class ApiRestTests(unittest.TestCase):
                 start_ms=1500,
                 end_ms=2500,
                 text_raw="gốc",
-                text_cleaned="sạch",
                 text_edited="đã sửa",
                 speaker_label="SPEAKER_00",
             )
@@ -234,22 +216,6 @@ class ApiRestTests(unittest.TestCase):
             db.flush()
             db.add(SpeakerAlias(job_id=job.id, speaker_label="SPEAKER_00", display_name="Diễn giả", source="manual"))
             now = datetime.now(timezone.utc)
-            db.add(
-                LlmRun(
-                    job_id=job.id,
-                    task="summarize",
-                    template="meeting",
-                    status="done",
-                    model_name="test",
-                    result={
-                        "objective": "Chốt phạm vi",
-                        "open_issues": [{"timestamp": "01:00", "text": "Còn API"}],
-                        "decisions": [{"timestamp": "02:00", "text": "Dùng FastAPI"}],
-                        "actions": [{"timestamp": "03:00", "owner": "An", "task": "Viết test", "deadline": "thứ sáu"}],
-                    },
-                    created_at=now,
-                )
-            )
             db.add(
                 ActionItem(
                     job_id=job.id,
@@ -298,8 +264,6 @@ class ApiRestTests(unittest.TestCase):
         self.assertTrue(vtt.text.startswith("WEBVTT"))
         self.assertIn("00:00:01.500 --> 00:00:02.500", vtt.text)
         markdown = client.post(f"/api/jobs/{job_id}/exports", headers=auth(self.token), json={"format": "md"}).text
-        self.assertIn("# Mục tiêu", markdown)
-        self.assertIn("Chốt phạm vi", markdown)
         self.assertIn("# Việc cần làm", markdown)
         self.assertIn("Gửi biên bản", markdown)
         self.assertIn("# Đánh dấu", markdown)
@@ -312,91 +276,11 @@ class ApiRestTests(unittest.TestCase):
         docx = client.post(f"/api/jobs/{job_id}/exports", headers=auth(self.token), json={"format": "docx"})
         with zipfile.ZipFile(BytesIO(docx.content)) as package:
             document = package.read("word/document.xml").decode("utf-8")
-        self.assertIn("Mục tiêu", document)
+        self.assertIn("Việc cần làm", document)
         self.assertIn("đã sửa", document)
         queued = upload(self.token)
         blocked = client.post(f"/api/jobs/{queued}/exports", headers=auth(self.token), json={"format": "md"})
         self.assertEqual(blocked.status_code, 409)
-
-    def test_llm_rejects_missing_model_then_retries_schema(self) -> None:
-        job_id, segment_id = self._ready_segment()
-        missing = client.post(f"/api/jobs/{job_id}/llm", headers=auth(self.token), json={"task": "clean"})
-        self.assertEqual(missing.status_code, 422)
-        self.assertEqual(missing.json()["error"]["code"], "llm_not_configured")
-        with Session(get_engine()) as db:
-            self.assertEqual(db.query(LlmRun).count(), 1)
-
-        os.environ["LLM_MODEL"] = "test-model"
-        get_settings.cache_clear()
-        try:
-            started = client.post(f"/api/jobs/{job_id}/llm", headers=auth(self.token), json={"task": "clean"})
-            self.assertEqual(started.status_code, 202, started.text)
-            run_id = started.json()["run_id"]
-            again = client.post(f"/api/jobs/{job_id}/llm", headers=auth(self.token), json={"task": "clean"})
-            self.assertEqual(again.status_code, 409)
-            seen: list[str] = []
-
-            def transport(messages):
-                seen.append(messages[-1]["content"])
-                if len(seen) == 1:
-                    return "{}"
-                return json.dumps({"segments": [{"id": segment_id, "text": "câu sạch"}]}, ensure_ascii=False)
-
-            execute_llm_run(run_id, transport=transport)
-            self.assertEqual(len(seen), 2)
-            self.assertIn("Lỗi kiểm tra schema", seen[1])
-            latest = client.get(f"/api/jobs/{job_id}/llm/clean", headers=auth(self.token))
-            self.assertEqual(latest.status_code, 200)
-            self.assertEqual(latest.json()["status"], "done")
-            self.assertIsNone(latest.json()["result"])
-            with Session(get_engine()) as db:
-                segment = db.get(Segment, uuid.UUID(segment_id))
-                assert segment is not None
-                self.assertEqual(segment.text_cleaned, "câu sạch")
-
-            timed = client.post(f"/api/jobs/{job_id}/llm", headers=auth(self.token), json={"task": "clean"})
-            self.assertEqual(timed.status_code, 202, timed.text)
-
-            def timeout(_messages):
-                raise LlmTimeout("LLM hết hạn.")
-
-            execute_llm_run(timed.json()["run_id"], transport=timeout)
-            failed = client.get(f"/api/jobs/{job_id}/llm/clean", headers=auth(self.token))
-            self.assertEqual(failed.json()["status"], "failed")
-            self.assertEqual(failed.json()["error_code"], "llm_timeout")
-
-            refused = client.post(
-                f"/api/jobs/{job_id}/llm",
-                headers=auth(self.token),
-                json={"task": "clean", "restart": True},
-            )
-            self.assertEqual(refused.status_code, 202, refused.text)
-
-            def connect_error(_messages):
-                raise httpx.ConnectError("refused")
-
-            execute_llm_run(refused.json()["run_id"], transport=connect_error)
-            upstream = client.get(f"/api/jobs/{job_id}/llm/clean", headers=auth(self.token))
-            self.assertEqual(upstream.json()["status"], "failed")
-            self.assertEqual(upstream.json()["error_code"], "llm_upstream")
-            retry = client.post(f"/api/jobs/{job_id}/llm", headers=auth(self.token), json={"task": "clean"})
-            self.assertEqual(retry.status_code, 202, retry.text)
-
-            def status_error(*_args, **_kwargs):
-                sent = httpx.Request("POST", "http://llm.test/chat/completions")
-                response = httpx.Response(500, request=sent)
-                raise httpx.HTTPStatusError("loi", request=sent, response=response)
-
-            original = httpx.post
-            httpx.post = status_error
-            try:
-                with self.assertRaises(LlmUpstream):
-                    http_chat([{"role": "user", "content": "xin chào"}])
-            finally:
-                httpx.post = original
-        finally:
-            os.environ["LLM_MODEL"] = ""
-            get_settings.cache_clear()
 
     def test_live_lock_stop_and_websocket(self) -> None:
         created = client.post("/api/live/sessions", headers=auth(self.token), json={"title": "Buổi học"})

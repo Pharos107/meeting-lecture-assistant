@@ -22,14 +22,12 @@ class RefreshBody(BaseModel):
 
 class ExportBody(BaseModel):
     format: Literal["md", "docx", "pdf", "srt", "vtt"]
-    text: Literal["auto", "raw", "cleaned", "edited"] = "auto"
+    text: Literal["auto", "raw"] = "auto"
     include_speakers: bool = True
 
 
-class LlmBody(BaseModel):
-    task: Literal["clean", "summarize"]
-    template: Literal["meeting", "lecture"] | None = None
-    restart: bool = False
+class ChatBody(BaseModel):
+    question: str = Field(min_length=1, max_length=2000)
 
 
 class LiveSessionBody(BaseModel):

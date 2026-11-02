@@ -1,4 +1,4 @@
-"""Bảng Postgres của tài khoản, job, transcript, và biên bản."""
+"""Bảng Postgres của tài khoản, job, transcript, và hỏi đáp."""
 
 import uuid
 from datetime import datetime
@@ -16,6 +16,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     Uuid,
+    text,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -146,7 +147,6 @@ class Segment(Base):
     start_ms: Mapped[int] = mapped_column(Integer, nullable=False)
     end_ms: Mapped[int] = mapped_column(Integer, nullable=False)
     text_raw: Mapped[str] = mapped_column(Text, nullable=False)
-    text_cleaned: Mapped[str | None] = mapped_column(Text, nullable=True)
     text_edited: Mapped[str | None] = mapped_column(Text, nullable=True)
     speaker_label: Mapped[str | None] = mapped_column(Text, nullable=True)
 
@@ -204,14 +204,20 @@ class JobEvent(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
-class LlmRun(Base):
-    __tablename__ = "llm_runs"
+class ChatMessage(Base):
+    __tablename__ = "chat_messages"
     __table_args__ = (
-        CheckConstraint("task in ('clean', 'summarize')", name="llm_runs_task_check"),
-        CheckConstraint("template is null or template in ('meeting', 'lecture')", name="llm_runs_template_check"),
-        CheckConstraint("status in ('running', 'done', 'failed')", name="llm_runs_status_check"),
-        CheckConstraint("task = 'clean' or template is not null", name="llm_runs_template_required_check"),
-        Index("llm_runs_job_task_created_idx", "job_id", "task", "created_at"),
+        CheckConstraint("role in ('user', 'assistant')", name="chat_messages_role_check"),
+        CheckConstraint("status in ('streaming', 'done', 'stopped', 'failed')", name="chat_messages_status_check"),
+        Index("chat_messages_job_created_idx", "job_id", "created_at"),
+        # Mỗi bản ghi chỉ có một câu trả lời đang chạy, kể cả khi có nhiều bản uvicorn.
+        Index(
+            "chat_messages_one_streaming_idx",
+            "job_id",
+            unique=True,
+            postgresql_where=text("status = 'streaming'"),
+            sqlite_where=text("status = 'streaming'"),
+        ),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -220,33 +226,13 @@ class LlmRun(Base):
         ForeignKey("jobs.id", ondelete="CASCADE"),
         nullable=False,
     )
-    task: Mapped[str] = mapped_column(Text, nullable=False)
-    template: Mapped[str | None] = mapped_column(Text, nullable=True)
+    role: Mapped[str] = mapped_column(Text, nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False, default="")
     status: Mapped[str] = mapped_column(Text, nullable=False)
     model_name: Mapped[str | None] = mapped_column(Text, nullable=True)
-    result: Mapped[dict | None] = mapped_column(_json_type(), nullable=True)
     error_code: Mapped[str | None] = mapped_column(Text, nullable=True)
-    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
-    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
-
-
-class LlmMapShard(Base):
-    __tablename__ = "llm_map_shards"
-    __table_args__ = (
-        CheckConstraint("status in ('running', 'done', 'failed')", name="llm_map_shards_status_check"),
-    )
-
-    run_id: Mapped[uuid.UUID] = mapped_column(
-        Uuid(as_uuid=True),
-        ForeignKey("llm_runs.id", ondelete="CASCADE"),
-        primary_key=True,
-    )
-    shard_index: Mapped[int] = mapped_column(Integer, primary_key=True)
-    input_start_ms: Mapped[int] = mapped_column(Integer, nullable=False)
-    input_end_ms: Mapped[int] = mapped_column(Integer, nullable=False)
-    status: Mapped[str] = mapped_column(Text, nullable=False)
-    result: Mapped[dict | None] = mapped_column(_json_type(), nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
 class MediaToken(Base):

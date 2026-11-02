@@ -28,11 +28,11 @@ Worker ghi tên GPU và tổng VRAM vào log lúc khởi động. Thiếu CUDA t
 | Frontend | Next.js App Router, React, TypeScript, Tailwind CSS, shadcn/ui | Trang tài khoản, tải file, transcript, phiên nghe |
 | Nén trên trình duyệt | `@ffmpeg/ffmpeg` và `@ffmpeg/core` bản đơn luồng | Tách âm thanh khỏi video, đưa upload về Opus. WASM lỗi thì tải file gốc |
 | Backend | FastAPI, Pydantic, Uvicorn | REST, SSE, WebSocket, xác thực |
-| Hàng đợi | Celery, Redis 7 | Hàng `gpu` concurrency 1. Hàng `io` concurrency 4 cho LLM |
+| Hàng đợi | Celery, Redis 7 | Hàng `gpu` concurrency 1 |
 | STT | faster-whisper | Pass chuẩn `large-v3-turbo`, pass nháp `small` |
 | VAD | Silero VAD đi kèm faster-whisper | CPU |
 | Người nói | pyannote.audio dòng 3, pipeline `pyannote/speaker-diarization-3.1` | Sau khi Whisper đã được giải phóng |
-| LLM | HTTP tương thích OpenAI, thư viện `httpx` | Model do `LLM_MODEL` quyết định |
+| LLM | API cloud tương thích OpenAI, thư viện `httpx` | Hỏi đáp trên transcript. Model do `LLM_MODEL` quyết định |
 | Dữ liệu | PostgreSQL 16, SQLAlchemy, Alembic | Người dùng, job, chữ, sự kiện |
 | File | Volume Docker | Opus, PCM tạm, cache Hugging Face |
 | Tài liệu xuất | python-docx, fpdf2, font Noto Sans | DOCX và PDF có dấu tiếng Việt |
@@ -67,9 +67,11 @@ Khi nâng faster-whisper, mở lại bảng `_MODELS` và ghi repo thực tế v
 
 ### LLM
 
-Không cài SDK của một nhà cung cấp. Worker gửi HTTP tới server tương thích OpenAI. Gemini ở chế độ tương thích OpenAI, Ollama, vLLM, và các cổng tương tự đều dùng một client, miễn là chúng có `POST /chat/completions`.
+Không cài SDK của một nhà cung cấp. FastAPI gửi HTTP tới API cloud tương thích OpenAI, miễn là có `POST /chat/completions` với `stream: true`.
 
-`LLM_MODEL` để trống cho đến khi nhóm chọn model. Thiếu biến này thì nút hậu kỳ trả `llm_not_configured`.
+Model phải có ngữ cảnh từ 128 nghìn token, để chứa transcript dài nhất. Không chạy model trên máy mục tiêu, vì VRAM dưới 6GB dành cho Whisper và pyannote.
+
+Bản này dùng `gemini-3.5-flash-lite` qua endpoint tương thích OpenAI của Gemini. Hạn mức gói miễn phí xem tại Google AI Studio, tính theo project, và hạn mức ngày đặt lại lúc nửa đêm giờ Thái Bình Dương. Thiếu `LLM_MODEL` hoặc `LLM_API_KEY` thì câu hỏi trả `llm_not_configured`.
 
 ### Font và trình duyệt
 
@@ -106,11 +108,12 @@ Tạo `.env` từ bảng này. Không commit `.env`.
 | `WHISPER_COMPUTE_TYPE` | `int8` | Độ chính xác số |
 | `WHISPER_BEAM_SIZE` | `5` | Beam của bản chuẩn |
 | `WHISPER_DRAFT_BEAM_SIZE` | `1` | Beam của bản nháp |
-| `LLM_BASE_URL` | `http://host.docker.internal:11434/v1` | Gốc API, có hậu tố `/v1` |
-| `LLM_API_KEY` | khóa hoặc chuỗi bất kỳ nếu server local không kiểm tra | Bearer gửi sang LLM |
-| `LLM_MODEL` | để trống đến khi chọn | Tên model phía server LLM |
-| `LLM_TIMEOUT_SECONDS` | `120` | Trần một request |
-| `LLM_JSON_MODE` | `true` | Gửi `response_format` kiểu `json_object` |
+| `LLM_BASE_URL` | `https://generativelanguage.googleapis.com/v1beta/openai` | Gốc API, không có `/chat/completions` |
+| `LLM_API_KEY` | khóa tạo ở Google AI Studio | Bearer gửi sang LLM |
+| `LLM_MODEL` | `gemini-3.5-flash-lite` | Tên model phía server LLM |
+| `LLM_TIMEOUT_SECONDS` | `120` | Trần chờ giữa hai mảnh chữ của stream |
+| `LLM_MAX_CONTEXT_TOKENS` | `128000` | Ngữ cảnh của model đang dùng |
+| `LLM_MAX_OUTPUT_TOKENS` | `2000` | Trần độ dài một câu trả lời |
 | `DATA_DIR` | `/data` | Gốc audio và file tạm |
 | `MAX_DURATION_SECONDS` | `10800` | 3 giờ |
 | `MAX_OPUS_BYTES` | `67108864` | 64 MB |
@@ -120,7 +123,7 @@ Tạo `.env` từ bảng này. Không commit `.env`.
 | `VOICE_MATCH_THRESHOLD` | `0.75` | Điểm cosine tối thiểu để gán hồ sơ giọng |
 | `VOICE_MATCH_MARGIN` | `0.05` | Cách điểm tối thiểu khi hai hồ sơ cùng chạm một cụm |
 
-`LLM_BASE_URL` đã gồm `/v1`. Client gọi thêm đường dẫn `/chat/completions`.
+Client gọi `{LLM_BASE_URL}/chat/completions`.
 
 ## 4. Cây thư mục
 
@@ -148,7 +151,7 @@ meeting-lecture-assistant/
 │       │   ├── routes_events.py
 │       │   ├── routes_live.py
 │       │   ├── routes_voice.py
-│       │   ├── routes_llm.py
+│       │   ├── routes_chat.py
 │       │   └── routes_export.py
 │       ├── services/
 │       │   ├── audio_processor.py
@@ -156,9 +159,10 @@ meeting-lecture-assistant/
 │       │   ├── stt_engine.py
 │       │   ├── diarization.py
 │       │   ├── speaker_align.py
+│       │   ├── sentence_merge.py # luật gộp đoạn Whisper cắt giữa câu
 │       │   ├── voice_profile.py
-│       │   ├── llm_client.py
-│       │   ├── llm_runner.py     # cắt lát, map-reduce, validate
+│       │   ├── llm_client.py     # gọi API cloud, đọc stream
+│       │   ├── chat_service.py   # dựng ngữ cảnh, lưu tin nhắn
 │       │   ├── pipeline.py       # bản chuẩn: chunk, ghi câu, diarization, sự kiện
 │       │   ├── gpu_lock.py
 │       │   ├── job_notify.py     # publish job:{job_id}:events sau commit
@@ -180,19 +184,27 @@ meeting-lecture-assistant/
         │   ├── register/page.tsx
         │   ├── forgot-password/page.tsx   # chỉ giao diện, chưa có API
         │   ├── components/page.tsx        # trang mẫu component, không phải tính năng
-        │   ├── jobs/page.tsx
-        │   ├── jobs/new/page.tsx
-        │   ├── jobs/[id]/page.tsx
-        │   ├── live/page.tsx
-        │   └── voice-profiles/page.tsx
+        │   └── (app)/                     # các trang sau đăng nhập, chung khung ba vùng
+        │       ├── layout.tsx
+        │       ├── jobs/page.tsx
+        │       ├── jobs/new/page.tsx      # mở hộp thoại tạo bản ghi rồi về /jobs
+        │       ├── jobs/[id]/page.tsx
+        │       ├── live/page.tsx
+        │       └── voice-profiles/page.tsx
         ├── components/
+        │   ├── app-shell.tsx
+        │   ├── app-sidebar.tsx
+        │   ├── workspace-provider.tsx     # danh sách bản ghi và tiến trình tải lên
+        │   ├── upload-dialog.tsx
         │   ├── audio-uploader.tsx
         │   ├── transcript-layout.tsx
+        │   ├── job-tools.tsx              # dãy biểu tượng và panel công cụ
+        │   ├── chat-panel.tsx             # panel Trợ lý AI
+        │   ├── export-menu.tsx
         │   ├── live-transcript.tsx
         │   ├── audio-player-bar.tsx
         │   ├── speaker-list.tsx
         │   ├── selection-toolbar.tsx
-        │   ├── ai-action-panel.tsx
         │   ├── auth-shell.tsx
         │   └── ui/                        # shadcn/ui
         └── lib/
@@ -273,16 +285,6 @@ services:
     environment:
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
-
-  worker-io:
-    build: ./backend
-    env_file: .env
-    command: celery -A app.worker.celery_app worker --loglevel=info -Q io --concurrency=4 --prefetch-multiplier=1
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
 
   frontend:
     build: ./frontend
@@ -376,19 +378,17 @@ Trên Windows, GPU trong Docker đi qua WSL2: driver NVIDIA cài ở Windows, to
 
 ## 6. Celery
 
-Hai tiến trình, cùng mã, khác hàng:
+Một tiến trình:
 
 | Tiến trình | Hàng | Concurrency | Việc |
 |---|---|---|---|
 | `worker-gpu` | `gpu` | 1, prefetch 1 | `app.tasks.transcribe_upload`, `app.tasks.run_live_session`, `app.tasks.enroll_voice` |
-| `worker-io` | `io` | 4, prefetch 1 | `app.tasks.run_llm` |
 
 Không chạy worker trên hàng mặc định `celery`. Mọi tác vụ khai báo hàng trong `task_routes`. Tác vụ không có trong bảng này không được phép tồn tại.
 
 - `task_acks_late = true`
 - `task_reject_on_worker_lost = true`
 - Hết hạn cứng của một task GPU là 6 giờ, dài hơn trần audio 3 giờ để còn chỗ cho diarization CPU.
-- Task LLM dùng trần `LLM_TIMEOUT_SECONDS` cho từng request HTTP, và hết hạn task 30 phút cho cả lần map-reduce.
 - `broker_transport_options = {"visibility_timeout": 25200}`. Với broker Redis, task đã nhận mà chưa ack quá `visibility_timeout` sẽ được giao lại. Mặc định là 1 giờ, nên khi bật `task_acks_late`, task GPU dài hơn 1 giờ sẽ chạy hai lần. 7 giờ dài hơn hạn cứng 6 giờ của task GPU.
 
 `gpu:lock`, `retry` sau 5 giây của PT1, và các key `live:{session_id}:*` nằm ở kiến trúc. PT1 không chiếm slot worker bằng vòng lặp chờ khóa.

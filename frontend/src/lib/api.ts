@@ -216,7 +216,6 @@ export type ApiSegment = {
   start_ms: number;
   end_ms: number;
   text_raw: string;
-  text_cleaned?: string | null;
   text_edited?: string | null;
   speaker_label?: string | null;
   speaker_name?: string | null;
@@ -320,7 +319,17 @@ export async function streamJobEvents(jobId: string, { afterSeq, signal, onEvent
   });
   if (!res.ok || !res.body) throw await readError(res);
 
-  const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+  await readSse(res.body, (frame) => {
+    const parsed = parseFrame(frame);
+    if (!parsed || typeof parsed.seq !== "number" || parsed.seq <= lastSeq) return;
+    lastSeq = parsed.seq;
+    onEvent(parsed as JobEvent);
+  });
+  return lastSeq;
+}
+
+async function readSse(body: ReadableStream<Uint8Array<ArrayBuffer>>, onFrame: (frame: string) => void) {
+  const reader = body.pipeThrough(new TextDecoderStream()).getReader();
   let buffer = "";
   for (;;) {
     const { value, done } = await reader.read();
@@ -331,17 +340,12 @@ export async function streamJobEvents(jobId: string, { afterSeq, signal, onEvent
       const frame = buffer.slice(0, boundary);
       buffer = buffer.slice(boundary + 2);
       boundary = buffer.indexOf("\n\n");
-      const parsed = parseFrame(frame);
-      if (!parsed) continue;
-      if (parsed.seq <= lastSeq) continue;
-      lastSeq = parsed.seq;
-      onEvent(parsed);
+      onFrame(frame);
     }
   }
-  return lastSeq;
 }
 
-function parseFrame(frame: string): JobEvent | null {
+function parseFrame(frame: string): (Record<string, unknown> & { type: string }) | null {
   let type = "message";
   const data: string[] = [];
   for (const line of frame.split("\n")) {
@@ -354,10 +358,46 @@ function parseFrame(frame: string): JobEvent | null {
   }
   if (data.length === 0) return null;
   try {
-    const payload = JSON.parse(data.join("\n"));
-    if (typeof payload?.seq !== "number") return null;
-    return { ...payload, type } as JobEvent;
+    return { ...JSON.parse(data.join("\n")), type };
   } catch {
     return null;
   }
+}
+
+// ----- Hỏi đáp. Chữ trả lời đi trên SSE của chính request hỏi -----
+
+export type ChatStatus = "streaming" | "done" | "stopped" | "failed";
+
+export type ChatMessage = {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  status: ChatStatus;
+  created_at: string;
+  error_code?: string | null;
+};
+
+export type ChatEvent =
+  | { type: "start"; question_id: string; answer_id: string }
+  | { type: "delta"; text: string }
+  | { type: "done"; answer_id: string; model: string }
+  | { type: "error"; code: string; message: string };
+
+export async function askJob(
+  jobId: string,
+  question: string,
+  onEvent: (event: ChatEvent) => void,
+  signal: AbortSignal,
+) {
+  const res = await apiFetch(`/api/jobs/${encodeURIComponent(jobId)}/chat/messages`, {
+    method: "POST",
+    headers: { Accept: "text/event-stream", "Content-Type": "application/json; charset=utf-8" },
+    body: JSON.stringify({ question }),
+    signal,
+  });
+  if (!res.ok || !res.body) throw await readError(res);
+  await readSse(res.body, (frame) => {
+    const parsed = parseFrame(frame);
+    if (parsed) onEvent(parsed as unknown as ChatEvent);
+  });
 }

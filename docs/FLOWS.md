@@ -14,8 +14,7 @@ Cột "Hiện trạng" đối chiếu với commit `4cb3fc7` trên nhánh `featu
 | Khách | Chưa đăng nhập. Chỉ đăng ký, đăng nhập, xem trang tĩnh |
 | Người dùng | Đã đăng nhập. Sở hữu job, phiên nghe, hồ sơ giọng |
 | Worker GPU | Tiến trình Celery hàng `gpu`: FFmpeg, VAD, Whisper, pyannote |
-| Worker IO | Tiến trình Celery hàng `io`: gọi LLM |
-| Server LLM | Dịch vụ ngoài, tương thích OpenAI |
+| API LLM | Gemini, qua endpoint tương thích OpenAI |
 | Hugging Face | Nguồn tải model lần đầu, cần `HF_TOKEN` cho pyannote |
 
 Bản này không có vai trò quản trị.
@@ -26,7 +25,7 @@ Bản này không có vai trò quản trị.
 flowchart LR
   guest([Khách])
   user([Người dùng])
-  llm([Server LLM])
+  llm([API LLM])
 
   subgraph TK[Tài khoản]
     UC1[UC01 Đăng ký]
@@ -50,9 +49,9 @@ flowchart LR
     UC13[UC13 Đổi tên người nói]
     UC14[UC14 Đánh dấu, tạo việc]
   end
-  subgraph HK[Hậu kỳ]
-    UC15[UC15 Chuẩn hóa văn bản]
-    UC16[UC16 Tạo biên bản theo mẫu]
+  subgraph HK[Hỏi đáp và xuất file]
+    UC15[UC15 Hỏi về nội dung bản ghi]
+    UC16[UC16 Xem, xóa lịch sử hỏi đáp]
     UC17[UC17 Xuất file]
   end
   UC18[UC18 Quản lý hồ sơ giọng]
@@ -63,7 +62,6 @@ flowchart LR
   user --> UC3 & UC4 & UC5 & UC6 & UC7 & UC8 & UC9 & UC10
   user --> UC11 & UC12 & UC13 & UC14 & UC15 & UC16 & UC17 & UC18 & UC19
   UC15 --> llm
-  UC16 --> llm
 ```
 
 | Mã | Use case | Điều kiện trước | Kết quả | Luồng |
@@ -82,8 +80,8 @@ flowchart LR
 | UC12 | Sửa câu | Job `ready`, hoặc `failed` với pass 1 | `text_edited` | F6 |
 | UC13 | Đổi tên người nói | Như UC12, nhãn có trong pass đang trả | Alias `manual` | F6 |
 | UC14 | Đánh dấu, tạo việc | Như UC12 | Dòng `highlights` / `action_items` | F6 |
-| UC15 | Chuẩn hóa | Như UC12, có `LLM_MODEL` | `text_cleaned` | [F7](#9-f7-hậu-kỳ-llm) |
-| UC16 | Biên bản | Như UC15 | `llm_runs.result` theo mẫu | F7 |
+| UC15 | Hỏi về nội dung | Như UC12, có `LLM_MODEL` | Câu trả lời kèm mốc, lưu `chat_messages` | [F7](#9-f7-hỏi-đáp-với-llm) |
+| UC16 | Xem, xóa lịch sử hỏi đáp | Job thuộc người dùng | Danh sách tin nhắn, hoặc lịch sử bị xóa | F7 |
 | UC17 | Xuất file | Như UC12 | File md, docx, pdf, srt, vtt | [F8](#10-f8-xuất-file) |
 | UC18 | Hồ sơ giọng | Dưới 20 hồ sơ | Vector giọng | [F9](#11-f9-hồ-sơ-giọng) |
 | UC19 | Xóa job | Job thuộc người dùng | Dòng và file bị gỡ | F4 |
@@ -211,7 +209,7 @@ Nhánh lỗi:
 | FFmpeg, ffprobe, Silero, Whisper, pyannote thật | Có. `run_upload_job` chuẩn hóa, VAD, nhận dạng, gán người nói. Test dùng FFmpeg thật, Whisper và pyannote giả. Ngày 2026-10-29 đã chạy `large-v3-turbo` int8 và pyannote trên CUDA, RTX 4050 Laptop 6GB: bài 9 phút 41 giây xong sau 85 giây, bài 86 phút xong sau 545 giây, đỉnh VRAM toàn card khoảng 3,1GB. Số liệu ở `backend/MODELS.lock` |
 | Ghi `audio_path`, `duration_ms` | Có. Xóa `/data/tmp/{job_id}/` sau khi có Opus. Chạy lại và lần giao lại của Celery dùng Opus canonical |
 | Ghi nhãn bằng cập nhật hàng loạt | Có. Hai lệnh `UPDATE` theo khóa chính, một cho từ, một cho câu |
-| Nén FFmpeg.wasm, trang `/jobs/new` | Có. WASM lỗi thì tải file gốc. Worker của ffmpeg.wasm chạy bản chép trong `public/ffmpeg`, vì webpack làm hỏng `import(coreURL)` trong worker đã bundle |
+| Nén FFmpeg.wasm, hộp thoại tạo bản ghi | Có, chạy nền trong tab, tiến độ ở menu trái. WASM lỗi thì tải file gốc. Worker của ffmpeg.wasm chạy bản chép trong `public/ffmpeg`, vì webpack làm hỏng `import(coreURL)` trong worker đã bundle |
 
 ## 5. F3. SSE tiến độ và tải lại trang
 
@@ -369,7 +367,7 @@ Server đóng socket ngay sau mỗi tin `error`.
 | `run_live_session`: đọc PCM, VAD, Whisper `small`, phát `draft` | Chưa. Task trả `None` ngay |
 | Chuyển session `stopping` → `finalized`, job `capturing` → `preprocessing`, chạy pass 2 | Chưa. Session dừng ở `stopping`, job dừng ở `capturing` |
 | Nhả khóa khi mất heartbeat | Tạm thời do `LockKeeper(until_quiet=True)` trong tiến trình FastAPI: không có heartbeat quá 30 giây, hoặc chưa có heartbeat sau 60 giây, thì nhả khóa. Khi worker phiên có thật, việc này chuyển về worker như kiến trúc mục 3.3 |
-| Thu micro, chia sẻ tab, AudioWorklet, trang `/live` | Chưa. `live-capture.ts` rỗng, trang trả `null`. Component `LiveTranscript` đã có giao diện |
+| Thu micro, chia sẻ tab, AudioWorklet, trang `/live` | Chưa. `live-capture.ts` rỗng, trang chỉ có thông báo sắp có. Component `LiveTranscript` đã có giao diện |
 
 ## 8. F6. Xem, sửa, đánh dấu, nghe lại
 
@@ -404,75 +402,76 @@ sequenceDiagram
   API->>DB: Alias source=manual
 ```
 
-Chữ hiện của một câu: `text_edited`, nếu null thì `text_cleaned`, nếu null thì `text_raw`. Nút gạt "Bản gốc" chỉ đổi phần hiển thị sang `text_raw` và từng từ bấm được.
+Chữ hiện của một câu: `text_edited`, nếu null thì `text_raw`. Câu chưa sửa bấm được từng từ.
 
 Media token hết hạn sau 5 phút. Trình phát nhận `404` thì trang xin token mới và gán lại `src` tại `currentTime` cũ.
 
 | Phần | Hiện trạng |
 |---|---|
 | Transcript, sửa câu, alias, đánh dấu, việc `manual`, media token, Range | Có, có test |
-| Trang `/jobs/[id]` | Có. SSE, chạy chữ, nghe lại, đổi tên người nói, đánh dấu theo vùng bôi đen, tạo việc, LLM, xuất file, hủy, chạy lại, xóa |
+| Trang `/jobs/[id]` | Có, theo khung ba vùng ở kiến trúc mục 2.7. SSE, chạy chữ, nghe lại, đổi tên người nói, đánh dấu theo vùng bôi đen, tạo việc, hỏi trợ lý, xuất file, hủy, chạy lại, xóa. Chưa có ô sửa câu, xem #21 |
 
-## 9. F7. Hậu kỳ LLM
+## 9. F7. Hỏi đáp với LLM
 
 ```mermaid
 sequenceDiagram
   autonumber
   actor U as Người dùng
+  participant FE as Trang job
   participant API as FastAPI
   participant DB as Postgres
-  participant W as worker-io
-  participant L as Server LLM
+  participant L as API LLM cloud
 
-  U->>API: POST /jobs/{id}/llm {task, template, restart}
-  API->>API: Job ready hoặc failed với pass 1. LLM_MODEL có. Không có run running
-  API->>DB: llm_runs status=running
-  API->>W: run_llm(run_id), hàng io
-  API-->>U: 202 {run_id, status: running}
-
-  W->>DB: Câu của pass đang hiển thị
-  W->>W: Cắt lát. clean: 30 câu hoặc 600 từ. summarize: 20 phút hoặc 3500 từ
-  loop Mỗi lát chưa done
-    W->>L: POST /chat/completions
-    alt Trả 400 vì response_format
-      W->>L: Gửi lại không có response_format
+  U->>FE: Mở Trợ lý AI
+  FE->>API: GET /jobs/{id}/chat/messages
+  API-->>FE: Lịch sử hỏi đáp
+  U->>FE: Gõ câu hỏi hoặc bấm câu gợi ý
+  FE->>API: POST /jobs/{id}/chat/messages {question}
+  API->>API: Job ready hoặc failed với pass 1. LLM_MODEL có. Không có câu trả lời đang chạy
+  API->>DB: Đọc câu pass đang hiển thị, alias, thuật ngữ, 6 lượt gần nhất
+  API->>API: Dựng ngữ cảnh, ước lượng token
+  alt Vượt LLM_MAX_CONTEXT_TOKENS
+    API-->>FE: 422 llm_context_exceeded
+  else Đủ chỗ
+    API->>DB: Tin user done, tin assistant streaming
+    API-->>FE: SSE start
+    API->>L: POST /chat/completions stream=true
+    loop Mỗi mảnh chữ
+      L-->>API: delta
+      API-->>FE: SSE delta
     end
-    W->>W: Bỏ hàng rào markdown, parse, validate schema
-    alt Sai schema
-      W->>L: Gửi lại một lần kèm lỗi validate
-    end
-    W->>DB: llm_map_shards done. clean ghi ngay text_cleaned
+    API->>DB: Tin assistant done, kèm model
+    API-->>FE: SSE done
   end
-  opt summarize
-    W->>L: Reduce trên JSON các lát
-    W->>DB: llm_runs.result
-  end
-  W->>DB: llm_runs done hoặc failed + error_code
 
-  loop Trang hỏi lại mỗi vài giây
-    U->>API: GET /jobs/{id}/llm/{task}
+  opt Người dùng dừng hoặc đóng trang
+    FE--xAPI: Ngắt kết nối
+    API->>L: Hủy request
+    API->>DB: Tin assistant stopped, giữ phần đã nhận
   end
 ```
 
-| Mã lỗi của run | Khi |
+| Mã lỗi | Khi |
 |---|---|
-| `llm_timeout` | Một request quá `LLM_TIMEOUT_SECONDS` |
-| `llm_invalid_json` | Hai lần liên tiếp sai schema |
-| `llm_not_configured` | Thiếu `LLM_MODEL`, trả ngay trên request `POST`, không tạo run |
+| `llm_not_configured` | Thiếu `LLM_MODEL` hoặc `LLM_API_KEY`, trả ngay, không tạo tin nhắn |
+| `llm_context_exceeded` | Ngữ cảnh vượt `LLM_MAX_CONTEXT_TOKENS`, trả ngay, không gọi LLM |
+| `chat_busy` | Bản ghi đang có một câu trả lời chạy |
+| `llm_timeout` | Quá `LLM_TIMEOUT_SECONDS` không có mảnh chữ mới |
+| `llm_rate_limited` | API LLM trả 429, thường do hết hạn mức |
+| `llm_upstream` | Lỗi kết nối hoặc lỗi HTTP khác từ API LLM |
 
-Chạy lại `clean` sau một lần `failed` chỉ gửi các câu còn `text_cleaned` null. `restart: true` xóa `text_cleaned` của pass đó trước. Lát `done` của `summarize` được giữ, nên reduce thử lại không gọi map lại.
+Lỗi trong lúc đang stream đi bằng sự kiện `error`, tin nhắn thành `failed` và giữ phần đã nhận. Lượt `stopped` hoặc `failed` không vào ngữ cảnh của câu sau. Chạy lại job xóa lịch sử hỏi đáp. Xóa job xóa theo khóa ngoại.
 
-LLM không có kênh đẩy. Trang hỏi lại `GET .../llm/{task}` cho đến khi `status` khác `running`.
+Bấm mốc `[MM:SS]` trong câu trả lời thì tua tới đó. Câu hỏi và transcript được gửi tới nhà cung cấp LLM mỗi lần hỏi.
 
 | Phần | Hiện trạng |
 |---|---|
-| Endpoint, runner, cắt lát, validate, thử lại, shard | Có, có test với transport giả |
-| Client HTTP | Nằm trong `llm_runner.http_chat`. `services/llm_client.py` là file rỗng chưa dùng |
-| Nút trên giao diện | `AiActionPanel` có giao diện, chưa nối API |
+| Hỏi đáp, panel `Trợ lý AI`, bảng `chat_messages` | Có, có test với LLM giả và đã chạy qua trình duyệt với server giả |
+| Chạy với model thật | Có. Ngày 2026-11-02 đã hỏi `gemini-3.5-flash-lite` trên bài 90 giây, chữ đầu tiên sau 2,6 giây. Chưa đo trên bộ đối chiếu |
 
 ## 10. F8. Xuất file
 
-`POST /api/jobs/{id}/exports` trả thẳng file. Điều kiện giống F6. `text = auto` theo thứ tự hiện chữ. Markdown và DOCX đặt biên bản của lần `summarize` thành công mới nhất lên đầu, rồi việc `manual`, rồi đánh dấu, rồi transcript. SRT và VTT một cue một câu.
+`POST /api/jobs/{id}/exports` trả thẳng file. Điều kiện giống F6. `text = auto` theo thứ tự hiện chữ. Markdown và DOCX đặt việc `manual` lên đầu, rồi đánh dấu, rồi transcript. Lịch sử hỏi đáp không vào file xuất. SRT và VTT một cue một câu.
 
 | Phần | Hiện trạng |
 |---|---|
@@ -507,7 +506,7 @@ Hồ sơ được dùng ở cuối F2: mỗi nhãn trong buổi so tích vô hư
 | API list, get, create, delete, kiểm thời lượng | Có |
 | So khớp hồ sơ trong pipeline | Có (`speaker_align.match_speakers`), có test |
 | `enroll_voice` tính vector | Chưa. Task giữ và nhả khóa rồi kết thúc, hồ sơ ở `processing` mãi |
-| Trang `/voice-profiles` | Chưa, trả `null` |
+| Trang `/voice-profiles` | Chưa, chỉ có thông báo sắp có |
 
 ## 12. Nơi giữ trạng thái
 
@@ -542,15 +541,15 @@ Xếp theo mức chặn demo. Cập nhật 2026-10-29.
 | # | Mức | Khoảng trống | Ảnh hưởng | Chỗ sửa |
 |---|---|---|---|---|
 | 2 | Chặn | `run_live_session` rỗng | PT2 không có bản nháp. Bấm dừng để session ở `stopping`, job ở `capturing` | `worker.py`, một service đọc PCM và phát `draft` |
-| 3 | Chặn | Các trang `/live`, `/voice-profiles` trả `null` | Hai tính năng chưa dùng được từ giao diện | `frontend/src/app`, `live-capture.ts` |
+| 3 | Chặn | Các trang `/live`, `/voice-profiles` chỉ có thông báo sắp có | Hai tính năng chưa dùng được từ giao diện | `frontend/src/app/(app)`, `live-capture.ts` |
+| 21 | Cao | Giao diện chưa có ô sửa câu | UC12 chỉ gọi được qua API, người dùng không sửa được chữ | `transcript-layout.tsx`, gọi `PATCH /segments/{id}` |
+| 23 | Cao | Chưa đo hỏi đáp trên bộ đối chiếu | Chưa biết chất lượng câu trả lời, độ đúng của mốc, và chi phí trên bài dài | Đo theo ý tưởng mục 6 |
 | 4 | Cao | `enroll_voice` rỗng | Hồ sơ giọng không bao giờ `ready` | `worker.py`, `services/voice_profile.py`. Vector phải tính cùng cách `diarization.cluster_vectors` |
 | 19 | Trung bình | `large-v3-turbo` bỏ qua lời phỏng vấn hiện trường ngắn nằm giữa chunk | Bài tin y tế còn 14,5 giây tiếng nói không ra chữ sau khi sửa #16. Model bỏ với `no_speech_prob` bằng 0, nên ngưỡng và dải `temperature` không cứu được. Nhận dạng riêng từng vùng VAD thì lấy lại được | Thử bước vá: vùng VAD trên 1,5 giây không có từ nào thì nhận dạng riêng vùng đó. Đo lại trên bộ đối chiếu |
 | 20 | Trung bình | Nền có người nói làm mất chữ | Trộn tiếng người nói lẫn nhau: WER 13% ở 10 dB, 30% ở 5 dB, gần như mất hết ở 0 dB. Nhiễu đều chịu được tới 10 dB. Lọc nhiễu `afftdn` chỉ giúp nhiễu đều mạnh | Đo trên ghi âm họp thật. Cân nhắc #19 và tách nguồn trước khi nhận dạng |
 | 18 | Trung bình | Câu của Whisper chứa từ của nhiều nhãn | Trên GPU, 39/126 câu của bài 9 phút và 553/1287 câu của bài 86 phút có từ mang nhãn khác nhãn câu, kể cả từ null. Câu hiện cả câu dưới một người nói | Hướng tối ưu ở kiến trúc mục 2.5: tách câu tại chỗ đổi nhãn, gán từ null cho lượt gần nhất. Đo lại sau khi sửa |
 | 7 | Trung bình | Nhả khóa khi mất heartbeat đang nằm ở FastAPI | Sau khi worker phiên có thật, hai nơi cùng quyết định nhả khóa | Chuyển về worker khi làm #2 |
 | 9 | Thấp | `rate_limit` đếm trong tiến trình | Nhiều bản uvicorn thì trần nhân lên | Chuyển sang Redis nếu chạy nhiều bản |
-| 10 | Thấp | `services/llm_client.py` rỗng, client nằm trong `llm_runner.py` | Lệch cây thư mục | Dời `http_chat` hoặc xóa file rỗng |
-| 15 | Thấp | `llm_runner.clock` in `125:30` cho bài trên 1 giờ | Mốc biên bản khó đọc. Giao diện đã tua được cả hai dạng | Xem kiến trúc mục 6.2 |
 | 17 | Thấp | SSE không có Redis chỉ đánh thức trong cùng tiến trình | Worker ở tiến trình khác thì chữ tới sau tối đa 15 giây. Chỉ gặp khi chạy thử không có Redis | Không cần sửa cho triển khai Compose |
 
 Đã đóng ngày 2026-10-29: #1 pipeline PT1 thật, #3 phần `/jobs`, `/jobs/new`, `/jobs/[id]`, #5 tự làm mới token, #6 cấu hình Celery, #8 ghi nhãn hàng loạt, #11 xóa file gốc sau khi có Opus, #13 đọc từ trong một truy vấn, #14 `max(seq)`, #12 bộ phiên bản chạy trên card thật. Lúc kiểm #12 đã sửa ba lỗi chỉ lộ ra trên GPU: image nền trixie làm `ctranslate2` không nạp được, pip thay torch cu121 bằng torch mới trên PyPI, và worker khởi tạo CUDA ở tiến trình cha nên tiến trình fork của Celery không nạp được Whisper. Cũng ngày đó đóng #16: bộ lọc chữ bịa thêm `hallucination_silence_threshold`, ngưỡng tốc độ nói và luật lời mời đăng ký kênh, kèm sửa chữ số bị tách thành `150 .000`. Số đo ở kiến trúc mục 2.4 và trong `Báo Cáo/`.
@@ -560,4 +559,5 @@ Xếp theo mức chặn demo. Cập nhật 2026-10-29.
 1. Đo CER `large-v3-turbo` so với PhoWhisper trên ghi âm họp và bài giảng do nhóm thu, theo ý tưởng mục 6. Vòng đầu trên tin VTV24 ở `Báo Cáo/`. Đo kèm #19 và #20.
 2. #2 và trang `/live`, kèm cơ chế nhường GPU ở kiến trúc mục 1. Làm #7 cùng lúc.
 3. #4 và trang `/voice-profiles`.
-4. #18 và các hướng tối ưu về LLM ở kiến trúc mục 6.2, sau khi có số đo, rồi các mục còn lại.
+4. #21 ô sửa câu, và #23.
+5. #18, sau khi có số đo, rồi các mục còn lại.

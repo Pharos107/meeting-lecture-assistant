@@ -1,4 +1,4 @@
-"""Tiến trình Celery. Hàng gpu chạy nhận dạng và hồ sơ giọng. Hàng io chạy LLM."""
+"""Tiến trình Celery. Hàng gpu chạy nhận dạng và hồ sơ giọng."""
 
 import logging
 import os
@@ -11,7 +11,6 @@ from celery.signals import celeryd_after_setup
 log = logging.getLogger(__name__)
 
 GPU_TIME_LIMIT_S = 6 * 3600
-LLM_TIME_LIMIT_S = 30 * 60
 
 _GPU_PROBE = (
     "import torch\n"
@@ -26,7 +25,6 @@ celery_app.conf.task_routes = {
     "app.tasks.transcribe_upload": {"queue": "gpu"},
     "app.tasks.run_live_session": {"queue": "gpu"},
     "app.tasks.enroll_voice": {"queue": "gpu"},
-    "app.tasks.run_llm": {"queue": "io"},
 }
 celery_app.conf.worker_prefetch_multiplier = 1
 celery_app.conf.task_acks_late = True
@@ -82,10 +80,3 @@ def enroll_voice(self, profile_id: str):
     finally:
         keeper.stop(str(profile_id))
         get_gpu_lock().release(str(profile_id))
-
-
-@celery_app.task(name="app.tasks.run_llm", time_limit=LLM_TIME_LIMIT_S)
-def run_llm(run_id: str) -> None:
-    from app.services.llm_runner import execute_llm_run
-
-    execute_llm_run(run_id)

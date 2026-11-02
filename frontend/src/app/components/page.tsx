@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { AiActionPanel } from "@/components/ai-action-panel";
 import { AudioPlayerBar } from "@/components/audio-player-bar";
 import { AudioUploader } from "@/components/audio-uploader";
+import { ExportMenu } from "@/components/export-menu";
 import { LiveTranscript } from "@/components/live-transcript";
 import { SelectionToolbar } from "@/components/selection-toolbar";
 import { SpeakerList } from "@/components/speaker-list";
 import { TranscriptLayout } from "@/components/transcript-layout";
-import type { ExportFormat, LiveLine, MinutesTemplate, Segment, Speaker, TranscriptMode } from "@/components/types";
+import type { ExportFormat, LiveLine, Segment, Speaker } from "@/components/types";
 
 const DURATION_MS = 96_000;
 
@@ -34,7 +34,6 @@ const INITIAL_SEGMENTS: Segment[] = [
     startMs: 1_200,
     endMs: 18_400,
     textRaw: "Mình chốt phạm vi demo gồm tải file và nghe trực tiếp.",
-    textCleaned: "Mình chốt phạm vi demo, gồm tải file và nghe trực tiếp.",
     textEdited: null,
     marked: false,
     words: words("Mình chốt phạm vi demo gồm tải file và nghe trực tiếp.", 1_200, 18_400),
@@ -45,7 +44,6 @@ const INITIAL_SEGMENTS: Segment[] = [
     startMs: 19_000,
     endMs: 41_000,
     textRaw: "Phần người nói chạy pyannote sau khi Whisper đã nhả GPU.",
-    textCleaned: "Phần người nói chạy pyannote sau khi Whisper đã nhả GPU.",
     textEdited: null,
     marked: false,
     words: words("Phần người nói chạy pyannote sau khi Whisper đã nhả GPU.", 19_000, 41_000),
@@ -56,7 +54,6 @@ const INITIAL_SEGMENTS: Segment[] = [
     startMs: 42_500,
     endMs: 68_000,
     textRaw: "Bôi đen một đoạn trong câu để đánh dấu hoặc tạo việc tại mốc đó.",
-    textCleaned: "Bôi đen một đoạn trong câu để đánh dấu, hoặc tạo việc tại mốc đó.",
     textEdited: "Bôi đen một đoạn trong câu để đánh dấu hoặc tạo việc cần làm.",
     marked: true,
     words: words("Bôi đen một đoạn trong câu để đánh dấu hoặc tạo việc tại mốc đó.", 42_500, 68_000),
@@ -67,7 +64,6 @@ const INITIAL_SEGMENTS: Segment[] = [
     startMs: 69_200,
     endMs: 92_000,
     textRaw: "Khi dừng nghe, bản chuẩn quét lại cả file rồi mới thay bản nháp.",
-    textCleaned: "Khi dừng nghe, bản chuẩn quét lại cả file, rồi mới thay bản nháp.",
     textEdited: null,
     marked: false,
     words: words("Khi dừng nghe, bản chuẩn quét lại cả file rồi mới thay bản nháp.", 69_200, 92_000),
@@ -83,7 +79,6 @@ const LIVE_LINES: LiveLine[] = [
 export default function ComponentsPage() {
   const [speakers, setSpeakers] = useState(INITIAL_SPEAKERS);
   const [segments, setSegments] = useState(INITIAL_SEGMENTS);
-  const [mode, setMode] = useState<TranscriptMode>("raw");
   const [currentMs, setCurrentMs] = useState(8_400);
   const [playing, setPlaying] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>("seg-2");
@@ -138,13 +133,13 @@ export default function ComponentsPage() {
           </div>
         </Section>
 
-        <Section file="audio-player-bar.tsx · speaker-list.tsx · selection-toolbar.tsx · ai-action-panel.tsx" title="Các mảnh của trang job">
+        <Section file="audio-player-bar.tsx · speaker-list.tsx · selection-toolbar.tsx · export-menu.tsx" title="Các mảnh của trang job">
           <div className="grid gap-4 lg:grid-cols-2">
             <AudioPlayerBar
-              title="hop-nhom-15-10.opus"
               currentMs={currentMs}
               durationMs={DURATION_MS}
               playing={playing}
+              marks={[42_500]}
               onToggle={() => setPlaying((value) => !value)}
               onSeek={setCurrentMs}
             />
@@ -155,46 +150,29 @@ export default function ComponentsPage() {
               onUnmark={() => mark(false)}
               onCreateTask={() => setTaskNote("Việc mới: đánh dấu hoặc tạo việc · mốc 0:42")}
             />
-            <AiActionPanel
-              notice={notice}
-              onNormalize={() => setNotice("Đã ghi nhận yêu cầu chuẩn hóa văn bản.")}
-              onMinutes={(template: MinutesTemplate) =>
-                setNotice(template === "meeting" ? "Đã chọn mẫu biên bản cuộc họp." : "Đã chọn mẫu ghi chú bài giảng.")
-              }
-              onExport={(format: ExportFormat) => setNotice(`Đã ghi nhận xuất ${format.toUpperCase()}.`)}
-            />
+            <ExportMenu onExport={(format: ExportFormat) => setNotice(`Đã ghi nhận xuất ${format.toUpperCase()}.`)} />
           </div>
+          {notice ? <p className="mt-3 text-sm text-blue-700">{notice}</p> : null}
           {taskNote ? <p className="mt-3 text-sm text-blue-700">{taskNote}</p> : null}
         </Section>
 
-        <Section file="transcript-layout.tsx" title="Trang job, hai vùng">
-          <TranscriptLayout
-            title="hop-nhom-15-10.opus"
-            speakers={speakers}
-            segments={segments}
-            mode={mode}
-            currentMs={currentMs}
-            durationMs={DURATION_MS}
-            playing={playing}
-            selection={selectedId ? { segmentId: selectedId, quote: "đoạn đang chọn" } : null}
-            notice={notice}
-            onModeChange={setMode}
-            onTogglePlay={() => setPlaying((value) => !value)}
-            onSeek={setCurrentMs}
-            onRenameSpeaker={rename}
-            onSelect={(segmentId) => setSelectedId(segmentId)}
-            onMark={() => mark(true)}
-            onUnmark={() => mark(false)}
-            onCreateTask={() => {
-              setTaskNote("Đã tạo việc từ câu đang chọn.");
-              setNotice("Đã tạo việc từ câu đang chọn.");
-            }}
-            onNormalize={() => setNotice("Đã ghi nhận yêu cầu chuẩn hóa văn bản.")}
-            onMinutes={(template) =>
-              setNotice(template === "meeting" ? "Đã chọn mẫu biên bản cuộc họp." : "Đã chọn mẫu ghi chú bài giảng.")
-            }
-            onExport={(format) => setNotice(`Đã ghi nhận xuất ${format.toUpperCase()}.`)}
-          />
+        <Section file="transcript-layout.tsx" title="Cột transcript của trang job">
+          <div className="flex h-[32rem] flex-col rounded-3xl bg-white ring-1 ring-sky-100">
+            <TranscriptLayout
+              speakers={speakers}
+              segments={segments}
+              currentMs={currentMs}
+              selection={selectedId ? { segmentId: selectedId, quote: "đoạn đang chọn" } : null}
+              onSeek={setCurrentMs}
+              onSelect={(segmentId) => setSelectedId(segmentId)}
+              onMark={() => mark(true)}
+              onUnmark={() => mark(false)}
+              onCreateTask={() => {
+                setTaskNote("Đã tạo việc từ câu đang chọn.");
+                setNotice("Đã tạo việc từ câu đang chọn.");
+              }}
+            />
+          </div>
         </Section>
 
         <Section file="live-transcript.tsx" title="Nghe trực tiếp">
