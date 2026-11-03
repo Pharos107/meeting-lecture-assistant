@@ -33,14 +33,16 @@ _HALLUCINATED = (
     "nhớ like share và đăng ký kênh",
     "subscribe",
 )
-# Lời mời đăng ký kênh: bỏ cả câu ngắn mở đầu bằng cụm này, dù phần đuôi dài, như
-# "Hãy subscribe cho kênh La La School để không bỏ lỡ những video hấp dẫn".
+# Lời mời đăng ký kênh: bỏ cả câu ngắn chứa cụm này ở bất kỳ đâu, như
+# "Các bạn hãy đăng kí cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn"
+# hay câu đuôi đứng riêng "Để không bỏ lỡ những video hấp dẫn".
 _CALL_TO_ACTION = (
     "hãy subscribe",
+    "subscribe cho kênh",
     "hãy đăng ký kênh",
-    "hãy đăng kí kênh",
-    "các bạn hãy đăng ký kênh",
-    "các bạn hãy đăng kí kênh",
+    "hãy đăng ký cho kênh",
+    "không bỏ lỡ những video",
+    "theo dõi và đăng ký kênh",
 )
 _CALL_TO_ACTION_MAX_WORDS = 20
 
@@ -52,7 +54,9 @@ class GpuOutOfMemory(Exception):
 def _plain(text: str) -> str:
     text = unicodedata.normalize("NFC", text).lower()
     text = re.sub(r"[^\w\s]", " ", text)
-    return re.sub(r"\s+", " ", text).strip()
+    text = re.sub(r"\s+", " ", text).strip()
+    # Whisper viết cả "đăng kí" lẫn "đăng ký".
+    return text.replace("đăng kí", "đăng ký")
 
 
 _HALLUCINATED_PLAIN = tuple(_plain(item) for item in _HALLUCINATED)
@@ -66,8 +70,9 @@ def is_hallucination(text: str) -> bool:
     for phrase in _HALLUCINATED_PLAIN:
         if plain == phrase or (plain.startswith(phrase) and len(plain) - len(phrase) <= 25):
             return True
-    if len(plain.split()) <= _CALL_TO_ACTION_MAX_WORDS and plain.startswith(_CALL_TO_ACTION_PLAIN):
-        return True
+    if len(plain.split()) <= _CALL_TO_ACTION_MAX_WORDS:
+        padded = f" {plain} "
+        return any(f" {phrase} " in padded for phrase in _CALL_TO_ACTION_PLAIN)
     return False
 
 

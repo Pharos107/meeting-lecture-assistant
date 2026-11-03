@@ -240,9 +240,18 @@ class HallucinationFilterTests(unittest.TestCase):
         self.assertTrue(is_hallucination("Các bạn hãy đăng ký kênh để ủng hộ kênh của chúng mình nhé."))
         self.assertTrue(is_hallucination("Đăng ký kênh để nhận thông tin."))
 
+    def test_call_to_action_inside_sentence_is_dropped(self) -> None:
+        # Câu bịa lọt bộ lọc khi đo trên bài giảng và cuộc họp thật (2026-11-03).
+        self.assertTrue(is_hallucination("Các bạn hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn"))
+        self.assertTrue(is_hallucination("Các bạn hãy đăng kí cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn"))
+        self.assertTrue(is_hallucination("Để không bỏ lỡ những video hấp dẫn"))
+        self.assertTrue(is_hallucination("cảm ơn bạn đã cùng theo dõi và đăng ký kênh của chương trình."))
+
     def test_real_sentences_are_kept(self) -> None:
         self.assertFalse(is_hallucination("Hôm nay chúng ta bàn về việc đăng ký kênh phân phối mới cho quý sau."))
         self.assertFalse(is_hallucination("Khách hàng subscribe gói năm tăng 20% so với cùng kỳ."))
+        self.assertFalse(is_hallucination("Các bạn đăng kí cho kênh bán hàng mới trước thứ sáu nhé."))
+        self.assertFalse(is_hallucination("Mình không muốn bỏ lỡ những khách hàng quay lại."))
         self.assertFalse(is_hallucination(""))
 
     def test_impossible_speech_rate_is_dropped(self) -> None:
