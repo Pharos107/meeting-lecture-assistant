@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 import { AudioLines, FileAudio, LogOut, Menu, Mic, Plus, X } from "lucide-react";
 import { useWorkspace, type UploadTask } from "@/components/workspace-provider";
 import { ACTIVE_STATUSES, logout, STATUS_LABELS, type JobSummary } from "@/lib/api";
@@ -15,147 +16,156 @@ type AppSidebarProps = {
   onToggle: () => void;
 };
 
-const ICON_BUTTON = "flex size-10 shrink-0 items-center justify-center rounded-xl text-slate-600 hover:bg-sky-100";
+// Thu gọn hay mở rộng đều dùng một khung: biểu tượng đứng yên trong cột 40 px, chữ chỉ mờ đi.
+// Khung aside co lại và cắt phần chữ, nên không có bước đổi bố cục giữa chừng.
+const EASE = "duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none";
+// Hàng co về đúng ô biểu tượng khi thu gọn, để viền và nền của nút không bị khung cắt dở.
+const row = (collapsed: boolean) =>
+  `flex h-10 items-center gap-3 overflow-hidden rounded-xl text-sm transition-[width,background-color] ${EASE} ${collapsed ? "w-10" : "w-full"}`;
+const ICON_SLOT = "flex size-10 shrink-0 items-center justify-center";
+const FADE = "transition-opacity duration-200 motion-reduce:transition-none";
 
 export function AppSidebar({ user, collapsed, onToggle }: AppSidebarProps) {
   const pathname = usePathname();
   const { jobs, jobsLoading, jobsError, hasMoreJobs, loadMoreJobs, uploads, openUpload } = useWorkspace();
+  const label = `${FADE} min-w-0 flex-1 truncate whitespace-nowrap text-left ${collapsed ? "opacity-0" : "opacity-100"}`;
+  const initial = user?.display_name?.trim().charAt(0).toUpperCase() || "?";
 
-  if (collapsed) {
-    return (
-      <div className="flex h-full flex-col items-center gap-2 px-3 py-3">
-        <button type="button" onClick={onToggle} aria-label="Mở menu" title="Mở menu" className={ICON_BUTTON}>
+  return (
+    <div className="flex h-full w-72 max-w-[85vw] flex-col">
+      <div className="flex items-center gap-3 px-3 py-3">
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label={collapsed ? "Mở rộng menu" : "Thu gọn menu"}
+          aria-expanded={!collapsed}
+          title={collapsed ? "Mở rộng menu" : "Thu gọn menu"}
+          className={`${ICON_SLOT} rounded-xl text-slate-600 hover:bg-sky-100`}
+        >
           <Menu className="size-5" />
         </button>
+        <Link href="/jobs" tabIndex={collapsed ? -1 : undefined} className={`flex min-w-0 items-center gap-2 ${FADE} ${collapsed ? "pointer-events-none opacity-0" : ""}`}>
+          <Image src="/logo.png" alt="" width={28} height={28} className="size-7 object-contain" />
+          <span className="truncate whitespace-nowrap text-sm font-semibold text-[#0f2744]">Trợ lý biên bản</span>
+        </Link>
+      </div>
+
+      <nav aria-label="Điều hướng" className="space-y-1 px-3">
         <button
           type="button"
           onClick={openUpload}
-          aria-label="Bản ghi mới"
-          title="Bản ghi mới"
-          className="flex size-10 items-center justify-center rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+          title={collapsed ? "Bản ghi mới" : undefined}
+          className={`${row(collapsed)} border border-sky-200 bg-white font-medium text-[#0f2744] hover:border-blue-300 hover:bg-sky-50`}
         >
-          <Plus className="size-5" />
+          <span className={`${ICON_SLOT} -m-px text-blue-600`}>
+            <Plus className="size-5" />
+          </span>
+          <span className={label}>Bản ghi mới</span>
         </button>
-        <Link href="/live" aria-label="Ghi trực tiếp" title="Ghi trực tiếp" className={ICON_BUTTON}>
-          <Mic className="size-5" />
-        </Link>
-        <Link href="/jobs" aria-label="Tất cả bản ghi" title="Tất cả bản ghi" className={ICON_BUTTON}>
-          <FileAudio className="size-5" />
-        </Link>
-        <Link href="/voice-profiles" aria-label="Hồ sơ giọng" title="Hồ sơ giọng" className={ICON_BUTTON}>
-          <AudioLines className="size-5" />
-        </Link>
+        <NavItem href="/live" active={pathname.startsWith("/live")} icon={<Mic className="size-5" />} collapsed={collapsed} labelClass={label}>
+          Ghi trực tiếp
+        </NavItem>
+        <NavItem href="/jobs" active={pathname === "/jobs"} icon={<FileAudio className="size-5" />} collapsed={collapsed} labelClass={label}>
+          Tất cả bản ghi
+        </NavItem>
+      </nav>
+
+      {/* Danh sách chỉ đọc được khi mở rộng. Lúc thu gọn nó vẫn giữ chỗ nhưng ẩn, để bố cục không nhảy. */}
+      <section
+        aria-label="Bản ghi gần đây"
+        inert={collapsed}
+        className={`${FADE} mt-4 flex min-h-0 flex-1 flex-col ${collapsed ? "invisible opacity-0" : "opacity-100"}`}
+      >
+        <h2 className="px-5 text-xs font-semibold text-slate-400">Bản ghi gần đây</h2>
+        <div className="scrollbar-soft mt-1 min-h-0 flex-1 overflow-y-auto px-3 pb-2">
+          {uploads.map((task) => (
+            <UploadRow key={task.id} task={task} />
+          ))}
+          {jobsError ? <p className="px-2 py-2 text-xs text-rose-600">{jobsError}</p> : null}
+          {!jobsLoading && !jobsError && jobs.length === 0 && uploads.length === 0 ? (
+            <p className="px-2 py-2 text-xs leading-5 text-slate-500">Chưa có bản ghi nào.</p>
+          ) : null}
+          {jobs.map((job) => (
+            <JobRow key={job.id} job={job} active={pathname === `/jobs/${job.id}`} />
+          ))}
+          {hasMoreJobs ? (
+            <button
+              type="button"
+              onClick={() => void loadMoreJobs()}
+              className="mt-1 w-full rounded-xl px-2 py-1.5 text-xs text-slate-600 hover:bg-sky-100"
+            >
+              Xem thêm
+            </button>
+          ) : null}
+        </div>
+      </section>
+
+      <div className="space-y-1 border-t border-sky-100 px-3 py-2">
+        <NavItem
+          href="/voice-profiles"
+          active={pathname.startsWith("/voice-profiles")}
+          icon={<AudioLines className="size-5" />}
+          collapsed={collapsed}
+          labelClass={label}
+          badge="Sắp có"
+        >
+          Hồ sơ giọng
+        </NavItem>
+        <div className={row(collapsed)}>
+          <span className={ICON_SLOT} title={collapsed ? user?.display_name : undefined}>
+            <span className="flex size-7 items-center justify-center rounded-full bg-sky-100 text-xs font-semibold text-blue-800">{initial}</span>
+          </span>
+          <span className={`${label} text-slate-600`}>{user?.display_name}</span>
+        </div>
         <button
           type="button"
           onClick={() => void logout()}
-          aria-label="Đăng xuất"
-          title="Đăng xuất"
-          className={`${ICON_BUTTON} mt-auto`}
+          title={collapsed ? "Đăng xuất" : undefined}
+          className={`${row(collapsed)} text-slate-600 hover:bg-slate-100`}
         >
-          <LogOut className="size-5" />
+          <span className={ICON_SLOT}>
+            <LogOut className="size-5" />
+          </span>
+          <span className={label}>Đăng xuất</span>
         </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex h-full flex-col">
-      <div className="flex items-center gap-2 px-3 py-3">
-        <button type="button" onClick={onToggle} aria-label="Thu gọn menu" title="Thu gọn menu" className={ICON_BUTTON}>
-          <Menu className="size-5" />
-        </button>
-        <Link href="/jobs" className="flex min-w-0 items-center gap-2">
-          <Image src="/logo.png" alt="" width={28} height={28} className="size-7 object-contain" />
-          <span className="truncate text-sm font-semibold text-[#0f2744]">Trợ lý biên bản</span>
-        </Link>
-      </div>
-
-      <div className="space-y-1 px-3">
-        <button
-          type="button"
-          onClick={openUpload}
-          className="flex w-full items-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 px-3 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/25"
-        >
-          <Plus className="size-4" />
-          Bản ghi mới
-        </button>
-        <NavLink href="/live" active={pathname.startsWith("/live")} icon={<Mic className="size-4" />}>
-          Ghi trực tiếp
-        </NavLink>
-      </div>
-
-      <div className="mt-4 flex items-center justify-between px-5">
-        <h2 className="text-xs font-semibold text-slate-400">Bản ghi gần đây</h2>
-        <Link href="/jobs" className="text-xs text-blue-700 hover:underline">
-          Tất cả
-        </Link>
-      </div>
-      <div className="mt-1 min-h-0 flex-1 overflow-y-auto px-3 pb-2">
-        {uploads.map((task) => (
-          <UploadRow key={task.id} task={task} />
-        ))}
-        {jobsError ? <p className="px-2 py-2 text-xs text-rose-600">{jobsError}</p> : null}
-        {!jobsLoading && !jobsError && jobs.length === 0 && uploads.length === 0 ? (
-          <p className="px-2 py-2 text-xs leading-5 text-slate-500">Chưa có bản ghi nào.</p>
-        ) : null}
-        {jobs.map((job) => (
-          <JobRow key={job.id} job={job} active={pathname === `/jobs/${job.id}`} />
-        ))}
-        {hasMoreJobs ? (
-          <button
-            type="button"
-            onClick={() => void loadMoreJobs()}
-            className="mt-1 w-full rounded-xl px-2 py-1.5 text-xs text-slate-600 hover:bg-sky-100"
-          >
-            Xem thêm
-          </button>
-        ) : null}
-      </div>
-
-      <div className="space-y-1 border-t border-sky-100 px-3 py-2">
-        <NavLink href="/voice-profiles" active={pathname.startsWith("/voice-profiles")} icon={<AudioLines className="size-4" />} soon>
-          Hồ sơ giọng
-        </NavLink>
-        <div className="flex items-center gap-2 px-2 py-1">
-          <span className="min-w-0 flex-1 truncate text-sm text-slate-600">{user?.display_name}</span>
-          <button
-            type="button"
-            onClick={() => void logout()}
-            aria-label="Đăng xuất"
-            title="Đăng xuất"
-            className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100"
-          >
-            <LogOut className="size-4" />
-          </button>
-        </div>
       </div>
     </div>
   );
 }
 
-function NavLink({
+function NavItem({
   href,
   active,
   icon,
-  soon = false,
+  collapsed,
+  labelClass,
+  badge,
   children,
 }: {
   href: string;
   active: boolean;
-  icon: React.ReactNode;
-  soon?: boolean;
+  icon: ReactNode;
+  collapsed: boolean;
+  labelClass: string;
+  badge?: string;
   children: string;
 }) {
   return (
     <Link
       href={href}
-      className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm ${
-        active ? "bg-sky-100 font-medium text-blue-800" : "text-slate-600 hover:bg-sky-50"
-      }`}
+      aria-current={active ? "page" : undefined}
+      title={collapsed ? children : undefined}
+      className={`${row(collapsed)} relative ${active ? "bg-blue-50 font-medium text-blue-800" : "text-slate-600 hover:bg-sky-50"}`}
     >
-      {icon}
-      <span className="min-w-0 flex-1 truncate">{children}</span>
-      {soon ? <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-500">Sắp có</span> : null}
+      {/* Vạch bên trái chỉ có ở trang đang mở, kể cả khi thu gọn. */}
+      {active ? <span aria-hidden="true" className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-blue-600" /> : null}
+      <span className={ICON_SLOT}>{icon}</span>
+      <span className={labelClass}>{children}</span>
+      {badge ? (
+        <span className={`${FADE} mr-2 shrink-0 whitespace-nowrap rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-500 ${collapsed ? "opacity-0" : ""}`}>
+          {badge}
+        </span>
+      ) : null}
     </Link>
   );
 }
@@ -167,10 +177,11 @@ function JobRow({ job, active }: { job: JobSummary; active: boolean }) {
   return (
     <Link
       href={`/jobs/${job.id}`}
-      className={`block rounded-xl px-2.5 py-2 ${active ? "bg-sky-100" : "hover:bg-sky-50"}`}
+      className={`relative block rounded-xl px-2.5 py-2 ${active ? "bg-blue-50" : "hover:bg-sky-50"}`}
       aria-current={active ? "page" : undefined}
     >
-      <p className="truncate text-sm font-medium text-slate-800">{job.title}</p>
+      {active ? <span aria-hidden="true" className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-blue-600" /> : null}
+      <p className={`truncate text-sm font-medium ${active ? "text-blue-900" : "text-slate-800"}`}>{job.title}</p>
       <p className={`mt-0.5 flex items-center gap-1.5 truncate text-xs ${job.status === "failed" ? "text-rose-600" : "text-slate-500"}`}>
         {running ? <span className="size-1.5 shrink-0 animate-pulse rounded-full bg-blue-600" /> : null}
         {running || problem ? STATUS_LABELS[job.status] : date}
