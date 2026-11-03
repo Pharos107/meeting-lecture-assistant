@@ -29,7 +29,7 @@ Worker ghi tên GPU và tổng VRAM vào log lúc khởi động. Thiếu CUDA t
 | Nén trên trình duyệt | `@ffmpeg/ffmpeg` và `@ffmpeg/core` bản đơn luồng | Tách âm thanh khỏi video, đưa upload về Opus. WASM lỗi thì tải file gốc |
 | Backend | FastAPI, Pydantic, Uvicorn | REST, SSE, WebSocket, xác thực |
 | Hàng đợi | Celery, Redis 7 | Hàng `gpu` concurrency 1 |
-| STT | faster-whisper | Pass chuẩn `large-v3-turbo`, pass nháp `small` |
+| STT | faster-whisper | Pass chuẩn và pass nháp đều là `large-v3-turbo` |
 | VAD | Silero VAD đi kèm faster-whisper | CPU |
 | Người nói | pyannote.audio dòng 3, pipeline `pyannote/speaker-diarization-3.1` | Sau khi Whisper đã được giải phóng |
 | LLM | API cloud tương thích OpenAI, thư viện `httpx` | Hỏi đáp trên transcript. Model do `LLM_MODEL` quyết định |
@@ -47,7 +47,7 @@ Tên ngắn dưới đây là khóa trong `faster_whisper/utils.py` của bản 
 | Vai trò | Tên truyền vào `WhisperModel` | Repo Hugging Face mà thư viện resolve |
 |---|---|---|
 | Bản chuẩn | `large-v3-turbo` | `mobiuslabsgmbh/faster-whisper-large-v3-turbo` |
-| Bản nháp PT2 | `small` | `Systran/faster-whisper-small` |
+| Bản nháp PT2 | `large-v3-turbo` | `mobiuslabsgmbh/faster-whisper-large-v3-turbo` |
 
 Khi nâng faster-whisper, mở lại bảng `_MODELS` và ghi repo thực tế vào `backend/MODELS.lock`. Tham số runtime nằm ở kiến trúc.
 
@@ -103,7 +103,7 @@ Tạo `.env` từ bảng này. Không commit `.env`.
 | `HF_TOKEN` | token Hugging Face | Tải pyannote |
 | `HF_HOME` | `/cache/huggingface` | Cache model trong container |
 | `WHISPER_MODEL` | `large-v3-turbo` | Bản chuẩn |
-| `WHISPER_DRAFT_MODEL` | `small` | Bản nháp |
+| `WHISPER_DRAFT_MODEL` | `large-v3-turbo` | Bản nháp. Trùng `WHISPER_MODEL` thì pass 2 dùng lại model đã nạp |
 | `WHISPER_DEVICE` | `cuda` | Thiết bị Whisper |
 | `WHISPER_COMPUTE_TYPE` | `int8` | Độ chính xác số |
 | `WHISPER_BEAM_SIZE` | `5` | Beam của bản chuẩn |
