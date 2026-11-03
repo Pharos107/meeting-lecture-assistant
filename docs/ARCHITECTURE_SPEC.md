@@ -159,9 +159,11 @@ Whisper tiếng Việt hay sinh câu không có trong audio ở đoạn ồn ho�
 
 1. `hallucination_silence_threshold=2.0`: faster-whisper bỏ câu bịa nằm sau khoảng lặng dài hơn 2 giây, rồi giải mã lại từ sau khoảng lặng. Lớp này lấy lại được lời thật bị câu bịa che.
 2. Bỏ câu có từ 4 từ trở lên mà nói nhanh hơn 12 từ/giây. Người nói nhanh nhất đo được khoảng 8,5 từ/giây. Câu bịa ở cuối cửa sổ 30 giây dồn hàng chục từ vào dưới 1 giây.
-3. Bỏ câu theo danh sách cụm: câu chỉ gồm cụm đã biết, cộng đuôi không quá 25 ký tự. Câu không quá 20 từ mở đầu bằng lời mời đăng ký kênh ("hãy subscribe", "hãy đăng ký kênh", "các bạn hãy đăng ký kênh") thì bỏ dù đuôi dài. Câu thật nhắc tới việc đăng ký kênh ở giữa câu được giữ.
+3. Bỏ câu theo danh sách cụm: câu chỉ gồm cụm đã biết, cộng đuôi không quá 25 ký tự. Câu không quá 20 từ chứa lời mời đăng ký kênh ở bất kỳ vị trí nào thì bỏ dù đuôi dài. Cụm lời mời là "hãy subscribe", "subscribe cho kênh", "hãy đăng ký kênh", "hãy đăng ký cho kênh", "không bỏ lỡ những video", "theo dõi và đăng ký kênh", so khớp theo ranh giới từ sau khi quy "đăng kí" về "đăng ký". "Đăng ký kênh" đứng riêng không nằm trong danh sách, để giữ câu thật như "bàn về việc đăng ký kênh phân phối mới".
 
-Số đo ngày 2026-10-29 trên 3 bản tin VTV24 (37 phút) với `large-v3-turbo`: CER gộp giảm từ 4,72% xuống 3,46%, không còn câu bịa nào. Bản trộn tiếng người nói lẫn nhau ở 10 dB giảm từ 16,39% xuống 12,96% WER. Hai bài sạch không đổi. Dải `temperature` và ngưỡng `no_speech_prob`, `avg_logprob` đã thử và không lấy lại được lời bị bỏ, vì model bỏ với `no_speech_prob` bằng 0. Bản nháp PT2 cần bộ lọc này hơn cả vì audio ngắn.
+Số đo ngày 2026-10-29 trên 3 bản tin VTV24 (37 phút) với `large-v3-turbo`: CER gộp giảm từ 4,72% xuống 3,46%, không còn câu bịa nào. Bản trộn tiếng người nói lẫn nhau ở 10 dB giảm từ 16,39% xuống 12,96% WER. Hai bài sạch không đổi.
+
+Số đo ngày 2026-11-03 trên 7 bài giảng và cuộc họp đăng mạng (108 phút): luật cũ chỉ bắt lời mời ở đầu câu nên để lọt 7 câu bịa của turbo, kiểu "Các bạn hãy đăng kí cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn". Luật trên bỏ 7/7 câu đó và không bắt nhầm câu thật nào trong 1.088 câu của 14 transcript. Bộ lọc chỉ xóa chữ bịa: lời thật bị câu bịa che vẫn mất, chỗ đó thành khoảng trống, xem #19 ở [`FLOWS.md`](FLOWS.md). Dải `temperature` và ngưỡng `no_speech_prob`, `avg_logprob` đã thử và không lấy lại được lời bị bỏ, vì model bỏ với `no_speech_prob` bằng 0. Bản nháp PT2 cần bộ lọc này hơn cả vì audio ngắn.
 
 Word của faster-whisper có dấu cách đầu. Mảnh không có dấu cách đầu, như `.000` sau `150` hoặc `%` sau `0`, được ghép vào từ đứng trước, kể cả thời gian kết thúc. Nếu không ghép, chữ của câu ghép từ các word bằng dấu cách sẽ thành `150 .000`.
 

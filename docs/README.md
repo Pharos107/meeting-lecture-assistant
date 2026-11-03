@@ -64,6 +64,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | 1.6.2 | 2026-11-02 | Gộp đoạn Whisper cắt giữa câu sau khi gán người nói, kiến trúc mục 2.5 |
 | 1.6.3 | 2026-11-02 | Panel công cụ của trang job đổi được độ rộng, kiến trúc mục 2.7 |
 | 1.7 | 2026-11-02 | Thêm D18: liên kết chia sẻ chỉ đọc, bảng `job_shares`, migration `0004_share`, API mục 5, kiến trúc mục 2.7 và mục 8. Thanh tiêu đề trang job chiếm trọn cột, thêm `Cài đặt hiển thị` |
+| 1.7.1 | 2026-11-03 | Luật lời mời đăng ký kênh ở kiến trúc mục 2.4 so khớp ở mọi vị trí trong câu, thêm cụm mới, quy "đăng kí" về "đăng ký". Ghi kết quả đo CER vòng hai trên dữ liệu thực tế, giữ `large-v3-turbo`. Cập nhật #19 và thứ tự làm tiếp ở [`FLOWS.md`](FLOWS.md). Không đổi quyết định D1–D18 |
 
 ## Việc còn mở
 
@@ -71,7 +72,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 |---|---|
 | Khóa Gemini và gói dùng | Điền `LLM_API_KEY` từ AI Studio. Gói miễn phí chỉ dùng cho dữ liệu demo, vì điều khoản cho phép Google dùng nội dung và cấm gửi nội dung nhạy cảm. Họp thật cần gói trả phí. |
 | Mã card màn hình | Chưa gắn một SKU. Ngân sách thiết kế là card dưới 6GB, tính toán chặt cho card 4GB. |
-| Model bản chuẩn | `large-v3-turbo` là mặc định. So CER với PhoWhisper trên bộ đối chiếu trước khi khóa. |
+| Model bản chuẩn | `large-v3-turbo` là mặc định. Vòng đo 2026-11-03 trên bài giảng và cuộc họp thật: PhoWhisper có CER thấp hơn 3,1 điểm, chủ yếu vì turbo bỏ sót lời nói, nhưng chậm gấp 2,1 lần và ra toàn chữ thường. Giữ turbo, làm #19 và thử nhập thuật ngữ, rồi đo lại trước khi khóa. Số đo ở `Báo Cáo/`. |
 | Các đoạn "Hướng tối ưu" | Chưa khóa. Đo trên bộ đối chiếu rồi mới ghi thành quy định. |
 | Phần code chưa hiện thực | Liệt kê và xếp mức ở [`FLOWS.md` mục 13](FLOWS.md#13-khoảng-trống-giữa-đặc-tả-và-code). |
 

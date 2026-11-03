@@ -537,7 +537,7 @@ Không có `REDIS_URL` thì các key trên nằm trong bộ nhớ tiến trình.
 
 ## 13. Khoảng trống giữa đặc tả và code
 
-Xếp theo mức chặn demo. Cập nhật 2026-10-29.
+Xếp theo mức chặn demo. Cập nhật 2026-11-03.
 
 | # | Mức | Khoảng trống | Ảnh hưởng | Chỗ sửa |
 |---|---|---|---|---|
@@ -546,7 +546,7 @@ Xếp theo mức chặn demo. Cập nhật 2026-10-29.
 | 21 | Cao | Giao diện chưa có ô sửa câu | UC12 chỉ gọi được qua API, người dùng không sửa được chữ | `transcript-layout.tsx`, gọi `PATCH /segments/{id}` |
 | 23 | Cao | Chưa đo hỏi đáp trên bộ đối chiếu | Chưa biết chất lượng câu trả lời, độ đúng của mốc, và chi phí trên bài dài | Đo theo ý tưởng mục 6 |
 | 4 | Cao | `enroll_voice` rỗng | Hồ sơ giọng không bao giờ `ready` | `worker.py`, `services/voice_profile.py`. Vector phải tính cùng cách `diarization.cluster_vectors` |
-| 19 | Trung bình | `large-v3-turbo` bỏ qua lời phỏng vấn hiện trường ngắn nằm giữa chunk | Bài tin y tế còn 14,5 giây tiếng nói không ra chữ sau khi sửa #16. Model bỏ với `no_speech_prob` bằng 0, nên ngưỡng và dải `temperature` không cứu được. Nhận dạng riêng từng vùng VAD thì lấy lại được | Thử bước vá: vùng VAD trên 1,5 giây không có từ nào thì nhận dạng riêng vùng đó. Đo lại trên bộ đối chiếu |
+| 19 | Cao | `large-v3-turbo` bỏ trống những đoạn có lời nói | Bài tin y tế còn 14,5 giây tiếng nói không ra chữ sau khi sửa #16. Trên bài giảng và cuộc họp thật ngày 2026-11-03, turbo mất 2.073 từ so với 849 của PhoWhisper, có đoạn trống liền 108 giây. Đây là phần lớn mức chênh CER giữa hai model. Model bỏ với `no_speech_prob` bằng 0, nên ngưỡng và dải `temperature` không cứu được. Nhận dạng riêng từng vùng VAD thì lấy lại được | Thử bước vá: vùng VAD trên 1,5 giây không có từ nào thì nhận dạng riêng vùng đó. Đo lại trên bộ dữ liệu thực tế ở `Báo Cáo/do-cer-2026-11-03/` |
 | 20 | Trung bình | Nền có người nói làm mất chữ | Trộn tiếng người nói lẫn nhau: WER 13% ở 10 dB, 30% ở 5 dB, gần như mất hết ở 0 dB. Nhiễu đều chịu được tới 10 dB. Lọc nhiễu `afftdn` chỉ giúp nhiễu đều mạnh | Đo trên ghi âm họp thật. Cân nhắc #19 và tách nguồn trước khi nhận dạng |
 | 18 | Trung bình | Câu của Whisper chứa từ của nhiều nhãn | Trên GPU, 39/126 câu của bài 9 phút và 553/1287 câu của bài 86 phút có từ mang nhãn khác nhãn câu, kể cả từ null. Câu hiện cả câu dưới một người nói | Hướng tối ưu ở kiến trúc mục 2.5: tách câu tại chỗ đổi nhãn, gán từ null cho lượt gần nhất. Đo lại sau khi sửa |
 | 7 | Trung bình | Nhả khóa khi mất heartbeat đang nằm ở FastAPI | Sau khi worker phiên có thật, hai nơi cùng quyết định nhả khóa | Chuyển về worker khi làm #2 |
@@ -557,7 +557,7 @@ Xếp theo mức chặn demo. Cập nhật 2026-10-29.
 
 ## 14. Thứ tự làm tiếp đề xuất
 
-1. Đo CER `large-v3-turbo` so với PhoWhisper trên ghi âm họp và bài giảng do nhóm thu, theo ý tưởng mục 6. Vòng đầu trên tin VTV24 ở `Báo Cáo/`. Đo kèm #19 và #20.
+1. #19, rồi đo `large-v3-turbo` có nhập thuật ngữ trên các bài chuyên ngành. Chạy lại bộ dữ liệu thực tế ở `Báo Cáo/do-cer-2026-11-03/` để khóa model bản chuẩn. Hai vòng đo trước, trên tin VTV24 và trên bài giảng, cuộc họp đăng mạng, đều ở `Báo Cáo/`. Ghi âm họp do nhóm tự thu vẫn cần cho #20.
 2. #2 và trang `/live`, kèm cơ chế nhường GPU ở kiến trúc mục 1. Làm #7 cùng lúc.
 3. #4 và trang `/voice-profiles`.
 4. #21 ô sửa câu, và #23.
