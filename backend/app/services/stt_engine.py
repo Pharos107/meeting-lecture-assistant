@@ -15,6 +15,9 @@ VAD_PARAMETERS = {
     "min_silence_duration_ms": 400,
     "speech_pad_ms": 200,
 }
+# Bản nháp PT2 cùng ngưỡng, nhưng không đệm và tách ở khoảng lặng 200 ms, để đo được
+# luật đóng câu khi lặng 600 ms và cắt tại khoảng lặng từ 200 ms. Kiến trúc mục 3.2.
+LIVE_VAD_PARAMETERS = {**VAD_PARAMETERS, "min_silence_duration_ms": 200, "speech_pad_ms": 0}
 MAX_PROMPT_CHARS = 800
 # Bỏ câu bịa sau khoảng lặng dài hơn mức này. Cần word_timestamps=True.
 HALLUCINATION_SILENCE_S = 2.0
@@ -99,13 +102,13 @@ def collect_words(raw_words) -> list[dict]:
     return words
 
 
-def speech_regions(pcm: np.ndarray) -> list[tuple[float, float]]:
+def speech_regions(pcm: np.ndarray, parameters: dict = VAD_PARAMETERS) -> list[tuple[float, float]]:
     """Vùng có tiếng, đổi từ chỉ số mẫu sang giây."""
     if len(pcm) == 0:
         return []
     from faster_whisper.vad import VadOptions, get_speech_timestamps
 
-    stamps = get_speech_timestamps(np.asarray(pcm, dtype=np.float32), VadOptions(**VAD_PARAMETERS))
+    stamps = get_speech_timestamps(np.asarray(pcm, dtype=np.float32), VadOptions(**parameters))
     return [(stamp["start"] / SAMPLE_RATE, stamp["end"] / SAMPLE_RATE) for stamp in stamps]
 
 
@@ -131,23 +134,37 @@ def _is_oom(error: BaseException) -> bool:
     return "out of memory" in text or "cuda_error_out_of_memory" in text
 
 
+def load_whisper(name: str):
+    """Nạp từ cache trước. Model đã tải thì không phải chờ Hugging Face trả lời, mạng chậm vẫn mở được phiên."""
+    from faster_whisper import WhisperModel
+
+    options = {
+        "device": os.environ.get("WHISPER_DEVICE", "cuda"),
+        "compute_type": os.environ.get("WHISPER_COMPUTE_TYPE", "int8"),
+    }
+    try:
+        try:
+            return WhisperModel(name, local_files_only=True, **options)
+        except OSError:
+            # Chưa có trong cache: tải về.
+            return WhisperModel(name, **options)
+    except RuntimeError as error:
+        if _is_oom(error):
+            raise GpuOutOfMemory(str(error)) from error
+        raise
+
+
+def standard_model_name(model_name: str | None = None) -> str:
+    return model_name or os.environ.get("WHISPER_MODEL", "large-v3-turbo")
+
+
 class WhisperEngine:
     """Một model trong VRAM cho cả job. Gọi `release` trước khi nạp pyannote."""
 
-    def __init__(self, model_name: str | None = None) -> None:
-        from faster_whisper import WhisperModel
-
+    def __init__(self, model_name: str | None = None, *, model=None) -> None:
         self.beam_size = int(os.environ.get("WHISPER_BEAM_SIZE", "5"))
-        try:
-            self.model = WhisperModel(
-                model_name or os.environ.get("WHISPER_MODEL", "large-v3-turbo"),
-                device=os.environ.get("WHISPER_DEVICE", "cuda"),
-                compute_type=os.environ.get("WHISPER_COMPUTE_TYPE", "int8"),
-            )
-        except RuntimeError as error:
-            if _is_oom(error):
-                raise GpuOutOfMemory(str(error)) from error
-            raise
+        # Phiên nghe đã nạp cùng model cho bản nháp thì đưa sang, không nạp lần hai.
+        self.model = model if model is not None else load_whisper(standard_model_name(model_name))
 
     def transcribe(self, audio: np.ndarray, vocabulary: str | None) -> list[dict]:
         """Trả câu với start, end, words tính bằng giây tương đối trong `audio`."""
@@ -180,6 +197,42 @@ class WhisperEngine:
                 }
             )
         return produced
+
+    def release(self) -> None:
+        self.model = None
+        free_cuda()
+
+
+class DraftEngine:
+    """Model của pass 1, mặc định cùng `large-v3-turbo` với bản chuẩn. Không có mốc từ, chỉ trả chữ của cả câu."""
+
+    def __init__(self, model_name: str | None = None) -> None:
+        self.beam_size = int(os.environ.get("WHISPER_DRAFT_BEAM_SIZE", "1"))
+        self.model_name = model_name or os.environ.get("WHISPER_DRAFT_MODEL", "large-v3-turbo")
+        self.model = load_whisper(self.model_name)
+
+    def hand_over(self) -> WhisperEngine | None:
+        """Bản chuẩn dùng lại model đang nằm trong VRAM khi hai pass cùng một model."""
+        if self.model is None or self.model_name != standard_model_name():
+            return None
+        engine = WhisperEngine(model=self.model)
+        self.model = None
+        return engine
+
+    def transcribe(self, audio: np.ndarray, vocabulary: str | None) -> str:
+        segments, _info = self.model.transcribe(
+            audio,
+            language="vi",
+            task="transcribe",
+            beam_size=self.beam_size,
+            word_timestamps=False,
+            condition_on_previous_text=False,
+            vad_filter=False,
+            temperature=0.0,
+            initial_prompt=prompt_or_none(vocabulary),
+        )
+        kept = [segment.text.strip() for segment in segments if not is_hallucination(segment.text)]
+        return " ".join(text for text in kept if text)
 
     def release(self) -> None:
         self.model = None

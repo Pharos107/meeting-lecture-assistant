@@ -373,7 +373,8 @@ async def stream(websocket: WebSocket, session_id: str) -> None:
         if handle is not None:
             handle.close()
         feed.close()
-        if capture_closed(owner):
+        # Phiên dừng bình thường thì worker còn đọc PCM để tạo Opus. Chỉ xóa khi đã hủy.
+        if capture_closed(owner) and _job_cancelled(session.id):
             unlink_pcm(str(pcm_path))
         try:
             await websocket.close()

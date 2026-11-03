@@ -87,7 +87,7 @@ def get_gpu_lock() -> MemoryGpuLock | RedisGpuLock:
 
 
 class LockKeeper:
-    """Gia hạn khóa mỗi 10 giây. Phiên nghe nhả khóa khi mất nhịp quá 30 giây."""
+    """Gia hạn khóa mỗi 10 giây. Phiên nghe chưa có worker thì nhả khóa khi mất nhịp quá 30 giây."""
 
     def __init__(self) -> None:
         self._guard = threading.Lock()
@@ -101,11 +101,14 @@ class LockKeeper:
             self._stops[owner] = stop
 
         def run() -> None:
-            from app.services.live_heartbeat import age
+            from app.services.live_heartbeat import age, worker_alive
 
             started = time.monotonic()
             while not stop.wait(10):
                 if until_quiet:
+                    # Worker của phiên đã giữ khóa và tự nhả sau pass 2, kể cả khi mất nhịp.
+                    if worker_alive(owner):
+                        break
                     quiet = age(owner)
                     if quiet is None and time.monotonic() - started >= 60:
                         get_gpu_lock().release(owner)
