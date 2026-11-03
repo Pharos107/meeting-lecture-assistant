@@ -11,6 +11,8 @@ numpy==1.26.4
 huggingface_hub<1.0
 fastapi
 uvicorn
+# uvicorn trần không nâng cấp được WebSocket: /api/live/.../stream trả 404 nếu thiếu gói này.
+websockets
 celery[redis]
 redis
 sqlalchemy
