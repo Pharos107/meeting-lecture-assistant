@@ -232,6 +232,24 @@ class ChatTests(unittest.TestCase):
         self.assertEqual(clock(64_000, False), "01:04")
         self.assertEqual(clock(3_725_000, True), "01:02:05")
 
+    def test_live_session_can_ask_while_capturing(self) -> None:
+        job_id = upload(self.token)
+        with Session(get_engine()) as db:
+            job = db.get(Job, uuid.UUID(job_id))
+            assert job is not None
+            job.source = "live"
+            job.status = "capturing"
+            db.add(Segment(job_id=job.id, pass_index=1, position=0, start_ms=0, end_ms=3000, text_raw="Câu nháp."))
+            db.commit()
+        chat_routes.stream_chat, seen = fake_stream("Được.")
+        response = self._ask(job_id)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertIn("Câu nháp.", seen[0][1]["content"])
+        with Session(get_engine()) as db:
+            db.get(Job, uuid.UUID(job_id)).status = "transcribing"
+            db.commit()
+        self.assertEqual(self._ask(job_id).json()["error"]["code"], "invalid_state")
+
     def test_errors_before_calling_llm(self) -> None:
         queued = upload(self.token)
         self.assertEqual(self._ask(queued).json()["error"]["code"], "invalid_state")
