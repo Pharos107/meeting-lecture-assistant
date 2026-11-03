@@ -79,7 +79,7 @@ export function AppSidebar({ user, collapsed, onToggle }: AppSidebarProps) {
           <Plus className="size-4" />
           Bản ghi mới
         </button>
-        <NavLink href="/live" active={pathname.startsWith("/live")} icon={<Mic className="size-4" />} soon>
+        <NavLink href="/live" active={pathname.startsWith("/live")} icon={<Mic className="size-4" />}>
           Ghi trực tiếp
         </NavLink>
       </div>
