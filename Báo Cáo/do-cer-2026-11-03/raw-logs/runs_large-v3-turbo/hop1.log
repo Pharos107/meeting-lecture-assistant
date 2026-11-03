@@ -1,0 +1,26 @@
+upload 201 0.3 s
+job 327a7153-5a15-4eb9-8d2a-2193b0d3cb04
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   21.1s] ('transcribing', None, None)
+[  101.1s] ('diarizing', None, None)
+[  173.8s] ('ready', None, None)
+elapsed 173.8 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1699992, "diarization_device": "cuda"}
+pass 2 segments 158 speakers ['SPEAKER_00', 'SPEAKER_01']
+  SPEAKER_00: 1396s
+  None: 1s
+  SPEAKER_01: 0s
+words 5920 segments with >1 word speaker 50
+      0.2 SPEAKER_00: tất cả các cuộc họp đều có một điểm rất giống nhau đó là điện đưa kết luận họ phải để giải quyết được một vấn 
+     21.5 SPEAKER_00: ra kết quả không muốn vậy thì ở đây có một số vấn đề
+     28.9 SPEAKER_00: Trước khi tiến hành một cuộc họp thì chúng ta cần bảo rõ lý do.
+     51.7 SPEAKER_00: Cả 3 cái này vào một cuộc họp, mà nếu không cần thiết mà vẫn làm, rất mất thời gian
+     56.9 SPEAKER_00: Cho nên chúng ta đây là có cần thiết không
+     60.6 SPEAKER_00: Nếu cần thiết thì làm, còn nếu không cần thì không cần họp
+     64.4 SPEAKER_00: Trong điều kiện đến nay chúng ta rất anh có nhiều có rất nhiều cái cách để thay đổi thế này mà không biết cái 
+     87.2 SPEAKER_00: chứ còn nếu không được gặp gỡ giao hưu khác giao hưu sau giờ làm việc với các còn đã là họp thì nó liên quan đ
+    116.1 SPEAKER_00: thì đây là ra cần có một sự chuẩn bị chú giáo thì các nhóm bây giờ trình bày đấy là sự chuẩn bị rất là tốt đấy
+    144.5 SPEAKER_00: kết quả đạt ra không phải là cái mong muốn mà thậm chí là cái kết quả mong muốn không đạt được một kết quả khô
+    150.7 SPEAKER_00: Bây giờ chúng ta làm việc có một kết quả đầu ra, một kết quả đầu ra thì bao giờ nó có hai đoạn một lần, mong m
+    157.0 SPEAKER_00: Mong muốn là giải quyết được vấn đề, là thống nhất là trong cuộc họp, là sau này triển khai làm việc tốt, là h

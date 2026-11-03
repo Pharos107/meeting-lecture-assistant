@@ -1,0 +1,24 @@
+upload 201 0.2 s
+job ccc55edb-788f-4a1b-92ef-e73bc6b750fa
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   21.6s] ('transcribing', None, None)
+[  102.2s] ('diarizing', None, None)
+[  209.9s] ('ready', None, None)
+elapsed 210.0 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1175880, "diarization_device": "cuda"}
+pass 2 segments 66 speakers ['SPEAKER_01']
+  SPEAKER_01: 423s
+words 1351 segments with >1 word speaker 17
+     13.5 SPEAKER_01: Đây là dẫn xuất của axit benzoic, dẫn xuất, axit halic nha, benzoic bỏ x thay vào cái hình là benzo-in-chloric
+     39.2 SPEAKER_01: Rồi đây là mối hộp.
+     47.4 SPEAKER_01: bên cơ ác, đó là SACin, là etin bên cơ ác. Nhưng mà ở bên cơ ác thì cái chín cầu 4 có nhóm amido, như vậy chún
+     73.7 SPEAKER_01: nhưng vẫn là trước cực ưu riêng đầu tiên cho tất cả các nhóm trước
+     76.7 SPEAKER_01: Nhóm trước là trước cực ưu riêng đầu
+     79.2 SPEAKER_01: Như vậy thì cái nhóm COC23 đó là nhóm Acety
+     83.4 SPEAKER_01: Ta biết rồi, cô đã nói khỏi Acety
+     87.5 SPEAKER_01: Acetylacety nó cũng tức tứ từ cái nhóm này CACOO và chúng ta bỏ cái nhóm này đi thì chúng ta tay bằng I, góc c
+    102.2 SPEAKER_01: Có khi thì nó gọi là Acetome, nó còn gọi là Acetome, thì nó gọi ở trên này là 4-2-3-3-2-3-2-1-2-1-2-1-2-1-2-1-
+    218.0 SPEAKER_01: là một cái chất là D9, và đây có nhóm chức CO2 là như tôi nói rồi, và nó ưu tiên là nhóm chức chín, cho nên cá
+    270.0 SPEAKER_01: Thì rồi mình nhìn, vị trí này là vị trí tốn 1 của nó này 1, 2, 3, 4 năm trên vị trí đó là vị trí tốn 1
+    301.2 SPEAKER_01: Nhấm thế, nhấm thế, nhấm dứa là như vậy.

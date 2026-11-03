@@ -1,0 +1,25 @@
+upload 201 0.3 s
+job f95db0f0-070c-4959-985b-04ef4718b08f
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   20.1s] ('transcribing', None, None)
+[  302.2s] ('diarizing', None, None)
+[  375.9s] ('ready', None, None)
+elapsed 375.9 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1699992, "diarization_device": "cuda"}
+pass 2 segments 74 speakers ['SPEAKER_00', 'SPEAKER_01']
+  SPEAKER_00: 1582s
+  SPEAKER_01: 1s
+words 6778 segments with >1 word speaker 54
+      0.2 SPEAKER_00: bước nảy nhỏ là tất cả các cuộc họp đều có một điểm rất giống nhau đó là gì ạ họp là để giải quyết được một vấ
+     28.9 SPEAKER_00: trước khi tiến hành cuộc họp thì chúng ta cần làm rõ lý do.
+     37.3 SPEAKER_00: khi họp ý thì bao giờ nó bao gồm nó nó chứa đựng trong cuộc họp có ba nhân tố nhân tố nhất là công việc nhân t
+     66.4 SPEAKER_00: có nhiều có rất nhiều cái cách để chúng ta thay đổi như này à mà không biết biết cái gì cũng phải học thế thì 
+     81.0 SPEAKER_00: còn nếu ta thấy không hợp mà vẫn làm được thì tốt nhất không học cái này thì không chuẩn bị đợt học đọc chứ cò
+    109.7 SPEAKER_00: nói đồn quá nhớ nhau để họp cũng không cần thiết đúng không ạ thì đấy là cái chúng ta phải chú ý còn nếu có th
+    137.7 SPEAKER_00: và khi đạt được mục tiêu và ra được kết quả thì đấy là tổ hợp thành công còn mục tiêu đặt ra mà không đạt được
+    150.7 SPEAKER_00: ba giờ chúng ta làm việc có một kết quả đầu ra kết quả đầu ra thì bao giờ nó có hai đoạn một lần mong muốn một
+    177.4 SPEAKER_00: đúng không cái này rất có thể và đây là những cuộc họp thường được coi là không thành công và chúng ta chú ý l
+    205.4 SPEAKER_00: họ có thể là điều mình băn khoăn vậy là đi đến giải quyết một vấn đề gì đó mà đang còn mâu thuẫn đang còn khúc
+    228.7 SPEAKER_00: kể cả sếp to cũng không giải quyết được cho nên cần cuộc họp còn nếu mà tôi là sếp thì giải quyết được nữa khô
+    257.8 SPEAKER_00: cũng được mà chẳng nghe thì thôi tự nhiên không nghĩ nó đích xác trong học thì thôi vì nghe hay không nghe cũn

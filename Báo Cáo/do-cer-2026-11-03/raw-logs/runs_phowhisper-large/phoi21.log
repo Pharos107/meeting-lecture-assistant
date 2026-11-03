@@ -1,0 +1,24 @@
+upload 201 0.1 s
+job 1e0beee4-313b-4eb3-aafc-724b27a9a876
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    8.0s] ('transcribing', None, None)
+[  137.7s] ('diarizing', None, None)
+[  162.1s] ('ready', None, None)
+elapsed 162.1 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 527664, "diarization_device": "cuda"}
+pass 2 segments 23 speakers ['SPEAKER_00']
+  SPEAKER_00: 509s
+words 2206 segments with >1 word speaker 20
+      0.0 SPEAKER_00: thì hướng ném này là về phôi học phân tử và dự thảo bậc sinh hoa hậu thi sách giáo mới thế nào thì tôi nghĩ là
+     28.3 SPEAKER_00: thứ hai nữa là các anh chị biết được khái niệm cũng như các cái phân loại của các cái phát triển bất thường ở 
+     52.9 SPEAKER_00: thứ ba nữa là phân tích được thời gian có khả năng phát hiện phát triển hình các dị tật bẩm sinh ở phôi thai c
+     79.3 SPEAKER_00: không phải là đợi em bé ra đời để can thiệp đâu ạ mà người ta can thiệp em bé ngay khi ở trong ở trong bụng mẹ
+     91.2 SPEAKER_00: đây là phần đầu tiên liên quan đến phôi thọc các bạn hôm qua mình cũng nói đấy là phôi thọc nó sẽ gồm có rất n
+    105.4 SPEAKER_00: hôm qua thì các bạn có học về phôi thảo đài cưa thì các bạn sẽ thấy là mình mô tả rất nhiều cái quá trình hiện
+    134.8 SPEAKER_00: bẩm sinh có nghĩa là liên quan đến hình thái nhìn thấy đúng không ạ tuy nhiên hiện nay thì tổ chức y tế thế gi
+    151.9 SPEAKER_00: ngay cả những cái mà ví dụ như là rối loạn về chuyển hoá thì người ta cũng xét vào cái nhóm là bất thường về b
+    180.7 SPEAKER_00: với phát sinh thì thì nữa mình cũng nói một chút liên quan đến nguyên nhân và khi mà tuy nhiên là cái này nó n
+    210.6 SPEAKER_00: thì các bạn sẽ thấy là vừa nãy mình có nói đó là trong cái khôi thảo hình thái truyền thống ý chủ yếu là người
+    226.8 SPEAKER_00: cho đến khi mà khôi tạp phân tử ra đời đấy ạ thì nó nghiên cứu sâu hơn ở mức độ gọi là các cái đại phân tử hoặ
+    253.3 SPEAKER_00: ờ nó sẽ sinh ra những con đường tín hiệu và nó tác động đến sự phát triển của phôi như thế nào thì đấy là cái 

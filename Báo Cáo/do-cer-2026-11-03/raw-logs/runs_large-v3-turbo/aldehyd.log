@@ -1,0 +1,24 @@
+upload 201 0.1 s
+job d564c6c6-3c9a-4d4e-b425-51016ca8f4e6
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   12.1s] ('transcribing', None, None)
+[   50.3s] ('diarizing', None, None)
+[   85.4s] ('ready', None, None)
+elapsed 85.4 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 812856, "diarization_device": "cuda"}
+pass 2 segments 141 speakers ['SPEAKER_00']
+  SPEAKER_00: 723s
+words 2690 segments with >1 word speaker 25
+      0.4 SPEAKER_00: Nó không giống cả con hình, tự nhiên tự nhiên tự nhiên tự nhiên CFO, CO thì chúng ta gọi là một chiếc anti-X, 
+     10.1 SPEAKER_00: Đối với CFO, Khiên nó có 2 lớp các bọc bọc gắn chỉnh làm CO.
+     15.3 SPEAKER_00: Kino cũng là một trạng thái đặc biệt của ẩm chất Shepard
+     19.1 SPEAKER_00: Nó là chúng ta nghĩ ở đây nó sẽ có hai nhóm kiếp carbonin
+     23.2 SPEAKER_00: Và hai nhóm kiếp carbonin phải gắn trên một cấu trúc vỏ
+     26.0 SPEAKER_00: Và đặc biệt là trên cấu trúc này nó sẽ có sự liên hợp với cấu trúc vỏ này
+     32.4 SPEAKER_00: Tức là liên tích carbonin, kế ti sẽ trả khoản liên hợp với nhau
+     36.6 SPEAKER_00: Để chúng ta đoạn cấu trúc đó là Kino thì đối với 3 cái phần nhập trị Adenxepalokidon thì thật sự cái đầu dụng 
+     50.1 SPEAKER_00: Nó chỉ là một phần biến hiệu tên để chúng ta biết tên của các loại lập trực trong hợp trạng ADX này, xe con và
+     58.3 SPEAKER_00: Chúng ta đi vào nội dung đầu tiên là gọt tên
+     61.5 SPEAKER_00: Có lẽ là hôm nay chúng ta đã tiếp xúc với phần tây dõi của một số loại hạt xác thực tơ
+     67.2 SPEAKER_00: Từ nghiên cứu học môn đến khoảng nhiều chip trong buổi học vừa rồi
