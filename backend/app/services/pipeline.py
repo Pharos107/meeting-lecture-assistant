@@ -25,7 +25,7 @@ from app.services.speaker_align import (
     match_speakers,
     unpack_embedding,
 )
-from app.services.vad_chunker import TimedWord, build_chunks, keep_word
+from app.services.vad_chunker import TimedWord, build_chunks, fill_empty_spans, keep_word
 
 logger = logging.getLogger(__name__)
 
@@ -443,11 +443,14 @@ def _process_upload(db: Session, job: Job, engine_factory, diarize_fn, regions_f
         pcm = load_pcm(pcm_path)
         regions = (regions_fn or _real_regions)(pcm)
 
-        def transcribe(chunk):
+        def transcribe_span(chunk):
             nonlocal engine
             if engine is None:
                 engine = engine_factory()
             return engine.transcribe(slice_pcm(pcm, chunk.start, chunk.end), job.vocabulary)
+
+        def transcribe(chunk):
+            return fill_empty_spans(chunk, transcribe_span(chunk), transcribe_span)
 
         def diarize():
             nonlocal engine
