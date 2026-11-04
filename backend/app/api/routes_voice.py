@@ -9,6 +9,7 @@ from fastapi import APIRouter, Depends, Request
 from fastapi.responses import Response
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
+from starlette.concurrency import run_in_threadpool
 from starlette.datastructures import UploadFile
 
 from app.api.routes_auth import current_user, validation
@@ -22,6 +23,10 @@ from app.services.diarization import PIPELINE_MODEL
 from app.services.dispatch import enqueue
 
 router = APIRouter(prefix="/api", tags=["voice"], dependencies=[Depends(current_user)])
+
+
+# Mẫu tối đa 32 MB và chỉ giải mã 61 giây đầu, nên một file hợp lệ xong trong vài giây.
+_DECODE_TIMEOUT_S = 20
 
 
 def probe_sample(path: Path) -> tuple[int, int]:
@@ -44,12 +49,34 @@ def probe_sample(path: Path) -> tuple[int, int]:
             check=False,
             capture_output=True,
             text=True,
+            timeout=_DECODE_TIMEOUT_S,
         )
         duration = float(json.loads(completed.stdout)["format"]["duration"])
-    except (OSError, KeyError, ValueError, json.JSONDecodeError):
+    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError, subprocess.TimeoutExpired):
+        duration = _decoded_seconds(path)
+    if duration is None:
         raise ApiError(422, "validation", "Không đọc được file âm thanh.", {"file": "Không đọc được file âm thanh."})
     millis = int(duration * 1000)
     return millis, millis
+
+
+def _decoded_seconds(path: Path) -> float | None:
+    """File thu bằng MediaRecorder thường không ghi thời lượng vào header. Giải mã để đếm mẫu."""
+    import subprocess
+
+    try:
+        completed = subprocess.run(
+            ["ffmpeg", "-v", "error", "-i", str(path), "-t", "61", "-vn",
+             "-f", "s16le", "-ac", "1", "-ar", "8000", "-"],
+            check=False,
+            capture_output=True,
+            timeout=_DECODE_TIMEOUT_S,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if completed.returncode != 0 or not completed.stdout:
+        return None
+    return len(completed.stdout) / 2 / 8000
 
 
 def profile_json(row: VoiceProfile) -> dict:
@@ -60,6 +87,7 @@ def profile_json(row: VoiceProfile) -> dict:
         "status": row.status,
         "duration_ms": row.duration_ms,
         "stale": stale,
+        "error_message": row.error_message if row.status == "failed" else None,
         "created_at": iso_seconds(row.created_at),
     }
 
@@ -115,7 +143,8 @@ async def create_profile(request: Request, db: Session = Depends(get_db)) -> dic
     dest = data_root() / "voice" / str(user.id) / f"{profile_id}.{suffix}"
     try:
         await write_upload(upload, dest, get_settings().max_voice_bytes)
-        duration_ms, speech_ms = probe_sample(dest)
+        # ffprobe và ffmpeg là lệnh chặn. Chạy ngoài event loop để một mẫu chậm không treo cả API.
+        duration_ms, speech_ms = await run_in_threadpool(probe_sample, dest)
     except ApiError:
         dest.unlink(missing_ok=True)
         raise

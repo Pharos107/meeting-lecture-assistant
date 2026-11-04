@@ -490,13 +490,15 @@ sequenceDiagram
   participant FS as /data/voice
 
   U->>API: POST /api/voice-profiles (file, display_name)
-  API->>API: Dưới 20 hồ sơ. ffprobe: 20–40 giây
+  API->>API: Dưới 20 hồ sơ. ffprobe 20–40 giây, header thiếu thời lượng thì giải mã để đo
   API->>FS: Lưu mẫu
   API->>DB: voice_profiles status=processing
   API->>W: enroll_voice(profile_id)
   API-->>U: 202 {profile_id, status: processing}
   W->>W: Giữ gpu:lock, bận thì retry 5 giây
-  W->>W: VAD còn ít nhất 15 giây có tiếng, embedding, L2-chuẩn hóa
+  W->>FS: Chuẩn hóa mẫu sang {profile_id}.opus, xóa file gốc
+  W->>W: VAD còn ít nhất 15 giây có tiếng
+  W->>W: diarize(num_speakers=1), lấy vector của nhãn duy nhất
   W->>DB: embedding, embedding_model, status=ready hoặc failed
 ```
 
@@ -506,8 +508,8 @@ Hồ sơ được dùng ở cuối F2: mỗi nhãn trong buổi so tích vô hư
 |---|---|
 | API list, get, create, delete, kiểm thời lượng | Có |
 | So khớp hồ sơ trong pipeline | Có (`speaker_align.match_speakers`), có test |
-| `enroll_voice` tính vector | Chưa. Task giữ và nhả khóa rồi kết thúc, hồ sơ ở `processing` mãi |
-| Trang `/voice-profiles` | Chưa, chỉ có thông báo sắp có |
+| `enroll_voice` tính vector | Có (`services/voice_profile.run_enroll`), có test với FFmpeg thật, VAD và pyannote giả. Chưa đo điểm giống trên mẫu thật của nhóm |
+| Trang `/voice-profiles` | Có. Thu bằng micro theo đoạn văn mẫu, hoặc chọn file. Danh sách hỏi lại mỗi 3 giây khi còn hồ sơ `processing`, hiện lý do lỗi và nhãn cần thu lại khi `stale`, xóa có bước xác nhận |
 
 ## 12. Nơi giữ trạng thái
 
@@ -534,7 +536,7 @@ Không có `REDIS_URL` thì các key trên nằm trong bộ nhớ tiến trình.
 | `/data/tmp/{job_id}.f32` | PCM float32 cho model | Job sang `ready`, `failed`, `cancelled` |
 | `/data/audio/{job_id}.opus` | Bản nghe lại canonical | Xóa job |
 | `/data/tmp/{session_id}.pcm` | PCM s16le của phiên nghe | Session `finalized` hoặc `failed` |
-| `/data/voice/{user_id}/{profile_id}.{ext}` | Mẫu giọng. Đặc tả ghi `.opus`, code hiện giữ đuôi file gốc cho tới khi worker chuẩn hóa | Xóa hồ sơ |
+| `/data/voice/{user_id}/{profile_id}.{ext}` | Mẫu giọng. API lưu đuôi file gốc, worker chuẩn hóa sang `.opus` rồi xóa file gốc | Xóa hồ sơ |
 
 ## 13. Khoảng trống giữa đặc tả và code
 
@@ -542,10 +544,8 @@ Xếp theo mức chặn demo. Cập nhật 2026-11-03.
 
 | # | Mức | Khoảng trống | Ảnh hưởng | Chỗ sửa |
 |---|---|---|---|---|
-| 3 | Chặn | Trang `/voice-profiles` chỉ có thông báo sắp có | Hồ sơ giọng chưa dùng được từ giao diện | `frontend/src/app/(app)/voice-profiles` |
 | 21 | Cao | Giao diện chưa có ô sửa câu | UC12 chỉ gọi được qua API, người dùng không sửa được chữ | `transcript-layout.tsx`, gọi `PATCH /segments/{id}` |
 | 23 | Cao | Chưa đo hỏi đáp trên bộ đối chiếu | Chưa biết chất lượng câu trả lời, độ đúng của mốc, và chi phí trên bài dài | Đo theo ý tưởng mục 6 |
-| 4 | Cao | `enroll_voice` rỗng | Hồ sơ giọng không bao giờ `ready` | `worker.py`, `services/voice_profile.py`. Vector phải tính cùng cách `diarization.cluster_vectors` |
 | 19 | Cao | `large-v3-turbo` bỏ trống những đoạn có lời nói | Bài tin y tế còn 14,5 giây tiếng nói không ra chữ sau khi sửa #16. Trên bài giảng và cuộc họp thật ngày 2026-11-03, turbo mất 2.073 từ so với 849 của PhoWhisper, có đoạn trống liền 108 giây. Đây là phần lớn mức chênh CER giữa hai model. Model bỏ với `no_speech_prob` bằng 0, nên ngưỡng và dải `temperature` không cứu được. Nhận dạng riêng từng vùng VAD thì lấy lại được | Đã có bước vá trong `vad_chunker.fill_empty_spans`: vùng VAD trống từ 1,5 giây được nhận dạng riêng. Còn đo lại trên bộ dữ liệu thực tế ở `Báo Cáo/do-cer-2026-11-03/`. Ở bài `acid`, phần lớn đoạn trống dài là do VAD chỉ thấy tiếng rải rác và Whisper không ra chữ cả khi cắt cửa sổ 10 giây, nên bước vá không lấy lại được |
 | 20 | Trung bình | Nền có người nói làm mất chữ | Trộn tiếng người nói lẫn nhau: WER 13% ở 10 dB, 30% ở 5 dB, gần như mất hết ở 0 dB. Nhiễu đều chịu được tới 10 dB. Lọc nhiễu `afftdn` chỉ giúp nhiễu đều mạnh | Đo trên ghi âm họp thật. Cân nhắc #19 và tách nguồn trước khi nhận dạng |
 | 18 | Trung bình | Câu của Whisper chứa từ của nhiều nhãn | Trên GPU, 39/126 câu của bài 9 phút và 553/1287 câu của bài 86 phút có từ mang nhãn khác nhãn câu, kể cả từ null. Câu hiện cả câu dưới một người nói | Hướng tối ưu ở kiến trúc mục 2.5: tách câu tại chỗ đổi nhãn, gán từ null cho lượt gần nhất. Đo lại sau khi sửa |
@@ -554,6 +554,8 @@ Xếp theo mức chặn demo. Cập nhật 2026-11-03.
 
 Đã đóng ngày 2026-10-29: #1 pipeline PT1 thật, #3 phần `/jobs`, `/jobs/new`, `/jobs/[id]`, #5 tự làm mới token, #6 cấu hình Celery, #8 ghi nhãn hàng loạt, #11 xóa file gốc sau khi có Opus, #13 đọc từ trong một truy vấn, #14 `max(seq)`, #12 bộ phiên bản chạy trên card thật. Lúc kiểm #12 đã sửa ba lỗi chỉ lộ ra trên GPU: image nền trixie làm `ctranslate2` không nạp được, pip thay torch cu121 bằng torch mới trên PyPI, và worker khởi tạo CUDA ở tiến trình cha nên tiến trình fork của Celery không nạp được Whisper. Cũng ngày đó đóng #16: bộ lọc chữ bịa thêm `hallucination_silence_threshold`, ngưỡng tốc độ nói và luật lời mời đăng ký kênh, kèm sửa chữ số bị tách thành `150 .000`. Số đo ở kiến trúc mục 2.4 và trong `Báo Cáo/`.
 
+Đã đóng ngày 2026-11-04: #4 `enroll_voice` tính vector bằng chính `diarization.diarize` với một người nói, nên vector so được với vector cụm của `cluster_vectors`, và phần `/voice-profiles` của #3.
+
 Đã đóng ngày 2026-11-03: #2 vòng nháp và bàn giao sang pass 2 trong `run_live_session`, #7 nhả khóa của phiên chuyển về worker, và phần `/live` của #3. Cả ba mới có test với model giả, chưa chạy trên GPU và trình duyệt thật.
 
 ## 14. Thứ tự làm tiếp đề xuất
@@ -561,6 +563,6 @@ Xếp theo mức chặn demo. Cập nhật 2026-11-03.
 1. Chạy thử PT2 trên GPU và trình duyệt thật: micro, chia sẻ tab, rớt mạng dưới 30 giây, dừng, pass 2.
 2. Đo lại #19, rồi đo `large-v3-turbo` có nhập thuật ngữ trên các bài chuyên ngành. Chạy lại bộ dữ liệu thực tế ở `Báo Cáo/do-cer-2026-11-03/` để khóa model bản chuẩn. Hai vòng đo trước, trên tin VTV24 và trên bài giảng, cuộc họp đăng mạng, đều ở `Báo Cáo/`. Ghi âm họp do nhóm tự thu vẫn cần cho #20.
 3. Cơ chế nhường GPU ở kiến trúc mục 1, để file dài không chặn phiên nghe mới.
-4. #4 và trang `/voice-profiles`.
+4. Đo điểm giống của hồ sơ giọng trên mẫu thu của nhóm, so với giọng cùng người trong ghi âm họp, để chỉnh `VOICE_MATCH_THRESHOLD`.
 5. #21 ô sửa câu, và #23.
 6. #18, sau khi có số đo, rồi các mục còn lại.

@@ -107,7 +107,6 @@ export function AppSidebar({ user, collapsed, onToggle }: AppSidebarProps) {
           icon={<AudioLines className="size-5" />}
           collapsed={collapsed}
           labelClass={label}
-          badge="Sắp có"
         >
           Hồ sơ giọng
         </NavItem>
@@ -139,7 +138,6 @@ function NavItem({
   icon,
   collapsed,
   labelClass,
-  badge,
   children,
 }: {
   href: string;
@@ -147,7 +145,6 @@ function NavItem({
   icon: ReactNode;
   collapsed: boolean;
   labelClass: string;
-  badge?: string;
   children: string;
 }) {
   return (
@@ -161,11 +158,6 @@ function NavItem({
       {active ? <span aria-hidden="true" className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-blue-600" /> : null}
       <span className={ICON_SLOT}>{icon}</span>
       <span className={labelClass}>{children}</span>
-      {badge ? (
-        <span className={`${FADE} mr-2 shrink-0 whitespace-nowrap rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-slate-500 ${collapsed ? "opacity-0" : ""}`}>
-          {badge}
-        </span>
-      ) : null}
     </Link>
   );
 }
