@@ -46,10 +46,31 @@ def probe_sample(path: Path) -> tuple[int, int]:
             text=True,
         )
         duration = float(json.loads(completed.stdout)["format"]["duration"])
-    except (OSError, KeyError, ValueError, json.JSONDecodeError):
+    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError):
+        duration = _decoded_seconds(path)
+    if duration is None:
         raise ApiError(422, "validation", "Không đọc được file âm thanh.", {"file": "Không đọc được file âm thanh."})
     millis = int(duration * 1000)
     return millis, millis
+
+
+def _decoded_seconds(path: Path) -> float | None:
+    """File thu bằng MediaRecorder thường không ghi thời lượng vào header. Giải mã để đếm mẫu."""
+    import subprocess
+
+    try:
+        completed = subprocess.run(
+            ["ffmpeg", "-v", "error", "-i", str(path), "-t", "61", "-vn",
+             "-f", "s16le", "-ac", "1", "-ar", "8000", "-"],
+            check=False,
+            capture_output=True,
+            timeout=60,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if completed.returncode != 0 or not completed.stdout:
+        return None
+    return len(completed.stdout) / 2 / 8000
 
 
 def profile_json(row: VoiceProfile) -> dict:
@@ -60,6 +81,7 @@ def profile_json(row: VoiceProfile) -> dict:
         "status": row.status,
         "duration_ms": row.duration_ms,
         "stale": stale,
+        "error_message": row.error_message if row.status == "failed" else None,
         "created_at": iso_seconds(row.created_at),
     }
 

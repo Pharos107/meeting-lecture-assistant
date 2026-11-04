@@ -70,15 +70,7 @@ def run_live_session(session_id: str) -> None:
 
 @celery_app.task(name="app.tasks.enroll_voice", bind=True, max_retries=None, time_limit=GPU_TIME_LIMIT_S)
 def enroll_voice(self, profile_id: str):
-    from app.services.gpu_lock import get_gpu_lock
+    from app.services.voice_profile import run_enroll
 
-    from app.services.gpu_lock import keeper
-
-    if not get_gpu_lock().acquire(str(profile_id)):
+    if run_enroll(profile_id) == "retry":
         raise self.retry(countdown=5)
-    keeper.start(str(profile_id))
-    try:
-        return None
-    finally:
-        keeper.stop(str(profile_id))
-        get_gpu_lock().release(str(profile_id))
