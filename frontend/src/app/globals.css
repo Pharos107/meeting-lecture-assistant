@@ -56,6 +56,22 @@ textarea {
   font: inherit;
 }
 
+/* Tailwind v4 để con trỏ mặc định trên <button>. Mọi thứ bấm được trong app hiện bàn tay. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  select,
+  label:has(> input[type="radio"]),
+  label:has(> input[type="checkbox"]) {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
 /* Giá trị mặc định của cài đặt đọc. useReaderPrefs đặt đè trên khung trang. */
 :root {
   --reader-size: 14px;
