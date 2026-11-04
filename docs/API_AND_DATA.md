@@ -410,13 +410,14 @@ Trả hồ sơ của tài khoản đang đăng nhập.
       "status": "ready",
       "duration_ms": 30000,
       "stale": false,
+      "error_message": null,
       "created_at": "2026-10-16T01:02:03Z"
     }
   ]
 }
 ```
 
-`stale: true` khi vector được tính bằng pipeline khác với pipeline đang cài. Hồ sơ đó không tham gia gán tên cho đến khi ghi lại.
+`stale: true` khi vector được tính bằng pipeline khác với pipeline đang cài. Hồ sơ đó không tham gia gán tên cho đến khi ghi lại. `error_message` là lý do khi `status` là `failed`, ngược lại null.
 
 ### `POST /api/voice-profiles`
 

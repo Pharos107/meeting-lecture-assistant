@@ -203,7 +203,7 @@ Hướng tối ưu, cần đo:
 - Từ nằm ở khoảng trống giữa hai lượt nói đang nhận null. Gán cho lượt nói gần nhất khi cách dưới khoảng 500 ms sẽ giảm số câu không có nhãn.
 - Một câu của Whisper có thể chứa lời hai người nhưng chỉ nhận một nhãn. Đã có timestamp từng từ, nên có thể tách câu tại chỗ đổi nhãn. Việc này đổi id câu đã phát qua SSE, nên phải xong trước sự kiện `speakers`. Client đã tải lại transcript khi nhận sự kiện đó.
 
-Hồ sơ giọng thuộc tài khoản, tối đa 20 hồ sơ. Mỗi hồ sơ có tên hiển thị và một vector lấy từ cùng embedding model bên trong pipeline `speaker-diarization-3.1`. Ghi danh là tác vụ `enroll_voice` trên hàng `gpu`, xin `gpu:lock` cùng kiểu `retry` của PT1. Mẫu gửi lên dài 20 đến 40 giây. Sau VAD phải còn ít nhất 15 giây có tiếng. UI dẫn người dùng nói khoảng 30 giây.
+Hồ sơ giọng thuộc tài khoản, tối đa 20 hồ sơ. Mỗi hồ sơ có tên hiển thị và một vector lấy từ cùng embedding model bên trong pipeline `speaker-diarization-3.1`. Ghi danh là tác vụ `enroll_voice` trên hàng `gpu`, xin `gpu:lock` cùng kiểu `retry` của PT1. Mẫu gửi lên dài 20 đến 40 giây. Sau VAD phải còn ít nhất 15 giây có tiếng. UI dẫn người dùng nói khoảng 30 giây. Trước khi thu, trang đo ồn nền 2 giây sau bộ lọc của trình duyệt, lấy trung vị. Trên -45 dBFS thì nhắc tìm chỗ yên tĩnh hơn, người dùng chọn đo lại hoặc vẫn thu. Ngưỡng này là điểm xuất phát, cần chỉnh theo số đo. Worker chuẩn hóa mẫu sang Opus, đo tiếng bằng cùng VAD của PT1, rồi chạy `diarize` với `num_speakers=1` và lấy vector của nhãn duy nhất. Như vậy vector hồ sơ đi qua đúng đoạn cắt và embedding của `cluster_vectors`.
 
 Với mỗi nhãn trong buổi, lấy tối đa 30 giây tiếng không chồng người khác, tính một vector, rồi L2-chuẩn hóa. Hồ sơ cũng được L2-chuẩn hóa trước khi lấy tích vô hướng. Hồ sơ ghi bằng pipeline khác với pipeline đang chạy thì bỏ qua và đánh dấu `stale` trên API.
 
@@ -343,19 +343,25 @@ Micro:
 
 ```typescript
 await navigator.mediaDevices.getUserMedia({
-  audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true },
+  audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true },
   video: false,
 });
 ```
+
+Đây là bộ lọc WebRTC có sẵn của trình duyệt, mức lọc nhẹ. Trang thu hồ sơ giọng mở micro bằng cùng hàm `openMicrophone` trong `lib/live-capture.ts`, để mẫu giọng và buổi họp đi qua cùng một bộ lọc. Hai bên lệch bộ lọc thì vector giọng lệch và điểm giống tụt. Không dùng bộ lọc AI mạnh kiểu Krisp: PCM của phiên được giữ cho pass 2 và nghe lại, lọc hỏng ở trình duyệt thì không gỡ được, và lọc mạnh dễ nuốt âm đầu từ làm Whisper mất chữ.
+
+Hướng tối ưu, cần đo: RNNoise WASM trong AudioWorklet, chạy ở 48 kHz trước bước hạ mẫu, làm tùy chọn "lọc ồn mạnh" áp cho cả phiên nghe và hồ sơ giọng. Chỉ thêm khi đo cùng một đoạn đọc ở chỗ ồn cho CER pass 2 hoặc điểm giống tốt hơn bộ lọc của trình duyệt.
 
 Âm thanh tab hoặc cửa sổ, trên Chromium:
 
 ```typescript
 const display = await navigator.mediaDevices.getDisplayMedia({
   video: true,
-  audio: true,
+  audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
 });
 ```
+
+Âm thanh tab vốn sạch, bộ lọc dành cho micro chỉ làm méo nhạc nền và giọng trong video, nên tắt.
 
 Người dùng phải bật chia sẻ âm thanh trong hộp thoại. Track video không gửi lên server và có thể dừng ngay khi audio track đã tồn tại, nếu trình duyệt vẫn giữ audio sau khi tắt video. Nếu tắt video làm mất audio, trang giữ track video ở trạng thái không vẽ ra màn hình cho đến khi dừng phiên.
 
