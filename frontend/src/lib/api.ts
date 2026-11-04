@@ -428,3 +428,35 @@ export async function askJob(
     if (parsed) onEvent(parsed as unknown as ChatEvent);
   });
 }
+
+// ----- Hồ sơ giọng -----
+
+export type VoiceProfileStatus = "processing" | "ready" | "failed";
+
+export type VoiceProfile = {
+  id: string;
+  display_name: string;
+  status: VoiceProfileStatus;
+  duration_ms: number | null;
+  /** Vector tính bằng pipeline khác bản đang cài. Không tham gia gán tên cho đến khi thu lại. */
+  stale: boolean;
+  error_message: string | null;
+  created_at: string;
+};
+
+export const MAX_VOICE_PROFILES = 20;
+
+export function listVoiceProfiles() {
+  return apiJson<{ items: VoiceProfile[] }>("/api/voice-profiles");
+}
+
+export function createVoiceProfile(displayName: string, file: Blob, filename: string) {
+  const form = new FormData();
+  form.append("display_name", displayName);
+  form.append("file", file, filename);
+  return apiJson<{ profile_id: string; status: VoiceProfileStatus }>("/api/voice-profiles", { method: "POST", body: form });
+}
+
+export function deleteVoiceProfile(profileId: string) {
+  return apiJson<void>(`/api/voice-profiles/${encodeURIComponent(profileId)}`, { method: "DELETE" });
+}

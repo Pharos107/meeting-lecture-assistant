@@ -41,20 +41,32 @@ function stopSession(sessionId: string) {
   return apiJson<unknown>(`/api/live/sessions/${sessionId}/stop`, { method: "POST" });
 }
 
+/**
+ * Bộ lọc của trình duyệt cho micro: khử vọng, khử ồn, và tự cân âm lượng của WebRTC.
+ * Phiên nghe trực tiếp và trang thu hồ sơ giọng đều mở micro qua hàm này. Hồ sơ và buổi họp
+ * phải qua cùng một bộ lọc, không thì vector giọng lệch nhau và điểm giống tụt.
+ */
+export const MIC_PROCESSING = { echoCancellation: true, noiseSuppression: true, autoGainControl: true } as const;
+
+export function openMicrophone(deviceId?: string): Promise<MediaStream> {
+  return navigator.mediaDevices.getUserMedia({
+    audio: {
+      channelCount: 1,
+      ...MIC_PROCESSING,
+      ...(deviceId ? { deviceId: { exact: deviceId } } : {}),
+    },
+    video: false,
+  });
+}
+
 /** Mở micro hoặc âm thanh tab. Track video của tab giữ lại, không vẽ ra, để trình duyệt không tắt audio. */
 export async function openStream(source: LiveSource, deviceId?: string): Promise<MediaStream> {
-  if (source === "mic") {
-    return navigator.mediaDevices.getUserMedia({
-      audio: {
-        channelCount: 1,
-        echoCancellation: true,
-        noiseSuppression: true,
-        ...(deviceId ? { deviceId: { exact: deviceId } } : {}),
-      },
-      video: false,
-    });
-  }
-  const display = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+  if (source === "mic") return openMicrophone(deviceId);
+  // Âm thanh tab đã sạch. Bộ lọc dành cho micro chỉ làm méo nhạc nền và giọng trong video.
+  const display = await navigator.mediaDevices.getDisplayMedia({
+    video: true,
+    audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+  });
   if (display.getAudioTracks().length === 0) {
     display.getTracks().forEach((track) => track.stop());
     throw new ApiRequestError(0, "no_tab_audio", "Chưa bật chia sẻ âm thanh trong hộp thoại chia sẻ.");
@@ -89,13 +101,17 @@ export class LevelProbe {
     this.context.createMediaStreamSource(new MediaStream(stream.getAudioTracks())).connect(this.analyser);
   }
 
-  read() {
+  /** Mức RMS của khung hiện tại, tính bằng dBFS. Im lặng tuyệt đối là -120. */
+  readDb() {
     this.analyser.getFloatTimeDomainData(this.buffer);
     let sum = 0;
     for (const sample of this.buffer) sum += sample * sample;
     const rms = Math.sqrt(sum / this.buffer.length);
-    const db = 20 * Math.log10(Math.max(rms, 1e-6));
-    return Math.min(1, Math.max(0, (db + 60) / 60));
+    return 20 * Math.log10(Math.max(rms, 1e-6));
+  }
+
+  read() {
+    return Math.min(1, Math.max(0, (this.readDb() + 60) / 60));
   }
 
   close() {
