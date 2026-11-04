@@ -34,5 +34,5 @@ huggingface_hub<1.0
 # - Image backend 10,3GB.
 
 # Repo faster-whisper large-v3-turbo: mobiuslabsgmbh/faster-whisper-large-v3-turbo
-# Repo faster-whisper small: Systran/faster-whisper-small
+# Bản nháp PT2 dùng cùng repo large-v3-turbo. Bản small (Systran/faster-whisper-small) bỏ từ 2026-11-03.
 # Pipeline: pyannote/speaker-diarization-3.1

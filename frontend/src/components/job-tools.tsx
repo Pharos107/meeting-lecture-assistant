@@ -41,16 +41,18 @@ type JobToolRailProps = {
   active: ToolId | null;
   badges: Partial<Record<ToolId, number>>;
   onToggle: (tool: ToolId) => void;
+  /** Chỉ hiện các công cụ này, ví dụ trang ghi trực tiếp chỉ có trợ lý. */
+  only?: ToolId[];
 };
 
 /** Dãy biểu tượng công cụ của job: bên phải trên desktop, dưới trình phát trên điện thoại. */
-export function JobToolRail({ active, badges, onToggle }: JobToolRailProps) {
+export function JobToolRail({ active, badges, onToggle, only }: JobToolRailProps) {
   return (
     <nav
       aria-label="Công cụ của bản ghi"
       className="flex shrink-0 justify-around border-t border-sky-100 bg-white px-2 py-1 lg:w-[52px] lg:flex-col lg:justify-start lg:gap-2 lg:border-l lg:border-t-0 lg:py-3"
     >
-      {TOOLS.map((tool) => {
+      {TOOLS.filter((tool) => !only || only.includes(tool.id)).map((tool) => {
         const badge = badges[tool.id];
         return (
           <button
@@ -60,7 +62,7 @@ export function JobToolRail({ active, badges, onToggle }: JobToolRailProps) {
             aria-label={tool.label}
             aria-pressed={active === tool.id}
             className={`group relative flex size-10 items-center justify-center rounded-xl lg:mx-auto ${
-              active === tool.id ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-sky-100"
+              active === tool.id ? "bg-blue-600 text-white" : "text-slate-600 transition-colors hover:bg-sky-100 hover:text-blue-700"
             }`}
           >
             {tool.icon}

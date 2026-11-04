@@ -259,7 +259,7 @@ Chuỗi rỗng xóa alias. Có chữ thì `source` của alias thành `manual`. 
 
 ### `PUT /api/jobs/{job_id}/share`
 
-Bật chia sẻ, `200` trả cùng dạng. Gọi lại khi đang bật thì giữ nguyên token. Job chưa `ready` trả `409 invalid_state`.
+Bật chia sẻ, `200` trả cùng dạng. Gọi lại khi đang bật thì giữ nguyên token. Job chưa `ready` trả `409 invalid_state`, trừ job `source = live` đang `capturing`, `preprocessing`, `transcribing`, hoặc `diarizing`: phiên nghe chia sẻ được ngay lúc đang ghi.
 
 ### `DELETE /api/jobs/{job_id}/share`
 
@@ -267,11 +267,12 @@ Tắt chia sẻ, `204`. Liên kết cũ hết hiệu lực ngay. Bật lại sin
 
 ### `GET /api/shared/{token}`
 
-Không cần đăng nhập. Token không tồn tại, đã tắt, hoặc job không còn `ready` đều trả `404`. Giới hạn 600 request mỗi phút theo IP, vượt thì `429 rate_limited`. Header `Cache-Control: no-store` và `X-Robots-Tag: noindex`.
+Không cần đăng nhập. Token không tồn tại, đã tắt, hoặc job không xem được đều trả `404`. Xem được là job `ready`, hoặc job live ở một trong bốn trạng thái trên. Giới hạn 600 request mỗi phút theo IP, vượt thì `429 rate_limited`. Header `Cache-Control: no-store` và `X-Robots-Tag: noindex`.
 
 ```json
 {
   "title": "Họp giao ban",
+  "state": "ready",
   "duration_ms": 600000,
   "created_at": "2026-11-02T01:00:00Z",
   "segments": [
@@ -280,7 +281,19 @@ Không cần đăng nhập. Token không tồn tại, đã tắt, hoặc job kh�
 }
 ```
 
-`text` là `text_edited`, nếu null thì `text_raw`. `speaker` là tên hiển thị. Phản hồi không có id job, thông tin chủ, từng từ, đánh dấu, việc, hỏi đáp, hay đường dẫn audio.
+`state` là `live` khi job đang `capturing`, `processing` khi đang chạy bản chuẩn, và `ready`. `segments` là pass cao nhất đang có câu, nên lúc `live` là các câu nháp đã chốt. `text` là `text_edited`, nếu null thì `text_raw`. `speaker` là tên hiển thị. Phản hồi không có id job, thông tin chủ, từng từ, đánh dấu, việc, hỏi đáp, hay đường dẫn audio.
+
+### `GET /api/shared/{token}/live`
+
+Không cần đăng nhập. SSE bản nháp của phiên đang ghi, chỉ khi job đang `capturing`, khác thì `404`. Cùng giới hạn request và header `X-Robots-Tag: noindex` như trên.
+
+| `event` | `data` |
+|---|---|
+| `snapshot` | `{ "segments": [...] }`, các câu pass 1 đã chốt, mỗi câu có `segment_id`, `start_ms`, `end_ms`, `text`, `stable: true` |
+| `draft` | `segment_id`, `start_ms`, `end_ms`, `text`, `stable`, cùng nghĩa với tin `draft` của WebSocket, không có `seq` |
+| `ended` | `{}`. Phiên đã dừng hoặc bị hủy. Server đóng stream ngay sau tin này |
+
+Server nghe kênh `live:{session_id}:out` trước rồi mới đọc câu đã chốt, nên câu chốt giữa hai bước không bị lỡ. Client khử trùng theo `segment_id`. Sau `snapshot`, server gửi câu đang mở nếu `open_draft` còn. Mỗi 2 giây server kiểm lại liên kết và trạng thái job. Chủ tắt chia sẻ, hoặc job rời `capturing`, thì gửi `ended` và đóng stream. Sau đó `GET /api/shared/{token}` của liên kết đã tắt trả `404`. Sau `ended`, client gọi lại `GET /api/shared/{token}` tới khi `state` là `ready`.
 
 ## 6. Audio
 
@@ -487,7 +500,7 @@ Cùng các field `task`, `owner`, `deadline`. `200`.
 
 ### `POST /api/jobs/{job_id}/chat/messages`
 
-Chỉ khi job `ready`, hoặc `failed` với transcript pass 1 còn đọc được.
+Chỉ khi job `ready`, hoặc `failed` với transcript pass 1 còn đọc được, hoặc job `source = live` đang `capturing`. Lúc đang ghi, ngữ cảnh là các câu nháp đã chốt tới lúc hỏi, không có câu đang mở. Job live đang chạy bản chuẩn trả `invalid_state`, vì pass 1 và pass 2 đang lẫn nhau.
 
 ```json
 { "question": "Có những nhiệm vụ gì cần đề ra?" }

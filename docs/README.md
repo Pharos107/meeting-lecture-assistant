@@ -42,12 +42,12 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | D10 | `text_raw` và `text_edited` là hai lớp riêng. Không chuẩn hóa văn bản ở bản này. Nếu cần thì làm bằng code, không dùng LLM. |
 | D11 | Cửa vào trình duyệt là Caddy. `/api` sang FastAPI, kể cả WebSocket và SSE. Next.js không proxy các đường này. |
 | D12 | Hàng `gpu` chạy PT1, PT2, và ghi danh giọng. Hỏi đáp chạy trong FastAPI, không qua Celery. PT1 thấy khóa đang bận thì `retry` sau 5 giây. |
-| D13 | PT2 là pha kép: nháp bằng model `small` khi đang nghe, rồi `large-v3-turbo` và pyannote quét lại file đã thu khi phiên dừng. |
+| D13 | PT2 là pha kép: nháp bằng `large-v3-turbo` beam 1 khi đang nghe, rồi `large-v3-turbo` beam 5 và pyannote quét lại file đã thu khi phiên dừng. Pass 2 dùng lại model đã nạp cho bản nháp. |
 | D14 | Mỗi tài khoản có hồ sơ giọng nói. Sau diarization, cụm giọng đủ giống hồ sơ được gán tên của hồ sơ. Đổi tên tay không bị bước này ghi đè. |
 | D15 | Trang job là hai vùng: trình phát và transcript. Bôi đen một đoạn trong câu để đánh dấu hoặc tạo việc cần làm tại mốc đó. |
 | D16 | LLM chỉ dùng để người dùng hỏi về nội dung transcript của một bản ghi. Không có tác vụ biên bản theo mẫu. Lịch sử hỏi đáp lưu theo bản ghi. |
 | D17 | Trang sau đăng nhập là khung ba vùng: menu điều hướng bên trái, nội dung ở giữa, dãy công cụ của job bên phải. Tạo bản ghi là hộp thoại, không chuyển trang. |
-| D18 | Chia sẻ một bản ghi bằng liên kết chỉ đọc, ai có liên kết cũng xem được mà không cần đăng nhập. Chỉ gồm transcript và tên người nói. Chủ tắt được bất cứ lúc nào. |
+| D18 | Chia sẻ một bản ghi bằng liên kết chỉ đọc, ai có liên kết cũng xem được mà không cần đăng nhập. Chỉ gồm transcript và tên người nói. Chủ tắt được bất cứ lúc nào. Phiên nghe chia sẻ được ngay lúc đang ghi, người xem theo dõi chữ nháp trực tiếp. |
 
 ## Lịch sử phiên bản
 
@@ -65,6 +65,9 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | 1.6.3 | 2026-11-02 | Panel công cụ của trang job đổi được độ rộng, kiến trúc mục 2.7 |
 | 1.7 | 2026-11-02 | Thêm D18: liên kết chia sẻ chỉ đọc, bảng `job_shares`, migration `0004_share`, API mục 5, kiến trúc mục 2.7 và mục 8. Thanh tiêu đề trang job chiếm trọn cột, thêm `Cài đặt hiển thị` |
 | 1.7.1 | 2026-11-03 | Luật lời mời đăng ký kênh ở kiến trúc mục 2.4 so khớp ở mọi vị trí trong câu, thêm cụm mới, quy "đăng kí" về "đăng ký". Ghi kết quả đo CER vòng hai trên dữ liệu thực tế, giữ `large-v3-turbo`. Cập nhật #19 và thứ tự làm tiếp ở [`FLOWS.md`](FLOWS.md). Không đổi quyết định D1–D18 |
+| 1.7.2 | 2026-11-03 | Code PT2: vòng nháp trong `run_live_session`, bàn giao sang pass 2, trang `/live`. Kiến trúc mục 3.2 ghi tham số VAD của bản nháp và bản chốt rỗng, mục 3.3 ghi dấu `live:{sid}:worker` thay cho việc FastAPI nhả khóa. Code bước vá #19. Đóng #2, #7 ở [`FLOWS.md`](FLOWS.md). Không đổi quyết định D1–D18 |
+| 1.7.3 | 2026-11-03 | Đổi D13: bản nháp PT2 dùng `large-v3-turbo` thay `small`, vì khi thử trên cuộc họp thật `small` sai quá nhiều chữ. Pass 2 dùng lại model đã nạp. Thêm `websockets` vào `requirements.txt`: thiếu gói này thì uvicorn trả 404 cho WebSocket. Whisper nạp từ cache trước khi hỏi Hugging Face |
+| 1.8 | 2026-11-03 | Mở rộng D18: chia sẻ phiên nghe lúc đang ghi, thêm `GET /api/shared/{token}/live` và trường `state` ở API mục 5. Hỏi trợ lý được khi job live đang `capturing`. Trang `/live` có `Chia sẻ`, `Cài đặt hiển thị`, `Trợ lý AI`, và chữ nháp hiện dần từng ký tự, kiến trúc mục 3.3 |
 
 ## Việc còn mở
 
@@ -82,7 +85,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 |---|---|
 | PT1 | Người dùng chọn file audio hoặc video có sẵn. |
 | PT2 | Người dùng thu micro hoặc chia sẻ âm thanh tab/cửa sổ. |
-| Pass 1 | Bản nháp của model `small` trong PT2. |
+| Pass 1 | Bản nháp của PT2, `large-v3-turbo` beam 1, không có mốc từ và người nói. |
 | Pass 2 | Bản chuẩn của model `large-v3-turbo`. PT1 chỉ có pass 2. |
 | Chunk | Đoạn PCM 20–30 giây đưa vào Whisper ở bản chuẩn. |
 | Raw / edited | Lần lượt là chữ của model nhận dạng và chữ người dùng sửa. |

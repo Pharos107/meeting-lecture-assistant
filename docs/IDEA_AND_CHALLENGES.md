@@ -55,13 +55,13 @@ PT1 trọn vẹn là phần lõi của bản demo: tải file, chữ hiện dầ
 | Tiêu chí | PT1, tải file | PT2, nghe trực tiếp |
 |---|---|---|
 | Đầu vào | File audio hoặc video trên máy người dùng | Micro, hoặc tab/cửa sổ được chia sẻ kèm âm thanh |
-| Model chữ | `large-v3-turbo`, int8, beam 5 | Nháp: `small`, int8, beam 1. Khi dừng: cùng bản chuẩn như PT1 |
+| Model chữ | `large-v3-turbo`, int8, beam 5 | Nháp: `large-v3-turbo`, int8, beam 1. Khi dừng: cùng bản chuẩn như PT1 |
 | Cách hiện chữ | SSE từng chunk 20–30 giây, frontend canh tốc độ gõ | WebSocket, câu nháp đóng khi có khoảng lặng hoặc đủ 8 giây |
 | Người nói | Sau khi bản chuẩn xong | Sau khi bản chuẩn của pass 2 xong |
 | Sửa và xuất file | Khi job ở trạng thái `ready` | Khi pass 2 đã `ready`. Nếu pass 2 lỗi, bản nháp vẫn xem và xuất được |
 | Việc GPU đang bận | Job vào hàng đợi | Từ chối mở phiên mới với mã `gpu_busy` |
 
-Độ chính xác của hai phương thức được đo bằng cùng một cách ở mục 6. PT2 không chọn một trong hai cực tốc độ hoặc độ chính xác. Pha 1 dùng model `small` để có chữ nháp trong lúc buổi đang diễn ra. Pha 2 bắt đầu khi người dùng dừng hoặc khi mất kết nối quá 30 giây: `large-v3-turbo` nhận dạng lại cả file đã thu, rồi pyannote gán người nói. Giao diện chuyển sang pha 2 khi pass đó có câu. Pass 1 vẫn lưu để đối chiếu. PT1 chỉ chạy pha chuẩn, vì file đã có đủ trước khi nhận dạng.
+Độ chính xác của hai phương thức được đo bằng cùng một cách ở mục 6. PT2 không chọn một trong hai cực tốc độ hoặc độ chính xác. Pha 1 dùng `large-v3-turbo` beam 1 để có chữ nháp trong lúc buổi đang diễn ra. Bản `small` đã thử trên cuộc họp thật và sai quá nhiều chữ để đọc được. Pha 2 bắt đầu khi người dùng dừng hoặc khi mất kết nối quá 30 giây: `large-v3-turbo` nhận dạng lại cả file đã thu, rồi pyannote gán người nói. Giao diện chuyển sang pha 2 khi pass đó có câu. Pass 1 vẫn lưu để đối chiếu. PT1 chỉ chạy pha chuẩn, vì file đã có đủ trước khi nhận dạng.
 
 ## 4. Tính năng người dùng thấy
 

@@ -414,6 +414,11 @@ def _fail(db: Session, job: Job, code: str, message: str) -> None:
     db.commit()
 
 
+def transcribe_stored_audio(db: Session, job: Job, *, engine_factory=None, diarize_fn=None, regions_fn=None) -> None:
+    """Pass 2 trên Opus canonical của job. Phiên nghe gọi hàm này khi đang giữ gpu:lock."""
+    _process_upload(db, job, engine_factory or _whisper_engine, diarize_fn or _real_diarize, regions_fn)
+
+
 def _process_upload(db: Session, job: Job, engine_factory, diarize_fn, regions_fn) -> None:
     from app.services.audio_processor import MediaError, close_pcm, load_pcm, normalize, slice_pcm
     from app.services.stt_engine import GpuOutOfMemory

@@ -10,7 +10,9 @@ import { useWorkspace, WorkspaceProvider } from "@/components/workspace-provider
 import { ensureSession } from "@/lib/api";
 import { getCurrentUser, type AuthUser } from "@/lib/auth";
 
-const SIDEBAR_KEY = "sidebar_open";
+const SIDEBAR_KEY = "sidebar_expanded";
+// Khóa cũ lưu riêng cho trang bản ghi và các trang khác. Đọc phần "other" một lần để giữ lựa chọn cũ.
+const LEGACY_SIDEBAR_KEY = "sidebar_open";
 
 /** Khung sau đăng nhập, đặt ở layout để chuyển trang không ngắt việc tải lên. Không có phiên hợp lệ thì về /login. */
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -43,29 +45,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   );
 }
 
-function readSidebarPrefs() {
+function readSidebarExpanded() {
   try {
-    return { job: false, other: true, ...JSON.parse(localStorage.getItem(SIDEBAR_KEY) ?? "{}") };
+    const saved = localStorage.getItem(SIDEBAR_KEY);
+    if (saved !== null) return saved === "1";
+    const legacy = JSON.parse(localStorage.getItem(LEGACY_SIDEBAR_KEY) ?? "{}");
+    return typeof legacy.other === "boolean" ? legacy.other : true;
   } catch {
-    return { job: false, other: true };
+    return true;
   }
 }
 
 function Frame({ user, children }: { user: AuthUser | null; children: React.ReactNode }) {
   const pathname = usePathname();
   const { openUpload } = useWorkspace();
-  // Đang đọc một bản ghi thì menu thu gọn để nhường chỗ cho chữ. Mỗi loại trang nhớ lựa chọn riêng.
-  const [prefs, setPrefs] = useState<{ job: boolean; other: boolean }>(readSidebarPrefs);
+  // Một lựa chọn cho mọi trang: chuyển trang không tự thu gọn hay mở rộng menu.
+  const [expanded, setExpanded] = useState(readSidebarExpanded);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const kind = /^\/jobs\/[^/]+$/.test(pathname) ? "job" : "other";
 
   useEffect(() => setDrawerOpen(false), [pathname]);
 
   function toggleSidebar() {
-    const next = { ...prefs, [kind]: !prefs[kind] };
-    setPrefs(next);
+    const next = !expanded;
+    setExpanded(next);
     try {
-      localStorage.setItem(SIDEBAR_KEY, JSON.stringify(next));
+      localStorage.setItem(SIDEBAR_KEY, next ? "1" : "0");
     } catch {
       // Không ghi được thì lựa chọn chỉ giữ tới khi tải lại trang.
     }
@@ -74,11 +78,11 @@ function Frame({ user, children }: { user: AuthUser | null; children: React.Reac
   return (
     <div className="flex h-dvh overflow-hidden bg-gradient-to-b from-sky-50 via-white to-white">
       <aside
-        className={`hidden shrink-0 border-r border-sky-100 bg-white/85 transition-[width] lg:block ${
-          prefs[kind] ? "w-72" : "w-16"
+        className={`hidden shrink-0 overflow-hidden border-r border-sky-100 bg-white/85 transition-[width] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[width] motion-reduce:transition-none lg:block ${
+          expanded ? "w-72" : "w-16"
         }`}
       >
-        <AppSidebar user={user} collapsed={!prefs[kind]} onToggle={toggleSidebar} />
+        <AppSidebar user={user} collapsed={!expanded} onToggle={toggleSidebar} />
       </aside>
 
       {drawerOpen ? (

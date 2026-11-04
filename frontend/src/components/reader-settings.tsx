@@ -43,7 +43,7 @@ export function ReaderSettingsMenu({ reader }: { reader: ReaderControls }) {
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
         className={`flex size-9 items-center justify-center rounded-full ${
-          open ? "bg-sky-100 text-blue-700" : "text-slate-600 hover:bg-sky-50"
+          open ? "bg-sky-100 text-blue-700" : "text-slate-600 transition-colors hover:bg-sky-100 hover:text-blue-700"
         }`}
       >
         <Settings2 className="size-4" />

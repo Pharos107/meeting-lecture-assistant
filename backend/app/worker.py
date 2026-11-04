@@ -63,7 +63,9 @@ def transcribe_upload(self, job_id: str):
 @celery_app.task(name="app.tasks.run_live_session", time_limit=GPU_TIME_LIMIT_S)
 def run_live_session(session_id: str) -> None:
     """Worker giữ gpu:lock của phiên, đọc PCM, rồi gọi pipeline bản chuẩn."""
-    return None
+    from app.services.live_worker import run_live_session as run
+
+    run(session_id)
 
 
 @celery_app.task(name="app.tasks.enroll_voice", bind=True, max_retries=None, time_limit=GPU_TIME_LIMIT_S)
