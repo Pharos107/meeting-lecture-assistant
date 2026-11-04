@@ -1,0 +1,25 @@
+upload 201 0.2 s
+job 6d8a746d-6378-4210-9f06-f5aae77c0f43
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   14.1s] ('transcribing', None, None)
+[  180.0s] ('diarizing', None, None)
+[  225.6s] ('ready', None, None)
+elapsed 225.6 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1082064, "diarization_device": "cuda"}
+pass 2 segments 46 speakers ['SPEAKER_00']
+  SPEAKER_00: 801s
+  None: 2s
+words 3200 segments with >1 word speaker 41
+      0.2 SPEAKER_00: hệ thống tiêm và súng được đào hạt hệ thống tiêm nên sẽ là bé sẽ nhẹ và sẽ không tái ngăn kín ối và súng truyề
+     22.6 SPEAKER_00: mặt sữa vừa là sẽ có những cái biểu hiện là gì ạ bạn hãy tìm xem là có cái cái hẹp đặc trưng đối với pháo hay 
+     51.7 SPEAKER_00: và xảy ra sớm và cái nếp mà xói thì kết quả là khi xác thị là bị nai bén và an toàn về cơ sở đảo thì lúc đấy l
+     62.6 SPEAKER_00: xin vào khí quản đưa đến hô hấp và bất kỳ một cái ờ cái a sử dụng đá lửa để hô hấp thì đều có biểu hiện là gì 
+     85.8 SPEAKER_00: đó thì đấy là cái sự hình thành kỹ thuật của mình và tất niên cái sự hình thành thực vật thì đấy là sự hình th
+     96.5 SPEAKER_00: ờ dạ dày thì được ờ hình thành từ cái đặng dưới cái chỗ hình thành từ khoảng ờ thì bây giờ chỗ này từ khoảng n
+    123.5 SPEAKER_00: hai cái cơ chế chính đấy là cái buộc xoay để lửa rãnh đều và hai cái cơ chế chính này là phân xa phóng biến hế
+    153.6 SPEAKER_00: thế thì cái cái hiện tượng đầu tiên là hiện tượng xoay à cái hiện tượng xoay vào dạ dày thì dạ dày nó sẽ xoay 
+    175.0 SPEAKER_00: thì cái là cái khi mà dạ dày chưa xoay thì nó ban đầu được hình thành dạ dày nó sẽ có hai cái bờ à là bờ trước
+    205.1 SPEAKER_00: đây là hai cái bờ là bờ trước và bờ sau của cái rớt bờ hai con treo là mặc treo giữa lưng và mặc treo giữa bụn
+    232.1 SPEAKER_00: đến khi mà giá giày đã tiếp tục xoay thăm chục giọt vào tuần thứ tư thì giá giày sẽ xoay thế nào giá giày sẽ x
+    252.7 SPEAKER_00: các bạn có thể chạy vào từ bờ bẻ răng à là cái cái mặt trong thận lưng ở phía lưng của của cái dạ dày nó sẽ đư

@@ -1,0 +1,14 @@
+large-v3-turbo   quahat   WER 19.27% CER 14.71% nofill 18.41% (S79 D69 I5) termCER 22.11% exact 76/121 spk 96.6% (1/1) flagged 0 time 57.9s VRAM 2624
+large-v3-turbo   phoi21   WER 13.06% CER  9.84% nofill 10.29% (S94 D191 I9) termCER 13.93% exact 97/134 spk 96.6% (2/1) flagged 0 time 61.9s VRAM 2652
+large-v3-turbo   phoi42   WER 45.67% CER 34.33% nofill 46.23% (S853 D515 I57) termCER 52.98% exact 32/183 spk 93.7% (1/1) flagged 0 time 105.1s VRAM 2616
+large-v3-turbo   aldehyd  WER 40.42% CER 29.20% nofill 41.36% (S822 D231 I95) termCER 56.45% exact 64/276 spk 95.7% (1/1) flagged 2 time 85.4s VRAM 2616
+large-v3-turbo   acid     WER 70.42% CER 57.89% nofill 71.06% (S810 D872 I44) termCER 85.10% exact 7/209 spk 92.9% (1/1) flagged 4 time 116.9s VRAM 2613
+large-v3-turbo   hop1     WER 61.67% CER 51.42% nofill 60.71% (S818 D686 I1590) termCER 154.57% exact 75/120 spk 98.5% (2/2) flagged 1 time 173.8s VRAM 2632
+large-v3-turbo   hop2     WER 13.20% CER 10.09% nofill 11.90% (S139 D195 I25) termCER  7.95% exact 47/55 spk 92.6% (14/10) flagged 0 time 87.8s VRAM 2634
+phowhisper-large quahat   WER 15.87% CER 10.46% nofill 16.40% (S84 D25 I17) termCER 16.18% exact 84/121 spk 96.0% (1/1) flagged 0 time 95.1s VRAM 3118
+phowhisper-large phoi21   WER 10.79% CER  7.33% nofill 10.00% (S117 D86 I40) termCER 17.91% exact 93/134 spk 96.2% (2/1) flagged 0 time 162.1s VRAM 3238
+phowhisper-large phoi42   WER 39.74% CER 28.66% nofill 40.12% (S893 D189 I158) termCER 54.79% exact 45/183 spk 94.7% (1/1) flagged 0 time 225.6s VRAM 3235
+phowhisper-large aldehyd  WER 42.96% CER 29.14% nofill 44.86% (S941 D109 I170) termCER 61.99% exact 49/276 spk 99.2% (1/1) flagged 0 time 180.0s VRAM 3246
+phowhisper-large acid     WER 70.01% CER 51.05% nofill 71.44% (S1142 D375 I199) termCER 89.30% exact 3/209 spk 94.6% (1/1) flagged 0 time 195.2s VRAM 3222
+phowhisper-large hop1     WER 59.04% CER 50.98% nofill 57.45% (S749 D226 I1987) termCER 155.68% exact 87/120 spk 98.1% (3/2) flagged 1 time 375.9s VRAM 3254
+phowhisper-large hop2     WER 13.68% CER  9.99% nofill 11.71% (S162 D65 I145) termCER 19.76% exact 38/55 spk 90.7% (14/10) flagged 0 time 204.8s VRAM 3254

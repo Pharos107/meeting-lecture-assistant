@@ -1,0 +1,25 @@
+upload 201 0.2 s
+job fc2d7bf1-dc0e-43a2-bf0b-c498cbd932a8
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   15.1s] ('transcribing', None, None)
+[  146.6s] ('diarizing', None, None)
+[  195.2s] ('ready', None, None)
+elapsed 195.2 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1175880, "diarization_device": "cuda"}
+pass 2 segments 77 speakers ['SPEAKER_01']
+  SPEAKER_01: 626s
+  None: 0s
+words 2274 segments with >1 word speaker 32
+      3.6 SPEAKER_01: chúng ta nhớ rằng đây là kỹ thuật an toàn bền thiết nhưng không quan tâm đến con số lớn nhỏ.
+     13.5 SPEAKER_01: và đây là tính xuất của a kín ben gô ít tính xuất a kín ben gô ít là ben gô ít có ít là ben gô ít có ít và vị 
+     39.2 SPEAKER_01: rồi đây là mối âm thanh khác bị bệnh hoá.
+     48.0 SPEAKER_01: trở lại tây chính là ê dim bang goa nhưng mà ở dưới bang goa thì bị chuyển từ bôn vào nhóm an ninh đôn như vậy
+     67.8 SPEAKER_01: rồi cái thuyết này là.
+     73.7 SPEAKER_01: nhưng vẫn phải tiếp tục ưu tiên đầu tiên cho tất cả các nhóm trước nhóm trước là tiếp tục ưu tiên đầu đầu và n
+    102.2 SPEAKER_01: có khi người ta gọi là anh sẽ tô mà nó hằn hoặc một tên nữa là anh sẽ tô ấy chúng ta gọi một tên này sẽ là bố 
+    116.5 SPEAKER_01: anh có thể liên tiếp.
+    124.1 SPEAKER_01: đi rót tiền càng tuổi hai thầy lão còn đi rót tiền càng tuổi.
+    138.5 SPEAKER_01: bị cảng vọng tỷ lích.
+    143.1 SPEAKER_01: một hai y cà phú khí ích nếu mà bói ra tên là cà phú khí ích thì là benzen một hai y cà phú khí ích nhưng tên 
+    157.5 SPEAKER_01: rồi sau tay pháo thì trễ cả tít ai bốn sáu ti mi rót ti bên đuổi hàng hai bốn sáu dở và nhổ tít ban tít đội ng

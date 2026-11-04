@@ -1,0 +1,25 @@
+upload 201 0.1 s
+job ab60e4e2-521a-45ca-8870-dbf398ee4ab1
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    6.0s] ('transcribing', None, None)
+[   69.8s] ('diarizing', None, None)
+[   95.1s] ('ready', None, None)
+elapsed 95.1 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 334002, "diarization_device": "cuda"}
+pass 2 segments 18 speakers ['SPEAKER_00']
+  SPEAKER_00: 298s
+  None: 0s
+words 786 segments with >1 word speaker 12
+      1.1 SPEAKER_00: protein và đó chính là aleron hạt aleron mà lúc nãy tôi đã giải thích cho em cái quả dĩnh ở họ lúa tôi nói là 
+     26.8 SPEAKER_00: và sau lớp ăn ngon đó là em sẽ có hạt tinh bột ở cái a quả của lúa quả của bắp và nói chung quả của tất cả các
+     41.4 SPEAKER_00: nghe.
+     42.3 SPEAKER_00: như vậy là tôi đã giải thích cho các em về các phần của hạt và khi phân loại thì đương nhiên chúng ta có thể c
+     71.9 SPEAKER_00: nội nhũ hạt có ngoại nhũ hạt có nội nhũ và ngoại nhũ như vậy thì với hạt đó là bộ phận mà giúp để cho cái sẽ t
+     99.8 SPEAKER_00: như vậy thì ngoài cái nội nhũ ngoại nhũ thì lá mầm đang sẽ tích trữ một cái chất dự trữ thế cho những cái hạt 
+    128.8 SPEAKER_00: và lúc đó thì các em biết đó là hạt không nội nhũ các cái hạt đậu đều là như vậy đó đều là không có nội nhũ đâ
+    157.6 SPEAKER_00: bầu bí quy định biên tắc sê hạt không nội nhổ hạt của họ đậu pha sê không nội nhổ hạt của họ cúc át sê là nãy 
+    184.7 SPEAKER_00: còn với những cái hạt mà có nội nhũ thì à nội nhũ này.
+    196.8 SPEAKER_00: đây là phần nội nhũ nè và cái vật phôi hay cái mọt này có thể nằm thẳng bên trong nội nhũ hoặc nằm trong bên t
+    230.8 SPEAKER_00: thấy đây chính là phôi đó mà trong bài thường có bã loe chùn mầm rễ mầm thân mầm dần dần chùn mầm sẽ được bao 
+    260.8 SPEAKER_00: và.

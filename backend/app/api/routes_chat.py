@@ -94,7 +94,9 @@ def clear_messages(job_id: str, request: Request, db: Session = Depends(get_db))
 async def ask(job_id: str, request: Request, db: Session = Depends(get_db)) -> StreamingResponse:
     user = current_user(request, db)
     job = owned_job(db, user, job_id)
-    ensure_mutable(job, highest_pass(db, job))
+    # Phiên đang ghi hỏi được trên các câu nháp đã chốt. Lúc chạy bản chuẩn thì chờ, vì hai pass đang lẫn nhau.
+    if not (job.source == "live" and job.status == "capturing"):
+        ensure_mutable(job, highest_pass(db, job))
     settings = get_settings()
     model = settings.llm_model
     if not model or not settings.llm_api_key:

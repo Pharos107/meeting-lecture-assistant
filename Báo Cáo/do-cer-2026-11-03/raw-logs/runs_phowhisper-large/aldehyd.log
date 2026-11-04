@@ -1,0 +1,25 @@
+upload 201 0.1 s
+job e3929f19-a092-45dd-a62c-009b6fb834fc
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   12.4s] ('transcribing', None, None)
+[  145.5s] ('diarizing', None, None)
+[  180.0s] ('ready', None, None)
+elapsed 180.0 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 812856, "diarization_device": "cuda"}
+pass 2 segments 38 speakers ['SPEAKER_00']
+  SPEAKER_00: 758s
+  None: 0s
+words 2900 segments with >1 word speaker 16
+      0.4 SPEAKER_00: dòng thảm ô nhiễm tuy nhiên đã đẩy xe tòi xê ồn để xuất phát và bảo vệ chủ nhà định ích đại sứ quốc này và che
+     15.3 SPEAKER_00: còn khiro có một cái trạng thái đặc biệt của bóng chất seabom đó là chúng ta nhìn ở đây nó sẽ có hai cái nhóm 
+     44.9 None: .
+     44.6 SPEAKER_00: ôn tập là liên quan tới hệ trình nó sẽ hậu quả đến xe đò và khi đo thật sự nó chỉ là một cái phần biến thể thê
+     58.3 SPEAKER_00: ờ chúng ta đi vào cái nội dung đầu tiên là đọc tên thế có lẽ là hôm nay thì chúng ta đã tiếp xúc với phần tây 
+     84.7 SPEAKER_00: về đối với chanel chúng ta có ca dân tộc quốc tế israel vì nó cũng có cái tổ chức tên gọi là pê hormone tiêu c
+     96.6 SPEAKER_00: giống như trong phần hạn chế ấn cố chúng ta cũng gọi là quy tắc rồi đây là phần bỏ quy tắc hình sự ổn và bây g
+    126.1 SPEAKER_00: các giải pháp khắc phục đẩy án xử phạt.
+    128.6 SPEAKER_00: vậy là thì đối với la mỹ nó sẽ có những cái phần tê theo biện pháp thông thường thế đối với bên thông thường c
+    158.5 SPEAKER_00: do tại cái phần này thực sự nếu chúng ta có axit rồi thì cái này chỉ là cái thêm trang ý kiến trên thôi còn đâ
+    174.6 SPEAKER_00: hoặc là một cách khác là chúng ta đi từ cái tên của axit chúng ta đổi qua cái tên gọi theo cái cấu trúc đóng g
+    197.5 SPEAKER_00: vì thật sự là đối với kẻ nhận diện giáo chức thì không quá khó nhưng mà theo như những cái gì mà tôi đã biết t

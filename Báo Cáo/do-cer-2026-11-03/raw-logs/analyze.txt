@@ -1,0 +1,29 @@
+hop1 turbo ins-run words 1307 shared with pho 1307 | pho ins-run words 1676
+ hyp words turbo 5921 pho 6778 ref 5017
+6 bài (bỏ hop1)  turbo  N=14177 WER 36.01% CER 28.06% S2797 D2073 I235 terms 323/978 time 515s audio 4789s RTF 0.108
+6 bài (bỏ hop1)  pho    N=14177 WER 34.68% CER 24.97% S3339 D849 I729 terms 312/978 time 1063s audio 4789s RTF 0.222
+bài giảng 5      turbo  N=11457 WER 41.42% CER 32.30% S2658 D1878 I210 terms 276/923 time 427s audio 3932s RTF 0.109
+bài giảng 5      pho    N=11457 WER 39.67% CER 28.50% S3177 D784 I584 terms 274/923 time 858s audio 3932s RTF 0.218
+turbo quahat stages {'queued': 0.0, 'preprocessing': 1.9, 'transcribing': 7.9, 'diarizing': 28.0, 'ready': 57.9} dur 334 segs 71 med 2.3 max 25.1 upper 0.031 punct 1.5 digits 0 gaps [[5.6, 261.1], [5.5, 225.3], [4.4, 192.4]] spk 0.966 pur 1.000 null 25
+turbo phoi21 stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 8.8, 'diarizing': 36.8, 'ready': 61.9} dur 527 segs 62 med 5.8 max 29.7 upper 0.013 punct 1.9 digits 7 gaps [[2.5, 88.7], [2.4, 356.0], [2.3, 208.2]] spk 0.966 pur 0.990 null 49
+turbo phoi42 stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 14.1, 'diarizing': 57.1, 'ready': 105.1} dur 1082 segs 104 med 4.5 max 29.6 upper 0.012 punct 4.4 digits 22 gaps [[12.4, 50.1], [8.7, 633.9], [6.1, 442.5]] spk 0.937 pur 1.000 null 165
+turbo aldehyd stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 12.1, 'diarizing': 50.3, 'ready': 85.4} dur 812 segs 141 med 4.1 max 30.0 upper 0.034 punct 4.5 digits 37 gaps [[18.6, 761.8], [9.6, 624.4], [6.0, 703.3]] spk 0.957 pur 1.000 null 113
+turbo acid stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 16.1, 'diarizing': 66.6, 'ready': 116.9} dur 1175 segs 70 med 3.5 max 29.0 upper 0.063 punct 22.4 digits 125 gaps [[108.3, 109.7], [71.2, 424.7], [40.7, 691.0]] spk 0.929 pur 1.000 null 112
+turbo hop1 stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 21.1, 'diarizing': 101.1, 'ready': 173.8} dur 1699 segs 158 med 4.8 max 29.5 upper 0.007 punct 3.9 digits 8 gaps [[28.3, 1419.6], [27.3, 460.1], [19.7, 881.4]] spk 0.985 pur 1.000 null 61
+turbo hop2 stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 11.1, 'diarizing': 49.5, 'ready': 87.8} dur 856 segs 154 med 3.1 max 25.6 upper 0.022 punct 5.0 digits 25 gaps [[12.6, 382.1], [4.7, 618.7], [4.5, 152.8]] spk 0.926 pur 0.956 null 81
+pho quahat stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 6.0, 'diarizing': 69.8, 'ready': 95.1} dur 334 segs 18 med 20.3 max 29.5 upper 0.000 punct 2.3 digits 0 gaps [[5.5, 261.2], [5.4, 225.4], [4.6, 192.2]] spk 0.960 pur 1.000 null 31
+pho phoi21 stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 8.0, 'diarizing': 137.7, 'ready': 162.1} dur 527 segs 23 med 24.5 max 29.0 upper 0.000 punct 1.0 digits 0 gaps [[2.5, 88.7], [2.3, 208.2], [2.1, 132.7]] spk 0.962 pur 0.990 null 63
+pho phoi42 stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 14.1, 'diarizing': 180.0, 'ready': 225.6} dur 1082 segs 46 med 20.2 max 29.6 upper 0.000 punct 1.3 digits 0 gaps [[6.1, 442.5], [3.3, 806.7], [3.1, 633.9]] spk 0.947 pur 1.000 null 154
+pho aldehyd stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 12.4, 'diarizing': 145.5, 'ready': 180.0} dur 812 segs 38 med 22.4 max 29.6 upper 0.000 punct 1.3 digits 0 gaps [[9.6, 624.4], [6.0, 703.2], [4.9, 485.6]] spk 0.992 pur 1.000 null 23
+pho acid stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 15.1, 'diarizing': 146.6, 'ready': 195.2} dur 1175 segs 77 med 5.4 max 29.9 upper 0.000 punct 13.1 digits 0 gaps [[31.9, 186.1], [28.8, 807.3], [26.7, 1145.4]] spk 0.946 pur 1.000 null 113
+pho hop1 stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 20.1, 'diarizing': 302.2, 'ready': 375.9} dur 1699 segs 74 med 25.8 max 29.7 upper 0.000 punct 1.1 digits 0 gaps [[9.9, 1144.3], [6.9, 881.4], [5.6, 1692.6]] spk 0.981 pur 0.999 null 83
+pho hop2 stages {'queued': 0.0, 'preprocessing': 1.0, 'transcribing': 12.5, 'diarizing': 167.2, 'ready': 204.8} dur 856 segs 52 med 13.7 max 29.5 upper 0.000 punct 1.8 digits 0 gaps [[4.7, 1.6], [4.6, 629.0], [4.6, 618.8]] spk 0.907 pur 0.958 null 142
+pho flagged hop1 [{'start': 1421.864, 'dur': 25.76, 'text': 'cảm ơn bạn đã cùng theo dõi và đăng ký kênh của chương trình.'}]
+pho del runs
+  acid 184.2 21 phthalimid rồi bây giờ đến danh pháp của một số hợp chất khó hơn rồi với hợp chất này cũng
+  acid 421.4 14 nữa các bạn cũng nên biết đó là ví dụ như đây hợp chất
+  acid 497.7 13 theo chiều nào cũng vậy theo đi lên phía trên hay xuống phía
+  acid 515.5 27 chúng ta sẽ ưu tiên đánh theo thứ tự alphabet ha ví dụ cái vòng trên chúng ta sẽ có cái tê
+  acid 539.5 21 phenoxy cũng như là các bạn ví dụ ch_3 o các bạn gọi methoxy ha c_2h_5 o là ethoxy đó thì
+  acid 579.6 20 với hợp chất này các bạn cũng vậy thôi các bạn phải chọn cái mạch carbon dài nhất ha mang
+  acid 700.3 17 sáu như vậy cái acid này cũng là acid benzoic trước hết là acid benzoic rồi cái

@@ -600,6 +600,8 @@ function JobView({ jobId }: { jobId: string }) {
   if (!job) return <p className="py-16 text-center text-sm text-slate-500">Đang tải job…</p>;
 
   const durationMs = job.duration_ms ?? audioDurationMs;
+  // Bản ghi trực tiếp chia sẻ được cả lúc đang chạy bản chuẩn: người xem thấy bản nháp trước.
+  const shareable = job.status === "ready" || (job.source === "live" && ACTIVE_STATUSES.includes(job.status) && job.status !== "queued");
   const banner = (
     <>
       {job.status === "failed" && job.error_message ? (
@@ -705,10 +707,10 @@ function JobView({ jobId }: { jobId: string }) {
               ) : null}
               <button
                 type="button"
-                disabled={job.status !== "ready"}
+                disabled={!shareable}
                 onClick={() => setShareOpen(true)}
                 aria-label="Chia sẻ"
-                title={job.status === "ready" ? "Chia sẻ bằng liên kết" : "Chia sẻ mở khi bản ghi sẵn sàng"}
+                title={shareable ? "Chia sẻ bằng liên kết" : "Chia sẻ mở khi bản ghi sẵn sàng"}
                 className="inline-flex h-9 items-center gap-1.5 rounded-full bg-blue-600 px-3 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Share2 className="size-4" />
@@ -822,7 +824,7 @@ function JobView({ jobId }: { jobId: string }) {
         />
       ) : null}
 
-      {shareOpen ? <ShareDialog jobId={jobId} title={job.title} onClose={() => setShareOpen(false)} /> : null}
+      {shareOpen ? <ShareDialog jobId={jobId} title={job.title} live={job.source === "live" && job.status !== "ready"} onClose={() => setShareOpen(false)} /> : null}
     </div>
   );
 }

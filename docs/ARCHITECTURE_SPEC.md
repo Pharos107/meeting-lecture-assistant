@@ -159,9 +159,11 @@ Whisper tiếng Việt hay sinh câu không có trong audio ở đoạn ồn ho�
 
 1. `hallucination_silence_threshold=2.0`: faster-whisper bỏ câu bịa nằm sau khoảng lặng dài hơn 2 giây, rồi giải mã lại từ sau khoảng lặng. Lớp này lấy lại được lời thật bị câu bịa che.
 2. Bỏ câu có từ 4 từ trở lên mà nói nhanh hơn 12 từ/giây. Người nói nhanh nhất đo được khoảng 8,5 từ/giây. Câu bịa ở cuối cửa sổ 30 giây dồn hàng chục từ vào dưới 1 giây.
-3. Bỏ câu theo danh sách cụm: câu chỉ gồm cụm đã biết, cộng đuôi không quá 25 ký tự. Câu không quá 20 từ mở đầu bằng lời mời đăng ký kênh ("hãy subscribe", "hãy đăng ký kênh", "các bạn hãy đăng ký kênh") thì bỏ dù đuôi dài. Câu thật nhắc tới việc đăng ký kênh ở giữa câu được giữ.
+3. Bỏ câu theo danh sách cụm: câu chỉ gồm cụm đã biết, cộng đuôi không quá 25 ký tự. Câu không quá 20 từ chứa lời mời đăng ký kênh ở bất kỳ vị trí nào thì bỏ dù đuôi dài. Cụm lời mời là "hãy subscribe", "subscribe cho kênh", "hãy đăng ký kênh", "hãy đăng ký cho kênh", "không bỏ lỡ những video", "theo dõi và đăng ký kênh", so khớp theo ranh giới từ sau khi quy "đăng kí" về "đăng ký". "Đăng ký kênh" đứng riêng không nằm trong danh sách, để giữ câu thật như "bàn về việc đăng ký kênh phân phối mới".
 
-Số đo ngày 2026-10-29 trên 3 bản tin VTV24 (37 phút) với `large-v3-turbo`: CER gộp giảm từ 4,72% xuống 3,46%, không còn câu bịa nào. Bản trộn tiếng người nói lẫn nhau ở 10 dB giảm từ 16,39% xuống 12,96% WER. Hai bài sạch không đổi. Dải `temperature` và ngưỡng `no_speech_prob`, `avg_logprob` đã thử và không lấy lại được lời bị bỏ, vì model bỏ với `no_speech_prob` bằng 0. Bản nháp PT2 cần bộ lọc này hơn cả vì audio ngắn.
+Số đo ngày 2026-10-29 trên 3 bản tin VTV24 (37 phút) với `large-v3-turbo`: CER gộp giảm từ 4,72% xuống 3,46%, không còn câu bịa nào. Bản trộn tiếng người nói lẫn nhau ở 10 dB giảm từ 16,39% xuống 12,96% WER. Hai bài sạch không đổi.
+
+Số đo ngày 2026-11-03 trên 7 bài giảng và cuộc họp đăng mạng (108 phút): luật cũ chỉ bắt lời mời ở đầu câu nên để lọt 7 câu bịa của turbo, kiểu "Các bạn hãy đăng kí cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn". Luật trên bỏ 7/7 câu đó và không bắt nhầm câu thật nào trong 1.088 câu của 14 transcript. Bộ lọc chỉ xóa chữ bịa: lời thật bị câu bịa che vẫn mất, chỗ đó thành khoảng trống, xem #19 ở [`FLOWS.md`](FLOWS.md). Dải `temperature` và ngưỡng `no_speech_prob`, `avg_logprob` đã thử và không lấy lại được lời bị bỏ, vì model bỏ với `no_speech_prob` bằng 0. Bản nháp PT2 cần bộ lọc này hơn cả vì audio ngắn.
 
 Word của faster-whisper có dấu cách đầu. Mảnh không có dấu cách đầu, như `.000` sau `150` hoặc `%` sau `0`, được ghép vào từ đứng trước, kể cả thời gian kết thúc. Nếu không ghép, chữ của câu ghép từ các word bằng dấu cách sẽ thành `150 .000`.
 
@@ -300,6 +302,8 @@ Mọi trang sau đăng nhập dùng chung một khung ở layout `(app)`, cao b�
 
 Chia sẻ là một công tắc trong hộp thoại, mỗi bản ghi có tối đa một liên kết `/shared/{token}`. Ai có liên kết cũng đọc được transcript và tên người nói mà không cần đăng nhập, không sửa được gì. Người xem không nghe được âm thanh, không thấy đánh dấu, việc, hay lịch sử hỏi đáp. Chủ bản ghi tắt công tắc thì liên kết hết hiệu lực ngay, bật lại có liên kết mới. Liên kết không có hạn dùng và trang không cho công cụ tìm kiếm lập chỉ mục.
 
+Phiên nghe chia sẻ được ngay lúc đang ghi. Người có liên kết theo dõi chữ nháp qua SSE công khai, mô tả ở API mục 5. Phiên dừng thì trang người xem báo đang tạo bản chuẩn, hỏi lại mỗi 3 giây, rồi chuyển sang bản chuẩn có tên người nói.
+
 Tạo bản ghi là hộp thoại trên trang đang xem, không chuyển trang. Bấm bắt đầu thì hộp thoại đóng, việc nén và tải lên chạy nền trong tab, tiến độ hiện ở menu trái, lần lượt từng file. Tiến trình nằm ở layout nên chuyển trang không ngắt, còn tải lại hoặc đóng tab thì mất, vì vậy trình duyệt cảnh báo trước khi rời trang. `/jobs/new` chỉ còn mở hộp thoại rồi về `/jobs`.
 
 Mỗi câu render với `data-segment-id` và `data-start-ms`. Mỗi từ của bản gốc có thêm `data-end-ms`. Click không kèm vùng bôi đen thì tua như mục 2.6. Thả chuột mà vùng chọn nằm trọn trong một câu và có chữ thì hiện thanh nổi cạnh vùng chọn, không đẩy các câu khác. `Đánh dấu` hiện khi vùng chọn còn chữ chưa đánh dấu, `Bỏ đánh dấu` hiện khi có chữ đã đánh dấu, `Tạo việc` luôn hiện. Đánh dấu chỉ tô đúng các từ đã chọn, không tô cả câu. Câu không có mốc từng từ thì tô theo trích đoạn đã lưu. Vùng chọn trải qua hai câu thì bỏ qua.
@@ -315,15 +319,15 @@ PT2 là pha kép trên cùng một file thu. Pha 1 để người xem kịp bu�
 | | Pass 1, nháp | Pass 2, chuẩn |
 |---|---|---|
 | Lúc chạy | Trong khi micro còn mở | Sau khi người dùng dừng, hoặc sau khi mất kết nối quá 30 giây |
-| Model | `small`, int8, beam 1 | Cùng cấu hình PT1, gồm VAD, turbo, và pyannote |
+| Model | `large-v3-turbo`, int8, beam 1 | Cùng cấu hình PT1, gồm VAD, turbo beam 5, và pyannote |
 | Timestamp từ | Không | Có |
 | Sửa chữ | Chưa mở | Mở khi job `ready` |
-| GPU | Giữ `small` suốt phiên | Nhả `small` rồi mới nạp turbo |
+| GPU | Giữ turbo suốt phiên | Dùng lại turbo đã nạp, nhả trước khi nạp pyannote |
 
 ```text
 POST /api/live/sessions
     → WebSocket, khung PCM 100 ms
-    → Worker giữ model small, đóng câu theo VAD
+    → Worker giữ model turbo, đóng câu theo VAD
     → UI vẽ và thay bong bóng theo segment_id
 Người dùng bấm dừng
     → Đóng socket, mã hóa PCM thành Opus
@@ -359,7 +363,7 @@ Người dùng phải bật chia sẻ âm thanh trong hộp thoại. Track video
 
 ### 3.2. Vòng nháp
 
-Worker của phiên là tác vụ `run_live_session` trên hàng `gpu`, đã giữ `gpu:lock` và model `small`. FastAPI giữ WebSocket. Hai tiến trình trao đổi qua volume `/data` và Redis.
+Worker của phiên là tác vụ `run_live_session` trên hàng `gpu`, đã giữ `gpu:lock` và model nháp. FastAPI giữ WebSocket. Hai tiến trình trao đổi qua volume `/data` và Redis.
 
 Chiều lên, từ trình duyệt tới worker:
 
@@ -367,7 +371,7 @@ Chiều lên, từ trình duyệt tới worker:
 2. Sau mỗi khung, và ít nhất mỗi 10 giây khi socket còn mở, FastAPI đặt `live:{session_id}:heartbeat` bằng thời điểm hiện tại, TTL 30 giây.
 3. Worker nhớ offset đã đọc. Mỗi 200 ms nó đọc phần byte mới. Số byte lẻ thì để lại đến khung sau. Worker không đọc lại từ đầu file và không nhận socket.
 
-VAD trên cửa sổ ngắn, cùng ngưỡng ở mục 2.3. Cửa sổ là audio từ đầu câu đang mở, cắt còn tối đa 10 giây cuối. Chưa có câu mở thì cửa sổ là 10 giây cuối của phần đã đọc. Silero không chạy trên cả file nhiều chục phút.
+VAD trên cửa sổ ngắn, cùng ngưỡng ở mục 2.3. Cửa sổ là audio từ đầu câu đang mở, cắt còn tối đa 10 giây cuối. Chưa có câu mở thì cửa sổ là 10 giây cuối của phần đã đọc. Silero không chạy trên cả file nhiều chục phút. Bản nháp không đệm vùng tiếng (`speech_pad_ms=0`) và tách ở khoảng lặng 200 ms, để đo được hai mốc 600 ms và 200 ms của luật dưới đây.
 
 Luật câu nháp:
 
@@ -402,7 +406,9 @@ model.transcribe(
 )
 ```
 
-Nếu audio đã tới mà chưa được nhận dạng quá 5 giây, worker ngừng bản cập nhật giữa chừng và chỉ nhận dạng lúc câu đóng. Sự kiện cảnh báo dùng mã `draft_degraded`.
+Nếu audio đã tới mà chưa được nhận dạng quá 5 giây, worker ngừng bản cập nhật giữa chừng và chỉ nhận dạng lúc câu đóng. Sự kiện cảnh báo dùng mã `draft_degraded`. Phần chờ xuống dưới 1 giây thì bản giữa chừng chạy lại.
+
+Câu đã có bản giữa chừng mà lúc đóng không còn chữ thì worker phát `stable: true` với `text` rỗng, để client gỡ bong bóng. Câu rỗng không ghi vào pass 1. Câu nháp cũng qua bộ lọc câu bịa ở mục 2.4.
 
 ### 3.3. Dừng và ghi đè
 
@@ -412,13 +418,17 @@ Nếu audio đã tới mà chưa được nhận dạng quá 5 giây, worker ng�
 
 1. Đóng câu đang mở nếu còn audio, ghi nốt pass 1, đóng PCM, và tạo Opus canonical.
 2. Đưa job sang `preprocessing`.
-3. Giải phóng model `small`, gọi `gc.collect()` và `torch.cuda.empty_cache()`.
+3. Nếu model nháp trùng `WHISPER_MODEL`, đưa nó sang bước 4 để khỏi nạp lại. Nếu khác, giải phóng model nháp, gọi `gc.collect()` và `torch.cuda.empty_cache()`.
 4. Chạy đúng các bước bản chuẩn của PT1 trên Opus đó và ghi pass 2.
 5. Nhả `gpu:lock`, kể cả khi pass 2 sang `failed`.
 
-Worker chết giữa phiên thì Celery giao lại tác vụ một lần. Lần giao lại, nếu Opus đã có, bỏ qua phần thu và chạy lại pass 2 sau khi xóa câu và từ pass 2 dở. Pass 1 không xóa.
+Worker chết giữa phiên thì Celery giao lại tác vụ một lần. Lần giao lại, nếu Opus đã có, bỏ qua phần thu và chạy lại pass 2 sau khi xóa câu và từ pass 2 dở. Pass 1 không xóa. Nếu phiên chưa xong phần thu, worker đọc tiếp PCM từ cuối câu pass 1 đã chốt.
+
+Trong suốt tác vụ, worker đặt `live:{session_id}:worker` TTL 30 giây và làm mới mỗi 10 giây. FastAPI vẫn gia hạn khóa từ lúc tạo phiên tới khi worker vào việc. Thấy dấu này, FastAPI thôi gia hạn và không tự nhả khóa khi mất heartbeat, để pass 2 không mất khóa giữa chừng. Phiên không thu được byte PCM nào thì job `failed` với `unsupported_media`.
 
 Giao diện lấy pass cao nhất đang có câu. Trong lúc pass 2 chạy, màn hình vẫn là bản nháp và có trạng thái job. Khi pass 2 xong, màn hình chuyển sang pass 2.
+
+Trang `/live` trong lúc ghi có cùng các công cụ đọc như trang job: `Chia sẻ`, `Cài đặt hiển thị`, và panel `Trợ lý AI`. Trợ lý hỏi được trên các câu nháp đã chốt. Trên màn hình, chữ của mỗi bản nháp hiện dần từng ký tự với tốc độ đủ viết xong phần mới trong khoảng 1,6 giây, tức là trước bản nháp kế tiếp. Model sửa đuôi câu thì chỉ phần khác nhau được viết lại. Người bật giảm chuyển động, hoặc tab đang ẩn, thì chữ hiện ngay.
 
 Sửa câu, hỏi trợ lý, và xuất file dùng pass đang hiển thị khi job đã `ready`. Pass 2 lỗi thì job `failed`, pass 1 vẫn đọc và xuất được, và được sửa như một bản cuối tạm.
 

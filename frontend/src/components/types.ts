@@ -33,4 +33,7 @@ export type LiveLine = {
   id: string;
   text: string;
   stable: boolean;
+  startMs?: number;
+  /** Câu đã có trước khi mở trang: hiện ngay, không chạy chữ. */
+  instant?: boolean;
 };

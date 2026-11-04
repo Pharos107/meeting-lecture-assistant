@@ -1,0 +1,34 @@
+upload 201 0.1 s
+job 1dfd00a7-3fe5-4f91-8228-91e8775931e0
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   12.5s] ('transcribing', None, None)
+[  167.2s] ('diarizing', None, None)
+[  204.8s] ('ready', None, None)
+elapsed 204.8 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 856536, "diarization_device": "cuda"}
+pass 2 segments 52 speakers ['SPEAKER_03', 'SPEAKER_07', 'SPEAKER_06', 'SPEAKER_01', 'SPEAKER_09', 'SPEAKER_00', 'SPEAKER_04', 'SPEAKER_05', 'SPEAKER_08', 'SPEAKER_02']
+  SPEAKER_07: 314s
+  SPEAKER_06: 163s
+  SPEAKER_03: 82s
+  SPEAKER_00: 45s
+  SPEAKER_08: 44s
+  SPEAKER_01: 40s
+  SPEAKER_04: 24s
+  SPEAKER_09: 19s
+  SPEAKER_05: 14s
+  SPEAKER_02: 9s
+  None: 2s
+words 2796 segments with >1 word speaker 40
+      1.1 None: n.
+      6.2 SPEAKER_03: xin chào các anh chị trong nhóm marketing hôm nay chúng ta sẽ có buổi họp online do tình hình dịch bệnh hiện n
+     25.5 SPEAKER_07: cám ơn mọi người đã tham gia đầy đủa cuộc họp ngày hôm nay ba tháng vừa qua thì tôi thấy là nhóm mình đã liên 
+     49.0 SPEAKER_06: dạ thưa giám đốc theo báo cáo mà các trưởng nhóm đã gửi tới đa phần đối thủ chúng ta rất mạnh họ treo banh đều
+     63.9 SPEAKER_07: tôi cảm thấy cái lý do mà các đối thủ á nó không có thả đáng chẳng phải là trước đây mình vẫn làm rất là tốt d
+     90.0 SPEAKER_03: giám giám đốc nhận thấy là vấn đề lớn nhất dẫn đến việc không thể chỉ tiêu đó là các chiến lược marketing đưa 
+    115.1 SPEAKER_03: một số nhân viên thậm chí còn vắng mặt nhiều hơn mà không có lý do chính đáng có rất nhiều khách hàng đã phàn 
+    130.1 SPEAKER_07: cảm ơn em vậy các bạn có nghe rõ thư ký nói không ha điều đó có nghĩa là gì nghĩa là sự thất bại của chúng ta 
+    157.4 SPEAKER_07: nếu như mà không có ai phản bác thì mọi người có thể cho tôi biết là tại vì sao có những sự trễ mảng trong côn
+    170.8 SPEAKER_06: thưa sếp em nghĩ là công ty nên tăng lương cho nhân viên bởi vì nếu như mà nhân do bất mãn về lương nên nhân v
+    182.6 SPEAKER_07: tuyền cho cho tôi biết là chính sách lương của công ty đối với bộ phận của phòng marketing trong viện.
+    191.1 SPEAKER_06: giải lương khởi điểm là bắt đầu từ mười hai đến mười lăm triệu bao gồm có lương thưởng.
