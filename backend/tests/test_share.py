@@ -17,7 +17,10 @@ from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
 from app.core.rate_limit import share_views
+from app.services.gpu_lock import _memory, keeper
+from app.services.live_channel import put_open_draft, reset_live_channel
 from app.db import get_engine
+from app.api import routes_share as share_routes
 from app.main import app
 from app.models import (
     ActionItem,
@@ -130,9 +133,16 @@ def add_transcript(job_id: str) -> None:
 class ShareTests(unittest.TestCase):
     def setUp(self) -> None:
         clear_rows()
+        reset_live_channel()
         self.token = register("a@example.com")
         self.job_id = upload(self.token)
         self.url = f"/api/jobs/{self.job_id}/share"
+
+    def tearDown(self) -> None:
+        # Phiên nghe thử giữ khóa GPU trong bộ nhớ. Nhả để test sau còn lấy được khóa.
+        keeper.stop_all()
+        _memory.owner = None
+        _memory.deadline = 0.0
 
     def enable(self) -> str:
         set_status(self.job_id, "ready")
@@ -186,7 +196,8 @@ class ShareTests(unittest.TestCase):
         response = client.get(f"/api/shared/{token}")
         self.assertEqual(response.status_code, 200)
         body = response.json()
-        self.assertEqual(sorted(body), ["created_at", "duration_ms", "segments", "title"])
+        self.assertEqual(sorted(body), ["created_at", "duration_ms", "segments", "state", "title"])
+        self.assertEqual(body["state"], "ready")
         self.assertEqual(
             body["segments"],
             [
@@ -210,6 +221,65 @@ class ShareTests(unittest.TestCase):
         token = self.enable()
         self.assertEqual(client.delete(f"/api/jobs/{self.job_id}", headers=auth(self.token)).status_code, 204)
         self.assertEqual(client.get(f"/api/shared/{token}").status_code, 404)
+
+    def _live_job(self) -> tuple[str, str]:
+        _memory.owner = None
+        _memory.deadline = 0.0
+        created = client.post("/api/live/sessions", headers=auth(self.token), json={"title": "Buổi học"})
+        self.assertEqual(created.status_code, 201, created.text)
+        body = created.json()
+        keeper.stop_all()
+        with Session(get_engine()) as db:
+            db.add(Segment(id=uuid.UUID(int=7), job_id=uuid.UUID(body["job_id"]), pass_index=1, position=0,
+                           start_ms=500, end_ms=2500, text_raw="câu nháp đã chốt"))
+            db.commit()
+        return body["job_id"], body["session_id"]
+
+    def test_live_job_is_shared_while_capturing(self) -> None:
+        job_id, _session_id = self._live_job()
+        token = client.put(f"/api/jobs/{job_id}/share", headers=auth(self.token)).json()["token"]
+        body = client.get(f"/api/shared/{token}").json()
+        self.assertEqual(body["state"], "live")
+        self.assertEqual([segment["text"] for segment in body["segments"]], ["câu nháp đã chốt"])
+        set_status(job_id, "transcribing")
+        self.assertEqual(client.get(f"/api/shared/{token}").json()["state"], "processing")
+        set_status(job_id, "cancelled")
+        self.assertEqual(client.get(f"/api/shared/{token}").status_code, 404)
+
+    def test_live_stream_sends_closed_and_open_drafts(self) -> None:
+        job_id, session_id = self._live_job()
+        token = client.put(f"/api/jobs/{job_id}/share", headers=auth(self.token)).json()["token"]
+        put_open_draft(session_id, {"type": "draft", "segment_id": "mo", "start_ms": 3000, "end_ms": 4000,
+                                    "text": "đang nói", "stable": False, "seq": 9})
+        os.environ["STT_SSE_ONCE"] = "1"
+        try:
+            response = client.get(f"/api/shared/{token}/live")
+        finally:
+            os.environ.pop("STT_SSE_ONCE", None)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["x-robots-tag"], "noindex")
+        frames = [block for block in response.text.split("\n\n") if block.startswith("event:")]
+        self.assertEqual([block.split("\n")[0] for block in frames], ["event: snapshot", "event: draft"])
+        self.assertIn("câu nháp đã chốt", frames[0])
+        self.assertIn('"text":"đang nói"', frames[1])
+        self.assertNotIn("seq", frames[1])
+        self.assertNotIn(job_id, response.text)
+        self.assertNotIn(session_id, response.text)
+
+    def test_live_stream_closes_when_share_is_turned_off(self) -> None:
+        job_id, _session_id = self._live_job()
+        token = client.put(f"/api/jobs/{job_id}/share", headers=auth(self.token)).json()["token"]
+        self.assertTrue(share_routes._still_shared_and_capturing(token, uuid.UUID(job_id)))
+        self.assertEqual(client.delete(f"/api/jobs/{job_id}/share", headers=auth(self.token)).status_code, 204)
+        self.assertFalse(share_routes._still_shared_and_capturing(token, uuid.UUID(job_id)))
+        fresh = client.put(f"/api/jobs/{job_id}/share", headers=auth(self.token)).json()["token"]
+        self.assertFalse(share_routes._still_shared_and_capturing(token, uuid.UUID(job_id)))
+        self.assertTrue(share_routes._still_shared_and_capturing(fresh, uuid.UUID(job_id)))
+
+    def test_live_stream_needs_a_capturing_job(self) -> None:
+        token = self.enable()
+        self.assertEqual(client.get(f"/api/shared/{token}/live").status_code, 404)
+        self.assertEqual(client.get("/api/shared/khong-co/live").status_code, 404)
 
     def test_unknown_token_is_404(self) -> None:
         self.assertEqual(client.get("/api/shared/khong-co").status_code, 404)

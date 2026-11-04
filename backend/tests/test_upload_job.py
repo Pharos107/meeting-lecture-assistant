@@ -40,17 +40,32 @@ class FakeEngine:
     def transcribe(self, audio, vocabulary):
         self.calls += 1
         assert len(audio) > 0
+        # Chữ phủ hết audio, để pipeline không nhận dạng lại khoảng trống.
+        end = len(audio) / 16000
         return [
             {
                 "start": 0.1,
-                "end": 1.0,
+                "end": end,
                 "text": "xin chào",
-                "words": [{"text": "xin", "start": 0.1, "end": 0.5}, {"text": "chào", "start": 0.5, "end": 1.0}],
+                "words": [{"text": "xin", "start": 0.1, "end": 0.5}, {"text": "chào", "start": 0.5, "end": end}],
             }
         ]
 
     def release(self) -> None:
         self.released = True
+
+
+class GapEngine(FakeEngine):
+    """Bỏ trống phần sau giây đầu của chunk, nhưng nhận ra chữ khi được gọi riêng khoảng trống."""
+
+    def transcribe(self, audio, vocabulary):
+        self.calls += 1
+        seconds = len(audio) / 16000
+        if self.calls == 1:
+            return [{"start": 0.1, "end": 1.0, "text": "xin chào", "words": [
+                {"text": "xin", "start": 0.1, "end": 0.5}, {"text": "chào", "start": 0.5, "end": 1.0}]}]
+        return [{"start": 0.2, "end": seconds, "text": "lấy lại", "words": [
+            {"text": "lấy", "start": 0.2, "end": 0.6}, {"text": "lại", "start": 0.6, "end": seconds}]}]
 
 
 def fake_diarize(pcm, num_speakers):
@@ -166,6 +181,18 @@ class UploadJobTests(unittest.TestCase):
             texts = [row.text_raw for row in db.query(Segment).filter(Segment.job_id == job_id)]
             self.assertEqual(texts, ["xin chào"])
             self.assertEqual(db.get(Job, job_id).status, "ready")
+
+    def test_empty_part_of_a_region_is_transcribed_again(self) -> None:
+        job_id = self._job()
+        self._source(job_id, seconds=6.0)
+        self._run(job_id, engine_factory=GapEngine)
+        self.assertEqual(FakeEngine.instances[-1].calls, 2)
+        with Session(get_engine()) as db:
+            words = [
+                (row.text, row.start_ms)
+                for row in db.query(Word).join(Segment).filter(Segment.job_id == job_id).order_by(Word.start_ms)
+            ]
+            self.assertEqual(words, [("xin", 100), ("chào", 500), ("lấy", 1200), ("lại", 1600)])
 
     def test_file_without_audio_fails(self) -> None:
         job_id = self._job()

@@ -13,10 +13,12 @@ function messageOf(caught: unknown, fallback: string) {
 type ShareDialogProps = {
   jobId: string;
   title: string;
+  /** Bản ghi đang ghi trực tiếp: người có liên kết theo dõi được chữ nháp ngay lúc nói. */
+  live?: boolean;
   onClose: () => void;
 };
 
-export function ShareDialog({ jobId, title, onClose }: ShareDialogProps) {
+export function ShareDialog({ jobId, title, live = false, onClose }: ShareDialogProps) {
   const [share, setShare] = useState<ShareState | null>(null);
   const [saving, setSaving] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -99,7 +101,13 @@ export function ShareDialog({ jobId, title, onClose }: ShareDialogProps) {
               {share?.enabled ? "Bất kỳ ai có liên kết" : "Chỉ mình bạn"}
             </p>
             <p className="text-xs text-slate-500">
-              {share?.enabled ? "Xem được mà không cần đăng nhập." : "Bật để tạo liên kết xem cho người khác."}
+              {share?.enabled
+                ? live
+                  ? "Theo dõi được chữ nháp ngay lúc nói, không cần đăng nhập."
+                  : "Xem được mà không cần đăng nhập."
+                : live
+                  ? "Bật để người khác theo dõi buổi này trực tiếp."
+                  : "Bật để tạo liên kết xem cho người khác."}
             </p>
           </div>
           <button
@@ -143,7 +151,9 @@ export function ShareDialog({ jobId, title, onClose }: ShareDialogProps) {
         ) : null}
 
         <p className="mt-3 text-xs leading-5 text-slate-500">
-          Người xem chỉ đọc được transcript và tên người nói, không nghe được âm thanh, không thấy đánh dấu, việc, hay lịch sử hỏi đáp.
+          {live
+            ? "Người xem thấy chữ nháp trong lúc ghi, rồi bản chuẩn kèm tên người nói khi xong. Họ không nghe được âm thanh, không thấy lịch sử hỏi đáp."
+            : "Người xem chỉ đọc được transcript và tên người nói, không nghe được âm thanh, không thấy đánh dấu, việc, hay lịch sử hỏi đáp."}
         </p>
         {error ? <p className="mt-3 text-sm text-rose-600">{error}</p> : null}
 

@@ -372,6 +372,8 @@ export type SharedSegment = { start_ms: number; end_ms: number; text: string; sp
 
 export type SharedJob = {
   title: string;
+  /** `live`: đang ghi, `processing`: đang tạo bản chuẩn, `ready`: xong. */
+  state: "live" | "processing" | "ready";
   duration_ms: number | null;
   created_at: string;
   segments: SharedSegment[];

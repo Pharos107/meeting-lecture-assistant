@@ -161,6 +161,18 @@ def put_open_draft(session_id: str, payload: dict) -> None:
         _drafts[session_id] = (time.monotonic() + 60, raw)
 
 
+def clear_open_draft(session_id: str) -> None:
+    client = _redis()
+    if client is not None:
+        try:
+            client.delete(f"live:{session_id}:open_draft")
+        except Exception:
+            log.warning("Không xóa được câu nháp đang mở %s", session_id)
+        return
+    with _guard:
+        _drafts.pop(session_id, None)
+
+
 def read_open_draft(session_id: str) -> dict | None:
     client = _redis()
     raw: str | None = None

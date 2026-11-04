@@ -121,6 +121,21 @@ def normalize(source: Path, opus_path: Path, pcm_path: Path, max_duration_s: int
     return NormalizedAudio(opus_path, pcm_path, int(round(samples * 1000 / SAMPLE_RATE)))
 
 
+def encode_live_pcm(pcm_path: Path, opus_path: Path) -> None:
+    """PCM s16le 16 kHz của phiên nghe thành Opus canonical. Pass 2 đọc file này như file tải lên."""
+    opus_path.parent.mkdir(parents=True, exist_ok=True)
+    staging = opus_path.with_suffix(".opus.part")
+    try:
+        _ffmpeg(
+            ["-f", "s16le", "-ar", str(SAMPLE_RATE), "-ac", "1", "-i", str(pcm_path),
+             "-c:a", "libopus", "-b:a", "32k", "-f", "ogg", str(staging)],
+            FFMPEG_MIN_TIMEOUT_S,
+        )
+        staging.replace(opus_path)
+    finally:
+        staging.unlink(missing_ok=True)
+
+
 def load_pcm(pcm_path: Path) -> np.ndarray:
     if pcm_path.stat().st_size < BYTES_PER_SAMPLE:
         return np.zeros(0, dtype=np.float32)
