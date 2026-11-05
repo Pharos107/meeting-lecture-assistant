@@ -68,6 +68,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | 1.7.2 | 2026-11-03 | Code PT2: vòng nháp trong `run_live_session`, bàn giao sang pass 2, trang `/live`. Kiến trúc mục 3.2 ghi tham số VAD của bản nháp và bản chốt rỗng, mục 3.3 ghi dấu `live:{sid}:worker` thay cho việc FastAPI nhả khóa. Code bước vá #19. Đóng #2, #7 ở [`FLOWS.md`](FLOWS.md). Không đổi quyết định D1–D18 |
 | 1.7.3 | 2026-11-03 | Đổi D13: bản nháp PT2 dùng `large-v3-turbo` thay `small`, vì khi thử trên cuộc họp thật `small` sai quá nhiều chữ. Pass 2 dùng lại model đã nạp. Thêm `websockets` vào `requirements.txt`: thiếu gói này thì uvicorn trả 404 cho WebSocket. Whisper nạp từ cache trước khi hỏi Hugging Face |
 | 1.8 | 2026-11-03 | Mở rộng D18: chia sẻ phiên nghe lúc đang ghi, thêm `GET /api/shared/{token}/live` và trường `state` ở API mục 5. Hỏi trợ lý được khi job live đang `capturing`. Trang `/live` có `Chia sẻ`, `Cài đặt hiển thị`, `Trợ lý AI`, và chữ nháp hiện dần từng ký tự, kiến trúc mục 3.3 |
+| 1.8.1 | 2026-11-05 | Kiến trúc mục 2.3 thêm bước 7: nhận dạng riêng vùng VAD trống, vẫn rỗng thì giải mã greedy. Đo lại #19 và đo hỏi đáp #23 trên bộ dữ liệu thực tế, số đo ở `Báo Cáo/Báo cáo đo lại #19 và đo hỏi đáp #23 (2026-11-05).md`. Đóng #23, thêm #24 và #25 ở [`FLOWS.md`](FLOWS.md). Không đổi quyết định D1–D18 |
 
 ## Việc còn mở
 
@@ -75,7 +76,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 |---|---|
 | Khóa Gemini và gói dùng | Điền `LLM_API_KEY` từ AI Studio. Gói miễn phí chỉ dùng cho dữ liệu demo, vì điều khoản cho phép Google dùng nội dung và cấm gửi nội dung nhạy cảm. Họp thật cần gói trả phí. |
 | Mã card màn hình | Chưa gắn một SKU. Ngân sách thiết kế là card dưới 6GB, tính toán chặt cho card 4GB. |
-| Model bản chuẩn | `large-v3-turbo` là mặc định. Vòng đo 2026-11-03 trên bài giảng và cuộc họp thật: PhoWhisper có CER thấp hơn 3,1 điểm, chủ yếu vì turbo bỏ sót lời nói, nhưng chậm gấp 2,1 lần và ra toàn chữ thường. Giữ turbo, làm #19 và thử nhập thuật ngữ, rồi đo lại trước khi khóa. Số đo ở `Báo Cáo/`. |
+| Model bản chuẩn | `large-v3-turbo` là mặc định. Vòng đo 2026-11-05 trên bài giảng và cuộc họp thật, sau khi thêm bước nhận dạng lại vùng trống: PhoWhisper có CER thấp hơn 2,0 điểm (vòng 11-03 là 3,1), nhưng chậm gấp 1,9 lần và ra toàn chữ thường. Ở cuộc họp `hop2` turbo đã tốt hơn. Giữ turbo, chẩn đoán phần #19 còn lại, đo lại khi có ghi âm họp do nhóm tự thu. Số đo ở `Báo Cáo/`. |
 | Các đoạn "Hướng tối ưu" | Chưa khóa. Đo trên bộ đối chiếu rồi mới ghi thành quy định. |
 | Phần code chưa hiện thực | Liệt kê và xếp mức ở [`FLOWS.md` mục 13](FLOWS.md#13-khoảng-trống-giữa-đặc-tả-và-code). |
 
