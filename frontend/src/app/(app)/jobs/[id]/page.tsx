@@ -372,6 +372,24 @@ function JobView({ jobId }: { jobId: string }) {
     );
   }
 
+  // ----- Sửa câu -----
+
+  async function saveSegmentText(segmentId: string, text: string | null) {
+    try {
+      const saved = await apiJson<ApiSegment>(`/api/jobs/${jobId}/segments/${encodeURIComponent(segmentId)}`, {
+        method: "PATCH",
+        body: JSON.stringify({ text_edited: text }),
+      });
+      setSegments((current) => current.map((segment) => (segment.id === saved.id ? { ...segment, ...saved } : segment)));
+      setSelection(null);
+      setNotice(text === null ? "Đã về bản gốc." : "Đã lưu câu sửa.");
+      return true;
+    } catch (caught) {
+      setNotice(messageOf(caught, "Không lưu được câu sửa."));
+      return false;
+    }
+  }
+
   // ----- Vùng chọn, đánh dấu, việc -----
 
   const canEdit = job?.status === "ready" || (job?.status === "failed" && pass === 1);
@@ -766,6 +784,8 @@ function JobView({ jobId }: { jobId: string }) {
           onMark={() => void mark()}
           onUnmark={() => void unmark()}
           onCreateTask={openTask}
+          editable={canEdit}
+          onSaveText={saveSegmentText}
         />
 
         <AudioPlayerBar
