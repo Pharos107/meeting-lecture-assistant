@@ -1,0 +1,24 @@
+upload 201 0.2 s
+job 8e7ab715-9ae8-414c-9b06-42b56ba58894
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   16.1s] ('transcribing', None, None)
+[   79.7s] ('diarizing', None, None)
+[  134.0s] ('ready', None, None)
+elapsed 134.0 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1175880, "diarization_device": "cuda"}
+pass 2 segments 81 speakers ['SPEAKER_01']
+  SPEAKER_01: 469s
+words 1521 segments with >1 word speaker 20
+      4.2 SPEAKER_01: Chúng ta nhớ chúng ta đặt cái lần án vào bên trước nha
+      7.1 SPEAKER_01: Không quan tâm đến con số lớn nhỏ
+     13.5 SPEAKER_01: Đây là dẫn xuất của axit benzoic, dẫn xuất, axit halic nha, benzoic bỏ x thay vào cái hình là benzo-in-chloric
+     39.2 SPEAKER_01: Rồi đây là mối hộp.
+     47.4 SPEAKER_01: bên cơ ác, đó là SACin, là etin bên cơ ác. Nhưng mà ở bên cơ ác thì cái chín cầu 4 có nhóm amido, như vậy chún
+     73.7 SPEAKER_01: nhưng vẫn là trước cực ưu riêng đầu tiên cho tất cả các nhóm trước
+     76.7 SPEAKER_01: Nhóm trước là trước cực ưu riêng đầu
+     79.2 SPEAKER_01: Như vậy thì cái nhóm COC23 đó là nhóm Acety
+     83.4 SPEAKER_01: Ta biết rồi, cô đã nói khỏi Acety
+     87.5 SPEAKER_01: Acetylacety nó cũng tức tứ từ cái nhóm này CACOO và chúng ta bỏ cái nhóm này đi thì chúng ta tay bằng I, góc c
+    102.2 SPEAKER_01: Có khi thì nó gọi là Acetome, nó còn gọi là Acetome, thì nó gọi ở trên này là 4-2-3-3-2-3-2-1-2-1-2-1-2-1-2-1-
+    164.8 SPEAKER_01: 2, 4, 6. Nhớ là nhóm chức vaccine thì tụi gắn ra ở vị trí của 1.

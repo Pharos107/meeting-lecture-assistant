@@ -1,0 +1,38 @@
+[
+ {
+  "id": "h1-07-lap1",
+  "clip": "hop1",
+  "kind": "answerable",
+  "question": "Người chủ trì nên cư xử thế nào trong cuộc họp?",
+  "expected": [
+   "Bình đẳng, khuyến khích mọi người nói, brainstorming",
+   "Lắng nghe, chỉ nói khi thật cần thiết",
+   "Không chỉ nghe ý kiến giống mình"
+  ],
+  "must": 2
+ },
+ {
+  "id": "h1-07-lap2",
+  "clip": "hop1",
+  "kind": "answerable",
+  "question": "Người chủ trì nên cư xử thế nào trong cuộc họp?",
+  "expected": [
+   "Bình đẳng, khuyến khích mọi người nói, brainstorming",
+   "Lắng nghe, chỉ nói khi thật cần thiết",
+   "Không chỉ nghe ý kiến giống mình"
+  ],
+  "must": 2
+ },
+ {
+  "id": "h1-07-lap3",
+  "clip": "hop1",
+  "kind": "answerable",
+  "question": "Người chủ trì nên cư xử thế nào trong cuộc họp?",
+  "expected": [
+   "Bình đẳng, khuyến khích mọi người nói, brainstorming",
+   "Lắng nghe, chỉ nói khi thật cần thiết",
+   "Không chỉ nghe ý kiến giống mình"
+  ],
+  "must": 2
+ }
+]

@@ -1,0 +1,14 @@
+large-v3-turbo   quahat   WER 19.27% CER 14.71% nofill 18.41% (S79 D69 I5) termCER 22.11% exact 76/121 spk 96.6% (1/1) flagged 0 time 61.2s VRAM 2488
+large-v3-turbo   phoi21   WER 13.06% CER  9.84% nofill 10.29% (S94 D191 I9) termCER 13.93% exact 97/134 spk 96.6% (2/1) flagged 0 time 63.2s VRAM 2504
+large-v3-turbo   phoi42   WER 45.80% CER 34.41% nofill 46.45% (S856 D512 I61) termCER 52.98% exact 32/183 spk 93.7% (1/1) flagged 0 time 115.1s VRAM 2486
+large-v3-turbo   aldehyd  WER 40.25% CER 29.23% nofill 41.21% (S807 D241 I95) termCER 56.21% exact 64/276 spk 96.1% (1/1) flagged 0 time 93.4s VRAM 2623
+large-v3-turbo   acid     WER 69.32% CER 56.47% nofill 70.03% (S888 D763 I48) termCER 84.81% exact 7/209 spk 93.7% (1/1) flagged 1 time 134.0s VRAM 2562
+large-v3-turbo   hop1     WER 59.38% CER 49.82% nofill 58.32% (S821 D474 I1684) termCER 149.55% exact 79/120 spk 98.6% (2/2) flagged 0 time 186.5s VRAM 2608
+large-v3-turbo   hop2     WER 13.20% CER 10.09% nofill 11.90% (S139 D195 I25) termCER  7.95% exact 47/55 spk 92.6% (14/10) flagged 0 time 94.7s VRAM 2599
+large-v3-turbo-greedy quahat   WER 19.90% CER 14.83% nofill 19.09% (S82 D66 I10) termCER 22.11% exact 76/121 spk 96.6% (1/1) flagged 0 time 44.4s VRAM 2591
+large-v3-turbo-greedy phoi21   WER 13.01% CER  9.79% nofill 10.24% (S95 D188 I10) termCER 13.93% exact 97/134 spk 96.6% (2/1) flagged 0 time 60.9s VRAM 2614
+large-v3-turbo-greedy phoi42   WER 45.83% CER 34.43% nofill 46.49% (S857 D511 I62) termCER 52.98% exact 32/183 spk 93.6% (1/1) flagged 0 time 122.1s VRAM 2634
+large-v3-turbo-greedy aldehyd  WER 40.11% CER 28.85% nofill 41.06% (S823 D221 I95) termCER 56.21% exact 64/276 spk 96.1% (1/1) flagged 0 time 97.9s VRAM 2906
+large-v3-turbo-greedy acid     WER 66.75% CER 53.17% nofill 67.55% (S957 D622 I57) termCER 85.85% exact 7/209 spk 93.4% (1/1) flagged 1 time 138.6s VRAM 2862
+large-v3-turbo-greedy hop1     WER 60.67% CER 51.22% nofill 59.61% (S800 D464 I1780) termCER 149.25% exact 79/120 spk 98.4% (2/2) flagged 1 time 198.2s VRAM 3004
+large-v3-turbo-greedy hop2     WER 12.24% CER  8.98% nofill 10.93% (S146 D160 I27) termCER  7.95% exact 47/55 spk 92.6% (14/10) flagged 0 time 93.1s VRAM 2899

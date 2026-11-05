@@ -1,0 +1,9 @@
+worker fill_empty_spans: 2
+large-v3-turbo quahat elapsed 61.2 s peakVRAM=2488MiB
+large-v3-turbo phoi21 elapsed 63.2 s peakVRAM=2504MiB
+large-v3-turbo phoi42 elapsed 115.1 s peakVRAM=2486MiB
+large-v3-turbo aldehyd elapsed 93.4 s peakVRAM=2623MiB
+large-v3-turbo acid elapsed 134.0 s peakVRAM=2562MiB
+large-v3-turbo hop2 elapsed 94.7 s peakVRAM=2599MiB
+large-v3-turbo hop1 elapsed 186.5 s peakVRAM=2608MiB
+done

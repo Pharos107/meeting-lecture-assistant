@@ -1,0 +1,24 @@
+upload 201 0.1 s
+job 53e12f1a-ce89-40ca-9d4a-a3308f744aa7
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    9.1s] ('transcribing', None, None)
+[   35.5s] ('diarizing', None, None)
+[   60.9s] ('ready', None, None)
+elapsed 60.9 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 527664, "diarization_device": "cuda"}
+pass 2 segments 63 speakers ['SPEAKER_00']
+  SPEAKER_00: 497s
+words 2072 segments with >1 word speaker 32
+      0.0 SPEAKER_00: Ngày hôm nay về phôi hoạch phân tử và dịch tạp bậc sinh, câu hỏi kỹ thuật là mấy không ạ?
+      5.0 SPEAKER_00: Bây giờ phần phôi hoạch phân tử của mình sẽ biết thêm một phần liên quan có mối liên hệ giữa phần phôi hoạch v
+     16.0 SPEAKER_00: Đấy là sinh học phân tử thôi ạ.
+     18.5 SPEAKER_00: Về cái bài này thì có một số các mục tiêu các anh chị sẽ biết được ạ.
+     23.2 SPEAKER_00: Thứ nhất là các anh chị giải thích được cơ chế cũng như con đường trong quá trình phát triển của cô như thế nà
+     28.3 SPEAKER_00: Thứ hai nữa là các anh chị biết được khái niệm cũng như các cái phân loại của các cái phát triển bất thường ở 
+     35.2 SPEAKER_00: Cái này cũng khá là phức tạp nhưng mà chắc giới thiệu cho các anh chị thôi tại vì nó có một cái lĩnh vực riêng
+     52.9 SPEAKER_00: Thứ ba nữa là phân tích được thời gian có khả năng phát hiện, phát triển thành các dị tập bẩm sinh ở vôi thai 
+     62.6 SPEAKER_00: Và cuối cùng là các anh chị phân tích nguyên nhân gây ra dị tập bẩm sinh ở người và một số các phương pháp chu
+     69.6 SPEAKER_00: Cái này là một số phần liên quan đến ứng dụng âm sảng hiện nay
+     73.2 SPEAKER_00: Khi mà lĩnh vực vôi thai phát triển, người ta có rất nhiều các kỹ thuật mới can thiệp
+     79.3 SPEAKER_00: Không phải là đợi em bé ra đời để can thiệp đâu ạ

@@ -1,0 +1,76 @@
+== Gộp 6 bài (bỏ hop1)
+turbo 11-03          WER 36.01% CER 28.06% S2797 D2073 I235 terms 323/978 flagged(7) 7 RTF(7) 0.106
+turbo 11-05 (fill)   WER 35.81% CER 27.82% S2863 D1971 I243 terms 323/978 flagged(7) 1 RTF(7) 0.115
+phowhisper 11-03     WER 34.68% CER 24.97% S3339 D849 I729 terms 312/978 flagged(7) 1 RTF(7) 0.222
+turbo 11-05 (fill+greedy) WER 35.19% CER 26.94% S2960 D1768 I261 terms 323/978 flagged(7) 2 RTF(7) 0.116
+
+== Từng bài: CER, số từ mất, khoảng trống dài nhất (giây, tại giây)
+quahat | turbo 11-03: CER 14.71% D69 gap [5.6, 261.1] | turbo 11-05 (fill): CER 14.71% D69 gap [5.6, 261.1] | phowhisper 11-03: CER 10.46% D25 gap [5.5, 261.2] | turbo 11-05 (fill+greedy): CER 14.83% D66 gap [5.6, 261.1]
+phoi21 | turbo 11-03: CER 9.84% D191 gap [2.5, 88.7] | turbo 11-05 (fill): CER 9.84% D191 gap [2.5, 88.7] | phowhisper 11-03: CER 7.33% D86 gap [2.5, 88.7] | turbo 11-05 (fill+greedy): CER 9.79% D188 gap [2.5, 88.7]
+phoi42 | turbo 11-03: CER 34.33% D515 gap [12.4, 50.1] | turbo 11-05 (fill): CER 34.41% D512 gap [12.4, 50.1] | phowhisper 11-03: CER 28.66% D189 gap [6.1, 442.5] | turbo 11-05 (fill+greedy): CER 34.43% D511 gap [12.4, 50.1]
+aldehyd | turbo 11-03: CER 29.20% D231 gap [18.6, 761.8] | turbo 11-05 (fill): CER 29.23% D241 gap [9.7, 624.4] | phowhisper 11-03: CER 29.14% D109 gap [9.6, 624.4] | turbo 11-05 (fill+greedy): CER 28.85% D221 gap [9.7, 624.4]
+acid | turbo 11-03: CER 57.89% D872 gap [108.3, 109.7] | turbo 11-05 (fill): CER 56.47% D763 gap [55.0, 109.7] | phowhisper 11-03: CER 51.05% D375 gap [31.9, 186.1] | turbo 11-05 (fill+greedy): CER 53.17% D622 gap [49.6, 168.4]
+hop1 | turbo 11-03: CER 51.42% D686 gap [28.3, 1419.6] | turbo 11-05 (fill): CER 49.82% D474 gap [17.3, 1419.6] | phowhisper 11-03: CER 50.98% D226 gap [9.9, 1144.3] | turbo 11-05 (fill+greedy): CER 51.22% D464 gap [15.0, 1144.2]
+hop2 | turbo 11-03: CER 10.09% D195 gap [12.6, 382.1] | turbo 11-05 (fill): CER 10.09% D195 gap [12.6, 382.1] | phowhisper 11-03: CER 9.99% D65 gap [4.7, 1.6] | turbo 11-05 (fill+greedy): CER 8.98% D160 gap [4.7, 618.7]
+
+== Đoạn mất chữ liền nhau (>=12 từ) của large-v3-turbo vòng 11-05
+  phoi42 t=0.0s n=61 thai nhi đi tiểu và sau đó được đào thải về tự nhiên thì sao ạ là em bé sẽ gì ạ sẽ nuốt lạ
+  phoi42 t=23.0s n=41 chuyển hóa nó tụ lại ở bên trong khoang ối thì sẽ có biểu hiện là đa ối và khi mà siêu âm 
+  phoi42 t=46.8s n=14 sẽ nôn ra đó thì là và sau sinh thì nếu mà ăn thì
+  phoi42 t=47.0s n=14 có biểu hiện nôn vọt rất là sớm thế còn nếu mà rò khí
+  phoi42 t=48.6s n=32 thì khi mà em bé ăn vào em bé bú sữa vào thì lúc đấy nó sẽ nó không đi xuống đường tiêu hó
+  phoi42 t=633.1s n=13 rồi sang đến cái phần tiếp theo đấy là cái sự hình thành
+  phoi42 t=820.3s n=12 khoảng các bạn nghỉ khoảng ba mươi phút nhé các bạn nghỉ
+  aldehyd t=614.0s n=13 cái này là file word ha cái file bài giảng của cái giáo
+  aldehyd t=760.8s n=18 nhóm chức aldehyd này aldehyd chúng ta gọi là chữ al đúng không hoặc là carbaldehyd trong 
+  aldehyd t=799.9s n=32 các anh chị chép cái phần ở trên đi rồi tôi tôi chiếu cái phần ở dưới các anh chị chép thê
+  acid t=62.0s n=14 rồi hợp chất này là có nhóm chức acid có chức ceton thì chức
+  acid t=167.8s n=38 số một rồi đây là phthalimid phthalimid nếu là o thì là anhydrid phthalic ha o thì là anhy
+  acid t=168.1s n=19 số hợp chất khó hơn rồi với hợp chất này cũng thế ha chúng ta cũng vẫn phải chọn
+  acid t=275.4s n=13 số một rồi cái nhóm so_2 nh_2 nhóm này được gọi là nhóm
+  acid t=329.2s n=16 thế nha đây ví dụ như thế này ví dụ các bạn có hợp chất như
+  acid t=392.7s n=62 nhóm thay hydro đúng không của vòng benzen thì cái nhóm này chúng ta gọi là nhóm carbamoyl
+  acid t=393.0s n=13 chức là cái đuôi tận cùng của tên trong danh pháp đó đó
+  acid t=423.5s n=64 nữa các bạn cũng nên biết đó là ví dụ như đây hợp chất ch_3 co nh_2 hợp chất này có tên là
+  acid t=496.4s n=16 đánh số chúng ta đánh số theo chiều nào cũng vậy theo đi lên phía trên
+  acid t=503.3s n=18 thứ tự alphabet ha ví dụ cái vòng trên chúng ta sẽ có cái tên đầu là chữ
+  acid t=539.4s n=40 phenoxy cũng như là các bạn ví dụ ch_3 o các bạn gọi methoxy ha c_2h_5 o là ethoxy đó thì 
+  acid t=579.5s n=21 với hợp chất này các bạn cũng vậy thôi các bạn phải chọn cái mạch carbon dài nhất ha mang 
+  acid t=612.1s n=19 bốn có hai nhóm methoxy do đó chúng ta để số hai gắn vào cái mạch chính là để
+  acid t=647.3s n=20 rồi hợp chất tiếp theo đây hợp chất này đây hợp chất này là có nhóm acetamido này là phía
+  acid t=682.0s n=66 là acetamido cho nên vần a là ở bên này vần a là được ưu tiên trước chúng ta đánh số một h
+  acid t=791.9s n=33 cứ gọi tên đi ha cái nhóm thế nào đơn giản chúng ta cứ gọi tên trước nhóm khó chúng ta gọi
+  acid t=794.7s n=31 có gì cả rồi hợp chất này thì cực kỳ khó khăn ha nhưng mà thực ra thì cứ phân tích dần dần
+  acid t=802.8s n=12 đây này các bạn amid này benzamid nếu mà vòng benzen gắn
+  acid t=978.6s n=17 các bạn không không quên gọi cái nhóm carbon số một đầu mạch này là nhóm oxo
+  hop1 t=83.1s n=12 không họp cái này là khâu chuẩn bị ban đầu đó đúng
+  hop1 t=545.4s n=28 đúng vai trò cái thứ hai họ đến là họ hiểu vấn đề chứ nhiều khi chúng ta thấy là cử người 
+  hop1 t=1691.4s n=12 xin hết ạ dạ vâng xin cảm ơn thầy phó giáo sư
+  hop2 t=381.9s n=48 dạ em thấy chính sách này được ạ chính sách này tạo động lực cho mọi người cố gắng hơn đó 
+
+== Đoạn mất chữ liền nhau (>=12 từ) của large-v3-turbo-greedy vòng 11-05
+  phoi42 t=0.0s n=61 thai nhi đi tiểu và sau đó được đào thải về tự nhiên thì sao ạ là em bé sẽ gì ạ sẽ nuốt lạ
+  phoi42 t=23.0s n=41 chuyển hóa nó tụ lại ở bên trong khoang ối thì sẽ có biểu hiện là đa ối và khi mà siêu âm 
+  phoi42 t=46.8s n=14 sẽ nôn ra đó thì là và sau sinh thì nếu mà ăn thì
+  phoi42 t=47.0s n=14 có biểu hiện nôn vọt rất là sớm thế còn nếu mà rò khí
+  phoi42 t=48.6s n=32 thì khi mà em bé ăn vào em bé bú sữa vào thì lúc đấy nó sẽ nó không đi xuống đường tiêu hó
+  phoi42 t=633.1s n=13 rồi sang đến cái phần tiếp theo đấy là cái sự hình thành
+  phoi42 t=820.3s n=12 khoảng các bạn nghỉ khoảng ba mươi phút nhé các bạn nghỉ
+  aldehyd t=614.0s n=13 cái này là file word ha cái file bài giảng của cái giáo
+  aldehyd t=760.8s n=18 nhóm chức aldehyd này aldehyd chúng ta gọi là chữ al đúng không hoặc là carbaldehyd trong 
+  aldehyd t=801.7s n=12 cái phần ở trên đi rồi tôi tôi chiếu cái phần ở
+  acid t=62.0s n=14 rồi hợp chất này là có nhóm chức acid có chức ceton thì chức
+  acid t=168.1s n=19 số hợp chất khó hơn rồi với hợp chất này cũng thế ha chúng ta cũng vẫn phải chọn
+  acid t=275.4s n=13 số một rồi cái nhóm so_2 nh_2 nhóm này được gọi là nhóm
+  acid t=329.2s n=16 thế nha đây ví dụ như thế này ví dụ các bạn có hợp chất như
+  acid t=423.5s n=64 nữa các bạn cũng nên biết đó là ví dụ như đây hợp chất ch_3 co nh_2 hợp chất này có tên là
+  acid t=496.4s n=16 đánh số chúng ta đánh số theo chiều nào cũng vậy theo đi lên phía trên
+  acid t=503.3s n=18 thứ tự alphabet ha ví dụ cái vòng trên chúng ta sẽ có cái tên đầu là chữ
+  acid t=539.4s n=40 phenoxy cũng như là các bạn ví dụ ch_3 o các bạn gọi methoxy ha c_2h_5 o là ethoxy đó thì 
+  acid t=579.5s n=21 với hợp chất này các bạn cũng vậy thôi các bạn phải chọn cái mạch carbon dài nhất ha mang 
+  acid t=647.3s n=20 rồi hợp chất tiếp theo đây hợp chất này đây hợp chất này là có nhóm acetamido này là phía
+  acid t=682.0s n=66 là acetamido cho nên vần a là ở bên này vần a là được ưu tiên trước chúng ta đánh số một h
+  acid t=780.9s n=20 thôi chứ không có gì cả rồi hợp chất này thì cực kỳ khó khăn ha nhưng mà thực ra
+  hop1 t=83.1s n=12 không họp cái này là khâu chuẩn bị ban đầu đó đúng
+  hop1 t=545.4s n=28 đúng vai trò cái thứ hai họ đến là họ hiểu vấn đề chứ nhiều khi chúng ta thấy là cử người 
+  hop1 t=1691.4s n=12 xin hết ạ dạ vâng xin cảm ơn thầy phó giáo sư

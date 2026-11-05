@@ -1,0 +1,438 @@
+{
+ "model": "gemini-3.5-flash-lite",
+ "jobs": {
+  "hop1": "a5cf65bd-d678-436b-ae40-21150bad0df6",
+  "hop2": "45f9e086-e8c8-4c96-b5de-c3b734b626a2"
+ },
+ "answers": [
+  {
+   "id": "h2-01",
+   "clip": "hop2",
+   "kind": "answerable",
+   "question": "Có những nhiệm vụ gì cần đề ra?",
+   "expected": [
+    "Thư ký ghi nhận, cụ thể hóa chính sách thưởng theo cá nhân, công bố và áp dụng từ ngày mai",
+    "Trưởng phòng phổ biến toàn bộ dự án từ đầu tới cuối trước khi thực hiện",
+    "Nhân viên được chọn phần việc đảm nhận trong dự án",
+    "Chi tiết điều kiện chuyến du lịch gửi qua mail"
+   ],
+   "must": 2,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dựa trên transcript cuộc họp của nhóm marketing, các nhiệm vụ và thay đổi được đề ra gồm có:\n\n* Thay đổi chính sách thưởng: Chuyển từ hình thức chia đều tiền thưởng cho tất cả nhân viên sang hình thức chia dựa trên năng suất và mức độ tham gia thực tế của từng người trong dự án [05:00].\n* Phổ biến thông tin dự án: Trưởng phòng cam kết từ nay trước khi thực hiện dự án sẽ phổ biến toàn bộ từ đầu đến cuối để nhân viên biết rõ công việc, tầm ảnh hưởng đến người khác và công việc chung, đồng thời được tự do lựa chọn mảng đảm nhận phù hợp [09:51].\n* Tăng tính trực quan trong tiếp thị: Chuyên viên digital đề xuất thay thế hình ảnh sẵn có trên internet bằng ảnh và video tự chụp độc đáo, chuyên nghiệp để tăng traffic [07:25].\n* Ghi nhận và áp dụng chính sách mới: Thư ký có trách nhiệm ghi nhận, cụ thể hóa các nội dung chính sách thưởng mới và công bố áp dụng từ ngày hôm sau [06:38].",
+   "ttft_s": 1.17,
+   "total_s": 20.55,
+   "usage": {
+    "prompt_tokens": 4963,
+    "completion_tokens": 198,
+    "reasoning_tokens": null,
+    "context_chars": 14480
+   }
+  },
+  {
+   "id": "h2-02",
+   "clip": "hop2",
+   "kind": "answerable",
+   "question": "Vì sao nhóm không đạt target trong 3 tháng qua?",
+   "expected": [
+    "Trưởng phòng cho là đối thủ mạnh nhưng Giám đốc không chấp nhận lý do đó",
+    "Chiến lược marketing không hiệu quả vì các mảng nhỏ không hoàn thành tốt",
+    "Banner trễ, làm cho có; nhân viên đi trễ về sớm, vắng mặt; khách hàng phàn nàn thái độ"
+   ],
+   "must": 2,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dưới đây là các lý do khiến nhóm không đạt target trong 3 tháng qua:\n\n* Đối thủ rất mạnh, treo banner ở vị trí tốt và có chiến lược đưa ra rất hiệu quả [00:49].\n* Các chiến lược marketing đưa ra không hiệu quả do các mảng nhỏ trong chiến lược không được hoàn thành tốt [1:32].\n* Nhân viên nhận mảng thiết kế banner làm cho có, khiến việc quảng cáo sản phẩm thất bại [1:38].\n* Nhân viên thường xuyên đi trễ về sớm và vắng mặt nhiều hơn mà không có lý do chính đáng [1:52].\n* Nhiều khách hàng phàn nàn về thái độ làm việc, giao dịch và chất lượng dịch vụ của nhân viên [1:59].\n* Nhìn chung, sự thất bại xuất phát từ sự chểnh mảng trong công việc của đội ngũ [2:16].",
+   "ttft_s": 1.75,
+   "total_s": 3.18,
+   "usage": {
+    "usage_error": "Server error '503 Service Unavailable' for url 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/"
+   }
+  },
+  {
+   "id": "h2-03",
+   "clip": "hop2",
+   "kind": "answerable",
+   "question": "Lương khởi điểm của phòng Marketing là bao nhiêu?",
+   "expected": [
+    "12 đến 15 triệu, bao gồm lương thưởng"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dựa vào nội dung cuộc họp, lương khởi điểm của phòng marketing như sau:\n\n* Lương khởi điểm bắt đầu từ 12 đến 15 triệu, bao gồm cả lương thưởng. [03:10]",
+   "ttft_s": 2.36,
+   "total_s": 2.53,
+   "usage": {
+    "prompt_tokens": 4965,
+    "completion_tokens": 37,
+    "reasoning_tokens": null,
+    "context_chars": 14498
+   }
+  },
+  {
+   "id": "h2-04",
+   "clip": "hop2",
+   "kind": "answerable",
+   "question": "Chính sách thưởng mới được thống nhất như thế nào?",
+   "expected": [
+    "Bỏ chia đều, chuyển sang thưởng dựa trên cá nhân, theo năng suất",
+    "Ví dụ 15% chia cho 3 người theo mức đóng góp",
+    "Áp dụng từ ngày mai"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dưới đây là thông tin về chính sách thưởng mới được thống nhất trong buổi họp:\n\n* Tiền thưởng sẽ được chia dựa theo số nhân viên tham gia dự án và năng suất làm việc của từng người [05:27].\n* Nếu mức độ và kết quả làm việc của các nhân viên là như nhau, mức thưởng sẽ được chia đều thành các phần bằng nhau [05:40].\n* Nếu các nhân viên làm việc với hiệu quả khác nhau, mức thưởng sẽ được chia thành các phần khác nhau tùy theo năng suất làm việc của mỗi người [05:46].",
+   "ttft_s": 2.76,
+   "total_s": 3.16,
+   "usage": {
+    "prompt_tokens": 4966,
+    "completion_tokens": 128,
+    "reasoning_tokens": null,
+    "context_chars": 14499
+   }
+  },
+  {
+   "id": "h2-05",
+   "clip": "hop2",
+   "kind": "answerable",
+   "question": "Chuyên viên Digital đề xuất gì?",
+   "expected": [
+    "Dùng ảnh, video tự chụp, tự tạo thay vì ảnh có sẵn trên internet, trực quan hóa",
+    "Thử nghiệm trước đó tăng traffic 10 đến 15%"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dựa trên transcript, Chuyên viên Digital có các đề xuất sau:\n\n* Đề xuất sử dụng hình ảnh tự chụp độc đáo và chuyên nghiệp thay vì dùng ảnh sẵn có trên internet cho các bài đăng để chiến dịch hiệu quả hơn [07:25].\n* Đề xuất hướng việc tiếp thị sản phẩm và dịch vụ theo hướng trực quan hóa hơn [07:38].",
+   "ttft_s": 1.3,
+   "total_s": 1.57,
+   "usage": {
+    "prompt_tokens": 4962,
+    "completion_tokens": 99,
+    "reasoning_tokens": null,
+    "context_chars": 14480
+   }
+  },
+  {
+   "id": "h2-06",
+   "clip": "hop2",
+   "kind": "answerable",
+   "question": "Nhân viên được hỗ trợ gì trong mùa dịch?",
+   "expected": [
+    "Lương tháng này vẫn trả đầy đủ",
+    "Quà 10 hộp khẩu trang và 5 chai nước rửa tay",
+    "Thâm niên trên 10 năm được thêm 2 triệu"
+   ],
+   "must": 2,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dưới đây là các khoản hỗ trợ nhân viên trong mùa dịch được đề cập trong cuộc họp:\n\n* Nhân viên vẫn nhận lương đầy đủ mặc dù không đi làm hoặc đi làm ngày có ngày không [11:00].\n* Công ty gửi tặng một phần quà nhỏ chống dịch bao gồm 10 hộp khẩu trang và 5 chai nước rửa tay sát khuẩn [11:15].\n* Nhân viên có thâm niên làm việc trên 10 năm được hỗ trợ thêm 2 triệu đồng [11:27].",
+   "ttft_s": 3.56,
+   "total_s": 3.85,
+   "usage": {
+    "prompt_tokens": 4965,
+    "completion_tokens": 117,
+    "reasoning_tokens": null,
+    "context_chars": 14489
+   }
+  },
+  {
+   "id": "h2-07",
+   "clip": "hop2",
+   "kind": "answerable",
+   "question": "Chuyến du lịch hằng năm cuối tháng 6 sẽ ra sao?",
+   "expected": [
+    "Dự định đi Nha Trang nhưng dời tới cuối năm vì dịch",
+    "Nếu tình hình tốt thì đi tour Đông Nam Á, miễn phí ăn ở và vé máy bay, được bỏ phiếu chọn nước",
+    "Điều kiện là doanh thu đạt chỉ tiêu"
+   ],
+   "must": 2,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dựa vào transcript, chuyến du lịch hằng năm vào cuối tháng 6 sẽ được giải quyết như sau:\n* Do tình hình dịch bệnh, công ty quyết định dời lại chuyến du lịch đến cuối năm [12:29].\n* Nếu tình hình chuyển biến tốt hơn vào cuối năm và tổng doanh thu công ty đạt chỉ tiêu được giao, nhân viên sẽ được tham gia tour du lịch trong khu vực Đông Nam Á với chi phí ăn, ở, máy bay hoàn toàn miễn phí và được bỏ phiếu lựa chọn tour du lịch ở nước nào [12:29].",
+   "ttft_s": 5.09,
+   "total_s": 6.1,
+   "usage": {
+    "usage_error": "Server error '503 Service Unavailable' for url 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/"
+   }
+  },
+  {
+   "id": "h2-08",
+   "clip": "hop2",
+   "kind": "unanswerable",
+   "question": "Ngân sách quảng cáo của dự án K2 là bao nhiêu?",
+   "expected": [
+    "Không có thông tin"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Transcript không đề cập đến ngân sách quảng cáo của dự án K2.",
+   "ttft_s": 2.17,
+   "total_s": 2.23,
+   "usage": {
+    "prompt_tokens": 4968,
+    "completion_tokens": 15,
+    "reasoning_tokens": null,
+    "context_chars": 14495
+   }
+  },
+  {
+   "id": "h2-09",
+   "clip": "hop2",
+   "kind": "unanswerable",
+   "question": "Cuộc họp tiếp theo diễn ra vào ngày nào?",
+   "expected": [
+    "Không có thông tin"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dựa trên transcript cuộc họp, không có thông tin về thời gian diễn ra cuộc họp tiếp theo.",
+   "ttft_s": 1.78,
+   "total_s": 1.9,
+   "usage": {
+    "prompt_tokens": 4965,
+    "completion_tokens": 14,
+    "reasoning_tokens": null,
+    "context_chars": 14489
+   }
+  },
+  {
+   "id": "h2-10",
+   "clip": "hop2",
+   "kind": "unanswerable",
+   "question": "Đối thủ cạnh tranh chính của công ty tên là gì?",
+   "expected": [
+    "Không có thông tin, chỉ nói đối thủ mạnh"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Transcript không đề cập đến tên cụ thể của đối thủ cạnh tranh chính của công ty [00:49].",
+   "ttft_s": 1.45,
+   "total_s": 1.56,
+   "usage": {
+    "prompt_tokens": 4966,
+    "completion_tokens": 21,
+    "reasoning_tokens": null,
+    "context_chars": 14496
+   }
+  },
+  {
+   "id": "h1-01",
+   "clip": "hop1",
+   "kind": "answerable",
+   "question": "Ba nhân tố có trong một cuộc họp là gì?",
+   "expected": [
+    "Công việc, con người, lãnh đạo"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dựa vào transcript, 3 nhân tố có trong một cuộc họp bao gồm:\n- Công việc [00:38]\n- Con người [00:44]\n- Lãnh đạo [00:47]",
+   "ttft_s": 2.01,
+   "total_s": 2.22,
+   "usage": {
+    "prompt_tokens": 9023,
+    "completion_tokens": 46,
+    "reasoning_tokens": null,
+    "context_chars": 30674
+   }
+  },
+  {
+   "id": "h1-02",
+   "clip": "hop1",
+   "kind": "answerable",
+   "question": "Khi nào thì thực sự cần họp?",
+   "expected": [
+    "Khi không họp thì không giải quyết được vấn đề; nếu không họp vẫn làm được thì không họp"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Transcript không đề cập đến thông tin này.",
+   "ttft_s": 1.85,
+   "total_s": 1.93,
+   "usage": {
+    "prompt_tokens": 9020,
+    "completion_tokens": 195,
+    "reasoning_tokens": null,
+    "context_chars": 30663
+   }
+  },
+  {
+   "id": "h1-03",
+   "clip": "hop1",
+   "kind": "answerable",
+   "question": "Giảng viên dùng bộ câu hỏi nào để tổ chức một cuộc họp?",
+   "expected": [
+    "5W1H: What, Why, Where, When, Who, How"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Transcript không đề cập đến bộ câu hỏi cụ thể nào được giảng viên dùng để tổ chức một cuộc họp.",
+   "ttft_s": 2.14,
+   "total_s": 2.28,
+   "usage": {
+    "prompt_tokens": 9027,
+    "completion_tokens": 122,
+    "reasoning_tokens": null,
+    "context_chars": 30690
+   }
+  },
+  {
+   "id": "h1-04",
+   "clip": "hop1",
+   "kind": "answerable",
+   "question": "Thế nào là một quyết định tốt?",
+   "expected": [
+    "Nắm đúng bản chất vấn đề, giải pháp phù hợp",
+    "Ra đúng thời điểm, không quá muộn",
+    "Người tham gia hài lòng, tâm huyết, đồng thuận"
+   ],
+   "must": 2,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Theo transcript, một quyết định tốt trong cuộc họp gồm các đặc điểm sau:\n- Giải quyết được đúng bản chất vấn đề và đúng thời điểm [17:34].\n- Tạo được sự đồng thuận của mọi người tham gia [18:35].\n- Đảm bảo những người tham gia cảm thấy hài lòng và tâm huyết với quyết định đó [18:02].\n- Gắn liền với việc anh em đồng thuận và thực hiện tốt công việc [20:48].",
+   "ttft_s": 6.14,
+   "total_s": 6.97,
+   "usage": {
+    "prompt_tokens": 9021,
+    "completion_tokens": 104,
+    "reasoning_tokens": null,
+    "context_chars": 30665
+   }
+  },
+  {
+   "id": "h1-05",
+   "clip": "hop1",
+   "kind": "answerable",
+   "question": "Trong ma trận quyết định và thực hiện, quyết định sai nhưng thực hiện tốt dẫn tới gì?",
+   "expected": [
+    "Lãng phí"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Trong ma trận quyết định và thực hiện, quyết định sai nhưng thực hiện tốt dẫn tới việc lãng phí vì lựa chọn sai quyết định [20:00].",
+   "ttft_s": 1.66,
+   "total_s": 1.73,
+   "usage": {
+    "prompt_tokens": 9032,
+    "completion_tokens": 58,
+    "reasoning_tokens": null,
+    "context_chars": 30720
+   }
+  },
+  {
+   "id": "h1-06",
+   "clip": "hop1",
+   "kind": "answerable",
+   "question": "Giảng viên nói gì về quyền lực?",
+   "expected": [
+    "Quyền lực (power) là sự ảnh hưởng tới hành vi người khác",
+    "Đến từ uy tín, tín nhiệm, sức thuyết phục khi lợi ích của mình và tổ chức là một"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Transcript không đề cập giảng viên tên gì, nhưng có nội dung nói về quyền lực như sau:\n\n* Tầm ảnh hưởng chính là quyền lực. [25:58]\n* Quyền lực là sự ảnh hưởng, càng ảnh hưởng đến hành vi người khác theo ý kiến và quan điểm tốt của mình thì quyền lực càng nhiều. [26:02]",
+   "ttft_s": 3.81,
+   "total_s": 4.11,
+   "usage": {
+    "prompt_tokens": 9021,
+    "completion_tokens": 82,
+    "reasoning_tokens": null,
+    "context_chars": 30666
+   }
+  },
+  {
+   "id": "h1-07",
+   "clip": "hop1",
+   "kind": "answerable",
+   "question": "Người chủ trì nên cư xử thế nào trong cuộc họp?",
+   "expected": [
+    "Bình đẳng, khuyến khích mọi người nói, brainstorming",
+    "Lắng nghe, chỉ nói khi thật cần thiết",
+    "Không chỉ nghe ý kiến giống mình"
+   ],
+   "must": 2,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dựa trên nội dung transcript, người chủ trì (sếp, người quản lý) trong cuộc họp nên cư xử như sau:\n\n* Không nên nghĩ rằng mình biết hết mọi thứ và ý kiến của mình luôn đúng [12:43].\n* Tránh chỉ thích nghe những ý kiến đồng tình hoặc giống quan điểm của mình, và không nên bỏ qua hoặc khó chịu với những ý kiến trái quan điểm [14:43].\n* Cần tôn trọng, lắng nghe quan điểm của nhân viên và coi trọng các ý kiến đánh giá ở mức độ tương đối cân bằng nhau [13:38].\n* Bình đẳng và tạo môi trường, khuyến khích mọi người sẵn sàng chia sẻ ý tưởng, kể cả những ý kiến rất khác với mình [13:53].\n* Đ",
+   "ttft_s": 2.02,
+   "total_s": 3.67,
+   "usage": {
+    "prompt_tokens": 9024,
+    "completion_tokens": 196,
+    "reasoning_tokens": null,
+    "context_chars": 30682
+   }
+  },
+  {
+   "id": "h1-08",
+   "clip": "hop1",
+   "kind": "unanswerable",
+   "question": "Học phí của khóa đào tạo là bao nhiêu?",
+   "expected": [
+    "Không có thông tin"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Transcript không đề cập đến học phí của khóa đào tạo.",
+   "ttft_s": 2.64,
+   "total_s": 2.73,
+   "usage": {
+    "prompt_tokens": 9023,
+    "completion_tokens": 14,
+    "reasoning_tokens": null,
+    "context_chars": 30673
+   }
+  },
+  {
+   "id": "h1-09",
+   "clip": "hop1",
+   "kind": "unanswerable",
+   "question": "Giảng viên giới thiệu phần mềm họp trực tuyến nào?",
+   "expected": [
+    "Không có thông tin"
+   ],
+   "must": 1,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Transcript không đề cập đến việc giảng viên giới thiệu phần mềm họp trực tuyến nào [00:00].",
+   "ttft_s": 3.09,
+   "total_s": 3.28,
+   "usage": {
+    "prompt_tokens": 9024,
+    "completion_tokens": 23,
+    "reasoning_tokens": null,
+    "context_chars": 30685
+   }
+  }
+ ]
+}

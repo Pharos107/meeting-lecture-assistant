@@ -1,0 +1,33 @@
+upload 201 0.1 s
+job 8d2c6a86-8ff9-4f8c-bc01-72e36e3ae5eb
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   13.1s] ('transcribing', None, None)
+[   53.8s] ('diarizing', None, None)
+[   93.1s] ('ready', None, None)
+elapsed 93.1 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 856536, "diarization_device": "cuda"}
+pass 2 segments 154 speakers ['SPEAKER_03', 'SPEAKER_07', 'SPEAKER_06', 'SPEAKER_01', 'SPEAKER_09', 'SPEAKER_00', 'SPEAKER_04', 'SPEAKER_05', 'SPEAKER_08', 'SPEAKER_02']
+  SPEAKER_07: 289s
+  SPEAKER_06: 144s
+  SPEAKER_03: 103s
+  SPEAKER_00: 44s
+  SPEAKER_01: 39s
+  SPEAKER_08: 30s
+  SPEAKER_09: 26s
+  SPEAKER_04: 22s
+  SPEAKER_05: 15s
+  SPEAKER_02: 5s
+words 2554 segments with >1 word speaker 64
+      6.2 SPEAKER_03: Xin chào các anh chị trong nhóm marketing. Hôm nay chúng ta sẽ có buổi họp online do tình hình dịch bệnh hiện 
+     14.7 SPEAKER_03: Nội dung cuộc họp sẽ liên quan đến dự án K2 của nhóm chúng ta. Tiếp đây, giám đốc sẽ phổ biến cụ thể với mọi n
+     25.5 SPEAKER_07: Cảm ơn mọi người đã tham gia đầy đủ cuộc họp ngày hôm nay.
+     30.0 SPEAKER_07: Ba tháng vừa qua thì tôi thấy là nhóm mình đã liên tục đã không có đạt target.
+     35.6 SPEAKER_07: Như là cái báo cáo mà mình gửi cho mọi người ở trong file, thì trưởng phòng hãy cho tôi biết cái lý do.
+     49.0 SPEAKER_06: Dạ thưa giám đốc, theo báo cáo mà các trưởng nhóm nó gửi tới đa phần đối thủ chúng ta rất mạnh, họ treo banner
+     63.9 SPEAKER_07: Tôi cảm thấy cái lý do mà các đối thủ nó không có thả đáng
+     68.2 SPEAKER_07: Chẳng phải là trước đây mình vẫn làm rất là tốt
+     71.5 SPEAKER_07: Dù là các đối thủ là rất là đáng gồm hay sao
+     74.7 SPEAKER_07: Thư ký, em hãy đọc cho các bạn nghe những cái vấn đề mà mình tìm thấy trong bản báo cáo đi
+     80.7 SPEAKER_03: Vâng, thưa mọi người, sau khi đã xem qua bản báo cáo
+     84.3 SPEAKER_03: Cũng như quan sát quá trình làm việc của bộ phận

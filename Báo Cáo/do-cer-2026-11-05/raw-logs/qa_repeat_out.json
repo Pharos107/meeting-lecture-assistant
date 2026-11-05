@@ -1,0 +1,77 @@
+{
+ "model": "gemini-3.5-flash-lite",
+ "jobs": {
+  "hop1": "a5cf65bd-d678-436b-ae40-21150bad0df6"
+ },
+ "answers": [
+  {
+   "id": "h1-07-lap1",
+   "clip": "hop1",
+   "kind": "answerable",
+   "question": "Người chủ trì nên cư xử thế nào trong cuộc họp?",
+   "expected": [
+    "Bình đẳng, khuyến khích mọi người nói, brainstorming",
+    "Lắng nghe, chỉ nói khi thật cần thiết",
+    "Không chỉ nghe ý kiến giống mình"
+   ],
+   "must": 2,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dựa trên transcript, người chủ trì cuộc họp cần lưu ý những điểm sau:\n\n* Sếp không nên chỉ thích nghe những ý kiến giống quan điểm của mình mà ít nghe hoặc bỏ qua ý kiến trái chiều [12:47].\n* Cần khuyến khích mọi người (nhân viên) nói và chia sẻ ý tưởng một cách công bằng, bình đẳng [13:14].\n* Tôn trọng và lắng nghe các ý kiến; nếu có ý kiến khác biệt thì cần phân tích, đánh giá, hiểu góc nhìn của người khác thay vì lập tức bác bỏ [13:34].\n* Đóng vai trò chủ trì, kêu gọi, đặt vấn đề và để cho càng nhiều người nói được càng tốt [16:00].\n* Làm tốt vai trò tóm tắt và kết luận vấn đề sau quá trình thảo luận [23:11].",
+   "ttft_s": 1.37,
+   "total_s": 2.54,
+   "usage": {
+    "prompt_tokens": 9024,
+    "completion_tokens": 283,
+    "reasoning_tokens": null,
+    "context_chars": 30682
+   }
+  },
+  {
+   "id": "h1-07-lap2",
+   "clip": "hop1",
+   "kind": "answerable",
+   "question": "Người chủ trì nên cư xử thế nào trong cuộc họp?",
+   "expected": [
+    "Bình đẳng, khuyến khích mọi người nói, brainstorming",
+    "Lắng nghe, chỉ nói khi thật cần thiết",
+    "Không chỉ nghe ý kiến giống mình"
+   ],
+   "must": 2,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dựa trên transcript, người chủ trì cuộc họp cần lưu ý những điểm sau:\n\n* **Vai trò chung:** Người chủ trì thông thường là sếp, người quản lý hoặc người có trách nhiệm giải quyết vấn đề [11:39], [11:43]. Nếu sếp đã tự giải quyết được vấn đề thì không cần họp, còn khi chưa giải quyết được thì cần tổ chức họp để lắng nghe nhiều chiều [12:12]. \n* **Lắng nghe và tôn trọng ý kiến:** Không nên chỉ thích nghe những ý kiến đồng thuận hoặc giống quan điểm của mình, mà cần khuyến khích mọi người (đặc biệt là nhân viên) nói ra ý kiến [12:47], [13:18]. Cần tôn trọng, lắng nghe cân bằng các ý kiến, kể cả những ý kiến khác hoặc trái với quan điểm của sếp [13:34], [13:43].\n* **Tạo sự bình đẳng:** Giữ trạng thái bình đẳng trong cuộc họp để mọi người sẵn sàng chia sẻ ý tưởng một cách công bằng [13:49], [13:58], [16:00].\n* **Xử lý các ý kiến khác biệt:** \n  * Khi nhân viên có ý kiến khác, cần tìm hiểu xem họ hiểu như thế nào [14:38]. \n  * Nếu họ đúng thì mình thay đổi quan điểm; nếu họ sai (chưa hiểu đúng) thì làm cho họ hiểu đúng [15:01], [15:17]. \n  * Tránh việc thấy ý kiến không đúng với mình thì cho là sai rồi bỏ đi [15:42].\n* **Nhiệm vụ điều hành:** Chỉ đóng vai trò chủ trì, gợi mở, đặt vấn đề để càng nhiều người nói càng tốt, và quan trọng nhất là làm tốt vai trò tóm tắt, kết luận [16:00], [17:06], [23:11].",
+   "ttft_s": 1.22,
+   "total_s": 2.46,
+   "usage": {
+    "usage_error": "Server error '503 Service Unavailable' for url 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/"
+   }
+  },
+  {
+   "id": "h1-07-lap3",
+   "clip": "hop1",
+   "kind": "answerable",
+   "question": "Người chủ trì nên cư xử thế nào trong cuộc họp?",
+   "expected": [
+    "Bình đẳng, khuyến khích mọi người nói, brainstorming",
+    "Lắng nghe, chỉ nói khi thật cần thiết",
+    "Không chỉ nghe ý kiến giống mình"
+   ],
+   "must": 2,
+   "status": "done",
+   "error": null,
+   "model": "gemini-3.5-flash-lite",
+   "answer": "Dưới đây là cách cư xử của người chủ trì trong cuộc họp theo nội dung transcript:\n\n* Không nên chỉ thích nghe những ý kiến đồng thuận với quan điểm của mình mà ít nghe hoặc loại bỏ những ý kiến trái chiều [12:47].\n* Cố gắng khuyến khích mọi người nói và chia sẻ ý tưởng một cách cởi mở (brainstorming), đặc biệt là khuyến khích nhân viên phát biểu [13:18].\n* Tôn trọng và lắng nghe mọi ý kiến; khi vào cuộc họp, vai trò của sếp và nhân viên là tương đối cân bằng nhau [13:34].\n* Duy trì sự bình đẳng để mọi người sẵn sàng chia sẻ, kể cả những ý kiến rất khác với mình [13:53].\n* Đóng vai trò là người chủ trì điều hòa, gợi mở, đặt vấn đề, lắng nghe, phân tích đánh giá, tóm tắt và đưa ra kết luận [15:58], [23:11].",
+   "ttft_s": 2.12,
+   "total_s": 2.65,
+   "usage": {
+    "prompt_tokens": 9024,
+    "completion_tokens": 263,
+    "reasoning_tokens": null,
+    "context_chars": 30682
+   }
+  }
+ ]
+}
