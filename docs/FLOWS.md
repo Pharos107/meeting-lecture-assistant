@@ -367,7 +367,7 @@ Server đóng socket ngay sau mỗi tin `error`.
 | `run_live_session`: đọc PCM, VAD, Whisper turbo, phát `draft` | Có, `services/live_worker.py`, có test với VAD và Whisper giả. Đã chạy qua Caddy trên GPU với 45 giây cuộc họp |
 | Chuyển session `stopping` → `finalized`, job `capturing` → `preprocessing`, chạy pass 2 | Có, trong cùng tác vụ, có test. Lần giao lại chạy lại pass 2 trên Opus |
 | Nhả khóa khi mất heartbeat | Worker giữ khóa tới hết pass 2 và đặt `live:{sid}:worker`. `LockKeeper(until_quiet=True)` của FastAPI chỉ nhả khóa khi chưa có worker nào nhận phiên |
-| Thu micro, chia sẻ tab, AudioWorklet, trang `/live` | Có: `public/pcm-worklet.js`, `lib/live-capture.ts`, trang `/live`. Nối lại bằng ticket mới khi rớt dưới 25 giây. Chưa thử trên trình duyệt thật |
+| Thu micro, chia sẻ tab, AudioWorklet, trang `/live` | Có: `public/pcm-worklet.js`, `lib/live-capture.ts`, trang `/live`. Nối lại bằng ticket mới khi rớt dưới 25 giây. Nhóm đã chạy thực tế trên trình duyệt với micro và worker GPU, ghi nhận 2026-11-04. Chia sẻ tab và rớt mạng chưa có lần thử được ghi lại |
 
 ## 8. F6. Xem, sửa, đánh dấu, nghe lại
 
@@ -409,7 +409,7 @@ Media token hết hạn sau 5 phút. Trình phát nhận `404` thì trang xin to
 | Phần | Hiện trạng |
 |---|---|
 | Transcript, sửa câu, alias, đánh dấu, việc `manual`, media token, Range | Có, có test |
-| Trang `/jobs/[id]` | Có, theo khung ba vùng ở kiến trúc mục 2.7. SSE, chạy chữ, nghe lại, đổi tên người nói, đánh dấu theo vùng bôi đen, tạo việc, hỏi trợ lý, xuất file, chia sẻ, cài đặt hiển thị, hủy, chạy lại, xóa. Chưa có ô sửa câu, xem #21 |
+| Trang `/jobs/[id]` | Có, theo khung ba vùng ở kiến trúc mục 2.7. SSE, chạy chữ, nghe lại, đổi tên người nói, đánh dấu theo vùng bôi đen, tạo việc, hỏi trợ lý, xuất file, chia sẻ, cài đặt hiển thị, hủy, chạy lại, xóa, sửa câu. Nút bút chì ở đầu câu mở ô sửa: Lưu hoặc Ctrl + Enter, Hủy hoặc Esc, Về bản gốc gửi `text_edited: null`. Chữ trùng bản gốc cũng gửi `null`. Câu đã sửa mang nhãn "Đã sửa" |
 | Liên kết chia sẻ, bảng `job_shares`, trang `/shared/[token]` | Có, có test API, đã chạy qua trình duyệt với backend trên SQLite |
 
 ## 9. F7. Hỏi đáp với LLM
@@ -540,11 +540,10 @@ Không có `REDIS_URL` thì các key trên nằm trong bộ nhớ tiến trình.
 
 ## 13. Khoảng trống giữa đặc tả và code
 
-Xếp theo mức chặn demo. Cập nhật 2026-11-03.
+Xếp theo mức chặn demo. Cập nhật 2026-11-05.
 
 | # | Mức | Khoảng trống | Ảnh hưởng | Chỗ sửa |
 |---|---|---|---|---|
-| 21 | Cao | Giao diện chưa có ô sửa câu | UC12 chỉ gọi được qua API, người dùng không sửa được chữ | `transcript-layout.tsx`, gọi `PATCH /segments/{id}` |
 | 23 | Cao | Chưa đo hỏi đáp trên bộ đối chiếu | Chưa biết chất lượng câu trả lời, độ đúng của mốc, và chi phí trên bài dài | Đo theo ý tưởng mục 6 |
 | 19 | Cao | `large-v3-turbo` bỏ trống những đoạn có lời nói | Bài tin y tế còn 14,5 giây tiếng nói không ra chữ sau khi sửa #16. Trên bài giảng và cuộc họp thật ngày 2026-11-03, turbo mất 2.073 từ so với 849 của PhoWhisper, có đoạn trống liền 108 giây. Đây là phần lớn mức chênh CER giữa hai model. Model bỏ với `no_speech_prob` bằng 0, nên ngưỡng và dải `temperature` không cứu được. Nhận dạng riêng từng vùng VAD thì lấy lại được | Đã có bước vá trong `vad_chunker.fill_empty_spans`: vùng VAD trống từ 1,5 giây được nhận dạng riêng. Còn đo lại trên bộ dữ liệu thực tế ở `Báo Cáo/do-cer-2026-11-03/`. Ở bài `acid`, phần lớn đoạn trống dài là do VAD chỉ thấy tiếng rải rác và Whisper không ra chữ cả khi cắt cửa sổ 10 giây, nên bước vá không lấy lại được |
 | 20 | Trung bình | Nền có người nói làm mất chữ | Trộn tiếng người nói lẫn nhau: WER 13% ở 10 dB, 30% ở 5 dB, gần như mất hết ở 0 dB. Nhiễu đều chịu được tới 10 dB. Lọc nhiễu `afftdn` chỉ giúp nhiễu đều mạnh | Đo trên ghi âm họp thật. Cân nhắc #19 và tách nguồn trước khi nhận dạng |
@@ -554,15 +553,17 @@ Xếp theo mức chặn demo. Cập nhật 2026-11-03.
 
 Đã đóng ngày 2026-10-29: #1 pipeline PT1 thật, #3 phần `/jobs`, `/jobs/new`, `/jobs/[id]`, #5 tự làm mới token, #6 cấu hình Celery, #8 ghi nhãn hàng loạt, #11 xóa file gốc sau khi có Opus, #13 đọc từ trong một truy vấn, #14 `max(seq)`, #12 bộ phiên bản chạy trên card thật. Lúc kiểm #12 đã sửa ba lỗi chỉ lộ ra trên GPU: image nền trixie làm `ctranslate2` không nạp được, pip thay torch cu121 bằng torch mới trên PyPI, và worker khởi tạo CUDA ở tiến trình cha nên tiến trình fork của Celery không nạp được Whisper. Cũng ngày đó đóng #16: bộ lọc chữ bịa thêm `hallucination_silence_threshold`, ngưỡng tốc độ nói và luật lời mời đăng ký kênh, kèm sửa chữ số bị tách thành `150 .000`. Số đo ở kiến trúc mục 2.4 và trong `Báo Cáo/`.
 
+Đã đóng ngày 2026-11-05: #21 ô sửa câu trong `transcript-layout.tsx`, gọi `PATCH /segments/{id}`. Đã thử trên trình duyệt với backend trên SQLite: lưu, tải lại trang, hủy, về bản gốc.
+
 Đã đóng ngày 2026-11-04: #4 `enroll_voice` tính vector bằng chính `diarization.diarize` với một người nói, nên vector so được với vector cụm của `cluster_vectors`, và phần `/voice-profiles` của #3.
 
-Đã đóng ngày 2026-11-03: #2 vòng nháp và bàn giao sang pass 2 trong `run_live_session`, #7 nhả khóa của phiên chuyển về worker, và phần `/live` của #3. Cả ba mới có test với model giả, chưa chạy trên GPU và trình duyệt thật.
+Đã đóng ngày 2026-11-03: #2 vòng nháp và bàn giao sang pass 2 trong `run_live_session`, #7 nhả khóa của phiên chuyển về worker, và phần `/live` của #3. Lúc đóng, cả ba mới có test với model giả. Ngày 2026-11-04 nhóm đã chạy PT2 thực tế trên trình duyệt với micro và worker GPU.
 
 ## 14. Thứ tự làm tiếp đề xuất
 
-1. Chạy thử PT2 trên GPU và trình duyệt thật: micro, chia sẻ tab, rớt mạng dưới 30 giây, dừng, pass 2.
+1. Thử nốt PT2 ở các tình huống chưa ghi nhận: chia sẻ tab, rớt mạng dưới 30 giây. Đo độ trễ câu nháp theo [ý tưởng mục 6](IDEA_AND_CHALLENGES.md#6-tiêu-chí-nghiệm-thu). Micro trên trình duyệt thật và GPU đã chạy ngày 2026-11-04.
 2. Đo lại #19, rồi đo `large-v3-turbo` có nhập thuật ngữ trên các bài chuyên ngành. Chạy lại bộ dữ liệu thực tế ở `Báo Cáo/do-cer-2026-11-03/` để khóa model bản chuẩn. Hai vòng đo trước, trên tin VTV24 và trên bài giảng, cuộc họp đăng mạng, đều ở `Báo Cáo/`. Ghi âm họp do nhóm tự thu vẫn cần cho #20.
 3. Cơ chế nhường GPU ở kiến trúc mục 1, để file dài không chặn phiên nghe mới.
 4. Đo điểm giống của hồ sơ giọng trên mẫu thu của nhóm, so với giọng cùng người trong ghi âm họp, để chỉnh `VOICE_MATCH_THRESHOLD`.
-5. #21 ô sửa câu, và #23.
+5. #23.
 6. #18, sau khi có số đo, rồi các mục còn lại.
