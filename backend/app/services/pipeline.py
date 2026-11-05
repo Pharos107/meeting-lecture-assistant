@@ -454,8 +454,11 @@ def _process_upload(db: Session, job: Job, engine_factory, diarize_fn, regions_f
                 engine = engine_factory()
             return engine.transcribe(slice_pcm(pcm, chunk.start, chunk.end), job.vocabulary)
 
+        def transcribe_greedy(chunk):
+            return engine.transcribe(slice_pcm(pcm, chunk.start, chunk.end), job.vocabulary, greedy=True)
+
         def transcribe(chunk):
-            return fill_empty_spans(chunk, transcribe_span(chunk), transcribe_span)
+            return fill_empty_spans(chunk, transcribe_span(chunk), transcribe_span, transcribe_greedy)
 
         def diarize():
             nonlocal engine
