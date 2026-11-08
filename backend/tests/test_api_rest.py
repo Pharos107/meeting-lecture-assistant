@@ -5,6 +5,7 @@ import os
 import shutil
 import tempfile
 import threading
+import time
 import unittest
 import uuid
 import zipfile
@@ -595,3 +596,40 @@ class ApiRestTests(unittest.TestCase):
         window._hits["khach"] = [0.0]
         window.hit("khac")
         self.assertNotIn("khach", window._hits)
+
+    def test_rate_limit_falls_back_when_redis_is_down(self) -> None:
+        os.environ["REDIS_URL"] = "redis://127.0.0.1:1/0"
+        get_settings.cache_clear()
+        try:
+            window = SlidingWindow(1, name=f"test-{uuid.uuid4().hex}")
+            window.hit("ip")
+            with self.assertRaises(ApiError):
+                window.hit("ip")
+        finally:
+            os.environ["REDIS_URL"] = ""
+            get_settings.cache_clear()
+
+    @unittest.skipUnless(os.environ.get("TEST_REDIS_URL"), "Đặt TEST_REDIS_URL để thử với Redis thật.")
+    def test_rate_limit_is_shared_through_redis(self) -> None:
+        # #9: hai bản uvicorn là hai đối tượng SlidingWindow riêng, cùng tên, cùng Redis.
+        os.environ["REDIS_URL"] = os.environ["TEST_REDIS_URL"]
+        get_settings.cache_clear()
+        name = f"test-{uuid.uuid4().hex}"
+        try:
+            first, second = SlidingWindow(3, name=name), SlidingWindow(3, name=name)
+            first.hit("ip")
+            second.hit("ip")
+            first.hit("ip")
+            with self.assertRaises(ApiError):
+                second.hit("ip")
+            self.assertEqual(first._hits, {})
+            second.hit("ip-khac")
+            short = SlidingWindow(1, period=0.3, name=f"{name}-ngan")
+            short.hit("ip")
+            with self.assertRaises(ApiError):
+                short.hit("ip")
+            time.sleep(0.4)
+            short.hit("ip")
+        finally:
+            os.environ["REDIS_URL"] = ""
+            get_settings.cache_clear()
