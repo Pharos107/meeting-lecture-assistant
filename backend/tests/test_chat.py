@@ -42,7 +42,7 @@ from app.models import (
     WsTicket,
 )
 from app.services.chat_service import build_messages, clock, history_messages
-from app.services.llm_client import LlmRateLimited, LlmTimeout, LlmUpstream, stream_chat
+from app.services.llm_client import LlmRateLimited, LlmTimeout, LlmTruncated, LlmUpstream, stream_chat
 
 get_settings.cache_clear()
 Base.metadata.create_all(get_engine())
@@ -294,6 +294,18 @@ class ChatTests(unittest.TestCase):
         self.assertEqual(answer["error_code"], "llm_timeout")
         self.assertEqual(answer["content"], "Phần đầu")
 
+    def test_truncated_answer_is_failed_not_done(self) -> None:
+        job_id = self._ready_job()
+        chat_routes.stream_chat, _ = fake_stream("* Ý một. * Đ", error=LlmTruncated("đóng sớm"))
+        frames = parse_sse(self._ask(job_id).text)
+        self.assertEqual([f["event"] for f in frames], ["start", "delta", "error"])
+        self.assertEqual(frames[-1]["data"]["code"], "llm_upstream")
+        self.assertIn("ngắt giữa chừng", frames[-1]["data"]["message"])
+        answer = self._messages(job_id)[-1]
+        self.assertEqual(answer["status"], "failed")
+        self.assertEqual(answer["error_code"], "llm_upstream")
+        self.assertEqual(answer["content"], "* Ý một. * Đ")
+
     def test_quota_error_has_its_own_message(self) -> None:
         job_id = self._ready_job()
         chat_routes.stream_chat, _ = fake_stream(error=LlmRateLimited("hết lượt"))
@@ -399,6 +411,7 @@ class LlmClientTests(unittest.TestCase):
                 'data: {"choices":[{"delta":{"content":"Xin "}}]}',
                 'data: {"choices":[{"delta":{"content":"chào"}}]}',
                 "data: không phải json",
+                'data: {"choices":[{"delta":{},"finish_reason":"stop"}]}',
                 "data: [DONE]",
             ]
             return httpx.Response(200, text="\n\n".join(lines))
@@ -406,6 +419,26 @@ class LlmClientTests(unittest.TestCase):
         self.assertEqual(collect(httpx.MockTransport(handler)), ["Xin ", "chào"])
         self.assertTrue(bodies[0]["stream"])
         self.assertEqual(bodies[0]["model"], "test-model")
+
+    def test_finish_reason_in_last_chunk_is_enough(self) -> None:
+        lines = ['data: {"choices":[{"delta":{"content":"Xong."},"finish_reason":"stop"}]}', "data: [DONE]"]
+        transport = httpx.MockTransport(lambda _request: httpx.Response(200, text="\n\n".join(lines)))
+        self.assertEqual(collect(transport), ["Xong."])
+
+    def test_stream_without_finish_reason_is_truncated(self) -> None:
+        # #24: nhà cung cấp đóng luồng giữa chừng, kể cả khi đã gửi [DONE].
+        received: list[str] = []
+        lines = ['data: {"choices":[{"delta":{"content":"* Đ"}}]}', "data: [DONE]"]
+        transport = httpx.MockTransport(lambda _request: httpx.Response(200, text="\n\n".join(lines)))
+
+        async def run() -> None:
+            async for text in stream_chat([{"role": "user", "content": "xin chào"}], transport=transport):
+                received.append(text)
+
+        with self.assertRaises(LlmTruncated) as caught:
+            asyncio.run(run())
+        self.assertIsInstance(caught.exception, LlmUpstream)
+        self.assertEqual(received, ["* Đ"])
 
     def test_maps_errors(self) -> None:
         def refused(_request: httpx.Request) -> httpx.Response:

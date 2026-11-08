@@ -27,7 +27,7 @@ from app.services.chat_service import (
     load_messages,
     save_answer,
 )
-from app.services.llm_client import LlmRateLimited, LlmTimeout, LlmUpstream, stream_chat
+from app.services.llm_client import LlmRateLimited, LlmTimeout, LlmTruncated, LlmUpstream, stream_chat
 
 log = logging.getLogger(__name__)
 
@@ -42,6 +42,7 @@ _ERROR_TEXT = {
     "llm_rate_limited": "Đã hết lượt hỏi của dịch vụ AI. Thử lại sau ít phút, hoặc sau khi hạn mức ngày được đặt lại.",
     "llm_upstream": "Không kết nối được server LLM. Thử lại sau.",
 }
+_TRUNCATED_TEXT = "Câu trả lời bị ngắt giữa chừng. Hỏi lại để nhận câu trả lời đầy đủ."
 
 
 def chat_busy() -> ApiError:
@@ -150,10 +151,11 @@ async def ask(job_id: str, request: Request, db: Session = Depends(get_db)) -> S
             finish("done")
             yield frame("done", {"answer_id": str(answer_id), "model": model})
         except (LlmTimeout, LlmRateLimited, LlmUpstream) as exc:
-            code = _ERROR_CODES[type(exc)]
-            log.warning("Hỏi đáp của job %s lỗi: %s", job_id, code)
+            code = next(code for kind, code in _ERROR_CODES.items() if isinstance(exc, kind))
+            message = _TRUNCATED_TEXT if isinstance(exc, LlmTruncated) else _ERROR_TEXT[code]
+            log.warning("Hỏi đáp của job %s lỗi: %s (%s)", job_id, code, exc)
             finish("failed", code)
-            yield frame("error", {"code": code, "message": _ERROR_TEXT[code]})
+            yield frame("error", {"code": code, "message": message})
         finally:
             # Client ngắt kết nối làm generator bị hủy tại một lần chờ bất kỳ.
             finish("stopped")

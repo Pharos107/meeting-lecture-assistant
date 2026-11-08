@@ -44,7 +44,7 @@ Thời gian trong JSON là số nguyên mili giây, mốc 0 là đầu file ho�
 | 422 | `llm_not_configured` | Chưa có `LLM_MODEL` hoặc `LLM_API_KEY` |
 | 422 | `llm_context_exceeded` | Transcript và lịch sử vượt ngữ cảnh của model |
 | 429 | `rate_limited` | Quá 60 request mỗi phút từ một IP trên `register`, `login`, `POST /api/jobs`, hoặc `POST .../chat/messages` |
-| 502 | `llm_upstream` | Không kết nối được server LLM, hoặc server trả lỗi HTTP khác 429 |
+| 502 | `llm_upstream` | Không kết nối được server LLM, server trả lỗi HTTP khác 429, hoặc luồng đóng mà không có `finish_reason` |
 | 503 | `gpu_oom` | Không nạp được Whisper trong phần VRAM còn lại |
 | 504 | `llm_timeout` | Server LLM im lặng quá `LLM_TIMEOUT_SECONDS` |
 
