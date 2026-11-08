@@ -182,6 +182,55 @@ class PipelineTests(unittest.TestCase):
         finally:
             db.close()
 
+    def test_sentence_of_two_speakers_is_split(self) -> None:
+        # #18: Whisper trả một câu chứa lời hai người. Câu sau của người thứ hai vẫn gộp được.
+        db, job = self._job()
+
+        def words(*items: tuple[str, float, float]) -> list[dict]:
+            return [{"text": text, "start": start, "end": end} for text, start, end in items]
+
+        def transcribe(_chunk):
+            return [
+                {"words": words(("Anh", 0.0, 0.4), ("thấy", 0.4, 0.8), ("sao?", 0.8, 1.2),
+                                ("Em", 1.5, 1.8), ("thấy", 1.8, 2.1), ("được", 2.1, 2.5))},
+                {"words": words(("nhưng", 2.6, 3.0), ("còn", 3.0, 3.3), ("đắt.", 3.3, 3.8))},
+                {"words": words(("Chốt", 5.0, 5.4), ("nhé.", 5.4, 5.8))},
+            ]
+
+        def diarize():
+            return [
+                SpeakerTurn(0, 1300, "SPEAKER_00"),
+                SpeakerTurn(1400, 4000, "SPEAKER_01"),
+                SpeakerTurn(4900, 6000, "SPEAKER_00"),
+            ]
+
+        try:
+            run_standard_pass(db, job, regions=[(0, 6)], transcribe=transcribe, diarize=diarize)
+            db.expire_all()
+            rows = db.query(Segment).filter(Segment.job_id == job.id).order_by(Segment.position).all()
+            self.assertEqual(
+                [(row.text_raw, row.speaker_label) for row in rows],
+                [
+                    ("Anh thấy sao?", "SPEAKER_00"),
+                    ("Em thấy được nhưng còn đắt.", "SPEAKER_01"),
+                    ("Chốt nhé.", "SPEAKER_00"),
+                ],
+            )
+            # Bước gộp câu xóa câu mà không đánh số lại, nên chỉ đòi vị trí tăng dần.
+            positions = [row.position for row in rows]
+            self.assertEqual(positions, sorted(set(positions)))
+            self.assertTrue(all(position >= 0 for position in positions))
+            self.assertEqual([(row.start_ms, row.end_ms) for row in rows], [(0, 1200), (1500, 3800), (5000, 5800)])
+            for row in rows:
+                kept = db.query(Word).filter(Word.segment_id == row.id).order_by(Word.position).all()
+                self.assertEqual(" ".join(word.text for word in kept), row.text_raw)
+                self.assertEqual([word.position for word in kept], list(range(len(kept))))
+                self.assertEqual({word.speaker_label for word in kept}, {row.speaker_label})
+            types = [row.event_type for row in db.query(JobEvent).filter(JobEvent.job_id == job.id).order_by(JobEvent.seq)]
+            self.assertEqual(types[-2:], ["speakers", "done"])
+        finally:
+            db.close()
+
     def test_overlap_and_diarization_failure(self) -> None:
         db, job = self._job()
 

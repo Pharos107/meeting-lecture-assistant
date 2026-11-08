@@ -192,7 +192,9 @@ Gán nhãn, thời gian đã đổi sang mili giây:
 1. Với mỗi từ, lấy đoạn pyannote có phần giao dài nhất.
 2. Phần giao đạt ít nhất một nửa độ dài từ thì từ nhận nhãn đó.
 3. Ngược lại `speaker_label` của từ là null.
-4. Nhãn câu là nhãn có tổng độ dài từ được gán lớn nhất trong câu. Không có từ nào được gán thì nhãn câu là null.
+4. Tách câu tại chỗ đổi nhãn. Từ null đi theo từ có nhãn gần nhất trong câu, tính bằng khoảng cách thời gian. Lượt dưới 2 từ và ngắn hơn 800 ms nhập vào lượt bên cạnh dài hơn, để một từ lệch biên lượt nói của pyannote không cắt câu thành mảnh. Phần đầu giữ id câu cũ, các phần sau là câu mới, từ dời sang câu mới và đánh số lại từ 0. Câu tách ra đổi id đã phát qua SSE, nên bước này xong trước sự kiện `speakers`. Client đã tải lại transcript khi nhận sự kiện đó.
+5. Nhãn câu là nhãn có tổng độ dài từ được gán lớn nhất trong câu. Không có từ nào được gán thì nhãn câu là null.
+6. Bước gộp câu Whisper cắt giữa chừng chạy sau cùng, chỉ gộp hai câu cùng nhãn.
 
 Nhãn lưu đúng chuỗi pyannote trả, dạng `SPEAKER_00`. Tên người nhìn thấy là bản ghi alias, không sửa nhãn gốc.
 
@@ -203,7 +205,7 @@ Hai người nói cùng lúc trên một từ chỉ còn một nhãn. Đây là 
 Hướng tối ưu, cần đo:
 
 - Từ nằm ở khoảng trống giữa hai lượt nói đang nhận null. Gán cho lượt nói gần nhất khi cách dưới khoảng 500 ms sẽ giảm số câu không có nhãn.
-- Một câu của Whisper có thể chứa lời hai người nhưng chỉ nhận một nhãn. Đã có timestamp từng từ, nên có thể tách câu tại chỗ đổi nhãn. Việc này đổi id câu đã phát qua SSE, nên phải xong trước sự kiện `speakers`. Client đã tải lại transcript khi nhận sự kiện đó.
+- Ngưỡng 2 từ và 800 ms của bước tách câu là điểm xuất phát, cần đo số câu còn lẫn nhãn trên ghi âm họp thật.
 
 Hồ sơ giọng thuộc tài khoản, tối đa 20 hồ sơ. Mỗi hồ sơ có tên hiển thị và một vector lấy từ cùng embedding model bên trong pipeline `speaker-diarization-3.1`. Ghi danh là tác vụ `enroll_voice` trên hàng `gpu`, xin `gpu:lock` cùng kiểu `retry` của PT1. Mẫu gửi lên dài 20 đến 40 giây. Sau VAD phải còn ít nhất 15 giây có tiếng. UI dẫn người dùng nói khoảng 30 giây. Trước khi thu, trang đo ồn nền 2 giây sau bộ lọc của trình duyệt, lấy trung vị. Trên -45 dBFS thì nhắc tìm chỗ yên tĩnh hơn, người dùng chọn đo lại hoặc vẫn thu. Ngưỡng này là điểm xuất phát, cần chỉnh theo số đo. Worker chuẩn hóa mẫu sang Opus, đo tiếng bằng cùng VAD của PT1, rồi chạy `diarize` với `num_speakers=1` và lấy vector của nhãn duy nhất. Như vậy vector hồ sơ đi qua đúng đoạn cắt và embedding của `cluster_vectors`.
 
