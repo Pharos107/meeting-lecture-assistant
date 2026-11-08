@@ -166,13 +166,13 @@ class WhisperEngine:
         # Phiên nghe đã nạp cùng model cho bản nháp thì đưa sang, không nạp lần hai.
         self.model = model if model is not None else load_whisper(standard_model_name(model_name))
 
-    def transcribe(self, audio: np.ndarray, vocabulary: str | None) -> list[dict]:
-        """Trả câu với start, end, words tính bằng giây tương đối trong `audio`."""
+    def transcribe(self, audio: np.ndarray, vocabulary: str | None, greedy: bool = False) -> list[dict]:
+        """Trả câu với start, end, words tính bằng giây tương đối trong `audio`. `greedy` giải mã với beam 1."""
         segments, _info = self.model.transcribe(
             audio,
             language="vi",
             task="transcribe",
-            beam_size=self.beam_size,
+            beam_size=1 if greedy else self.beam_size,
             word_timestamps=True,
             condition_on_previous_text=False,
             vad_filter=False,

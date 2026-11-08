@@ -1,0 +1,213 @@
+====================================================================================================
+h2-01 [answerable] Có những nhiệm vụ gì cần đề ra?
+  status=done ttft=1.17s total=20.55s usage={'prompt_tokens': 4963, 'completion_tokens': 198, 'reasoning_tokens': None, 'context_chars': 14480}
+  expected: Thư ký ghi nhận, cụ thể hóa chính sách thưởng theo cá nhân, công bố và áp dụng từ ngày mai | Trưởng phòng phổ biến toàn bộ dự án từ đầu tới cuối trước khi thực hiện | Nhân viên được chọn phần việc đảm nhận trong dự án | Chi tiết điều kiện chuyến du lịch gửi qua mail
+-- answer:
+Dựa trên transcript cuộc họp của nhóm marketing, các nhiệm vụ và thay đổi được đề ra gồm có:
+
+* Thay đổi chính sách thưởng: Chuyển từ hình thức chia đều tiền thưởng cho tất cả nhân viên sang hình thức chia dựa trên năng suất và mức độ tham gia thực tế của từng người trong dự án [05:00].
+* Phổ biến thông tin dự án: Trưởng phòng cam kết từ nay trước khi thực hiện dự án sẽ phổ biến toàn bộ từ đầu đến cuối để nhân viên biết rõ công việc, tầm ảnh hưởng đến người khác và công việc chung, đồng thời được tự do lựa chọn mảng đảm nhận phù hợp [09:51].
+* Tăng tính trực quan trong tiếp thị: Chuyên viên digital đề xuất thay thế hình ảnh sẵn có trên internet bằng ảnh và video tự chụp độc đáo, chuyên nghiệp để tăng traffic [07:25].
+* Ghi nhận và áp dụng chính sách mới: Thư ký có trách nhiệm ghi nhận, cụ thể hóa các nội dung chính sách thưởng mới và công bố áp dụng từ ngày hôm sau [06:38].
+-- stamps:
+  [05:00] inside: 295.6s SPEAKER_07: Thì sẽ không bị khắc cấp bậc khác nhau mà người này ít người kia nhiều nhưng mà nếu như mọi người cảm thấy chính sách đó không tốt thì chúng ta sẽ chuyển sang chính sách là thưởng dựa trên nhân ai làm tốt hơn thì người c
+  [09:51] inside: 589.3s SPEAKER_06: Bởi vì bây giờ về sao trước khi thực hiện một dự án nào đó
+  [07:25] exact: 445.2s SPEAKER_00: Các bài năng chủ yếu sử dụng hình ảnh
+  [06:38] exact: 398.7s SPEAKER_07: Thư ký em ghi nhận lại và cụ thể hóa nội dung nha
+====================================================================================================
+h2-02 [answerable] Vì sao nhóm không đạt target trong 3 tháng qua?
+  status=done ttft=1.75s total=3.18s usage={'usage_error': "Server error '503 Service Unavailable' for url 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/"}
+  expected: Trưởng phòng cho là đối thủ mạnh nhưng Giám đốc không chấp nhận lý do đó | Chiến lược marketing không hiệu quả vì các mảng nhỏ không hoàn thành tốt | Banner trễ, làm cho có; nhân viên đi trễ về sớm, vắng mặt; khách hàng phàn nàn thái độ
+-- answer:
+Dưới đây là các lý do khiến nhóm không đạt target trong 3 tháng qua:
+
+* Đối thủ rất mạnh, treo banner ở vị trí tốt và có chiến lược đưa ra rất hiệu quả [00:49].
+* Các chiến lược marketing đưa ra không hiệu quả do các mảng nhỏ trong chiến lược không được hoàn thành tốt [1:32].
+* Nhân viên nhận mảng thiết kế banner làm cho có, khiến việc quảng cáo sản phẩm thất bại [1:38].
+* Nhân viên thường xuyên đi trễ về sớm và vắng mặt nhiều hơn mà không có lý do chính đáng [1:52].
+* Nhiều khách hàng phàn nàn về thái độ làm việc, giao dịch và chất lượng dịch vụ của nhân viên [1:59].
+* Nhìn chung, sự thất bại xuất phát từ sự chểnh mảng trong công việc của đội ngũ [2:16].
+-- stamps:
+  [00:49] exact: 49.0s SPEAKER_06: Dạ thưa giám đốc, theo báo cáo mà các trưởng nhóm nó gửi tới đa phần đối thủ chúng ta rất mạnh, họ treo banner các vị trí tốt và có chiến lược, họ có chiến lược đưa ra rất hiệu quả.
+  [1:32] inside: 90.0s SPEAKER_03: Giám đốc nhận thấy là vấn đề lớn nhất dẫn đến việc không thể trị tiêu đó là các chiến lược marketing đuôi ra không hiệu quả
+  [1:38] inside: 97.5s SPEAKER_03: Lý do chính là các mảng nhỏ trong chiến lược đó đều không được hoàn thành tốt
+  [1:52] exact: 112.1s SPEAKER_03: Các nhân viên thường xuyên đi trễ về sớm
+  [1:59] exact: 119.5s SPEAKER_03: Có rất nhiều khách hàng đã phàn nàn về thái độ làm việc của nhân viên chúng ta, bao gồm cả giao dịch và chất lượng dịch vụ nói chung.
+  [2:16] exact: 136.7s SPEAKER_07: Nghĩa là sự thất bại của chúng ta đến không phải là từ đối thủ mà là do sự chỉnh mãn trong công việc của chúng ta.
+====================================================================================================
+h2-03 [answerable] Lương khởi điểm của phòng Marketing là bao nhiêu?
+  status=done ttft=2.36s total=2.53s usage={'prompt_tokens': 4965, 'completion_tokens': 37, 'reasoning_tokens': None, 'context_chars': 14498}
+  expected: 12 đến 15 triệu, bao gồm lương thưởng
+-- answer:
+Dựa vào nội dung cuộc họp, lương khởi điểm của phòng marketing như sau:
+
+* Lương khởi điểm bắt đầu từ 12 đến 15 triệu, bao gồm cả lương thưởng. [03:10]
+-- stamps:
+  [03:10] exact: 191.0s SPEAKER_06: Dạ lưu khởi điểm là bắt đầu từ 12 đến 15 triệu bao gồm có lưu thưởng.
+====================================================================================================
+h2-04 [answerable] Chính sách thưởng mới được thống nhất như thế nào?
+  status=done ttft=2.76s total=3.16s usage={'prompt_tokens': 4966, 'completion_tokens': 128, 'reasoning_tokens': None, 'context_chars': 14499}
+  expected: Bỏ chia đều, chuyển sang thưởng dựa trên cá nhân, theo năng suất | Ví dụ 15% chia cho 3 người theo mức đóng góp | Áp dụng từ ngày mai
+-- answer:
+Dưới đây là thông tin về chính sách thưởng mới được thống nhất trong buổi họp:
+
+* Tiền thưởng sẽ được chia dựa theo số nhân viên tham gia dự án và năng suất làm việc của từng người [05:27].
+* Nếu mức độ và kết quả làm việc của các nhân viên là như nhau, mức thưởng sẽ được chia đều thành các phần bằng nhau [05:40].
+* Nếu các nhân viên làm việc với hiệu quả khác nhau, mức thưởng sẽ được chia thành các phần khác nhau tùy theo năng suất làm việc của mỗi người [05:46].
+-- stamps:
+  [05:27] inside: 324.5s SPEAKER_07: Nghĩa là mức phần trăm thưởng sẽ được chia theo số nhân viên tham gia dự án
+  [05:40] exact: 340.8s SPEAKER_07: Nếu như mức độ làm việc và kết quả làm việc của 3 nhân viên đó là như nhau
+  [05:46] exact: 346.3s SPEAKER_07: Còn nếu như 3 nhân viên đó làm việc hiệu quả khác nhau
+====================================================================================================
+h2-05 [answerable] Chuyên viên Digital đề xuất gì?
+  status=done ttft=1.3s total=1.57s usage={'prompt_tokens': 4962, 'completion_tokens': 99, 'reasoning_tokens': None, 'context_chars': 14480}
+  expected: Dùng ảnh, video tự chụp, tự tạo thay vì ảnh có sẵn trên internet, trực quan hóa | Thử nghiệm trước đó tăng traffic 10 đến 15%
+-- answer:
+Dựa trên transcript, Chuyên viên Digital có các đề xuất sau:
+
+* Đề xuất sử dụng hình ảnh tự chụp độc đáo và chuyên nghiệp thay vì dùng ảnh sẵn có trên internet cho các bài đăng để chiến dịch hiệu quả hơn [07:25].
+* Đề xuất hướng việc tiếp thị sản phẩm và dịch vụ theo hướng trực quan hóa hơn [07:38].
+-- stamps:
+  [07:25] exact: 445.2s SPEAKER_00: Các bài năng chủ yếu sử dụng hình ảnh
+  [07:38] inside: 457.3s SPEAKER_00: Theo quan điểm của em thì
+====================================================================================================
+h2-06 [answerable] Nhân viên được hỗ trợ gì trong mùa dịch?
+  status=done ttft=3.56s total=3.85s usage={'prompt_tokens': 4965, 'completion_tokens': 117, 'reasoning_tokens': None, 'context_chars': 14489}
+  expected: Lương tháng này vẫn trả đầy đủ | Quà 10 hộp khẩu trang và 5 chai nước rửa tay | Thâm niên trên 10 năm được thêm 2 triệu
+-- answer:
+Dưới đây là các khoản hỗ trợ nhân viên trong mùa dịch được đề cập trong cuộc họp:
+
+* Nhân viên vẫn nhận lương đầy đủ mặc dù không đi làm hoặc đi làm ngày có ngày không [11:00].
+* Công ty gửi tặng một phần quà nhỏ chống dịch bao gồm 10 hộp khẩu trang và 5 chai nước rửa tay sát khuẩn [11:15].
+* Nhân viên có thâm niên làm việc trên 10 năm được hỗ trợ thêm 2 triệu đồng [11:27].
+-- stamps:
+  [11:00] exact: 660.8s SPEAKER_03: Trong thời điểm dịch bệnh như hiện tại sức khỏe và kinh tế là sự lo lắng lớn nhất đối với mỗi người. Do đó, tháng này các nhân viên vẫn nhận lương đầy đủ mặc dù không đi làm hoặc đi làm ngày có ngày không. Ngoài ra, công
+  [11:15] inside: 660.8s SPEAKER_03: Trong thời điểm dịch bệnh như hiện tại sức khỏe và kinh tế là sự lo lắng lớn nhất đối với mỗi người. Do đó, tháng này các nhân viên vẫn nhận lương đầy đủ mặc dù không đi làm hoặc đi làm ngày có ngày không. Ngoài ra, công
+  [11:27] exact: 687.0s SPEAKER_03: Đối với các nhân viên có thâm niên làm việc trên 10 năm sẽ được hỗ trợ thêm 2 triệu đồng ạ
+====================================================================================================
+h2-07 [answerable] Chuyến du lịch hằng năm cuối tháng 6 sẽ ra sao?
+  status=done ttft=5.09s total=6.1s usage={'usage_error': "Server error '503 Service Unavailable' for url 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/"}
+  expected: Dự định đi Nha Trang nhưng dời tới cuối năm vì dịch | Nếu tình hình tốt thì đi tour Đông Nam Á, miễn phí ăn ở và vé máy bay, được bỏ phiếu chọn nước | Điều kiện là doanh thu đạt chỉ tiêu
+-- answer:
+Dựa vào transcript, chuyến du lịch hằng năm vào cuối tháng 6 sẽ được giải quyết như sau:
+* Do tình hình dịch bệnh, công ty quyết định dời lại chuyến du lịch đến cuối năm [12:29].
+* Nếu tình hình chuyển biến tốt hơn vào cuối năm và tổng doanh thu công ty đạt chỉ tiêu được giao, nhân viên sẽ được tham gia tour du lịch trong khu vực Đông Nam Á với chi phí ăn, ở, máy bay hoàn toàn miễn phí và được bỏ phiếu lựa chọn tour du lịch ở nước nào [12:29].
+-- stamps:
+  [12:29] exact: 749.0s SPEAKER_06: Vâng ạ, theo dự định thì tới cuối tháng 6 này tổng doanh thu của công ty đạt chỉ tiêu thì nhau khi được tham gia một tuôn du lịch tới đi Nha Trang, nhưng theo tình hình dịch bệnh thì công ty quyết định sẽ dời lại đến cuố
+  [12:29] exact: 749.0s SPEAKER_06: Vâng ạ, theo dự định thì tới cuối tháng 6 này tổng doanh thu của công ty đạt chỉ tiêu thì nhau khi được tham gia một tuôn du lịch tới đi Nha Trang, nhưng theo tình hình dịch bệnh thì công ty quyết định sẽ dời lại đến cuố
+====================================================================================================
+h2-08 [unanswerable] Ngân sách quảng cáo của dự án K2 là bao nhiêu?
+  status=done ttft=2.17s total=2.23s usage={'prompt_tokens': 4968, 'completion_tokens': 15, 'reasoning_tokens': None, 'context_chars': 14495}
+  expected: Không có thông tin
+-- answer:
+Transcript không đề cập đến ngân sách quảng cáo của dự án K2.
+-- stamps:
+====================================================================================================
+h2-09 [unanswerable] Cuộc họp tiếp theo diễn ra vào ngày nào?
+  status=done ttft=1.78s total=1.9s usage={'prompt_tokens': 4965, 'completion_tokens': 14, 'reasoning_tokens': None, 'context_chars': 14489}
+  expected: Không có thông tin
+-- answer:
+Dựa trên transcript cuộc họp, không có thông tin về thời gian diễn ra cuộc họp tiếp theo.
+-- stamps:
+====================================================================================================
+h2-10 [unanswerable] Đối thủ cạnh tranh chính của công ty tên là gì?
+  status=done ttft=1.45s total=1.56s usage={'prompt_tokens': 4966, 'completion_tokens': 21, 'reasoning_tokens': None, 'context_chars': 14496}
+  expected: Không có thông tin, chỉ nói đối thủ mạnh
+-- answer:
+Transcript không đề cập đến tên cụ thể của đối thủ cạnh tranh chính của công ty [00:49].
+-- stamps:
+  [00:49] exact: 49.0s SPEAKER_06: Dạ thưa giám đốc, theo báo cáo mà các trưởng nhóm nó gửi tới đa phần đối thủ chúng ta rất mạnh, họ treo banner các vị trí tốt và có chiến lược, họ có chiến lược đưa ra rất hiệu quả.
+====================================================================================================
+h1-01 [answerable] Ba nhân tố có trong một cuộc họp là gì?
+  status=done ttft=2.01s total=2.22s usage={'prompt_tokens': 9023, 'completion_tokens': 46, 'reasoning_tokens': None, 'context_chars': 30674}
+  expected: Công việc, con người, lãnh đạo
+-- answer:
+Dựa vào transcript, 3 nhân tố có trong một cuộc họp bao gồm:
+- Công việc [00:38]
+- Con người [00:44]
+- Lãnh đạo [00:47]
+-- stamps:
+  [00:38] exact: 38.0s SPEAKER_00: thì bao giờ nó bao gồm nó chứa được cho bộ họp có ba nhân tố, nhân tố thứ nhất là công việc.
+  [00:44] exact: 44.3s SPEAKER_00: Nhân tố thứ 2 là con ngươn
+  [00:47] exact: 48.0s SPEAKER_00: Và nhân dụng thứ 3 là lãnh đạo
+====================================================================================================
+h1-02 [answerable] Khi nào thì thực sự cần họp?
+  status=done ttft=1.85s total=1.93s usage={'prompt_tokens': 9020, 'completion_tokens': 195, 'reasoning_tokens': None, 'context_chars': 30663}
+  expected: Khi không họp thì không giải quyết được vấn đề; nếu không họp vẫn làm được thì không họp
+-- answer:
+Transcript không đề cập đến thông tin này.
+-- stamps:
+====================================================================================================
+h1-03 [answerable] Giảng viên dùng bộ câu hỏi nào để tổ chức một cuộc họp?
+  status=done ttft=2.14s total=2.28s usage={'prompt_tokens': 9027, 'completion_tokens': 122, 'reasoning_tokens': None, 'context_chars': 30690}
+  expected: 5W1H: What, Why, Where, When, Who, How
+-- answer:
+Transcript không đề cập đến bộ câu hỏi cụ thể nào được giảng viên dùng để tổ chức một cuộc họp.
+-- stamps:
+====================================================================================================
+h1-04 [answerable] Thế nào là một quyết định tốt?
+  status=done ttft=6.14s total=6.97s usage={'prompt_tokens': 9021, 'completion_tokens': 104, 'reasoning_tokens': None, 'context_chars': 30665}
+  expected: Nắm đúng bản chất vấn đề, giải pháp phù hợp | Ra đúng thời điểm, không quá muộn | Người tham gia hài lòng, tâm huyết, đồng thuận
+-- answer:
+Theo transcript, một quyết định tốt trong cuộc họp gồm các đặc điểm sau:
+- Giải quyết được đúng bản chất vấn đề và đúng thời điểm [17:34].
+- Tạo được sự đồng thuận của mọi người tham gia [18:35].
+- Đảm bảo những người tham gia cảm thấy hài lòng và tâm huyết với quyết định đó [18:02].
+- Gắn liền với việc anh em đồng thuận và thực hiện tốt công việc [20:48].
+-- stamps:
+  [17:34] exact: 1054.3s SPEAKER_00: thực hiện và vấn đề không chỉ là cuộc họp xong và vấn đề sau khi quyết định xong rồi và chúng ta giải quyết vấn đề và một quyết định đúng là vấn đề xử lý xong xóa được vấn đề đó thì đấy là một quyết định đúng mà để làm n
+  [18:35] exact: 1116.0s SPEAKER_00: quyết định đúng là quyết định đúng không nghĩa là gì giải quyết được vấn đề
+  [18:02] exact: 1082.9s SPEAKER_00: Tất cả những người tham gia ở đây, trong quá trình này này, trong nhóm này này để ra quyết định này, A là người ta thấy hài lòng và điện, người ta tâm huyết với quyết định này.
+  [20:48] inside: 1247.0s SPEAKER_00: Quyết định tốt là anh em đồng toàn và làm tốt
+====================================================================================================
+h1-05 [answerable] Trong ma trận quyết định và thực hiện, quyết định sai nhưng thực hiện tốt dẫn tới gì?
+  status=done ttft=1.66s total=1.73s usage={'prompt_tokens': 9032, 'completion_tokens': 58, 'reasoning_tokens': None, 'context_chars': 30720}
+  expected: Lãng phí
+-- answer:
+Trong ma trận quyết định và thực hiện, quyết định sai nhưng thực hiện tốt dẫn tới việc lãng phí vì lựa chọn sai quyết định [20:00].
+-- stamps:
+  [20:00] inside: 1196.1s SPEAKER_00: Tức là mình chọn lựa chọn sai nhưng mà cuối cùng vẫn làm ra kết quả, nhưng mà kết quả thì lựa chọn sai nên cái này là lãng phí
+====================================================================================================
+h1-06 [answerable] Giảng viên nói gì về quyền lực?
+  status=done ttft=3.81s total=4.11s usage={'prompt_tokens': 9021, 'completion_tokens': 82, 'reasoning_tokens': None, 'context_chars': 30666}
+  expected: Quyền lực (power) là sự ảnh hưởng tới hành vi người khác | Đến từ uy tín, tín nhiệm, sức thuyết phục khi lợi ích của mình và tổ chức là một
+-- answer:
+Transcript không đề cập giảng viên tên gì, nhưng có nội dung nói về quyền lực như sau:
+
+* Tầm ảnh hưởng chính là quyền lực. [25:58]
+* Quyền lực là sự ảnh hưởng, càng ảnh hưởng đến hành vi người khác theo ý kiến và quan điểm tốt của mình thì quyền lực càng nhiều. [26:02]
+-- stamps:
+  [25:58] exact: 1558.9s SPEAKER_00: Tầm ảnh hưởng ở đây, muốn nói về cái đó là quyền lực.
+  [26:02] exact: 1562.1s SPEAKER_00: Quyền lực chính là sự ảnh hưởng mà chúng ta càng ảnh hưởng đến hành vi người khác, theo ý kiến của mình, theo quan điểm của mình tốt, quyền lực của mình càng nhiều.
+====================================================================================================
+h1-07 [answerable] Người chủ trì nên cư xử thế nào trong cuộc họp?
+  status=done ttft=2.02s total=3.67s usage={'prompt_tokens': 9024, 'completion_tokens': 196, 'reasoning_tokens': None, 'context_chars': 30682}
+  expected: Bình đẳng, khuyến khích mọi người nói, brainstorming | Lắng nghe, chỉ nói khi thật cần thiết | Không chỉ nghe ý kiến giống mình
+-- answer:
+Dựa trên nội dung transcript, người chủ trì (sếp, người quản lý) trong cuộc họp nên cư xử như sau:
+
+* Không nên nghĩ rằng mình biết hết mọi thứ và ý kiến của mình luôn đúng [12:43].
+* Tránh chỉ thích nghe những ý kiến đồng tình hoặc giống quan điểm của mình, và không nên bỏ qua hoặc khó chịu với những ý kiến trái quan điểm [14:43].
+* Cần tôn trọng, lắng nghe quan điểm của nhân viên và coi trọng các ý kiến đánh giá ở mức độ tương đối cân bằng nhau [13:38].
+* Bình đẳng và tạo môi trường, khuyến khích mọi người sẵn sàng chia sẻ ý tưởng, kể cả những ý kiến rất khác với mình [13:53].
+* Đ
+-- stamps:
+  [12:43] inside: 740.3s SPEAKER_00: để biết được nhiều quan điểm và quan trọng sau khi quyết định rồi thì mọi người hiểu cái quyết định đâu mà khi hiểu rồi từ cuộc họp thì sao lại thực hiện nó với con tâm huyết mà nó có trách nhiệm thế thì đấy là cái quan 
+  [14:43] none: 
+  [13:38] inside: 814.9s SPEAKER_00: nhưng mà có nghĩa là mình luôn luôn tôn trọng bắn nghe ngoan ý kiến và ý kiến của mình các ý kiến của sếp là nếu cần phân tích và đánh giá nó vai trò giống nhau
+  [13:53] exact: 833.4s SPEAKER_00: Vậy thì chúng ta bình đẳng thì làm cho mọi người sắp sẵn chia sẻ, kể cả có những ý kiến rất khác với mình.
+====================================================================================================
+h1-08 [unanswerable] Học phí của khóa đào tạo là bao nhiêu?
+  status=done ttft=2.64s total=2.73s usage={'prompt_tokens': 9023, 'completion_tokens': 14, 'reasoning_tokens': None, 'context_chars': 30673}
+  expected: Không có thông tin
+-- answer:
+Transcript không đề cập đến học phí của khóa đào tạo.
+-- stamps:
+====================================================================================================
+h1-09 [unanswerable] Giảng viên giới thiệu phần mềm họp trực tuyến nào?
+  status=done ttft=3.09s total=3.28s usage={'prompt_tokens': 9024, 'completion_tokens': 23, 'reasoning_tokens': None, 'context_chars': 30685}
+  expected: Không có thông tin
+-- answer:
+Transcript không đề cập đến việc giảng viên giới thiệu phần mềm họp trực tuyến nào [00:00].
+-- stamps:
+  [00:00] exact: 0.2s SPEAKER_00: tất cả các cuộc họp đều có một điểm rất giống nhau đó là điện đưa kết luận họ phải để giải quyết được một vấn đề đó và sau của mẫu phạm có kết luận nhưng mà cố gắng tránh kết luận là làm

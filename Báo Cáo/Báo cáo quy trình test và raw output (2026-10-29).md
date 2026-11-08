@@ -3,6 +3,7 @@
 **Ngày chạy:** 2026-10-29
 **Người chạy:** nhóm dự án, với Claude Code hỗ trợ chạy lệnh và chấm điểm
 **Phạm vi:**
+
 1. So sánh hai model nhận dạng: `large-v3-turbo` (Whisper v3 turbo) và `PhoWhisper-large`.
 2. Đo khả năng chịu nhiễu và chất lượng chia chunk của pipeline.
 3. Sửa bộ lọc câu bịa, rồi đo lại để so trước và sau.
@@ -28,17 +29,17 @@ Báo cáo này ghi **cách chạy** và **output thô (raw output)**. Phần ph�
 
 ## 1. Môi trường
 
-| Mục | Giá trị |
-|---|---|
-| Máy | Windows 11, Docker Desktop (WSL2), 16 nhân CPU, 15 GB RAM cho Docker |
-| GPU | NVIDIA GeForce RTX 4050 Laptop, 6 GB VRAM, driver 610.88. Windows giữ sẵn 1,2–1,4 GB |
-| Image backend | `stt-backend:latest`, nền `python:3.11-slim-bookworm`, 10,3 GB |
-| Thư viện | torch 2.5.1+cu121, cuDNN 9.1, ctranslate2 4.5.0, faster-whisper 1.1.1, pyannote.audio 3.3.2, numpy 1.26.4, huggingface_hub 0.36.2 |
-| Dịch vụ | `postgres`, `redis`, `backend` (FastAPI), `worker-gpu` (Celery, hàng `gpu`) chạy bằng `docker compose` |
-| Model A | `large-v3-turbo`: faster-whisper tự tải `mobiuslabsgmbh/faster-whisper-large-v3-turbo` |
-| Model B | `vinai/PhoWhisper-large`, tự chuyển sang CTranslate2 (float16 trên đĩa) |
-| Kiểu tính | `int8` cho cả hai model |
-| Diarization | `pyannote/speaker-diarization-3.1` trên CUDA |
+| Mục          | Giá trị                                                                                                                         |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Máy          | Windows 11, Docker Desktop (WSL2), 16 nhân CPU, 15 GB RAM cho Docker                                                             |
+| GPU           | NVIDIA GeForce RTX 4050 Laptop, 6 GB VRAM, driver 610.88. Windows giữ sẵn 1,2–1,4 GB                                           |
+| Image backend | `stt-backend:latest`, nền `python:3.11-slim-bookworm`, 10,3 GB                                                               |
+| Thư viện    | torch 2.5.1+cu121, cuDNN 9.1, ctranslate2 4.5.0, faster-whisper 1.1.1, pyannote.audio 3.3.2, numpy 1.26.4, huggingface_hub 0.36.2 |
+| Dịch vụ     | `postgres`, `redis`, `backend` (FastAPI), `worker-gpu` (Celery, hàng `gpu`) chạy bằng `docker compose`             |
+| Model A       | `large-v3-turbo`: faster-whisper tự tải `mobiuslabsgmbh/faster-whisper-large-v3-turbo`                                      |
+| Model B       | `vinai/PhoWhisper-large`, tự chuyển sang CTranslate2 (float16 trên đĩa)                                                    |
+| Kiểu tính   | `int8` cho cả hai model                                                                                                        |
+| Diarization   | `pyannote/speaker-diarization-3.1` trên CUDA                                                                                   |
 
 Output kiểm phiên bản trong container `worker-gpu`:
 
@@ -55,14 +56,15 @@ fw 1.1.1 pyannote 3.3.2 numpy 1.26.4 hf_hub 0.36.2
 
 Ba bản tin VTV24 trong `data/phóng sự 7p/`, mỗi bài kèm một bản gỡ băng `Phụ đề _….md` có tên người nói:
 
-| Mã | Bài | Thời lượng | Từ trong bản gỡ băng | Người nói |
-|---|---|---|---|---|
-| `phapluat` | Nâng cao ý thức, trách nhiệm của nhân dân trước pháp luật | 7:54 | 1.922 | 6 |
-| `coso2` | Cơ sở 2 giảm tải bệnh viện tuyến Trung ương (cụm tin) | 8:29 | 1.904 | 10 |
-| `thegioi` | Thế giới toàn cảnh ngày 26/10 | 20:46 | 4.682 | 12 |
-| | **Tổng** | **37:08** | **8.508** | |
+| Mã          | Bài                                                                  | Thời lượng   | Từ trong bản gỡ băng | Người nói |
+| ------------ | --------------------------------------------------------------------- | --------------- | ------------------------ | ------------ |
+| `phapluat` | Nâng cao ý thức, trách nhiệm của nhân dân trước pháp luật | 7:54            | 1.922                    | 6            |
+| `coso2`    | Cơ sở 2 giảm tải bệnh viện tuyến Trung ương (cụm tin)       | 8:29            | 1.904                    | 10           |
+| `thegioi`  | Thế giới toàn cảnh ngày 26/10                                    | 20:46           | 4.682                    | 12           |
+|              | **Tổng**                                                       | **37:08** | **8.508**          |              |
 
 Bản nhiễu được tạo từ bài `phapluat`:
+
 - **nhiễu hồng**, giống tiếng quạt, điều hòa, xe cộ;
 - **babble**, tiếng người nói lẫn nhau, ghép từ 4 luồng của hai podcast Vietcetera trong `data/`, lệch thời điểm.
 
@@ -85,6 +87,7 @@ docker compose up -d backend worker-gpu
 ```
 
 Trước khi chạy được, phải sửa ba lỗi chỉ gặp trên GPU. Chúng đã merge qua PR #9:
+
 - ghim image nền bookworm;
 - ghim torch và torchaudio trong `requirements.txt`;
 - kiểm GPU trong một tiến trình riêng.
@@ -111,6 +114,7 @@ feature_size 80, alignment_heads 23
 ### Bước 3. Chạy 3 bài × 2 model
 
 `run_all.sh` làm lần lượt các việc sau cho mỗi model:
+
 1. Ghi file override đặt `WHISPER_MODEL` cho `worker-gpu`, rồi tạo lại container worker.
 2. Chạy `run_job.py` trong container `backend` cho từng bài. Script này đăng ký một tài khoản thử, `POST /api/jobs`, đọc trạng thái mỗi giây, và lưu transcript (`GET /api/jobs/{id}/transcript`) cùng thời gian từng bước.
 3. Ghi VRAM bằng `nvidia-smi` mỗi giây trong lúc job chạy.
@@ -157,6 +161,7 @@ python -I -X utf8 score_noise.py
 ### Bước 8. Thử các cách sửa (thí nghiệm, không qua API)
 
 `exp_decode.py` chạy lại đúng chuỗi VAD → chunk → turbo → khử chồng của pipeline, nhưng bỏ bước diarization. Nó thử 5 cấu hình:
+
 - **A:** như hiện tại;
 - **B:** `hallucination_silence_threshold=2`;
 - **C:** chunk tối đa 15 giây;
@@ -174,6 +179,7 @@ python -I -X utf8 score_exp.py
 ### Bước 9. Sửa code, test, chạy lại
 
 Sửa `backend/app/services/stt_engine.py` trên nhánh `fix/hallucination-filter`:
+
 - bật `hallucination_silence_threshold=2.0`;
 - bỏ câu có từ 4 từ trở lên mà nói nhanh hơn 12 từ/giây;
 - bỏ câu không quá 20 từ mở đầu bằng lời mời đăng ký kênh;
@@ -214,29 +220,29 @@ python -I -X utf8 export_raw.py data/raw-output-2026-10-29 excerpts.md
 
 ### 5.1. Hai model (trước khi sửa bộ lọc)
 
-| Bài | Model | WER thô | CER thô | WER đã lọc | CER đã lọc | CER thuật ngữ | Gán đúng người nói | Thời gian |
-|---|---|---|---|---|---|---|---|---|
-| phapluat | large-v3-turbo | 8,32% | 6,39% | 7,54% | 5,52% | 10,55% | 96,82% | 70,8 s |
-| phapluat | PhoWhisper-large | 29,50% | 29,66% | 7,75% | 5,85% | 4,77% | 96,10% | 159,8 s |
-| coso2 | large-v3-turbo | 12,03% | 10,32% | 12,08% | 10,89% | 11,73% | 82,37% | 55,8 s |
-| coso2 | PhoWhisper-large | 24,05% | 24,34% | 2,47% | 1,76% | 1,35% | 82,60% | 149,9 s |
-| thegioi | large-v3-turbo | 3,67% | 1,87% | 3,67% | 1,87% | 8,32% | 79,00% | 146,5 s |
-| thegioi | PhoWhisper-large | 18,62% | 15,73% | 6,88% | 3,75% | 29,89% | 77,68% | 327,8 s |
-| **gộp** | **large-v3-turbo** | **6,59%** | **4,72%** | 6,43% | 4,66% | 9,82% | 83,71% | 273,1 s |
-| **gộp** | **PhoWhisper-large** | 22,30% | 20,67% | **6,09%** | **3,77%** | 15,87% | 82,88% | 637,5 s |
+| Bài           | Model                      | WER thô        | CER thô        | WER đã lọc   | CER đã lọc   | CER thuật ngữ | Gán đúng người nói | Thời gian |
+| -------------- | -------------------------- | --------------- | --------------- | --------------- | --------------- | --------------- | ------------------------ | ---------- |
+| phapluat       | large-v3-turbo             | 8,32%           | 6,39%           | 7,54%           | 5,52%           | 10,55%          | 96,82%                   | 70,8 s     |
+| phapluat       | PhoWhisper-large           | 29,50%          | 29,66%          | 7,75%           | 5,85%           | 4,77%           | 96,10%                   | 159,8 s    |
+| coso2          | large-v3-turbo             | 12,03%          | 10,32%          | 12,08%          | 10,89%          | 11,73%          | 82,37%                   | 55,8 s     |
+| coso2          | PhoWhisper-large           | 24,05%          | 24,34%          | 2,47%           | 1,76%           | 1,35%           | 82,60%                   | 149,9 s    |
+| thegioi        | large-v3-turbo             | 3,67%           | 1,87%           | 3,67%           | 1,87%           | 8,32%           | 79,00%                   | 146,5 s    |
+| thegioi        | PhoWhisper-large           | 18,62%          | 15,73%          | 6,88%           | 3,75%           | 29,89%          | 77,68%                   | 327,8 s    |
+| **gộp** | **large-v3-turbo**   | **6,59%** | **4,72%** | 6,43%           | 4,66%           | 9,82%           | 83,71%                   | 273,1 s    |
+| **gộp** | **PhoWhisper-large** | 22,30%          | 20,67%          | **6,09%** | **3,77%** | 15,87%          | 82,88%                   | 637,5 s    |
 
 ### 5.2. large-v3-turbo trước và sau khi sửa bộ lọc
 
-| Bài | WER trước → sau | CER trước → sau | Câu bịa | Tiếng nói không ra chữ | Số bị tách |
-|---|---|---|---|---|---|
-| phapluat | 8,32% → 7,54% | 6,39% → 5,52% | 1 → 0 | 2,2 → 2,2 s | 0 → 0 |
-| coso2 | 12,03% → 6,78% | 10,32% → 5,44% | 1 → 0 | 35,1 → 14,5 s | 5 → 0 |
-| thegioi | 3,67% → 3,67% | 1,87% → 1,87% | 0 → 0 | 5,9 → 5,9 s | 9 → 0 |
-| babble 10 dB | 16,39% → 12,96% | 13,16% → 10,20% | 1 → 0 | 26,5 → 9,2 s | 0 → 0 |
-| babble 5 dB | 41,36% → 30,44% | 34,09% → 25,09% | 6 → 0 | 93,1 → 73,6 s | 0 → 0 |
-| hồng 5 dB | 13,79% → 13,79% | 9,54% → 9,54% | 0 → 0 | 2,3 → 2,3 s | 0 → 0 |
-| hồng 0 dB | 24,87% → 21,80% | 18,54% → 15,64% | 1 → 0 | 6,4 → 2,2 s | 0 → 0 |
-| **gộp 3 bản tin** | **6,59% → 5,24%** | **4,72% → 3,46%** | 2 → 0 | | 14 → 0 |
+| Bài                      | WER trước → sau       | CER trước → sau       | Câu bịa | Tiếng nói không ra chữ | Số bị tách |
+| ------------------------- | ------------------------ | ------------------------ | --------- | -------------------------- | ------------- |
+| phapluat                  | 8,32% → 7,54%           | 6,39% → 5,52%           | 1 → 0    | 2,2 → 2,2 s               | 0 → 0        |
+| coso2                     | 12,03% → 6,78%          | 10,32% → 5,44%          | 1 → 0    | 35,1 → 14,5 s             | 5 → 0        |
+| thegioi                   | 3,67% → 3,67%           | 1,87% → 1,87%           | 0 → 0    | 5,9 → 5,9 s               | 9 → 0        |
+| babble 10 dB              | 16,39% → 12,96%         | 13,16% → 10,20%         | 1 → 0    | 26,5 → 9,2 s              | 0 → 0        |
+| babble 5 dB               | 41,36% → 30,44%         | 34,09% → 25,09%         | 6 → 0    | 93,1 → 73,6 s             | 0 → 0        |
+| hồng 5 dB                | 13,79% → 13,79%         | 9,54% → 9,54%           | 0 → 0    | 2,3 → 2,3 s               | 0 → 0        |
+| hồng 0 dB                | 24,87% → 21,80%         | 18,54% → 15,64%         | 1 → 0    | 6,4 → 2,2 s               | 0 → 0        |
+| **gộp 3 bản tin** | **6,59% → 5,24%** | **4,72% → 3,46%** | 2 → 0    |                            | 14 → 0       |
 
 Sau khi sửa, turbo (CER gộp 3,46%) tốt hơn cả PhoWhisper đã lọc (3,77%), và nhanh hơn khoảng 2,3 lần.
 
@@ -767,6 +773,7 @@ thegioi      E_afftdn           WER   4.04% CER   2.30% | lọc: WER   4.04% S/D
 ## 9. Raw output: log chạy job
 
 Mỗi log là output nguyên văn của `run_job.py`:
+
 - thời điểm đổi trạng thái;
 - thời gian cả job;
 - thông tin job;
@@ -1583,17 +1590,16 @@ words 498 segments with >1 word speaker 23
 
 </details>
 
-
 ---
 
 ## 10. Vị trí file
 
-| Nội dung | Vị trí |
-|---|---|
-| Script đo, `results*.json`, raw log | `Báo Cáo/do-cer-2026-10-29/` |
-| Transcript thô đầy đủ của 21 lần chạy (`[mm:ss → mm:ss] NHÃN \| chữ`) | `data/raw-output-2026-10-29/` |
-| Transcript JSON gốc từ API và file VRAM | thư mục scratchpad của phiên làm việc. `run_all.sh` tạo lại được |
-| Bản nhiễu `.wav` | volume Docker `audio-data`, thư mục `/data/noisetest/` |
-| Model PhoWhisper đã chuyển | volume Docker `hf-cache`, thư mục `/cache/huggingface/phowhisper-large-ct2` |
+| Nội dung                                                                         | Vị trí                                                                          |
+| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Script đo, `results*.json`, raw log                                            | `Báo Cáo/do-cer-2026-10-29/`                                                  |
+| Transcript thô đầy đủ của 21 lần chạy (`[mm:ss → mm:ss] NHÃN \| chữ`) | `data/raw-output-2026-10-29/`                                                   |
+| Transcript JSON gốc từ API và file VRAM                                        | thư mục scratchpad của phiên làm việc. `run_all.sh` tạo lại được     |
+| Bản nhiễu `.wav`                                                              | volume Docker `audio-data`, thư mục `/data/noisetest/`                      |
+| Model PhoWhisper đã chuyển                                                     | volume Docker `hf-cache`, thư mục `/cache/huggingface/phowhisper-large-ct2` |
 
 Transcript đầy đủ được đặt trong `data/`, nằm trong `.gitignore`, vì chúng chứa nội dung bản tin VTV24. Các đoạn trích trong báo cáo này chỉ dùng để minh họa lỗi.

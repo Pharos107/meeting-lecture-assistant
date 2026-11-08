@@ -1,0 +1,26 @@
+upload 201 0.3 s
+job 660c8f33-c414-4763-8997-6812871cfa55
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   22.1s] ('transcribing', None, None)
+[  119.3s] ('diarizing', None, None)
+[  198.2s] ('ready', None, None)
+elapsed 198.2 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1699992, "diarization_device": "cuda"}
+pass 2 segments 184 speakers ['SPEAKER_00', 'SPEAKER_01']
+  SPEAKER_00: 1471s
+  None: 1s
+  SPEAKER_01: 0s
+words 6332 segments with >1 word speaker 55
+      0.2 SPEAKER_00: tất cả các cuộc họp đều có một điểm rất giống nhau đó là điện đưa kết luận họ phải để giải quyết được một vấn 
+     17.5 SPEAKER_00: Đấy là cả anh ta
+     19.0 SPEAKER_00: Thôi chí
+     19.9 SPEAKER_00: Thôi chí
+     20.5 SPEAKER_00: Thôi chí lấy lại ra kết quả không muốn vậy thì ở đây có một số vấn đề
+     28.9 SPEAKER_00: Trước khi tiến hành một cuộc họp thì chúng ta cần bảo rõ lý do.
+     38.0 SPEAKER_00: thì bao giờ nó bao gồm nó chứa được cho bộ họp có ba nhân tố, nhân tố thứ nhất là công việc.
+     44.3 SPEAKER_00: Nhân tố thứ 2 là con ngươn
+     48.0 SPEAKER_00: Và nhân dụng thứ 3 là lãnh đạo
+     51.7 SPEAKER_00: Cả 3 cái này vào một cuộc họp, mà nếu không cần thiết mà vẫn làm, rất mất thời gian
+     56.9 SPEAKER_00: Cho nên chúng ta đây là có cần thiết không
+     60.6 SPEAKER_00: Nếu cần thiết thì làm, còn nếu không cần thì không cần họp

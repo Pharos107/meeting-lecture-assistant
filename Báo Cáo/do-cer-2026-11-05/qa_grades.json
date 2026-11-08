@@ -1,0 +1,24 @@
+{
+ "_cách_chấm": "Chấm tay ngày 2026-11-05 trên raw-logs/qa_stamps.txt. Câu có đáp án: 'đúng' khi nêu đủ số ý tối thiểu (must) trong expected và không có ý bịa; 'một phần' khi nội dung đúng nhưng thiếu hoặc bị cụt; 'sai' khi nói không có thông tin hoặc trả lời sai. Câu không có đáp án: 'đúng' khi nói rõ không có thông tin và không thêm chi tiết. 'bịa' là ý không có trong transcript lẫn bản gỡ băng. Mốc đúng khi câu transcript ở mốc đó (trùng đầu câu hoặc nằm trong câu) chứa ý được trích.",
+ "answers": {
+  "h2-01": {"grade": "đúng", "fabricated": 0, "stamps_ok": 4, "stamps_bad": 0, "note": "Đủ 3/4 ý, thiếu việc gửi điều kiện du lịch qua mail. Thêm đề xuất của chuyên viên Digital, có trong transcript"},
+  "h2-02": {"grade": "đúng", "fabricated": 0, "stamps_ok": 5, "stamps_bad": 1, "note": "Đủ ý. Nêu 'đối thủ mạnh' như một lý do mà không nói Giám đốc bác bỏ, ý cuối có nói thất bại không phải do đối thủ. [1:38] trỏ vào câu 'các mảng nhỏ', câu banner bắt đầu ở 102,1 s"},
+  "h2-03": {"grade": "đúng", "fabricated": 0, "stamps_ok": 1, "stamps_bad": 0, "note": ""},
+  "h2-04": {"grade": "đúng", "fabricated": 0, "stamps_ok": 3, "stamps_bad": 0, "note": "Thiếu ví dụ 15% và mốc áp dụng từ ngày mai"},
+  "h2-05": {"grade": "đúng", "fabricated": 0, "stamps_ok": 2, "stamps_bad": 0, "note": "Thiếu số traffic tăng 10–15%"},
+  "h2-06": {"grade": "đúng", "fabricated": 0, "stamps_ok": 3, "stamps_bad": 0, "note": ""},
+  "h2-07": {"grade": "đúng", "fabricated": 0, "stamps_ok": 2, "stamps_bad": 0, "note": "Không nhắc Nha Trang"},
+  "h2-08": {"grade": "đúng", "fabricated": 0, "stamps_ok": 0, "stamps_bad": 0, "note": ""},
+  "h2-09": {"grade": "đúng", "fabricated": 0, "stamps_ok": 0, "stamps_bad": 0, "note": ""},
+  "h2-10": {"grade": "đúng", "fabricated": 0, "stamps_ok": 1, "stamps_bad": 0, "note": "Trỏ vào câu 'đối thủ rất mạnh', đúng chỗ"},
+  "h1-01": {"grade": "đúng", "fabricated": 0, "stamps_ok": 3, "stamps_bad": 0, "note": ""},
+  "h1-02": {"grade": "sai", "fabricated": 0, "stamps_ok": 0, "stamps_bad": 0, "note": "Trả lời không có thông tin. Transcript turbo ở giây 64 dừng ở 'khi nào là cần thiết tức là không', mất vế 'không họp không giải quyết được vấn đề'. Lỗi chủ yếu ở nhận dạng"},
+  "h1-03": {"grade": "sai", "fabricated": 0, "stamps_ok": 0, "stamps_bad": 0, "note": "Trả lời không có thông tin. Transcript turbo không có What/Where/When/Who/Why/How, chỉ còn 'một là rõ về gì hai là có cần không' ở giây 598. Lỗi chủ yếu ở nhận dạng"},
+  "h1-04": {"grade": "đúng", "fabricated": 0, "stamps_ok": 3, "stamps_bad": 1, "note": "Đủ 3 ý. [18:35] trỏ vào câu 'quyết định đúng là giải quyết được vấn đề', không có ý đồng thuận"},
+  "h1-05": {"grade": "đúng", "fabricated": 0, "stamps_ok": 1, "stamps_bad": 0, "note": ""},
+  "h1-06": {"grade": "đúng", "fabricated": 0, "stamps_ok": 2, "stamps_bad": 0, "note": "Có ý quyền lực là sự ảnh hưởng, thiếu ý uy tín, tín nhiệm"},
+  "h1-07": {"grade": "một phần", "fabricated": 0, "stamps_ok": 3, "stamps_bad": 1, "note": "Bốn ý đầu đúng, câu trả lời dừng ở '* Đ' dù trạng thái done. Hỏi lại 3 lần qua app và 3 lần gọi thẳng đều ra đủ. [14:43] rơi vào khoảng không có câu"},
+  "h1-08": {"grade": "đúng", "fabricated": 0, "stamps_ok": 0, "stamps_bad": 0, "note": ""},
+  "h1-09": {"grade": "đúng", "fabricated": 0, "stamps_ok": 0, "stamps_bad": 1, "note": "Kèm mốc [00:00] không liên quan"}
+ }
+}

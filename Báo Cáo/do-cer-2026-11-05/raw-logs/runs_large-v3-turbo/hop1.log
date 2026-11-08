@@ -1,0 +1,26 @@
+upload 201 0.3 s
+job a5cf65bd-d678-436b-ae40-21150bad0df6
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   24.1s] ('transcribing', None, None)
+[  113.0s] ('diarizing', None, None)
+[  186.5s] ('ready', None, None)
+elapsed 186.5 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1699992, "diarization_device": "cuda"}
+pass 2 segments 174 speakers ['SPEAKER_00', 'SPEAKER_01']
+  SPEAKER_00: 1451s
+  None: 1s
+  SPEAKER_01: 0s
+words 6226 segments with >1 word speaker 53
+      0.2 SPEAKER_00: tất cả các cuộc họp đều có một điểm rất giống nhau đó là điện đưa kết luận họ phải để giải quyết được một vấn 
+     21.5 SPEAKER_00: ra kết quả không muốn vậy thì ở đây có một số vấn đề
+     28.9 SPEAKER_00: Trước khi tiến hành một cuộc họp thì chúng ta cần bảo rõ lý do.
+     38.0 SPEAKER_00: thì bao giờ nó bao gồm nó chứa được cho bộ họp có ba nhân tố, nhân tố thứ nhất là công việc.
+     44.3 SPEAKER_00: Nhân tố thứ 2 là con ngươn
+     48.0 SPEAKER_00: Và nhân dụng thứ 3 là lãnh đạo
+     51.7 SPEAKER_00: Cả 3 cái này vào một cuộc họp, mà nếu không cần thiết mà vẫn làm, rất mất thời gian
+     56.9 SPEAKER_00: Cho nên chúng ta đây là có cần thiết không
+     60.6 SPEAKER_00: Nếu cần thiết thì làm, còn nếu không cần thì không cần họp
+     64.4 SPEAKER_00: Trong điều kiện đến nay chúng ta rất anh có nhiều có rất nhiều cái cách để thay đổi thế này mà không biết cái 
+     81.0 SPEAKER_00: Còn nếu ta thấy không ngọt mà vẫn làm được thì tốt nhất không ngọt
+     87.2 SPEAKER_00: chứ còn nếu không được gặp gỡ giao hưu khác giao hưu sau giờ làm việc với các còn đã là họp thì nó liên quan đ

@@ -1,0 +1,25 @@
+upload 201 0.1 s
+job ea741894-a545-48cf-acf3-bec1ad74514c
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[    7.0s] ('transcribing', None, None)
+[   23.1s] ('diarizing', None, None)
+[   44.4s] ('ready', None, None)
+elapsed 44.4 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 334002, "diarization_device": "cuda"}
+pass 2 segments 72 speakers ['SPEAKER_00']
+  SPEAKER_00: 279s
+  None: 1s
+words 738 segments with >1 word speaker 19
+      1.1 SPEAKER_00: và đó chính là hạt alerone mà lúc nãy tôi đã dạy thích cho em quả dĩnh ở họ lúa tôi nói là vỏ quả là lớp cá vỏ
+     26.8 SPEAKER_00: Và sau lớp Alon đó là em sẽ có hạt tinh bột ở quả của lúa, quả của bậc
+     37.0 SPEAKER_00: Và nói chung quả của tất cả các loài của họ lúa đều giống như vậy
+     42.3 SPEAKER_00: Như vậy là tôi đã giải thích cho các em về các phần của hạt
+     48.2 SPEAKER_00: Và khi phân loại thì đương nhiên chúng ta có thể có hạt của cây một lá mòn
+     54.8 SPEAKER_00: Hạt của cây hai lá mòn khác nhau của tố trúc của phôi
+     59.0 SPEAKER_00: Nhưng khi đề cập đến hạt ở các họ
+     63.1 SPEAKER_00: Thì trong phần phân loại các em sẽ thấy
+     67.5 SPEAKER_00: Người ta thường mô tả đó là hạt không nội nhũ nội nhũ, hạt có ngoạn nhũ, hạt có nội nhũ và ngoạn nhũ
+     77.8 SPEAKER_00: Với hạt đó là bộ phận mà giúp để sẽ tạo nên một cây mới
+     88.5 SPEAKER_00: Với những hạt không có nội nhũ
+     91.1 SPEAKER_00: Thì lúc này chất dự trữ sẽ được tích trữ ở trong lá mầm của nó

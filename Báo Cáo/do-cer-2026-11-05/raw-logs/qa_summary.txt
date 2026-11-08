@@ -1,0 +1,9 @@
+answerable {'đúng': 11, 'sai': 2, 'một phần': 1} tổng 14
+unanswerable {'đúng': 5} tổng 5
+đúng 16/19 = 84%
+bịa 0
+mốc đúng 33/37 = 89%; riêng câu có đáp án 32/35 = 91%
+chữ đầu tiên: trung vị 2.14s, p90 5.09s, min 1.17s, max 6.14s
+trọn câu: trung vị 2.73s, max 20.55s
+hop1: 9 câu, prompt ~9024 token, completion 14–196 (trung vị 82), chi phí mỗi câu trung bình 2.94‰ USD, tổng 0.0265 USD
+hop2: 10 câu, prompt ~4965 token, completion 14–198 (trung vị 68), chi phí mỗi câu trung bình 1.68‰ USD, tổng 0.0168 USD

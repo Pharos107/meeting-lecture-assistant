@@ -76,3 +76,22 @@ class EmptySpanTests(unittest.TestCase):
         self.assertEqual([raw["words"][0]["start"] for raw in merged], [0.0, 1.5, 15.0])
         self.assertEqual((merged[1]["start"], merged[1]["end"]), (1.5, 3.0))
         self.assertEqual(produced[0]["words"][0]["start"], 0.0)
+
+    def test_greedy_retry_runs_only_when_the_span_stays_empty(self) -> None:
+        chunk = build_chunks([(0, 8), (9, 20)])[0]
+        retried: list[tuple[float, float]] = []
+
+        def transcribe(piece):
+            return [words((0.0, 1.0))] if piece.start == 0 else []
+
+        def retry(piece):
+            retried.append((piece.start, piece.end))
+            return [words((0.5, 1.5))]
+
+        merged = fill_empty_spans(chunk, [], transcribe, retry)
+        self.assertEqual(retried, [(9, 20)])
+        self.assertEqual([raw["words"][0]["start"] for raw in merged], [0.0, 9.5])
+
+    def test_no_retry_keeps_the_old_behaviour(self) -> None:
+        chunk = build_chunks([(0, 8), (9, 20)])[0]
+        self.assertEqual(fill_empty_spans(chunk, [], lambda piece: []), [])

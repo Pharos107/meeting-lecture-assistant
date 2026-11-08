@@ -148,10 +148,18 @@ def _shifted(raw: dict, shift: float) -> dict:
     return moved
 
 
-def fill_empty_spans(chunk: SpeechChunk, produced: list[dict], transcribe) -> list[dict]:
-    """Nhận dạng riêng từng khoảng trống của chunk rồi xếp chung theo thời gian, mốc tương đối trong chunk."""
+def fill_empty_spans(chunk: SpeechChunk, produced: list[dict], transcribe, retry=None) -> list[dict]:
+    """Nhận dạng riêng từng khoảng trống của chunk rồi xếp chung theo thời gian, mốc tương đối trong chunk.
+
+    Khoảng nhận dạng riêng vẫn rỗng thì chạy `retry` nếu có. Trên audio có tiếng, beam search của turbo có lúc
+    ra lời mời đăng ký kênh thay cho lời nói thật, bộ lọc bỏ câu đó và khoảng thành trống. Giải mã greedy
+    lấy lại được chữ ở những chỗ như vậy, xem kiến trúc mục 2.3.
+    """
     merged = list(produced)
     for start, end in empty_spans(chunk, produced):
         piece = SpeechChunk(start, end, (SpeechSlice(start, end, False),))
-        merged.extend(_shifted(raw, start - chunk.start) for raw in transcribe(piece))
+        found = transcribe(piece)
+        if not found and retry is not None:
+            found = retry(piece)
+        merged.extend(_shifted(raw, start - chunk.start) for raw in found)
     return sorted(merged, key=_first_start)

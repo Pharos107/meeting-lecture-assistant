@@ -1,0 +1,9878 @@
+{
+ "large-v3-turbo": {
+  "quahat": {
+   "ref_words": 794,
+   "hyp_words": 730,
+   "ref_speakers": 1,
+   "wer": 0.19269521410579346,
+   "sub": 79,
+   "del": 69,
+   "ins": 5,
+   "cer": 0.14707692307692308,
+   "wer_nofill": 0.18413978494623656,
+   "terms": {
+    "term_cer": 0.22109826589595374,
+    "term_exact": 76,
+    "term_total": 121,
+    "per_term": {
+     "alêron": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "alerone",
+        2
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "alon",
+        1
+       ]
+      ]
+     },
+     "protid": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "protein",
+        1
+       ]
+      ]
+     },
+     "tinh bột": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "nảy mầm": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "nảy mộng",
+        3
+       ],
+       [
+        "mẽ mẩn",
+        1
+       ]
+      ]
+     },
+     "phôi": {
+      "hit": 8,
+      "n": 10,
+      "misses": [
+       [
+        "phương",
+        1
+       ],
+       [
+        "thôi",
+        1
+       ]
+      ]
+     },
+     "lá mầm": {
+      "hit": 2,
+      "n": 6,
+      "misses": [
+       [
+        "lá mòn",
+        2
+       ],
+       [
+        "lá mặt",
+        1
+       ],
+       [
+        "lá mập",
+        1
+       ]
+      ]
+     },
+     "nội nhũ": {
+      "hit": 19,
+      "n": 32,
+      "misses": [
+       [
+        "nội nhổ",
+        3
+       ],
+       [
+        "nộng nhũ",
+        3
+       ],
+       [
+        "nội dỗ",
+        2
+       ],
+       [
+        "nội vỗ",
+        2
+       ]
+      ]
+     },
+     "ngoại nhũ": {
+      "hit": 3,
+      "n": 7,
+      "misses": [
+       [
+        "ngoạn nhũ",
+        2
+       ],
+       [
+        "ngoại vỗ",
+        2
+       ]
+      ]
+     },
+     "vỏ hạt": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "vỏ quả": {
+      "hit": 3,
+      "n": 3,
+      "misses": []
+     },
+     "họ Lúa": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "quả dĩnh": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "Cucurbitaceae": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "Fabaceae": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "xê",
+        1
+       ]
+      ]
+     },
+     "Asteraceae": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "xê",
+        1
+       ]
+      ]
+     },
+     "rễ mầm": {
+      "hit": 3,
+      "n": 3,
+      "misses": []
+     },
+     "thân mầm": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "chồi mầm": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "chồn mầm",
+        3
+       ]
+      ]
+     },
+     "hạt": {
+      "hit": 31,
+      "n": 36,
+      "misses": [
+       [
+        "∅",
+        4
+       ],
+       [
+        "ăn",
+        1
+       ]
+      ]
+     },
+     "trưởng thành": {
+      "hit": 1,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        1
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9655172413793104,
+    "purity": 1.0,
+    "aligned": 725,
+    "null_words": 25,
+    "ref_speakers": 1,
+    "hyp_speakers": 1,
+    "mapping": {
+     "PGS. TS. Trương Thị Đẹp": "SPEAKER_00"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "None"
+    ],
+    "rows": [
+     "PGS. TS. Trương Thị Đẹp"
+    ],
+    "matrix": [
+     [
+      700,
+      25
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [],
+   "del_runs": [],
+   "max_gaps": [
+    [
+     5.6,
+     261.1
+    ],
+    [
+     5.5,
+     225.3
+    ],
+    [
+     4.4,
+     192.4
+    ],
+    [
+     4.1,
+     306.7
+    ],
+    [
+     3.2,
+     257.6
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 2.28,
+    "max_seg_s": 25.14,
+    "upper_ratio": 0.03099730458221024,
+    "punct_per_100w": 1.5068493150684932,
+    "digit_tokens": 0
+   },
+   "segments": 71,
+   "top_subs": [
+    [
+     "nhũ",
+     "vỗ",
+     4
+    ],
+    [
+     "nhũ",
+     "nhổ",
+     3
+    ],
+    [
+     "chồi",
+     "chồn",
+     3
+    ],
+    [
+     "nội",
+     "nộng",
+     3
+    ],
+    [
+     "mầm",
+     "mộng",
+     3
+    ],
+    [
+     "alêron",
+     "alerone",
+     2
+    ],
+    [
+     "mầm",
+     "mòn",
+     2
+    ],
+    [
+     "ngoại",
+     "ngoạn",
+     2
+    ],
+    [
+     "nhũ",
+     "dỗ",
+     2
+    ],
+    [
+     "đó",
+     "á",
+     2
+    ],
+    [
+     "toàn",
+     "tồn",
+     2
+    ],
+    [
+     "bộ",
+     "hộ",
+     2
+    ],
+    [
+     "vân",
+     "dần",
+     2
+    ],
+    [
+     "giải",
+     "dạy",
+     1
+    ],
+    [
+     "cám",
+     "cá",
+     1
+    ],
+    [
+     "hoàn",
+     "vào",
+     1
+    ],
+    [
+     "toàn",
+     "tầng",
+     1
+    ],
+    [
+     "protid",
+     "protein",
+     1
+    ],
+    [
+     "lại",
+     "là",
+     1
+    ],
+    [
+     "biến",
+     "bị",
+     1
+    ],
+    [
+     "alêron",
+     "alon",
+     1
+    ],
+    [
+     "bắp",
+     "bậc",
+     1
+    ],
+    [
+     "thuộc",
+     "của",
+     1
+    ],
+    [
+     "về",
+     "của",
+     1
+    ],
+    [
+     "cấu",
+     "tố",
+     1
+    ],
+    [
+     "trữ",
+     "một",
+     1
+    ],
+    [
+     "trữ",
+     "trở",
+     1
+    ],
+    [
+     "chúng",
+     "chung",
+     1
+    ],
+    [
+     "hạt",
+     "ăn",
+     1
+    ],
+    [
+     "điều",
+     "đều",
+     1
+    ],
+    [
+     "điều",
+     "điệu",
+     1
+    ],
+    [
+     "mầm",
+     "mặt",
+     1
+    ],
+    [
+     "dẹp",
+     "về",
+     1
+    ],
+    [
+     "mỏng",
+     "mặt",
+     1
+    ],
+    [
+     "bán",
+     "ăn",
+     1
+    ],
+    [
+     "hết",
+     "đó",
+     1
+    ],
+    [
+     "nhũ",
+     "đây",
+     1
+    ],
+    [
+     "rồi",
+     "là",
+     1
+    ],
+    [
+     "nữa",
+     "đó",
+     1
+    ],
+    [
+     "mầm",
+     "mập",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "b3e5c901-dc44-4269-b3b1-11d70d89b4e2",
+    "elapsed": 61.2,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 8.1,
+     "diarizing": 27.7,
+     "ready": 61.2
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 334002,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2488
+  },
+  "phoi21": {
+   "ref_words": 2252,
+   "hyp_words": 2070,
+   "ref_speakers": 2,
+   "wer": 0.130550621669627,
+   "sub": 94,
+   "del": 191,
+   "ins": 9,
+   "cer": 0.09840624665739651,
+   "wer_nofill": 0.10287664553876158,
+   "terms": {
+    "term_cer": 0.13933649289099526,
+    "term_exact": 97,
+    "term_total": 134,
+    "per_term": {
+     "DNA": {
+      "hit": 6,
+      "n": 6,
+      "misses": []
+     },
+     "RNA": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "protein": {
+      "hit": 5,
+      "n": 5,
+      "misses": []
+     },
+     "nucleotide": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "histone": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "apoptosis": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "lipid": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "amino acid": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "tế bào gốc": {
+      "hit": 3,
+      "n": 4,
+      "misses": [
+       [
+        "tế bóng",
+        1
+       ]
+      ]
+     },
+     "phôi thai học": {
+      "hit": 0,
+      "n": 15,
+      "misses": [
+       [
+        "phôi hoạch",
+        3
+       ],
+       [
+        "phôi theo học",
+        3
+       ],
+       [
+        "khôi tha học",
+        2
+       ],
+       [
+        "công ty học",
+        2
+       ]
+      ]
+     },
+     "dị tật bẩm sinh": {
+      "hit": 2,
+      "n": 10,
+      "misses": [
+       [
+        "dị tập ẩm sinh",
+        5
+       ],
+       [
+        "dị tập bẩm sinh",
+        2
+       ],
+       [
+        "dịch tạp bậc sinh",
+        1
+       ]
+      ]
+     },
+     "quái thai": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "quái thế",
+        1
+       ]
+      ]
+     },
+     "biệt hóa": {
+      "hit": 2,
+      "n": 6,
+      "misses": [
+       [
+        "việt hóa",
+        2
+       ],
+       [
+        "biến hóa",
+        2
+       ]
+      ]
+     },
+     "gen": {
+      "hit": 5,
+      "n": 5,
+      "misses": []
+     },
+     "nhiễm sắc thể": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "di truyền": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "di chuyển",
+        3
+       ],
+       [
+        "di",
+        1
+       ]
+      ]
+     },
+     "đột biến": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "đổi biến",
+        1
+       ]
+      ]
+     },
+     "tín hiệu": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "phân tử": {
+      "hit": 22,
+      "n": 22,
+      "misses": []
+     },
+     "tế bào": {
+      "hit": 33,
+      "n": 35,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "tế",
+        1
+       ]
+      ]
+     },
+     "mô": {
+      "hit": 4,
+      "n": 4,
+      "misses": []
+     },
+     "cơ quan": {
+      "hit": 3,
+      "n": 3,
+      "misses": []
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9660359049005337,
+    "purity": 0.9895626242544732,
+    "aligned": 2061,
+    "null_words": 49,
+    "ref_speakers": 2,
+    "hyp_speakers": 1,
+    "mapping": {
+     "Giảng viên": "SPEAKER_00"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "None"
+    ],
+    "rows": [
+     "Giảng viên",
+     "Học viên"
+    ],
+    "matrix": [
+     [
+      1991,
+      49
+     ],
+     [
+      21,
+      0
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [],
+   "del_runs": [],
+   "max_gaps": [
+    [
+     2.5,
+     88.7
+    ],
+    [
+     2.4,
+     356.0
+    ],
+    [
+     2.3,
+     208.2
+    ],
+    [
+     1.8,
+     305.9
+    ],
+    [
+     1.5,
+     412.0
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 5.82,
+    "max_seg_s": 29.72,
+    "upper_ratio": 0.013246041412911084,
+    "punct_per_100w": 1.9342359767891684,
+    "digit_tokens": 7
+   },
+   "segments": 62,
+   "top_subs": [
+    [
+     "tật",
+     "tập",
+     9
+    ],
+    [
+     "phôi",
+     "khôi",
+     6
+    ],
+    [
+     "bẩm",
+     "ẩm",
+     6
+    ],
+    [
+     "học",
+     "hoạch",
+     3
+    ],
+    [
+     "thai",
+     "tha",
+     3
+    ],
+    [
+     "thai",
+     "theo",
+     3
+    ],
+    [
+     "truyền",
+     "chuyển",
+     3
+    ],
+    [
+     "tỉ",
+     "tỷ",
+     2
+    ],
+    [
+     "phôi",
+     "công",
+     2
+    ],
+    [
+     "thai",
+     "ty",
+     2
+    ],
+    [
+     "biệt",
+     "việt",
+     2
+    ],
+    [
+     "biệt",
+     "biến",
+     2
+    ],
+    [
+     "dị",
+     "dịch",
+     1
+    ],
+    [
+     "tật",
+     "tạp",
+     1
+    ],
+    [
+     "bẩm",
+     "bậc",
+     1
+    ],
+    [
+     "thi",
+     "kỹ",
+     1
+    ],
+    [
+     "sẽ",
+     "thuật",
+     1
+    ],
+    [
+     "vào",
+     "là",
+     1
+    ],
+    [
+     "câu",
+     "không",
+     1
+    ],
+    [
+     "thì",
+     "bây",
+     1
+    ],
+    [
+     "cái",
+     "giờ",
+     1
+    ],
+    [
+     "là",
+     "của",
+     1
+    ],
+    [
+     "cái",
+     "một",
+     1
+    ],
+    [
+     "phải",
+     "sẽ",
+     1
+    ],
+    [
+     "phôi",
+     "cô",
+     1
+    ],
+    [
+     "chất",
+     "chắc",
+     1
+    ],
+    [
+     "thai",
+     "thế",
+     1
+    ],
+    [
+     "phôi",
+     "vôi",
+     1
+    ],
+    [
+     "chẩn",
+     "chuẩn",
+     1
+    ],
+    [
+     "trước",
+     "trích",
+     1
+    ],
+    [
+     "lâm",
+     "âm",
+     1
+    ],
+    [
+     "sàng",
+     "sảng",
+     1
+    ],
+    [
+     "bào",
+     "vôi",
+     1
+    ],
+    [
+     "cái",
+     "cây",
+     1
+    ],
+    [
+     "sinh",
+     "xe",
+     1
+    ],
+    [
+     "học",
+     "thọc",
+     1
+    ],
+    [
+     "đại",
+     "đài",
+     1
+    ],
+    [
+     "các",
+     "hiểu",
+     1
+    ],
+    [
+     "ạ",
+     "nữa",
+     1
+    ],
+    [
+     "rối",
+     "dối",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "3b892145-85b1-467a-b762-022b23cacaaa",
+    "elapsed": 63.2,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 9.1,
+     "diarizing": 35.8,
+     "ready": 63.2
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 527664,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2504
+  },
+  "phoi42": {
+   "ref_words": 3120,
+   "hyp_words": 2669,
+   "ref_speakers": 1,
+   "wer": 0.4580128205128205,
+   "sub": 856,
+   "del": 512,
+   "ins": 61,
+   "cer": 0.3441104920348427,
+   "wer_nofill": 0.46451846488052134,
+   "terms": {
+    "term_cer": 0.5298273155416012,
+    "term_exact": 32,
+    "term_total": 183,
+    "per_term": {
+     "đa ối": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "∅",
+        3
+       ]
+      ]
+     },
+     "nước ối": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "∅",
+        3
+       ]
+      ]
+     },
+     "thực quản": {
+      "hit": 2,
+      "n": 19,
+      "misses": [
+       [
+        "thực hoán",
+        4
+       ],
+       [
+        "thức quả",
+        3
+       ],
+       [
+        "thịt khoản",
+        2
+       ],
+       [
+        "các bạn",
+        1
+       ]
+      ]
+     },
+     "tá tràng": {
+      "hit": 0,
+      "n": 20,
+      "misses": [
+       [
+        "tái trạng",
+        7
+       ],
+       [
+        "tài trang",
+        2
+       ],
+       [
+        "tái trang",
+        2
+       ],
+       [
+        "tà",
+        1
+       ]
+      ]
+     },
+     "hẹp tá tràng": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "cái tái trạng",
+        1
+       ]
+      ]
+     },
+     "tịt tá tràng": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "tìm tái trạng",
+        1
+       ]
+      ]
+     },
+     "hẹp môn vị bẩm sinh": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "cái hôn viên sinh",
+        1
+       ],
+       [
+        "hẹp môn vị vào bệnh sĩ",
+        1
+       ],
+       [
+        "về phương vị hồng sinh như",
+        1
+       ]
+      ]
+     },
+     "môn vị": {
+      "hit": 9,
+      "n": 21,
+      "misses": [
+       [
+        "hôn viên",
+        2
+       ],
+       [
+        "mô vị",
+        2
+       ],
+       [
+        "môn tị",
+        1
+       ],
+       [
+        "cái hôn",
+        1
+       ]
+      ]
+     },
+     "dạ dày": {
+      "hit": 15,
+      "n": 50,
+      "misses": [
+       [
+        "dạng dày",
+        6
+       ],
+       [
+        "dạng giày",
+        3
+       ],
+       [
+        "dạy dạy",
+        2
+       ],
+       [
+        "dẫn dày",
+        2
+       ]
+      ]
+     },
+     "khí quản": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "gan": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "ga",
+        1
+       ]
+      ]
+     },
+     "đường dẫn mật": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "đường dẫn",
+        1
+       ]
+      ]
+     },
+     "hỗng tràng": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "mong",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "được văn",
+        1
+       ]
+      ]
+     },
+     "hồi tràng": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "chạm rằng",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "hóa trạm",
+        1
+       ]
+      ]
+     },
+     "ống tiêu hóa": {
+      "hit": 0,
+      "n": 6,
+      "misses": [
+       [
+        "nước tiêu hòa",
+        1
+       ],
+       [
+        "ống hiêu hóa",
+        1
+       ],
+       [
+        "về các nhận",
+        1
+       ],
+       [
+        "ổng tiêu hoa kinh",
+        1
+       ]
+      ]
+     },
+     "siêu âm": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        2
+       ],
+       [
+        "sức âm",
+        2
+       ]
+      ]
+     },
+     "chẩn đoán hình ảnh": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "nôn": {
+      "hit": 0,
+      "n": 9,
+      "misses": [
+       [
+        "nâu",
+        3
+       ],
+       [
+        "nông",
+        2
+       ],
+       [
+        "∅",
+        2
+       ],
+       [
+        "nó",
+        1
+       ]
+      ]
+     },
+     "bẩm sinh": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "viên sinh",
+        1
+       ],
+       [
+        "bệnh sĩ",
+        1
+       ],
+       [
+        "hồng sinh như",
+        1
+       ]
+      ]
+     },
+     "mạc treo": {
+      "hit": 0,
+      "n": 11,
+      "misses": [
+       [
+        "mặt trọng",
+        3
+       ],
+       [
+        "mặc treo",
+        3
+       ],
+       [
+        "mặt trong",
+        2
+       ],
+       [
+        "mình trong",
+        2
+       ]
+      ]
+     },
+     "tắc": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "tặng",
+        1
+       ]
+      ]
+     },
+     "hẹp": {
+      "hit": 4,
+      "n": 17,
+      "misses": [
+       [
+        "∅",
+        3
+       ],
+       [
+        "kỷ",
+        2
+       ],
+       [
+        "hẹp của",
+        2
+       ],
+       [
+        "hẹn",
+        1
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9367331288343558,
+    "purity": 1.0,
+    "aligned": 2608,
+    "null_words": 165,
+    "ref_speakers": 1,
+    "hyp_speakers": 1,
+    "mapping": {
+     "Giảng viên": "SPEAKER_00"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "None"
+    ],
+    "rows": [
+     "Giảng viên"
+    ],
+    "matrix": [
+     [
+      2443,
+      165
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [],
+   "del_runs": [
+    {
+     "t": 0.0,
+     "n": 61,
+     "text": "thai nhi đi tiểu và sau đó được đào thải về tự nhiên thì sao ạ là em bé sẽ gì ạ sẽ nuốt lại cái nước ối đó và chuyển hóa cái nước ối đấy như vậy là sẽ"
+    },
+    {
+     "t": 23.0,
+     "n": 41,
+     "text": "chuyển hóa nó tụ lại ở bên trong khoang ối thì sẽ có biểu hiện là đa ối và khi mà siêu âm thấy biểu hiện đa ối thì các bác sĩ chẩn đoán hình ảnh bác sĩ siêu âm"
+    },
+    {
+     "t": 46.8,
+     "n": 14,
+     "text": "sẽ nôn ra đó thì là và sau sinh thì nếu mà ăn thì"
+    },
+    {
+     "t": 47.0,
+     "n": 14,
+     "text": "có biểu hiện nôn vọt rất là sớm thế còn nếu mà rò khí"
+    },
+    {
+     "t": 48.6,
+     "n": 32,
+     "text": "thì khi mà em bé ăn vào em bé bú sữa vào thì lúc đấy nó sẽ nó không đi xuống đường tiêu hóa mà nó sẽ đi sang cái hệ gì"
+    },
+    {
+     "t": 633.1,
+     "n": 13,
+     "text": "rồi sang đến cái phần tiếp theo đấy là cái sự hình thành"
+    },
+    {
+     "t": 820.3,
+     "n": 12,
+     "text": "khoảng các bạn nghỉ khoảng ba mươi phút nhé các bạn nghỉ"
+    }
+   ],
+   "max_gaps": [
+    [
+     12.4,
+     50.1
+    ],
+    [
+     8.7,
+     633.9
+    ],
+    [
+     6.1,
+     442.5
+    ],
+    [
+     3.3,
+     806.7
+    ],
+    [
+     3.2,
+     417.4
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 4.5,
+    "max_seg_s": 29.56,
+    "upper_ratio": 0.0120962864400629,
+    "punct_per_100w": 4.4310927525347354,
+    "digit_tokens": 22
+   },
+   "segments": 104,
+   "top_subs": [
+    [
+     "dạ",
+     "dạng",
+     11
+    ],
+    [
+     "tá",
+     "tái",
+     9
+    ],
+    [
+     "tràng",
+     "trạng",
+     8
+    ],
+    [
+     "dày",
+     "dây",
+     7
+    ],
+    [
+     "ruột",
+     "dưỡng",
+     7
+    ],
+    [
+     "quản",
+     "quả",
+     6
+    ],
+    [
+     "bờ",
+     "vờ",
+     6
+    ],
+    [
+     "mạc",
+     "mặt",
+     5
+    ],
+    [
+     "trục",
+     "chút",
+     5
+    ],
+    [
+     "hiện",
+     "hiệp",
+     4
+    ],
+    [
+     "xoay",
+     "dạy",
+     4
+    ],
+    [
+     "treo",
+     "trong",
+     4
+    ],
+    [
+     "trước",
+     "chút",
+     4
+    ],
+    [
+     "đoạn",
+     "đặt",
+     4
+    ],
+    [
+     "quản",
+     "hoán",
+     4
+    ],
+    [
+     "tràng",
+     "trang",
+     4
+    ],
+    [
+     "hấp",
+     "ạ",
+     3
+    ],
+    [
+     "viêm",
+     "biên",
+     3
+    ],
+    [
+     "hình",
+     "định",
+     3
+    ],
+    [
+     "quản",
+     "khoản",
+     3
+    ],
+    [
+     "thành",
+     "này",
+     3
+    ],
+    [
+     "trục",
+     "chụp",
+     3
+    ],
+    [
+     "treo",
+     "trọng",
+     3
+    ],
+    [
+     "ruột",
+     "dịch",
+     3
+    ],
+    [
+     "mạc",
+     "mặc",
+     3
+    ],
+    [
+     "ruột",
+     "dưới",
+     3
+    ],
+    [
+     "theo",
+     "dạy",
+     3
+    ],
+    [
+     "dày",
+     "dạy",
+     3
+    ],
+    [
+     "cái",
+     "dạy",
+     3
+    ],
+    [
+     "của",
+     "dạy",
+     3
+    ],
+    [
+     "một",
+     "có",
+     3
+    ],
+    [
+     "dày",
+     "giày",
+     3
+    ],
+    [
+     "sang",
+     "ra",
+     3
+    ],
+    [
+     "thực",
+     "thức",
+     3
+    ],
+    [
+     "giãn",
+     "dẫn",
+     3
+    ],
+    [
+     "đấy",
+     "đến",
+     3
+    ],
+    [
+     "dày",
+     "dạng",
+     3
+    ],
+    [
+     "nôn",
+     "nâu",
+     3
+    ],
+    [
+     "cái",
+     "với",
+     3
+    ],
+    [
+     "đoạn",
+     "gặp",
+     3
+    ]
+   ],
+   "run": {
+    "job_id": "2efe263a-67c5-414e-8c48-7585ad3fd8cc",
+    "elapsed": 115.1,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 17.6,
+     "diarizing": 64.0,
+     "ready": 115.1
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 1082064,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2486
+  },
+  "aldehyd": {
+   "ref_words": 2840,
+   "hyp_words": 2694,
+   "ref_speakers": 1,
+   "wer": 0.4024647887323944,
+   "sub": 807,
+   "del": 241,
+   "ins": 95,
+   "cer": 0.2923039961560022,
+   "wer_nofill": 0.4121189311253293,
+   "terms": {
+    "term_cer": 0.5620853080568721,
+    "term_exact": 64,
+    "term_total": 276,
+    "per_term": {
+     "aldehyd": {
+      "hit": 3,
+      "n": 33,
+      "misses": [
+       [
+        "∅",
+        7
+       ],
+       [
+        "adx",
+        3
+       ],
+       [
+        "ý",
+        2
+       ],
+       [
+        "phần",
+        2
+       ]
+      ]
+     },
+     "ceton": {
+      "hit": 0,
+      "n": 6,
+      "misses": [
+       [
+        "nhiên",
+        1
+       ],
+       [
+        "cfo",
+        1
+       ],
+       [
+        "shepard",
+        1
+       ],
+       [
+        "trị",
+        1
+       ]
+      ]
+     },
+     "quinon": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "kino",
+        3
+       ],
+       [
+        "adenxepalokidon",
+        1
+       ],
+       [
+        "con",
+        1
+       ]
+      ]
+     },
+     "carbonyl": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "carbonin",
+        2
+       ],
+       [
+        "nhiên",
+        1
+       ],
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "hydrocarbon": {
+      "hit": 0,
+      "n": 14,
+      "misses": [
+       [
+        "con",
+        3
+       ],
+       [
+        "carbon",
+        2
+       ],
+       [
+        "các",
+        1
+       ],
+       [
+        "học",
+        1
+       ]
+      ]
+     },
+     "carbon": {
+      "hit": 15,
+      "n": 19,
+      "misses": [
+       [
+        "phần",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "con",
+        1
+       ],
+       [
+        "bọng",
+        1
+       ]
+      ]
+     },
+     "alcol": {
+      "hit": 0,
+      "n": 6,
+      "misses": [
+       [
+        "phần",
+        2
+       ],
+       [
+        "côn",
+        1
+       ],
+       [
+        "enco",
+        1
+       ],
+       [
+        "hôn",
+        1
+       ]
+      ]
+     },
+     "formyl": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "link",
+        2
+       ],
+       [
+        "mịn",
+        2
+       ],
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "carbaldehyd": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "để",
+        1
+       ],
+       [
+        "hít",
+        1
+       ],
+       [
+        "analytics",
+        1
+       ],
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "propanal": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "nặng",
+        1
+       ],
+       [
+        "robana",
+        1
+       ]
+      ]
+     },
+     "propenal": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "chín",
+        2
+       ]
+      ]
+     },
+     "acrolein": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "benzaldehyd": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "hít",
+        2
+       ]
+      ]
+     },
+     "IUPAC": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "aisrub",
+        1
+       ],
+       [
+        "bác",
+        1
+       ],
+       [
+        "mắt",
+        1
+       ]
+      ]
+     },
+     "carboxylic": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "oxylic",
+        3
+       ],
+       [
+        "adh",
+        1
+       ]
+      ]
+     },
+     "acid": {
+      "hit": 19,
+      "n": 27,
+      "misses": [
+       [
+        "acid phạm",
+        2
+       ],
+       [
+        "trích",
+        2
+       ],
+       [
+        "tổ",
+        1
+       ],
+       [
+        "o",
+        1
+       ]
+      ]
+     },
+     "liên hợp": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "nhóm chức": {
+      "hit": 16,
+      "n": 70,
+      "misses": [
+       [
+        "nhóm chiếc",
+        7
+       ],
+       [
+        "∅",
+        4
+       ],
+       [
+        "nhóm trích",
+        4
+       ],
+       [
+        "nhận trích",
+        3
+       ]
+      ]
+     },
+     "danh pháp": {
+      "hit": 0,
+      "n": 14,
+      "misses": [
+       [
+        "dân pháp",
+        5
+       ],
+       [
+        "nhân pháp",
+        3
+       ],
+       [
+        "dương pháp",
+        2
+       ],
+       [
+        "dương pháp trước",
+        1
+       ]
+      ]
+     },
+     "tiếp vĩ ngữ": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "tiết kỷ ngừng",
+        2
+       ],
+       [
+        "tiết",
+        1
+       ],
+       [
+        "tiết tì nữ",
+        1
+       ]
+      ]
+     },
+     "tiếp đầu ngữ": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "tiết đầu",
+        2
+       ],
+       [
+        "tiết đầu nữ",
+        1
+       ]
+      ]
+     },
+     "hydroxy": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "heroxy",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "xì",
+        1
+       ]
+      ]
+     },
+     "oxo": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "được",
+        1
+       ]
+      ]
+     },
+     "amino": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "phải",
+        1
+       ],
+       [
+        "albin",
+        1
+       ]
+      ]
+     },
+     "amin": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "ab",
+        1
+       ],
+       [
+        "bây",
+        1
+       ],
+       [
+        "henoxy",
+        1
+       ],
+       [
+        "albin",
+        1
+       ]
+      ]
+     },
+     "pentanol": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "penthanol",
+        1
+       ],
+       [
+        "đồ",
+        1
+       ]
+      ]
+     },
+     "propionic": {
+      "hit": 1,
+      "n": 3,
+      "misses": [
+       [
+        "probiotic",
+        1
+       ],
+       [
+        "andhidrobiotic",
+        1
+       ]
+      ]
+     },
+     "acrylic": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "acrylite",
+        3
+       ]
+      ]
+     },
+     "benzoic": {
+      "hit": 3,
+      "n": 3,
+      "misses": []
+     },
+     "liên kết pi": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "tích carbonin kế",
+        1
+       ]
+      ]
+     },
+     "acyl": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "acid",
+        2
+       ]
+      ]
+     },
+     "benzen": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "lơ",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "bz",
+        1
+       ]
+      ]
+     },
+     "propionaldehyd": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "thì",
+        1
+       ]
+      ]
+     },
+     "ethanol": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "netanol",
+        1
+       ]
+      ]
+     },
+     "cycloalkan": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "đăng",
+        1
+       ]
+      ]
+     },
+     "mạch chính": {
+      "hit": 0,
+      "n": 6,
+      "misses": [
+       [
+        "phần phần",
+        2
+       ],
+       [
+        "mặt chí",
+        2
+       ],
+       [
+        "mặt trí",
+        2
+       ]
+      ]
+     },
+     "nhóm thế": {
+      "hit": 4,
+      "n": 9,
+      "misses": [
+       [
+        "nhóm thế để",
+        1
+       ],
+       [
+        "nóng thế",
+        1
+       ],
+       [
+        "thế",
+        1
+       ],
+       [
+        "phụ thế",
+        1
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9607541362062332,
+    "purity": 1.0,
+    "aligned": 2599,
+    "null_words": 102,
+    "ref_speakers": 1,
+    "hyp_speakers": 1,
+    "mapping": {
+     "Thầy giáo": "SPEAKER_00"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "None"
+    ],
+    "rows": [
+     "Thầy giáo"
+    ],
+    "matrix": [
+     [
+      2497,
+      102
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [],
+   "del_runs": [
+    {
+     "t": 614.0,
+     "n": 13,
+     "text": "cái này là file word ha cái file bài giảng của cái giáo"
+    },
+    {
+     "t": 760.8,
+     "n": 18,
+     "text": "nhóm chức aldehyd này aldehyd chúng ta gọi là chữ al đúng không hoặc là carbaldehyd trong trường"
+    },
+    {
+     "t": 799.9,
+     "n": 32,
+     "text": "các anh chị chép cái phần ở trên đi rồi tôi tôi chiếu cái phần ở dưới các anh chị chép thêm hoặc là các anh chị chụp lại cho nó lẹ"
+    }
+   ],
+   "max_gaps": [
+    [
+     9.7,
+     624.4
+    ],
+    [
+     9.0,
+     761.8
+    ],
+    [
+     8.2,
+     614.8
+    ],
+    [
+     6.3,
+     774.1
+    ],
+    [
+     6.0,
+     703.3
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 4.0,
+    "max_seg_s": 29.98,
+    "upper_ratio": 0.03379152348224513,
+    "punct_per_100w": 4.514925373134329,
+    "digit_tokens": 37
+   },
+   "segments": 141,
+   "top_subs": [
+    [
+     "chức",
+     "chiếc",
+     14
+    ],
+    [
+     "mạch",
+     "mặt",
+     13
+    ],
+    [
+     "chức",
+     "trích",
+     9
+    ],
+    [
+     "vòng",
+     "vỏ",
+     7
+    ],
+    [
+     "tiếp",
+     "tiết",
+     6
+    ],
+    [
+     "danh",
+     "dân",
+     5
+    ],
+    [
+     "al",
+     "a",
+     5
+    ],
+    [
+     "là",
+     "phần",
+     5
+    ],
+    [
+     "thì",
+     "để",
+     4
+    ],
+    [
+     "nhóm",
+     "những",
+     4
+    ],
+    [
+     "theo",
+     "là",
+     4
+    ],
+    [
+     "chúng",
+     "phần",
+     4
+    ],
+    [
+     "ta",
+     "phần",
+     4
+    ],
+    [
+     "cái",
+     "phần",
+     4
+    ],
+    [
+     "nhóm",
+     "nhận",
+     4
+    ],
+    [
+     "thường",
+     "thừa",
+     4
+    ],
+    [
+     "liên",
+     "lĩnh",
+     4
+    ],
+    [
+     "quinon",
+     "kino",
+     3
+    ],
+    [
+     "thực",
+     "thật",
+     3
+    ],
+    [
+     "aldehyd",
+     "adx",
+     3
+    ],
+    [
+     "danh",
+     "dương",
+     3
+    ],
+    [
+     "mạch",
+     "phần",
+     3
+    ],
+    [
+     "carboxylic",
+     "oxylic",
+     3
+    ],
+    [
+     "cấu",
+     "tấu",
+     3
+    ],
+    [
+     "sử",
+     "sĩ",
+     3
+    ],
+    [
+     "danh",
+     "nhân",
+     3
+    ],
+    [
+     "tương",
+     "tư",
+     3
+    ],
+    [
+     "acrylic",
+     "acrylite",
+     3
+    ],
+    [
+     "nhóm",
+     "một",
+     3
+    ],
+    [
+     "hydrocarbon",
+     "con",
+     3
+    ],
+    [
+     "nhóm",
+     "chiếc",
+     2
+    ],
+    [
+     "giả",
+     "đại",
+     2
+    ],
+    [
+     "sử",
+     "sứ",
+     2
+    ],
+    [
+     "chức",
+     "kiếp",
+     2
+    ],
+    [
+     "carbonyl",
+     "carbonin",
+     2
+    ],
+    [
+     "thêm",
+     "tên",
+     2
+    ],
+    [
+     "một",
+     "của",
+     2
+    ],
+    [
+     "cái",
+     "các",
+     2
+    ],
+    [
+     "chất",
+     "trạng",
+     2
+    ],
+    [
+     "đọc",
+     "gọt",
+     2
+    ]
+   ],
+   "run": {
+    "job_id": "0cc01198-f9e2-4301-ba7b-339fbb286de3",
+    "elapsed": 93.4,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 12.1,
+     "diarizing": 54.2,
+     "ready": 93.4
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 812856,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2623
+  },
+  "acid": {
+   "ref_words": 2451,
+   "hyp_words": 1736,
+   "ref_speakers": 1,
+   "wer": 0.6931864545083639,
+   "sub": 888,
+   "del": 763,
+   "ins": 48,
+   "cer": 0.5646606914212549,
+   "wer_nofill": 0.7002992731936725,
+   "terms": {
+    "term_cer": 0.8480538922155688,
+    "term_exact": 7,
+    "term_total": 209,
+    "per_term": {
+     "acid": {
+      "hit": 2,
+      "n": 40,
+      "misses": [
+       [
+        "∅",
+        9
+       ],
+       [
+        "bốn",
+        8
+       ],
+       [
+        "hai",
+        5
+       ],
+       [
+        "một",
+        3
+       ]
+      ]
+     },
+     "benzoic": {
+      "hit": 2,
+      "n": 12,
+      "misses": [
+       [
+        "benzoyl",
+        2
+       ],
+       [
+        "dưới",
+        2
+       ],
+       [
+        "∅",
+        2
+       ],
+       [
+        "bệnh",
+        1
+       ]
+      ]
+     },
+     "acetamido": {
+      "hit": 0,
+      "n": 11,
+      "misses": [
+       [
+        "∅",
+        4
+       ],
+       [
+        "vết",
+        4
+       ],
+       [
+        "acetamidro",
+        2
+       ],
+       [
+        "tinh",
+        1
+       ]
+      ]
+     },
+     "carbamoyl": {
+      "hit": 0,
+      "n": 8,
+      "misses": [
+       [
+        "∅",
+        4
+       ],
+       [
+        "chặt",
+        1
+       ],
+       [
+        "in",
+        1
+       ],
+       [
+        "tinh",
+        1
+       ]
+      ]
+     },
+     "benzamid": {
+      "hit": 0,
+      "n": 8,
+      "misses": [
+       [
+        "∅",
+        5
+       ],
+       [
+        "benzamin",
+        1
+       ],
+       [
+        "hay",
+        1
+       ],
+       [
+        "biết",
+        1
+       ]
+      ]
+     },
+     "amid": {
+      "hit": 0,
+      "n": 7,
+      "misses": [
+       [
+        "amin",
+        3
+       ],
+       [
+        "anmic",
+        1
+       ],
+       [
+        "unknit",
+        1
+       ],
+       [
+        "gọi",
+        1
+       ]
+      ]
+     },
+     "sulfamoyl": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "vị",
+        1
+       ],
+       [
+        "c1h2",
+        1
+       ],
+       [
+        "s",
+        1
+       ],
+       [
+        "ở",
+        1
+       ]
+      ]
+     },
+     "benzoat": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "ác",
+        3
+       ],
+       [
+        "rồi",
+        1
+       ],
+       [
+        "bốn",
+        1
+       ]
+      ]
+     },
+     "phthalic": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "∅",
+        2
+       ],
+       [
+        "một",
+        1
+       ],
+       [
+        "hai",
+        1
+       ],
+       [
+        "quen",
+        1
+       ]
+      ]
+     },
+     "pyrrolidin": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "∅",
+        2
+       ],
+       [
+        "nhìn",
+        1
+       ],
+       [
+        "dưới",
+        1
+       ],
+       [
+        "phenoxin",
+        1
+       ]
+      ]
+     },
+     "benzoyl": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "benzo",
+        1
+       ],
+       [
+        "in",
+        1
+       ],
+       [
+        "axid",
+        1
+       ],
+       [
+        "cổ",
+        1
+       ]
+      ]
+     },
+     "clorid": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "in",
+        1
+       ],
+       [
+        "chloric",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "ra",
+        1
+       ]
+      ]
+     },
+     "ester": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "bên",
+        1
+       ],
+       [
+        "là",
+        1
+       ],
+       [
+        "sacin",
+        1
+       ],
+       [
+        "bốn",
+        1
+       ]
+      ]
+     },
+     "phenoxy": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        4
+       ]
+      ]
+     },
+     "amoni": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "bốn",
+        4
+       ]
+      ]
+     },
+     "ethyl": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "cơ",
+        2
+       ],
+       [
+        "amido",
+        1
+       ]
+      ]
+     },
+     "acetyl": {
+      "hit": 1,
+      "n": 3,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "góc",
+        1
+       ]
+      ]
+     },
+     "phthalimid": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "∅",
+        3
+       ]
+      ]
+     },
+     "anhydrid": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "∅",
+        2
+       ],
+       [
+        "phải",
+        1
+       ]
+      ]
+     },
+     "benzyl": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "bốn",
+        3
+       ]
+      ]
+     },
+     "brom": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "glom",
+        1
+       ],
+       [
+        "ba",
+        1
+       ]
+      ]
+     },
+     "gallic": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "một",
+        2
+       ]
+      ]
+     },
+     "salicylic": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "một",
+        1
+       ]
+      ]
+     },
+     "methoxy": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        2
+       ]
+      ]
+     },
+     "phenyl": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "phê",
+        1
+       ],
+       [
+        "ninh",
+        1
+       ]
+      ]
+     },
+     "methylcarbamoyl": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "3molin",
+        2
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "băm",
+        1
+       ]
+      ]
+     },
+     "pentyl": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "tên",
+        1
+       ]
+      ]
+     },
+     "toluic": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "theo",
+        1
+       ],
+       [
+        "đi",
+        1
+       ]
+      ]
+     },
+     "propionic": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "vê",
+        1
+       ],
+       [
+        "góc",
+        1
+       ]
+      ]
+     },
+     "nitơ": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        4
+       ]
+      ]
+     },
+     "alphabet": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        2
+       ],
+       [
+        "vào",
+        1
+       ],
+       [
+        "tinh",
+        1
+       ]
+      ]
+     },
+     "dẫn xuất": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "halogenid": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "halic",
+        1
+       ]
+      ]
+     },
+     "natri benzoat": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "chloric rồi",
+        1
+       ]
+      ]
+     },
+     "benzonitril": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "bốn",
+        1
+       ]
+      ]
+     },
+     "formyl": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "minh",
+        4
+       ],
+       [
+        "vl3",
+        1
+       ]
+      ]
+     },
+     "oxo": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        3
+       ],
+       [
+        "xô",
+        1
+       ]
+      ]
+     },
+     "amino": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "bốn",
+        3
+       ],
+       [
+        "amido",
+        1
+       ]
+      ]
+     },
+     "hydro": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        3
+       ],
+       [
+        "thì",
+        1
+       ]
+      ]
+     },
+     "carbon": {
+      "hit": 0,
+      "n": 10,
+      "misses": [
+       [
+        "con",
+        5
+       ],
+       [
+        "∅",
+        2
+       ],
+       [
+        "vong",
+        1
+       ],
+       [
+        "bó",
+        1
+       ]
+      ]
+     },
+     "para": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "bốn",
+        2
+       ],
+       [
+        "ra",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "phẩm",
+        1
+       ]
+      ]
+     },
+     "meta": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "gọi",
+        1
+       ],
+       [
+        "mệt",
+        1
+       ]
+      ]
+     },
+     "ortho": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "một",
+        2
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9372037914691943,
+    "purity": 1.0,
+    "aligned": 1688,
+    "null_words": 106,
+    "ref_speakers": 1,
+    "hyp_speakers": 1,
+    "mapping": {
+     "Cô giáo": "SPEAKER_01"
+    },
+    "labels": [
+     "SPEAKER_01",
+     "None"
+    ],
+    "rows": [
+     "Cô giáo"
+    ],
+    "matrix": [
+     [
+      1582,
+      106
+     ]
+    ]
+   },
+   "flagged_segments": [
+    {
+     "start": 791.544,
+     "dur": 5.78,
+     "text": "Cảm ơn các bạn đã theo dõi và hãy subscribe cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn"
+    }
+   ],
+   "ins_runs": [],
+   "del_runs": [
+    {
+     "t": 62.0,
+     "n": 14,
+     "text": "rồi hợp chất này là có nhóm chức acid có chức ceton thì chức"
+    },
+    {
+     "t": 167.8,
+     "n": 38,
+     "text": "số một rồi đây là phthalimid phthalimid nếu là o thì là anhydrid phthalic ha o thì là anhydrid phthalic còn nếu mà thay vào đó là nitơ thì sẽ là phthalimid rồi bây giờ đến danh pháp"
+    },
+    {
+     "t": 168.1,
+     "n": 19,
+     "text": "số hợp chất khó hơn rồi với hợp chất này cũng thế ha chúng ta cũng vẫn phải chọn"
+    },
+    {
+     "t": 275.4,
+     "n": 13,
+     "text": "số một rồi cái nhóm so_2 nh_2 nhóm này được gọi là nhóm"
+    },
+    {
+     "t": 329.2,
+     "n": 16,
+     "text": "thế nha đây ví dụ như thế này ví dụ các bạn có hợp chất như"
+    },
+    {
+     "t": 392.7,
+     "n": 62,
+     "text": "nhóm thay hydro đúng không của vòng benzen thì cái nhóm này chúng ta gọi là nhóm carbamoylbenzen nếu gọi đúng tên thì gọi như thế nhưng người ta sẽ không gọi cái danh pháp như vậy tôi chỉ lấy"
+    },
+    {
+     "t": 393.0,
+     "n": 13,
+     "text": "chức là cái đuôi tận cùng của tên trong danh pháp đó đó"
+    },
+    {
+     "t": 423.5,
+     "n": 64,
+     "text": "nữa các bạn cũng nên biết đó là ví dụ như đây hợp chất ch_3 co nh_2 hợp chất này có tên là acetamid đúng không acetamid nếu bỏ một hydro đi để cho nó trở thành gốc thì thêm"
+    },
+    {
+     "t": 496.4,
+     "n": 16,
+     "text": "đánh số chúng ta đánh số theo chiều nào cũng vậy theo đi lên phía trên"
+    },
+    {
+     "t": 503.3,
+     "n": 18,
+     "text": "thứ tự alphabet ha ví dụ cái vòng trên chúng ta sẽ có cái tên đầu là chữ"
+    },
+    {
+     "t": 539.4,
+     "n": 40,
+     "text": "phenoxy cũng như là các bạn ví dụ ch_3 o các bạn gọi methoxy ha c_2h_5 o là ethoxy đó thì c_6h_5 o là phenoxy như vậy ở vị trí số bốn là phenoxy ở vị trí số ba có"
+    },
+    {
+     "t": 579.5,
+     "n": 21,
+     "text": "với hợp chất này các bạn cũng vậy thôi các bạn phải chọn cái mạch carbon dài nhất ha mang cái"
+    },
+    {
+     "t": 612.1,
+     "n": 19,
+     "text": "bốn có hai nhóm methoxy do đó chúng ta để số hai gắn vào cái mạch chính là để"
+    },
+    {
+     "t": 647.3,
+     "n": 20,
+     "text": "rồi hợp chất tiếp theo đây hợp chất này đây hợp chất này là có nhóm acetamido này là phía"
+    },
+    {
+     "t": 682.0,
+     "n": 66,
+     "text": "là acetamido cho nên vần a là ở bên này vần a là được ưu tiên trước chúng ta đánh số một hai ba bốn năm sáu như vậy cái acid này cũng là acid benzoic trước hết là acid"
+    },
+    {
+     "t": 791.9,
+     "n": 33,
+     "text": "cứ gọi tên đi ha cái nhóm thế nào đơn giản chúng ta cứ gọi tên trước nhóm khó chúng ta gọi sau sau đó chúng ta nhìn vào cái phần alphabet chúng"
+    },
+    {
+     "t": 794.7,
+     "n": 31,
+     "text": "có gì cả rồi hợp chất này thì cực kỳ khó khăn ha nhưng mà thực ra thì cứ phân tích dần dần thì chúng ta cũng vẫn làm được chứ"
+    },
+    {
+     "t": 802.8,
+     "n": 12,
+     "text": "đây này các bạn amid này benzamid nếu mà vòng benzen gắn"
+    },
+    {
+     "t": 978.6,
+     "n": 17,
+     "text": "các bạn không không quên gọi cái nhóm carbon số một đầu mạch này là nhóm oxo"
+    }
+   ],
+   "max_gaps": [
+    [
+     55.0,
+     109.7
+    ],
+    [
+     49.6,
+     168.4
+    ],
+    [
+     45.1,
+     424.7
+    ],
+    [
+     40.7,
+     691.0
+    ],
+    [
+     38.5,
+     330.9
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 3.08,
+    "max_seg_s": 29.02,
+    "upper_ratio": 0.06112785191562634,
+    "punct_per_100w": 21.696252465483234,
+    "digit_tokens": 132
+   },
+   "segments": 81,
+   "top_subs": [
+    [
+     "acid",
+     "bốn",
+     8
+    ],
+    [
+     "chức",
+     "trước",
+     7
+    ],
+    [
+     "là",
+     "một",
+     7
+    ],
+    [
+     "là",
+     "bốn",
+     6
+    ],
+    [
+     "acid",
+     "hai",
+     5
+    ],
+    [
+     "bên",
+     "tinh",
+     5
+    ],
+    [
+     "carbon",
+     "con",
+     5
+    ],
+    [
+     "ic",
+     "x",
+     4
+    ],
+    [
+     "là",
+     "hai",
+     4
+    ],
+    [
+     "acetamido",
+     "vết",
+     4
+    ],
+    [
+     "này",
+     "vết",
+     4
+    ],
+    [
+     "là",
+     "tinh",
+     4
+    ],
+    [
+     "formyl",
+     "minh",
+     4
+    ],
+    [
+     "rồi",
+     "bốn",
+     4
+    ],
+    [
+     "amoni",
+     "bốn",
+     4
+    ],
+    [
+     "gốc",
+     "bốn",
+     4
+    ],
+    [
+     "benzoat",
+     "ác",
+     3
+    ],
+    [
+     "thay",
+     "tay",
+     3
+    ],
+    [
+     "đây",
+     "hai",
+     3
+    ],
+    [
+     "tên",
+     "hai",
+     3
+    ],
+    [
+     "theo",
+     "một",
+     3
+    ],
+    [
+     "thì",
+     "hai",
+     3
+    ],
+    [
+     "hydroxybenzoic",
+     "hai",
+     3
+    ],
+    [
+     "acid",
+     "một",
+     3
+    ],
+    [
+     "benzen",
+     "hai",
+     3
+    ],
+    [
+     "thế",
+     "thuế",
+     3
+    ],
+    [
+     "amid",
+     "amin",
+     3
+    ],
+    [
+     "methylacetamido",
+     "vết",
+     3
+    ],
+    [
+     "ba",
+     "và",
+     3
+    ],
+    [
+     "hai",
+     "vl3",
+     3
+    ],
+    [
+     "ha",
+     "bốn",
+     3
+    ],
+    [
+     "lộn",
+     "bốn",
+     3
+    ],
+    [
+     "amino",
+     "bốn",
+     3
+    ],
+    [
+     "này",
+     "bốn",
+     3
+    ],
+    [
+     "benzyl",
+     "bốn",
+     3
+    ],
+    [
+     "tên",
+     "bên",
+     2
+    ],
+    [
+     "ethyl",
+     "cơ",
+     2
+    ],
+    [
+     "axetic",
+     "acetylacety",
+     2
+    ],
+    [
+     "gốc",
+     "góc",
+     2
+    ],
+    [
+     "người",
+     "thì",
+     2
+    ]
+   ],
+   "run": {
+    "job_id": "8e7ab715-9ae8-414c-9b06-42b56ba58894",
+    "elapsed": 134.0,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 16.1,
+     "diarizing": 79.7,
+     "ready": 134.0
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 1175880,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2562
+  },
+  "hop1": {
+   "ref_words": 5017,
+   "hyp_words": 6227,
+   "ref_speakers": 3,
+   "wer": 0.5937811441100259,
+   "sub": 821,
+   "del": 474,
+   "ins": 1684,
+   "cer": 0.4981525653617698,
+   "wer_nofill": 0.5831570038087177,
+   "terms": {
+    "term_cer": 1.4954773869346734,
+    "term_exact": 79,
+    "term_total": 120,
+    "per_term": {
+     "brainstorming": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "power": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "luôn",
+        1
+       ]
+      ]
+     },
+     "cuộc họp": {
+      "hit": 32,
+      "n": 52,
+      "misses": [
+       [
+        "của họ",
+        3
+       ],
+       [
+        "của",
+        1
+       ],
+       [
+        "bộ họp",
+        1
+       ],
+       [
+        "cổ họp",
+        1
+       ]
+      ]
+     },
+     "ra quyết định": {
+      "hit": 2,
+      "n": 3,
+      "misses": [
+       [
+        "giảm quyết định",
+        1
+       ]
+      ]
+     },
+     "đồng thuận": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "đồng phong",
+        1
+       ],
+       [
+        "đồng phận",
+        1
+       ],
+       [
+        "những cái",
+        1
+       ]
+      ]
+     },
+     "chủ trì": {
+      "hit": 6,
+      "n": 6,
+      "misses": []
+     },
+     "kết luận": {
+      "hit": 6,
+      "n": 6,
+      "misses": []
+     },
+     "lãnh đạo": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "quyền lực": {
+      "hit": 3,
+      "n": 4,
+      "misses": [
+       [
+        "người dân",
+        1
+       ]
+      ]
+     },
+     "tổ chức": {
+      "hit": 4,
+      "n": 5,
+      "misses": [
+       [
+        "tổ chức của họ ví dụ là như vậy thế đấy là bây giờ chúng ta cứ trước khi bắt đầu cuộc họp chúng ta dùng cái này ta giống như cái dưỡng hoặc là cái tức đo cái tiêu chuẩn đã chết ạ à một là rõ về gì hai là có cần không phải sao mà bọn thứ ba là ở đâu được phần tiệm khi nào cần phù hợp những ai là phụ nữ được và nếu đã triển thai được chúng ta làm thế nào thì nó không hiệu quả nhất không mất nhiều thời gian mang lại cái lợi ích mà chúng ta cần thì cái này chúng ta chú ý cho về thành phần thì không nhất thiết được quy mô lực cố gắng là tối ưu qua tối ưu qua rất là càng nhỏ trong cho",
+        1
+       ]
+      ]
+     },
+     "mục tiêu": {
+      "hit": 7,
+      "n": 7,
+      "misses": []
+     },
+     "tập thể": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "happy hour": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "giao hưu",
+        1
+       ]
+      ]
+     },
+     "hiệu quả": {
+      "hit": 1,
+      "n": 2,
+      "misses": [
+       [
+        "hiệu quả đúng không",
+        1
+       ]
+      ]
+     },
+     "lãng phí": {
+      "hit": 1,
+      "n": 2,
+      "misses": [
+       [
+        "sức",
+        1
+       ]
+      ]
+     },
+     "bình đẳng": {
+      "hit": 1,
+      "n": 3,
+      "misses": [
+       [
+        "người nhận",
+        1
+       ],
+       [
+        "mình nhận",
+        1
+       ]
+      ]
+     },
+     "con người": {
+      "hit": 1,
+      "n": 4,
+      "misses": [
+       [
+        "con ngươn",
+        1
+       ],
+       [
+        "trường nữa",
+        1
+       ],
+       [
+        "công thức",
+        1
+       ]
+      ]
+     },
+     "công việc": {
+      "hit": 10,
+      "n": 15,
+      "misses": [
+       [
+        "tương được",
+        1
+       ],
+       [
+        "công nghiệp",
+        1
+       ],
+       [
+        "không biết",
+        1
+       ],
+       [
+        "công nghệ",
+        1
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9856922738278671,
+    "purity": 0.999553770638108,
+    "aligned": 4543,
+    "null_words": 61,
+    "ref_speakers": 2,
+    "hyp_speakers": 2,
+    "mapping": {
+     "Giảng viên": "SPEAKER_00",
+     "Đại diện Ban Tổ chức": "SPEAKER_01"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "SPEAKER_01",
+     "None"
+    ],
+    "rows": [
+     "Giảng viên",
+     "Đại diện Ban Tổ chức"
+    ],
+    "matrix": [
+     [
+      4478,
+      2,
+      60
+     ],
+     [
+      2,
+      0,
+      1
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [
+    {
+     "t": 442.6,
+     "n": 12,
+     "text": "cái này chúng ta cố gắng làm dư dòng đúng không cái"
+    },
+    {
+     "t": 503.6,
+     "n": 16,
+     "text": "tiết thì cái đó nó tùy theo cái tính chất của người ta lựa chọn cho"
+    },
+    {
+     "t": 588.4,
+     "n": 21,
+     "text": "tổ chức của cuộc họp là nó gọi là skin ốc thì viết sinh học hôm nay đây sẽ rất là"
+    },
+    {
+     "t": 596.5,
+     "n": 141,
+     "text": "của họ ví dụ là như vậy thế đấy là bây giờ chúng ta cứ trước khi bắt đầu cuộc họp chúng ta dùng cái này ta giống như cái dưỡng hoặc là cái tức đo cái tiêu chuẩn đã"
+    },
+    {
+     "t": 631.9,
+     "n": 56,
+     "text": "tập truyền là đọc số lượng và đối tiểu chúng ta nói rồi ừ ừ ừ cái gì đấy là người ta đổi tên một số vấn đề đó à à nội dung nào hoặc là quan trọng và đặc"
+    },
+    {
+     "t": 649.5,
+     "n": 167,
+     "text": "thì nó diễn biến nó nhiều cái đa dạng có nhiều khi bắt đầu với này sau một hồi thảo luận kéo vào vấn đề khác có ai gặp ạ chúng ta rất hay gặp thế cho nên là cái"
+    },
+    {
+     "t": 709.1,
+     "n": 12,
+     "text": "thế còn chủ trì riêng còn người điều hành hợp dung riêng"
+    },
+    {
+     "t": 716.8,
+     "n": 17,
+     "text": "không được nhiều ở đây vấn đề chủ trì đây có một số điểm lưu ý này"
+    },
+    {
+     "t": 848.1,
+     "n": 22,
+     "text": "chuyện là một ý kiến tốt nhiều mấy ý kiến tốt hay là một trăm ý kiến không tốt không đơn như"
+    },
+    {
+     "t": 858.7,
+     "n": 14,
+     "text": "một cái công bằng và bình đẳng với nhau trong ý kiến thì nếu"
+    },
+    {
+     "t": 956.4,
+     "n": 19,
+     "text": "không thì đấy là cái vẫn là có một điểm chia sẻ như vậy thôi ừ thì mình tất"
+    },
+    {
+     "t": 962.4,
+     "n": 34,
+     "text": "có những bạn là cái điều đó nhưng mà ta cố gắng ở cái trạng thái là chúng ta làm thế nào để làm cho con người sẵn sàng nói ra ý kiến của"
+    },
+    {
+     "t": 1118.4,
+     "n": 36,
+     "text": "gì giải quyết được vấn đề đúng bản chất vấn đề và quyết định ra đúng thời gian sau khi ra quyết định được vấn đề thì tạo ra mọi người tâm lý còn thực ra"
+    },
+    {
+     "t": 1130.5,
+     "n": 25,
+     "text": "tốt mà mọi người không tổng vận thì làm việc cầm trừng làm việc đối phó làm việc không tâm lý thì nó cũng tốt"
+    },
+    {
+     "t": 1159.3,
+     "n": 14,
+     "text": "đây là thực hiện này hay là hành động này là thực hiện quyết"
+    },
+    {
+     "t": 1242.3,
+     "n": 12,
+     "text": "sõ điểm chỉ có một cái sự dựa chọn như là tốt"
+    },
+    {
+     "t": 1252.8,
+     "n": 130,
+     "text": "là chúng ta đã chú ý là như vậy để chúng ta hẳn góp thế còn trong cuộc họp thì điều hành kiểm soát đây để dân mặt cáp để kiểm soát nghĩa nhé ở dự họp thảo luận ý"
+    },
+    {
+     "t": 1289.2,
+     "n": 29,
+     "text": "một số kỹ năng để nó chuyển từ cái phát huyệt sang thành đồng tọa ví dụ như là đàm phán và thương lượng như đi đâu xây dựng"
+    },
+    {
+     "t": 1296.0,
+     "n": 23,
+     "text": "cái gì đó thì nó sẽ là thế đó và quan trọng của cuộc họp thì kỳ vọng của những người tham gia"
+    },
+    {
+     "t": 1304.5,
+     "n": 57,
+     "text": "đối tượng nếu mà kỳ vọng họ tham gia giống với người trụ tạo giống với tinh thần dung cuộc họp thì vấn đề sẽ khác còn kỳ vọng nó không phù hợp thì nó sẽ khác sau này chúng"
+    },
+    {
+     "t": 1320.6,
+     "n": 54,
+     "text": "nhiều khi chúng ta học xong rồi nhân viên cứ tập trung vào cạnh nhau và người nọ là lên kia hoặc là chế trách người kia thì lại không phải là vấn đề thì đấy là chúng ta chú"
+    },
+    {
+     "t": 1338.7,
+     "n": 22,
+     "text": "chúng ta cố gắng làm thế nào làm cho một chiếc cổ cổ mang lại đúng ra như ta cần tức là"
+    },
+    {
+     "t": 1343.1,
+     "n": 102,
+     "text": "đúng và hiệu lụng đúng không ạ cần có thời gian xa đổi thì mọi người chẳng sàng cùng chia sẻ và tất nhiên họ chỉ chia sẻ để họ hiểu biết và tâm nhiên còn thiếu hiểu biết và"
+    },
+    {
+     "t": 1366.3,
+     "n": 31,
+     "text": "chất nhiệm thì không bao giờ họ đồng tình cho một cái mà không hiểu cho nên là giải trình là một cái này chính là kỹ năng thức trình kỹ"
+    },
+    {
+     "t": 1374.2,
+     "n": 33,
+     "text": "diễn trả ý kiến của mình để phân tích cho người họ có nhiều khi người ta thấy là có nhiều khi nói mái mà họ vẫn không hiểu mà họ không hiểu"
+    },
+    {
+     "t": 1380.6,
+     "n": 69,
+     "text": "không đi tiếp luận được thế nên là một vấn đề thứ thích đưa ra quan điểm bảo vệ những ý tưởng mới có một cái kỹ năng để vi động tư duyên tập thể ví dụ như vậy và"
+    },
+    {
+     "t": 1399.2,
+     "n": 19,
+     "text": "là thể hiện vai trò của mình còn trong quá trình thảo luận chia sẻ ý kiến thì đây"
+    },
+    {
+     "t": 1402.7,
+     "n": 12,
+     "text": "vấn đề xảy ra cảm ơn như chúng ta đã nói nếu"
+    },
+    {
+     "t": 1407.5,
+     "n": 122,
+     "text": "thì nó sẽ xảy ra những tình trạng như thế này không một phụ họ có thể là gì nếu họ mất thời gian không được thiết vì người ta không nhận những cái người ta cẩn người ta không"
+    },
+    {
+     "t": 1457.4,
+     "n": 47,
+     "text": "tốt thì như chúng ta đã chỉ bày ở trên thế thì đấy là tất cả những vấn đề mà có thể trao đổi thêm với chúng ta trong cái buổi ngày hôm nay và tôi chỉ chúc bạn thấy"
+    },
+    {
+     "t": 1569.9,
+     "n": 24,
+     "text": "quan trọng như hôm trước ta nói cả thì vấn đề của tất nhiên tốt cũng quan trọng và vấn đề của nhóm tốt"
+    }
+   ],
+   "del_runs": [
+    {
+     "t": 83.1,
+     "n": 12,
+     "text": "không họp cái này là khâu chuẩn bị ban đầu đó đúng"
+    },
+    {
+     "t": 545.4,
+     "n": 28,
+     "text": "đúng vai trò cái thứ hai họ đến là họ hiểu vấn đề chứ nhiều khi chúng ta thấy là cử người đến họp cũng đúng nhưng mà"
+    },
+    {
+     "t": 1691.4,
+     "n": 12,
+     "text": "xin hết ạ dạ vâng xin cảm ơn thầy phó giáo sư"
+    }
+   ],
+   "max_gaps": [
+    [
+     17.3,
+     1419.6
+    ],
+    [
+     15.0,
+     1144.2
+    ],
+    [
+     7.0,
+     881.4
+    ],
+    [
+     6.6,
+     14.9
+    ],
+    [
+     6.4,
+     889.7
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 4.74,
+    "max_seg_s": 29.54,
+    "upper_ratio": 0.0075116903790667594,
+    "punct_per_100w": 4.127850947638933,
+    "digit_tokens": 10
+   },
+   "segments": 174,
+   "top_subs": [
+    [
+     "họp",
+     "họ",
+     15
+    ],
+    [
+     "sếp",
+     "xếp",
+     10
+    ],
+    [
+     "kém",
+     "kéo",
+     6
+    ],
+    [
+     "cái",
+     "những",
+     5
+    ],
+    [
+     "cuộc",
+     "của",
+     4
+    ],
+    [
+     "họp",
+     "học",
+     4
+    ],
+    [
+     "cái",
+     "thế",
+     3
+    ],
+    [
+     "mà",
+     "một",
+     3
+    ],
+    [
+     "việc",
+     "biệt",
+     3
+    ],
+    [
+     "rồi",
+     "là",
+     3
+    ],
+    [
+     "mà",
+     "là",
+     3
+    ],
+    [
+     "là",
+     "phải",
+     2
+    ],
+    [
+     "họp",
+     "của",
+     2
+    ],
+    [
+     "là",
+     "làm",
+     2
+    ],
+    [
+     "trong",
+     "cho",
+     2
+    ],
+    [
+     "thì",
+     "gì",
+     2
+    ],
+    [
+     "vậy",
+     "này",
+     2
+    ],
+    [
+     "ạ",
+     "được",
+     2
+    ],
+    [
+     "cuộc",
+     "cổ",
+     2
+    ],
+    [
+     "đặt",
+     "đạt",
+     2
+    ],
+    [
+     "là",
+     "lần",
+     2
+    ],
+    [
+     "lại",
+     "là",
+     2
+    ],
+    [
+     "coi",
+     "phải",
+     2
+    ],
+    [
+     "quyết",
+     "quy",
+     2
+    ],
+    [
+     "nó",
+     "là",
+     2
+    ],
+    [
+     "cái",
+     "là",
+     2
+    ],
+    [
+     "cao",
+     "ca",
+     2
+    ],
+    [
+     "đúng",
+     "là",
+     2
+    ],
+    [
+     "không",
+     "chúng",
+     2
+    ],
+    [
+     "ạ",
+     "ta",
+     2
+    ],
+    [
+     "với",
+     "như",
+     2
+    ],
+    [
+     "rõ",
+     "dọn",
+     2
+    ],
+    [
+     "khi",
+     "ý",
+     2
+    ],
+    [
+     "có",
+     "nó",
+     2
+    ],
+    [
+     "tính",
+     "tinh",
+     2
+    ],
+    [
+     "và",
+     "mà",
+     2
+    ],
+    [
+     "là",
+     "và",
+     2
+    ],
+    [
+     "mà",
+     "và",
+     2
+    ],
+    [
+     "đẳng",
+     "nhận",
+     2
+    ],
+    [
+     "là",
+     "nó",
+     2
+    ]
+   ],
+   "run": {
+    "job_id": "a5cf65bd-d678-436b-ae40-21150bad0df6",
+    "elapsed": 186.5,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 24.1,
+     "diarizing": 113.0,
+     "ready": 186.5
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 1699992,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2608
+  },
+  "hop2": {
+   "ref_words": 2720,
+   "hyp_words": 2550,
+   "ref_speakers": 14,
+   "wer": 0.13198529411764706,
+   "sub": 139,
+   "del": 195,
+   "ins": 25,
+   "cer": 0.1008958858832739,
+   "wer_nofill": 0.1189922480620155,
+   "terms": {
+    "term_cer": 0.07951807228915662,
+    "term_exact": 47,
+    "term_total": 55,
+    "per_term": {
+     "marketing": {
+      "hit": 5,
+      "n": 5,
+      "misses": []
+     },
+     "banner": {
+      "hit": 3,
+      "n": 4,
+      "misses": [
+       [
+        "mender",
+        1
+       ]
+      ]
+     },
+     "target": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "tour": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "tuôn",
+        2
+       ],
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "file": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "online": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "digital": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "blog": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "facebook": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "internet": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "video": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "traffic": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "phích",
+        1
+       ]
+      ]
+     },
+     "mail": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "may",
+        1
+       ]
+      ]
+     },
+     "khách hàng": {
+      "hit": 3,
+      "n": 3,
+      "misses": []
+     },
+     "du lịch": {
+      "hit": 5,
+      "n": 6,
+      "misses": [
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "báo cáo": {
+      "hit": 5,
+      "n": 5,
+      "misses": []
+     },
+     "thiết kế": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "chiến dịch": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "quảng cáo": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "giám đốc": {
+      "hit": 7,
+      "n": 7,
+      "misses": []
+     },
+     "trưởng phòng": {
+      "hit": 3,
+      "n": 4,
+      "misses": [
+       [
+        "chứng phòng",
+        1
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9255445544554456,
+    "purity": 0.9562193126022913,
+    "aligned": 2525,
+    "null_words": 81,
+    "ref_speakers": 14,
+    "hyp_speakers": 10,
+    "mapping": {
+     "Chuyên viên Digital": "SPEAKER_00",
+     "Giám đốc": "SPEAKER_07",
+     "Nhân viên Nam 1": "SPEAKER_09",
+     "Nhân viên Nữ 1": "SPEAKER_01",
+     "Nhân viên Nữ 2": "SPEAKER_05",
+     "Nhân viên Nữ 3": "SPEAKER_08",
+     "Nhân viên Nữ 4": "SPEAKER_02",
+     "Nhân viên Thiết kế (Nữ)": "SPEAKER_04",
+     "Thư ký": "SPEAKER_03",
+     "Trưởng phòng (Chị Tuyền)": "SPEAKER_06"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "SPEAKER_01",
+     "SPEAKER_02",
+     "SPEAKER_03",
+     "SPEAKER_04",
+     "SPEAKER_05",
+     "SPEAKER_06",
+     "SPEAKER_07",
+     "SPEAKER_08",
+     "SPEAKER_09",
+     "None"
+    ],
+    "rows": [
+     "Chuyên viên Digital",
+     "Các nhân viên",
+     "Duyên (Nhân viên)",
+     "Giám đốc",
+     "Nhân viên Nam (hài hước)",
+     "Nhân viên Nam 1",
+     "Nhân viên Nữ 1",
+     "Nhân viên Nữ 2",
+     "Nhân viên Nữ 3",
+     "Nhân viên Nữ 4",
+     "Nhân viên Thiết kế (Nữ)",
+     "Thư ký",
+     "Trưởng phòng (Chị Tuyền)",
+     "Tập thể nhân viên"
+    ],
+    "matrix": [
+     [
+      148,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      12
+     ],
+     [
+      2,
+      0,
+      6,
+      4,
+      0,
+      0,
+      1,
+      9,
+      1,
+      3,
+      7
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      7,
+      0,
+      1,
+      0,
+      949,
+      0,
+      0,
+      17
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      55,
+      6
+     ],
+     [
+      0,
+      91,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0,
+      6
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      62,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      113,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      18,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      86,
+      2,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      345,
+      0,
+      0,
+      0,
+      26,
+      0,
+      0,
+      9
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      470,
+      1,
+      0,
+      0,
+      19
+     ],
+     [
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      2,
+      2,
+      0,
+      2,
+      0
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [
+    {
+     "t": 618.2,
+     "n": 16,
+     "text": "nhiệt độ các bạn khác thì sao ha chính sách của trưởng phòng như vậy các"
+    }
+   ],
+   "del_runs": [
+    {
+     "t": 381.9,
+     "n": 48,
+     "text": "dạ em thấy chính sách này được ạ chính sách này tạo động lực cho mọi người cố gắng hơn đó sếp vì ai làm việc càng tốt thì lương thưởng sẽ càng nhiều và các nhân viên sẽ cố"
+    }
+   ],
+   "max_gaps": [
+    [
+     12.6,
+     382.1
+    ],
+    [
+     4.7,
+     618.7
+    ],
+    [
+     4.5,
+     152.8
+    ],
+    [
+     4.2,
+     313.0
+    ],
+    [
+     3.7,
+     358.4
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 3.1,
+    "max_seg_s": 25.58,
+    "upper_ratio": 0.02216475803472479,
+    "punct_per_100w": 5.045689312673818,
+    "digit_tokens": 25
+   },
+   "segments": 154,
+   "top_subs": [
+    [
+     "lương",
+     "lưu",
+     5
+    ],
+    [
+     "mảng",
+     "mãn",
+     3
+    ],
+    [
+     "trễ",
+     "chẩn",
+     2
+    ],
+    [
+     "lương",
+     "luân",
+     2
+    ],
+    [
+     "các",
+     "cái",
+     2
+    ],
+    [
+     "đều",
+     "điều",
+     2
+    ],
+    [
+     "tour",
+     "tuôn",
+     2
+    ],
+    [
+     "quá",
+     "đạo",
+     2
+    ],
+    [
+     "đang",
+     "nay",
+     1
+    ],
+    [
+     "là",
+     "đã",
+     1
+    ],
+    [
+     "đã",
+     "nó",
+     1
+    ],
+    [
+     "thỏa",
+     "thả",
+     1
+    ],
+    [
+     "gờm",
+     "gồm",
+     1
+    ],
+    [
+     "đạt",
+     "thể",
+     1
+    ],
+    [
+     "chỉ",
+     "trị",
+     1
+    ],
+    [
+     "đưa",
+     "đuôi",
+     1
+    ],
+    [
+     "vắng",
+     "vắm",
+     1
+    ],
+    [
+     "trễ",
+     "chỉnh",
+     1
+    ],
+    [
+     "cho",
+     "như",
+     1
+    ],
+    [
+     "bất",
+     "bắt",
+     1
+    ],
+    [
+     "đi",
+     "tăng",
+     1
+    ],
+    [
+     "thấp",
+     "pháp",
+     1
+    ],
+    [
+     "theo",
+     "thì",
+     1
+    ],
+    [
+     "lương",
+     "viên",
+     1
+    ],
+    [
+     "lương",
+     "luôn",
+     1
+    ],
+    [
+     "mỗi",
+     "mọi",
+     1
+    ],
+    [
+     "sức",
+     "suất",
+     1
+    ],
+    [
+     "ạ",
+     "rồi",
+     1
+    ],
+    [
+     "bậc",
+     "bực",
+     1
+    ],
+    [
+     "vì",
+     "bị",
+     1
+    ],
+    [
+     "cấp",
+     "khắc",
+     1
+    ],
+    [
+     "mà",
+     "mừng",
+     1
+    ],
+    [
+     "làm",
+     "là",
+     1
+    ],
+    [
+     "việc",
+     "vì",
+     1
+    ],
+    [
+     "để",
+     "đã",
+     1
+    ],
+    [
+     "thưởng",
+     "thủy",
+     1
+    ],
+    [
+     "ạ",
+     "dạ",
+     1
+    ],
+    [
+     "thưa",
+     "thôi",
+     1
+    ],
+    [
+     "phản",
+     "bản",
+     1
+    ],
+    [
+     "đăng",
+     "năng",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "45f9e086-e8c8-4c96-b5de-c3b734b626a2",
+    "elapsed": 94.7,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 15.2,
+     "diarizing": 53.5,
+     "ready": 94.7
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 856536,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2599
+  }
+ },
+ "large-v3-turbo-greedy": {
+  "quahat": {
+   "ref_words": 794,
+   "hyp_words": 738,
+   "ref_speakers": 1,
+   "wer": 0.19899244332493704,
+   "sub": 82,
+   "del": 66,
+   "ins": 10,
+   "cer": 0.1483076923076923,
+   "wer_nofill": 0.19086021505376344,
+   "terms": {
+    "term_cer": 0.22109826589595374,
+    "term_exact": 76,
+    "term_total": 121,
+    "per_term": {
+     "alêron": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "alerone",
+        2
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "alon",
+        1
+       ]
+      ]
+     },
+     "protid": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "protein",
+        1
+       ]
+      ]
+     },
+     "tinh bột": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "nảy mầm": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "nảy mộng",
+        3
+       ],
+       [
+        "mẽ mẩn",
+        1
+       ]
+      ]
+     },
+     "phôi": {
+      "hit": 8,
+      "n": 10,
+      "misses": [
+       [
+        "phương",
+        1
+       ],
+       [
+        "thôi",
+        1
+       ]
+      ]
+     },
+     "lá mầm": {
+      "hit": 2,
+      "n": 6,
+      "misses": [
+       [
+        "lá mòn",
+        2
+       ],
+       [
+        "lá mặt",
+        1
+       ],
+       [
+        "lá mập",
+        1
+       ]
+      ]
+     },
+     "nội nhũ": {
+      "hit": 19,
+      "n": 32,
+      "misses": [
+       [
+        "nội nhổ",
+        3
+       ],
+       [
+        "nộng nhũ",
+        3
+       ],
+       [
+        "nội dỗ",
+        2
+       ],
+       [
+        "nội vỗ",
+        2
+       ]
+      ]
+     },
+     "ngoại nhũ": {
+      "hit": 3,
+      "n": 7,
+      "misses": [
+       [
+        "ngoạn nhũ",
+        2
+       ],
+       [
+        "ngoại vỗ",
+        2
+       ]
+      ]
+     },
+     "vỏ hạt": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "vỏ quả": {
+      "hit": 3,
+      "n": 3,
+      "misses": []
+     },
+     "họ Lúa": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "quả dĩnh": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "Cucurbitaceae": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "xếp",
+        1
+       ]
+      ]
+     },
+     "Fabaceae": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "xê",
+        1
+       ]
+      ]
+     },
+     "Asteraceae": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "xê",
+        1
+       ]
+      ]
+     },
+     "rễ mầm": {
+      "hit": 3,
+      "n": 3,
+      "misses": []
+     },
+     "thân mầm": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "chồi mầm": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "chồn mầm",
+        3
+       ]
+      ]
+     },
+     "hạt": {
+      "hit": 31,
+      "n": 36,
+      "misses": [
+       [
+        "∅",
+        4
+       ],
+       [
+        "ăn",
+        1
+       ]
+      ]
+     },
+     "trưởng thành": {
+      "hit": 1,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        1
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9656593406593407,
+    "purity": 1.0,
+    "aligned": 728,
+    "null_words": 25,
+    "ref_speakers": 1,
+    "hyp_speakers": 1,
+    "mapping": {
+     "PGS. TS. Trương Thị Đẹp": "SPEAKER_00"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "None"
+    ],
+    "rows": [
+     "PGS. TS. Trương Thị Đẹp"
+    ],
+    "matrix": [
+     [
+      703,
+      25
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [],
+   "del_runs": [],
+   "max_gaps": [
+    [
+     5.6,
+     261.1
+    ],
+    [
+     5.5,
+     225.3
+    ],
+    [
+     4.4,
+     192.4
+    ],
+    [
+     4.1,
+     306.7
+    ],
+    [
+     3.2,
+     257.6
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 2.28,
+    "max_seg_s": 25.14,
+    "upper_ratio": 0.03111111111111111,
+    "punct_per_100w": 1.4905149051490514,
+    "digit_tokens": 0
+   },
+   "segments": 72,
+   "top_subs": [
+    [
+     "nhũ",
+     "vỗ",
+     4
+    ],
+    [
+     "nhũ",
+     "nhổ",
+     3
+    ],
+    [
+     "chồi",
+     "chồn",
+     3
+    ],
+    [
+     "nội",
+     "nộng",
+     3
+    ],
+    [
+     "mầm",
+     "mộng",
+     3
+    ],
+    [
+     "alêron",
+     "alerone",
+     2
+    ],
+    [
+     "mầm",
+     "mòn",
+     2
+    ],
+    [
+     "ngoại",
+     "ngoạn",
+     2
+    ],
+    [
+     "nhũ",
+     "dỗ",
+     2
+    ],
+    [
+     "đó",
+     "á",
+     2
+    ],
+    [
+     "toàn",
+     "tồn",
+     2
+    ],
+    [
+     "bộ",
+     "hộ",
+     2
+    ],
+    [
+     "vân",
+     "dần",
+     2
+    ],
+    [
+     "giải",
+     "dạy",
+     1
+    ],
+    [
+     "cám",
+     "cá",
+     1
+    ],
+    [
+     "hoàn",
+     "vào",
+     1
+    ],
+    [
+     "toàn",
+     "tầng",
+     1
+    ],
+    [
+     "protid",
+     "protein",
+     1
+    ],
+    [
+     "lại",
+     "là",
+     1
+    ],
+    [
+     "biến",
+     "bị",
+     1
+    ],
+    [
+     "alêron",
+     "alon",
+     1
+    ],
+    [
+     "bắp",
+     "bậc",
+     1
+    ],
+    [
+     "thuộc",
+     "của",
+     1
+    ],
+    [
+     "về",
+     "của",
+     1
+    ],
+    [
+     "cấu",
+     "tố",
+     1
+    ],
+    [
+     "trữ",
+     "một",
+     1
+    ],
+    [
+     "trữ",
+     "trở",
+     1
+    ],
+    [
+     "chúng",
+     "chung",
+     1
+    ],
+    [
+     "hạt",
+     "ăn",
+     1
+    ],
+    [
+     "điều",
+     "đều",
+     1
+    ],
+    [
+     "điều",
+     "điệu",
+     1
+    ],
+    [
+     "mầm",
+     "mặt",
+     1
+    ],
+    [
+     "dẹp",
+     "về",
+     1
+    ],
+    [
+     "mỏng",
+     "mặt",
+     1
+    ],
+    [
+     "bán",
+     "ăn",
+     1
+    ],
+    [
+     "hết",
+     "đó",
+     1
+    ],
+    [
+     "nhũ",
+     "đây",
+     1
+    ],
+    [
+     "rồi",
+     "là",
+     1
+    ],
+    [
+     "nữa",
+     "đó",
+     1
+    ],
+    [
+     "mầm",
+     "mập",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "ea741894-a545-48cf-acf3-bec1ad74514c",
+    "elapsed": 44.4,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 7.0,
+     "diarizing": 23.1,
+     "ready": 44.4
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 334002,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2591
+  },
+  "phoi21": {
+   "ref_words": 2252,
+   "hyp_words": 2074,
+   "ref_speakers": 2,
+   "wer": 0.13010657193605685,
+   "sub": 95,
+   "del": 188,
+   "ins": 10,
+   "cer": 0.09787143009947588,
+   "wer_nofill": 0.10238907849829351,
+   "terms": {
+    "term_cer": 0.13933649289099526,
+    "term_exact": 97,
+    "term_total": 134,
+    "per_term": {
+     "DNA": {
+      "hit": 6,
+      "n": 6,
+      "misses": []
+     },
+     "RNA": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "protein": {
+      "hit": 5,
+      "n": 5,
+      "misses": []
+     },
+     "nucleotide": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "histone": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "apoptosis": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "lipid": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "amino acid": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "tế bào gốc": {
+      "hit": 3,
+      "n": 4,
+      "misses": [
+       [
+        "tế bóng",
+        1
+       ]
+      ]
+     },
+     "phôi thai học": {
+      "hit": 0,
+      "n": 15,
+      "misses": [
+       [
+        "phôi hoạch",
+        3
+       ],
+       [
+        "phôi theo học",
+        3
+       ],
+       [
+        "khôi tha học",
+        2
+       ],
+       [
+        "công ty học",
+        2
+       ]
+      ]
+     },
+     "dị tật bẩm sinh": {
+      "hit": 2,
+      "n": 10,
+      "misses": [
+       [
+        "dị tập ẩm sinh",
+        5
+       ],
+       [
+        "dị tập bẩm sinh",
+        2
+       ],
+       [
+        "dịch tạp bậc sinh",
+        1
+       ]
+      ]
+     },
+     "quái thai": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "quái thế",
+        1
+       ]
+      ]
+     },
+     "biệt hóa": {
+      "hit": 2,
+      "n": 6,
+      "misses": [
+       [
+        "việt hóa",
+        2
+       ],
+       [
+        "biến hóa",
+        2
+       ]
+      ]
+     },
+     "gen": {
+      "hit": 5,
+      "n": 5,
+      "misses": []
+     },
+     "nhiễm sắc thể": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "di truyền": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "di chuyển",
+        3
+       ],
+       [
+        "di",
+        1
+       ]
+      ]
+     },
+     "đột biến": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "đổi biến",
+        1
+       ]
+      ]
+     },
+     "tín hiệu": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "phân tử": {
+      "hit": 22,
+      "n": 22,
+      "misses": []
+     },
+     "tế bào": {
+      "hit": 33,
+      "n": 35,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "tế",
+        1
+       ]
+      ]
+     },
+     "mô": {
+      "hit": 4,
+      "n": 4,
+      "misses": []
+     },
+     "cơ quan": {
+      "hit": 3,
+      "n": 3,
+      "misses": []
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9660852713178295,
+    "purity": 0.9895781637717121,
+    "aligned": 2064,
+    "null_words": 49,
+    "ref_speakers": 2,
+    "hyp_speakers": 1,
+    "mapping": {
+     "Giảng viên": "SPEAKER_00"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "None"
+    ],
+    "rows": [
+     "Giảng viên",
+     "Học viên"
+    ],
+    "matrix": [
+     [
+      1994,
+      49
+     ],
+     [
+      21,
+      0
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [],
+   "del_runs": [],
+   "max_gaps": [
+    [
+     2.5,
+     88.7
+    ],
+    [
+     2.3,
+     208.2
+    ],
+    [
+     1.8,
+     305.9
+    ],
+    [
+     1.5,
+     412.0
+    ],
+    [
+     1.4,
+     466.9
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 5.8,
+    "max_seg_s": 29.72,
+    "upper_ratio": 0.013225904530252356,
+    "punct_per_100w": 1.9305019305019304,
+    "digit_tokens": 7
+   },
+   "segments": 63,
+   "top_subs": [
+    [
+     "tật",
+     "tập",
+     9
+    ],
+    [
+     "phôi",
+     "khôi",
+     6
+    ],
+    [
+     "bẩm",
+     "ẩm",
+     6
+    ],
+    [
+     "học",
+     "hoạch",
+     3
+    ],
+    [
+     "thai",
+     "tha",
+     3
+    ],
+    [
+     "thai",
+     "theo",
+     3
+    ],
+    [
+     "truyền",
+     "chuyển",
+     3
+    ],
+    [
+     "tỉ",
+     "tỷ",
+     2
+    ],
+    [
+     "phôi",
+     "công",
+     2
+    ],
+    [
+     "thai",
+     "ty",
+     2
+    ],
+    [
+     "biệt",
+     "việt",
+     2
+    ],
+    [
+     "biệt",
+     "biến",
+     2
+    ],
+    [
+     "dị",
+     "dịch",
+     1
+    ],
+    [
+     "tật",
+     "tạp",
+     1
+    ],
+    [
+     "bẩm",
+     "bậc",
+     1
+    ],
+    [
+     "thi",
+     "kỹ",
+     1
+    ],
+    [
+     "sẽ",
+     "thuật",
+     1
+    ],
+    [
+     "vào",
+     "là",
+     1
+    ],
+    [
+     "câu",
+     "không",
+     1
+    ],
+    [
+     "thì",
+     "bây",
+     1
+    ],
+    [
+     "cái",
+     "giờ",
+     1
+    ],
+    [
+     "là",
+     "của",
+     1
+    ],
+    [
+     "cái",
+     "một",
+     1
+    ],
+    [
+     "phải",
+     "sẽ",
+     1
+    ],
+    [
+     "phôi",
+     "cô",
+     1
+    ],
+    [
+     "chất",
+     "chắc",
+     1
+    ],
+    [
+     "thai",
+     "thế",
+     1
+    ],
+    [
+     "phôi",
+     "vôi",
+     1
+    ],
+    [
+     "chẩn",
+     "chuẩn",
+     1
+    ],
+    [
+     "trước",
+     "trích",
+     1
+    ],
+    [
+     "lâm",
+     "âm",
+     1
+    ],
+    [
+     "sàng",
+     "sảng",
+     1
+    ],
+    [
+     "bào",
+     "vôi",
+     1
+    ],
+    [
+     "cái",
+     "cây",
+     1
+    ],
+    [
+     "sinh",
+     "xe",
+     1
+    ],
+    [
+     "học",
+     "thọc",
+     1
+    ],
+    [
+     "đại",
+     "đài",
+     1
+    ],
+    [
+     "các",
+     "hiểu",
+     1
+    ],
+    [
+     "ạ",
+     "nữa",
+     1
+    ],
+    [
+     "rối",
+     "dối",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "53e12f1a-ce89-40ca-9d4a-a3308f744aa7",
+    "elapsed": 60.9,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 9.1,
+     "diarizing": 35.5,
+     "ready": 60.9
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 527664,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2614
+  },
+  "phoi42": {
+   "ref_words": 3120,
+   "hyp_words": 2671,
+   "ref_speakers": 1,
+   "wer": 0.4583333333333333,
+   "sub": 857,
+   "del": 511,
+   "ins": 62,
+   "cer": 0.3443459154045358,
+   "wer_nofill": 0.46488052136133234,
+   "terms": {
+    "term_cer": 0.5298273155416012,
+    "term_exact": 32,
+    "term_total": 183,
+    "per_term": {
+     "đa ối": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "∅",
+        3
+       ]
+      ]
+     },
+     "nước ối": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "∅",
+        3
+       ]
+      ]
+     },
+     "thực quản": {
+      "hit": 2,
+      "n": 19,
+      "misses": [
+       [
+        "thực hoán",
+        4
+       ],
+       [
+        "thức quả",
+        3
+       ],
+       [
+        "thịt khoản",
+        2
+       ],
+       [
+        "các bạn",
+        1
+       ]
+      ]
+     },
+     "tá tràng": {
+      "hit": 0,
+      "n": 20,
+      "misses": [
+       [
+        "tái trạng",
+        7
+       ],
+       [
+        "tài trang",
+        2
+       ],
+       [
+        "tái trang",
+        2
+       ],
+       [
+        "tà",
+        1
+       ]
+      ]
+     },
+     "hẹp tá tràng": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "cái tái trạng",
+        1
+       ]
+      ]
+     },
+     "tịt tá tràng": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "tìm tái trạng",
+        1
+       ]
+      ]
+     },
+     "hẹp môn vị bẩm sinh": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "cái hôn viên sinh",
+        1
+       ],
+       [
+        "hẹp môn vị vào bệnh sĩ",
+        1
+       ],
+       [
+        "về phương vị hồng sinh như",
+        1
+       ]
+      ]
+     },
+     "môn vị": {
+      "hit": 9,
+      "n": 21,
+      "misses": [
+       [
+        "hôn viên",
+        2
+       ],
+       [
+        "mô vị",
+        2
+       ],
+       [
+        "môn tị",
+        1
+       ],
+       [
+        "cái hôn",
+        1
+       ]
+      ]
+     },
+     "dạ dày": {
+      "hit": 15,
+      "n": 50,
+      "misses": [
+       [
+        "dạng dày",
+        6
+       ],
+       [
+        "dạng giày",
+        3
+       ],
+       [
+        "dạy dạy",
+        2
+       ],
+       [
+        "dẫn dày",
+        2
+       ]
+      ]
+     },
+     "khí quản": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "gan": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "ga",
+        1
+       ]
+      ]
+     },
+     "đường dẫn mật": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "đường dẫn",
+        1
+       ]
+      ]
+     },
+     "hỗng tràng": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "mong",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "được văn",
+        1
+       ]
+      ]
+     },
+     "hồi tràng": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "chạm rằng",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "hóa trạm",
+        1
+       ]
+      ]
+     },
+     "ống tiêu hóa": {
+      "hit": 0,
+      "n": 6,
+      "misses": [
+       [
+        "nước tiêu hòa",
+        1
+       ],
+       [
+        "ống hiêu hóa",
+        1
+       ],
+       [
+        "về các nhận",
+        1
+       ],
+       [
+        "ổng tiêu hoa kinh",
+        1
+       ]
+      ]
+     },
+     "siêu âm": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        2
+       ],
+       [
+        "sức âm",
+        2
+       ]
+      ]
+     },
+     "chẩn đoán hình ảnh": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "nôn": {
+      "hit": 0,
+      "n": 9,
+      "misses": [
+       [
+        "nâu",
+        3
+       ],
+       [
+        "nông",
+        2
+       ],
+       [
+        "∅",
+        2
+       ],
+       [
+        "nó",
+        1
+       ]
+      ]
+     },
+     "bẩm sinh": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "viên sinh",
+        1
+       ],
+       [
+        "bệnh sĩ",
+        1
+       ],
+       [
+        "hồng sinh như",
+        1
+       ]
+      ]
+     },
+     "mạc treo": {
+      "hit": 0,
+      "n": 11,
+      "misses": [
+       [
+        "mặt trọng",
+        3
+       ],
+       [
+        "mặc treo",
+        3
+       ],
+       [
+        "mặt trong",
+        2
+       ],
+       [
+        "mình trong",
+        2
+       ]
+      ]
+     },
+     "tắc": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "tặng",
+        1
+       ]
+      ]
+     },
+     "hẹp": {
+      "hit": 4,
+      "n": 17,
+      "misses": [
+       [
+        "∅",
+        3
+       ],
+       [
+        "kỷ",
+        2
+       ],
+       [
+        "hẹp của",
+        2
+       ],
+       [
+        "hẹn",
+        1
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9363740896895362,
+    "purity": 1.0,
+    "aligned": 2609,
+    "null_words": 166,
+    "ref_speakers": 1,
+    "hyp_speakers": 1,
+    "mapping": {
+     "Giảng viên": "SPEAKER_00"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "None"
+    ],
+    "rows": [
+     "Giảng viên"
+    ],
+    "matrix": [
+     [
+      2443,
+      166
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [],
+   "del_runs": [
+    {
+     "t": 0.0,
+     "n": 61,
+     "text": "thai nhi đi tiểu và sau đó được đào thải về tự nhiên thì sao ạ là em bé sẽ gì ạ sẽ nuốt lại cái nước ối đó và chuyển hóa cái nước ối đấy như vậy là sẽ"
+    },
+    {
+     "t": 23.0,
+     "n": 41,
+     "text": "chuyển hóa nó tụ lại ở bên trong khoang ối thì sẽ có biểu hiện là đa ối và khi mà siêu âm thấy biểu hiện đa ối thì các bác sĩ chẩn đoán hình ảnh bác sĩ siêu âm"
+    },
+    {
+     "t": 46.8,
+     "n": 14,
+     "text": "sẽ nôn ra đó thì là và sau sinh thì nếu mà ăn thì"
+    },
+    {
+     "t": 47.0,
+     "n": 14,
+     "text": "có biểu hiện nôn vọt rất là sớm thế còn nếu mà rò khí"
+    },
+    {
+     "t": 48.6,
+     "n": 32,
+     "text": "thì khi mà em bé ăn vào em bé bú sữa vào thì lúc đấy nó sẽ nó không đi xuống đường tiêu hóa mà nó sẽ đi sang cái hệ gì"
+    },
+    {
+     "t": 633.1,
+     "n": 13,
+     "text": "rồi sang đến cái phần tiếp theo đấy là cái sự hình thành"
+    },
+    {
+     "t": 820.3,
+     "n": 12,
+     "text": "khoảng các bạn nghỉ khoảng ba mươi phút nhé các bạn nghỉ"
+    }
+   ],
+   "max_gaps": [
+    [
+     12.4,
+     50.1
+    ],
+    [
+     8.7,
+     633.9
+    ],
+    [
+     6.1,
+     442.5
+    ],
+    [
+     3.3,
+     806.7
+    ],
+    [
+     3.2,
+     417.4
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 4.5,
+    "max_seg_s": 29.56,
+    "upper_ratio": 0.012209864603481625,
+    "punct_per_100w": 4.4277673545966225,
+    "digit_tokens": 22
+   },
+   "segments": 105,
+   "top_subs": [
+    [
+     "dạ",
+     "dạng",
+     11
+    ],
+    [
+     "tá",
+     "tái",
+     9
+    ],
+    [
+     "tràng",
+     "trạng",
+     8
+    ],
+    [
+     "dày",
+     "dây",
+     7
+    ],
+    [
+     "ruột",
+     "dưỡng",
+     7
+    ],
+    [
+     "quản",
+     "quả",
+     6
+    ],
+    [
+     "bờ",
+     "vờ",
+     6
+    ],
+    [
+     "mạc",
+     "mặt",
+     5
+    ],
+    [
+     "trục",
+     "chút",
+     5
+    ],
+    [
+     "hiện",
+     "hiệp",
+     4
+    ],
+    [
+     "xoay",
+     "dạy",
+     4
+    ],
+    [
+     "treo",
+     "trong",
+     4
+    ],
+    [
+     "trước",
+     "chút",
+     4
+    ],
+    [
+     "đoạn",
+     "đặt",
+     4
+    ],
+    [
+     "quản",
+     "hoán",
+     4
+    ],
+    [
+     "tràng",
+     "trang",
+     4
+    ],
+    [
+     "hấp",
+     "ạ",
+     3
+    ],
+    [
+     "viêm",
+     "biên",
+     3
+    ],
+    [
+     "hình",
+     "định",
+     3
+    ],
+    [
+     "quản",
+     "khoản",
+     3
+    ],
+    [
+     "thành",
+     "này",
+     3
+    ],
+    [
+     "trục",
+     "chụp",
+     3
+    ],
+    [
+     "treo",
+     "trọng",
+     3
+    ],
+    [
+     "ruột",
+     "dịch",
+     3
+    ],
+    [
+     "mạc",
+     "mặc",
+     3
+    ],
+    [
+     "ruột",
+     "dưới",
+     3
+    ],
+    [
+     "theo",
+     "dạy",
+     3
+    ],
+    [
+     "dày",
+     "dạy",
+     3
+    ],
+    [
+     "cái",
+     "dạy",
+     3
+    ],
+    [
+     "của",
+     "dạy",
+     3
+    ],
+    [
+     "một",
+     "có",
+     3
+    ],
+    [
+     "dày",
+     "giày",
+     3
+    ],
+    [
+     "sang",
+     "ra",
+     3
+    ],
+    [
+     "thực",
+     "thức",
+     3
+    ],
+    [
+     "giãn",
+     "dẫn",
+     3
+    ],
+    [
+     "đấy",
+     "đến",
+     3
+    ],
+    [
+     "dày",
+     "dạng",
+     3
+    ],
+    [
+     "nôn",
+     "nâu",
+     3
+    ],
+    [
+     "cái",
+     "với",
+     3
+    ],
+    [
+     "đoạn",
+     "gặp",
+     3
+    ]
+   ],
+   "run": {
+    "job_id": "e120d273-deb0-47d1-888e-857f95ef9054",
+    "elapsed": 122.1,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 17.6,
+     "diarizing": 70.1,
+     "ready": 122.1
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 1082064,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2634
+  },
+  "aldehyd": {
+   "ref_words": 2840,
+   "hyp_words": 2714,
+   "ref_speakers": 1,
+   "wer": 0.40105633802816903,
+   "sub": 823,
+   "del": 221,
+   "ins": 95,
+   "cer": 0.28845999839833425,
+   "wer_nofill": 0.4106134738426797,
+   "terms": {
+    "term_cer": 0.5620853080568721,
+    "term_exact": 64,
+    "term_total": 276,
+    "per_term": {
+     "aldehyd": {
+      "hit": 3,
+      "n": 33,
+      "misses": [
+       [
+        "∅",
+        7
+       ],
+       [
+        "adx",
+        3
+       ],
+       [
+        "ý",
+        2
+       ],
+       [
+        "phần",
+        2
+       ]
+      ]
+     },
+     "ceton": {
+      "hit": 0,
+      "n": 6,
+      "misses": [
+       [
+        "nhiên",
+        1
+       ],
+       [
+        "cfo",
+        1
+       ],
+       [
+        "shepard",
+        1
+       ],
+       [
+        "trị",
+        1
+       ]
+      ]
+     },
+     "quinon": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "kino",
+        3
+       ],
+       [
+        "adenxepalokidon",
+        1
+       ],
+       [
+        "con",
+        1
+       ]
+      ]
+     },
+     "carbonyl": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "carbonin",
+        2
+       ],
+       [
+        "nhiên",
+        1
+       ],
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "hydrocarbon": {
+      "hit": 0,
+      "n": 14,
+      "misses": [
+       [
+        "con",
+        3
+       ],
+       [
+        "carbon",
+        2
+       ],
+       [
+        "các",
+        1
+       ],
+       [
+        "học",
+        1
+       ]
+      ]
+     },
+     "carbon": {
+      "hit": 15,
+      "n": 19,
+      "misses": [
+       [
+        "phần",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "con",
+        1
+       ],
+       [
+        "bọng",
+        1
+       ]
+      ]
+     },
+     "alcol": {
+      "hit": 0,
+      "n": 6,
+      "misses": [
+       [
+        "phần",
+        2
+       ],
+       [
+        "côn",
+        1
+       ],
+       [
+        "enco",
+        1
+       ],
+       [
+        "hôn",
+        1
+       ]
+      ]
+     },
+     "formyl": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "link",
+        2
+       ],
+       [
+        "mịn",
+        2
+       ],
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "carbaldehyd": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "để",
+        1
+       ],
+       [
+        "hít",
+        1
+       ],
+       [
+        "analytics",
+        1
+       ],
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "propanal": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "nặng",
+        1
+       ],
+       [
+        "robana",
+        1
+       ]
+      ]
+     },
+     "propenal": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "chín",
+        2
+       ]
+      ]
+     },
+     "acrolein": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "benzaldehyd": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "hít",
+        2
+       ]
+      ]
+     },
+     "IUPAC": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "aisrub",
+        1
+       ],
+       [
+        "bác",
+        1
+       ],
+       [
+        "mắt",
+        1
+       ]
+      ]
+     },
+     "carboxylic": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "oxylic",
+        3
+       ],
+       [
+        "adh",
+        1
+       ]
+      ]
+     },
+     "acid": {
+      "hit": 19,
+      "n": 27,
+      "misses": [
+       [
+        "acid phạm",
+        2
+       ],
+       [
+        "trích",
+        2
+       ],
+       [
+        "tổ",
+        1
+       ],
+       [
+        "o",
+        1
+       ]
+      ]
+     },
+     "liên hợp": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "nhóm chức": {
+      "hit": 16,
+      "n": 70,
+      "misses": [
+       [
+        "nhóm chiếc",
+        7
+       ],
+       [
+        "∅",
+        4
+       ],
+       [
+        "nhóm trích",
+        4
+       ],
+       [
+        "nhận trích",
+        3
+       ]
+      ]
+     },
+     "danh pháp": {
+      "hit": 0,
+      "n": 14,
+      "misses": [
+       [
+        "dân pháp",
+        5
+       ],
+       [
+        "nhân pháp",
+        3
+       ],
+       [
+        "dương pháp",
+        2
+       ],
+       [
+        "dương pháp trước",
+        1
+       ]
+      ]
+     },
+     "tiếp vĩ ngữ": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "tiết kỷ ngừng",
+        2
+       ],
+       [
+        "tiết",
+        1
+       ],
+       [
+        "tiết tì nữ",
+        1
+       ]
+      ]
+     },
+     "tiếp đầu ngữ": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "tiết đầu",
+        2
+       ],
+       [
+        "tiết đầu nữ",
+        1
+       ]
+      ]
+     },
+     "hydroxy": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "heroxy",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "xì",
+        1
+       ]
+      ]
+     },
+     "oxo": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "được",
+        1
+       ]
+      ]
+     },
+     "amino": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "phải",
+        1
+       ],
+       [
+        "albin",
+        1
+       ]
+      ]
+     },
+     "amin": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "ab",
+        1
+       ],
+       [
+        "bây",
+        1
+       ],
+       [
+        "henoxy",
+        1
+       ],
+       [
+        "albin",
+        1
+       ]
+      ]
+     },
+     "pentanol": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "penthanol",
+        1
+       ],
+       [
+        "đồ",
+        1
+       ]
+      ]
+     },
+     "propionic": {
+      "hit": 1,
+      "n": 3,
+      "misses": [
+       [
+        "probiotic",
+        1
+       ],
+       [
+        "andhidrobiotic",
+        1
+       ]
+      ]
+     },
+     "acrylic": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "acrylite",
+        3
+       ]
+      ]
+     },
+     "benzoic": {
+      "hit": 3,
+      "n": 3,
+      "misses": []
+     },
+     "liên kết pi": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "tích carbonin kế",
+        1
+       ]
+      ]
+     },
+     "acyl": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "acid",
+        2
+       ]
+      ]
+     },
+     "benzen": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "lơ",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "bz",
+        1
+       ]
+      ]
+     },
+     "propionaldehyd": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "thì",
+        1
+       ]
+      ]
+     },
+     "ethanol": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "netanol",
+        1
+       ]
+      ]
+     },
+     "cycloalkan": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "đăng",
+        1
+       ]
+      ]
+     },
+     "mạch chính": {
+      "hit": 0,
+      "n": 6,
+      "misses": [
+       [
+        "phần phần",
+        2
+       ],
+       [
+        "mặt chí",
+        2
+       ],
+       [
+        "mặt trí",
+        2
+       ]
+      ]
+     },
+     "nhóm thế": {
+      "hit": 4,
+      "n": 9,
+      "misses": [
+       [
+        "nhóm thế để",
+        1
+       ],
+       [
+        "nóng thế",
+        1
+       ],
+       [
+        "thế",
+        1
+       ],
+       [
+        "phụ thế",
+        1
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9606720122184039,
+    "purity": 1.0,
+    "aligned": 2619,
+    "null_words": 103,
+    "ref_speakers": 1,
+    "hyp_speakers": 1,
+    "mapping": {
+     "Thầy giáo": "SPEAKER_00"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "None"
+    ],
+    "rows": [
+     "Thầy giáo"
+    ],
+    "matrix": [
+     [
+      2516,
+      103
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [],
+   "del_runs": [
+    {
+     "t": 614.0,
+     "n": 13,
+     "text": "cái này là file word ha cái file bài giảng của cái giáo"
+    },
+    {
+     "t": 760.8,
+     "n": 18,
+     "text": "nhóm chức aldehyd này aldehyd chúng ta gọi là chữ al đúng không hoặc là carbaldehyd trong trường"
+    },
+    {
+     "t": 801.7,
+     "n": 12,
+     "text": "cái phần ở trên đi rồi tôi tôi chiếu cái phần ở"
+    }
+   ],
+   "max_gaps": [
+    [
+     9.7,
+     624.4
+    ],
+    [
+     9.0,
+     761.8
+    ],
+    [
+     8.2,
+     614.8
+    ],
+    [
+     6.3,
+     774.1
+    ],
+    [
+     6.0,
+     703.3
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 4.0,
+    "max_seg_s": 29.98,
+    "upper_ratio": 0.03378070973612375,
+    "punct_per_100w": 4.592592592592593,
+    "digit_tokens": 37
+   },
+   "segments": 144,
+   "top_subs": [
+    [
+     "chức",
+     "chiếc",
+     14
+    ],
+    [
+     "mạch",
+     "mặt",
+     13
+    ],
+    [
+     "chức",
+     "trích",
+     9
+    ],
+    [
+     "vòng",
+     "vỏ",
+     7
+    ],
+    [
+     "tiếp",
+     "tiết",
+     6
+    ],
+    [
+     "danh",
+     "dân",
+     5
+    ],
+    [
+     "al",
+     "a",
+     5
+    ],
+    [
+     "là",
+     "phần",
+     5
+    ],
+    [
+     "thì",
+     "để",
+     4
+    ],
+    [
+     "nhóm",
+     "những",
+     4
+    ],
+    [
+     "theo",
+     "là",
+     4
+    ],
+    [
+     "chúng",
+     "phần",
+     4
+    ],
+    [
+     "ta",
+     "phần",
+     4
+    ],
+    [
+     "cái",
+     "phần",
+     4
+    ],
+    [
+     "nhóm",
+     "nhận",
+     4
+    ],
+    [
+     "thường",
+     "thừa",
+     4
+    ],
+    [
+     "liên",
+     "lĩnh",
+     4
+    ],
+    [
+     "quinon",
+     "kino",
+     3
+    ],
+    [
+     "thực",
+     "thật",
+     3
+    ],
+    [
+     "aldehyd",
+     "adx",
+     3
+    ],
+    [
+     "danh",
+     "dương",
+     3
+    ],
+    [
+     "mạch",
+     "phần",
+     3
+    ],
+    [
+     "carboxylic",
+     "oxylic",
+     3
+    ],
+    [
+     "cấu",
+     "tấu",
+     3
+    ],
+    [
+     "sử",
+     "sĩ",
+     3
+    ],
+    [
+     "danh",
+     "nhân",
+     3
+    ],
+    [
+     "tương",
+     "tư",
+     3
+    ],
+    [
+     "acrylic",
+     "acrylite",
+     3
+    ],
+    [
+     "nhóm",
+     "một",
+     3
+    ],
+    [
+     "hydrocarbon",
+     "con",
+     3
+    ],
+    [
+     "nhóm",
+     "chiếc",
+     2
+    ],
+    [
+     "giả",
+     "đại",
+     2
+    ],
+    [
+     "sử",
+     "sứ",
+     2
+    ],
+    [
+     "chức",
+     "kiếp",
+     2
+    ],
+    [
+     "carbonyl",
+     "carbonin",
+     2
+    ],
+    [
+     "thêm",
+     "tên",
+     2
+    ],
+    [
+     "một",
+     "của",
+     2
+    ],
+    [
+     "cái",
+     "các",
+     2
+    ],
+    [
+     "chất",
+     "trạng",
+     2
+    ],
+    [
+     "đọc",
+     "gọt",
+     2
+    ]
+   ],
+   "run": {
+    "job_id": "908bfd7d-b650-45a7-a776-29104466901e",
+    "elapsed": 97.9,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 14.1,
+     "diarizing": 60.3,
+     "ready": 97.9
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 812856,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2906
+  },
+  "acid": {
+   "ref_words": 2451,
+   "hyp_words": 1886,
+   "ref_speakers": 1,
+   "wer": 0.6674826601387189,
+   "sub": 957,
+   "del": 622,
+   "ins": 57,
+   "cer": 0.5317358697640387,
+   "wer_nofill": 0.675502351432236,
+   "terms": {
+    "term_cer": 0.8585329341317365,
+    "term_exact": 7,
+    "term_total": 209,
+    "per_term": {
+     "acid": {
+      "hit": 2,
+      "n": 40,
+      "misses": [
+       [
+        "∅",
+        9
+       ],
+       [
+        "bốn",
+        7
+       ],
+       [
+        "hai",
+        5
+       ],
+       [
+        "một",
+        3
+       ]
+      ]
+     },
+     "benzoic": {
+      "hit": 2,
+      "n": 12,
+      "misses": [
+       [
+        "benzoyl",
+        2
+       ],
+       [
+        "dưới",
+        2
+       ],
+       [
+        "∅",
+        2
+       ],
+       [
+        "bệnh",
+        1
+       ]
+      ]
+     },
+     "acetamido": {
+      "hit": 0,
+      "n": 11,
+      "misses": [
+       [
+        "∅",
+        4
+       ],
+       [
+        "vết",
+        4
+       ],
+       [
+        "acetamidro",
+        2
+       ],
+       [
+        "tinh",
+        1
+       ]
+      ]
+     },
+     "carbamoyl": {
+      "hit": 0,
+      "n": 8,
+      "misses": [
+       [
+        "∅",
+        4
+       ],
+       [
+        "chặt",
+        1
+       ],
+       [
+        "in",
+        1
+       ],
+       [
+        "tinh",
+        1
+       ]
+      ]
+     },
+     "benzamid": {
+      "hit": 0,
+      "n": 8,
+      "misses": [
+       [
+        "∅",
+        4
+       ],
+       [
+        "benzamin",
+        1
+       ],
+       [
+        "video",
+        1
+       ],
+       [
+        "hay",
+        1
+       ]
+      ]
+     },
+     "amid": {
+      "hit": 0,
+      "n": 7,
+      "misses": [
+       [
+        "amin",
+        3
+       ],
+       [
+        "anmic",
+        1
+       ],
+       [
+        "unknit",
+        1
+       ],
+       [
+        "gọi",
+        1
+       ]
+      ]
+     },
+     "sulfamoyl": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "vị",
+        1
+       ],
+       [
+        "c1h2",
+        1
+       ],
+       [
+        "s",
+        1
+       ],
+       [
+        "ở",
+        1
+       ]
+      ]
+     },
+     "benzoat": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "ác",
+        3
+       ],
+       [
+        "rồi",
+        1
+       ],
+       [
+        "bốn",
+        1
+       ]
+      ]
+     },
+     "phthalic": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "một",
+        2
+       ],
+       [
+        "hai",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "phải",
+        1
+       ]
+      ]
+     },
+     "pyrrolidin": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "∅",
+        2
+       ],
+       [
+        "nhìn",
+        1
+       ],
+       [
+        "dưới",
+        1
+       ],
+       [
+        "phenoxin",
+        1
+       ]
+      ]
+     },
+     "benzoyl": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "benzo",
+        1
+       ],
+       [
+        "in",
+        1
+       ],
+       [
+        "axid",
+        1
+       ],
+       [
+        "cổ",
+        1
+       ]
+      ]
+     },
+     "clorid": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "in",
+        1
+       ],
+       [
+        "chloric",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "ra",
+        1
+       ]
+      ]
+     },
+     "ester": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "bên",
+        1
+       ],
+       [
+        "là",
+        1
+       ],
+       [
+        "sacin",
+        1
+       ],
+       [
+        "bốn",
+        1
+       ]
+      ]
+     },
+     "phenoxy": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        4
+       ]
+      ]
+     },
+     "amoni": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "bốn",
+        4
+       ]
+      ]
+     },
+     "ethyl": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "cơ",
+        2
+       ],
+       [
+        "amido",
+        1
+       ]
+      ]
+     },
+     "acetyl": {
+      "hit": 1,
+      "n": 3,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "góc",
+        1
+       ]
+      ]
+     },
+     "phthalimid": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "có",
+        1
+       ],
+       [
+        "thể",
+        1
+       ],
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "anhydrid": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "nhé",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "lỡ",
+        1
+       ]
+      ]
+     },
+     "benzyl": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "bốn",
+        3
+       ]
+      ]
+     },
+     "brom": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "glom",
+        1
+       ],
+       [
+        "ba",
+        1
+       ]
+      ]
+     },
+     "gallic": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "hai",
+        2
+       ]
+      ]
+     },
+     "salicylic": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "methoxy": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        2
+       ]
+      ]
+     },
+     "phenyl": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "phê",
+        1
+       ],
+       [
+        "ninh",
+        1
+       ]
+      ]
+     },
+     "methylcarbamoyl": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "3molin",
+        2
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "băm",
+        1
+       ]
+      ]
+     },
+     "pentyl": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "tên",
+        1
+       ]
+      ]
+     },
+     "toluic": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "gọi",
+        1
+       ],
+       [
+        "mệt",
+        1
+       ]
+      ]
+     },
+     "propionic": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "vê",
+        1
+       ],
+       [
+        "góc",
+        1
+       ]
+      ]
+     },
+     "nitơ": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        3
+       ],
+       [
+        "vaccine",
+        1
+       ]
+      ]
+     },
+     "alphabet": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "vào",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "thì",
+        1
+       ],
+       [
+        "tinh",
+        1
+       ]
+      ]
+     },
+     "dẫn xuất": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "halogenid": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "halic",
+        1
+       ]
+      ]
+     },
+     "natri benzoat": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "chloric rồi",
+        1
+       ]
+      ]
+     },
+     "benzonitril": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "bốn",
+        1
+       ]
+      ]
+     },
+     "formyl": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "minh",
+        4
+       ],
+       [
+        "vl3",
+        1
+       ]
+      ]
+     },
+     "oxo": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        2
+       ],
+       [
+        "xô",
+        1
+       ],
+       [
+        "tô",
+        1
+       ]
+      ]
+     },
+     "amino": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "bốn",
+        3
+       ],
+       [
+        "amido",
+        1
+       ]
+      ]
+     },
+     "hydro": {
+      "hit": 0,
+      "n": 4,
+      "misses": [
+       [
+        "∅",
+        3
+       ],
+       [
+        "thì",
+        1
+       ]
+      ]
+     },
+     "carbon": {
+      "hit": 0,
+      "n": 10,
+      "misses": [
+       [
+        "con",
+        6
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "vong",
+        1
+       ],
+       [
+        "bó",
+        1
+       ]
+      ]
+     },
+     "para": {
+      "hit": 0,
+      "n": 5,
+      "misses": [
+       [
+        "bốn",
+        2
+       ],
+       [
+        "ra",
+        1
+       ],
+       [
+        "∅",
+        1
+       ],
+       [
+        "mặc",
+        1
+       ]
+      ]
+     },
+     "meta": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "tên",
+        1
+       ],
+       [
+        "bà",
+        1
+       ]
+      ]
+     },
+     "ortho": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "một",
+        2
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9338436303991252,
+    "purity": 1.0,
+    "aligned": 1829,
+    "null_words": 121,
+    "ref_speakers": 1,
+    "hyp_speakers": 1,
+    "mapping": {
+     "Cô giáo": "SPEAKER_01"
+    },
+    "labels": [
+     "SPEAKER_01",
+     "None"
+    ],
+    "rows": [
+     "Cô giáo"
+    ],
+    "matrix": [
+     [
+      1708,
+      121
+     ]
+    ]
+   },
+   "flagged_segments": [
+    {
+     "start": 791.544,
+     "dur": 5.78,
+     "text": "Cảm ơn các bạn đã theo dõi và hãy subscribe cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn"
+    }
+   ],
+   "ins_runs": [],
+   "del_runs": [
+    {
+     "t": 62.0,
+     "n": 14,
+     "text": "rồi hợp chất này là có nhóm chức acid có chức ceton thì chức"
+    },
+    {
+     "t": 168.1,
+     "n": 19,
+     "text": "số hợp chất khó hơn rồi với hợp chất này cũng thế ha chúng ta cũng vẫn phải chọn"
+    },
+    {
+     "t": 275.4,
+     "n": 13,
+     "text": "số một rồi cái nhóm so_2 nh_2 nhóm này được gọi là nhóm"
+    },
+    {
+     "t": 329.2,
+     "n": 16,
+     "text": "thế nha đây ví dụ như thế này ví dụ các bạn có hợp chất như"
+    },
+    {
+     "t": 423.5,
+     "n": 64,
+     "text": "nữa các bạn cũng nên biết đó là ví dụ như đây hợp chất ch_3 co nh_2 hợp chất này có tên là acetamid đúng không acetamid nếu bỏ một hydro đi để cho nó trở thành gốc thì thêm"
+    },
+    {
+     "t": 496.4,
+     "n": 16,
+     "text": "đánh số chúng ta đánh số theo chiều nào cũng vậy theo đi lên phía trên"
+    },
+    {
+     "t": 503.3,
+     "n": 18,
+     "text": "thứ tự alphabet ha ví dụ cái vòng trên chúng ta sẽ có cái tên đầu là chữ"
+    },
+    {
+     "t": 539.4,
+     "n": 40,
+     "text": "phenoxy cũng như là các bạn ví dụ ch_3 o các bạn gọi methoxy ha c_2h_5 o là ethoxy đó thì c_6h_5 o là phenoxy như vậy ở vị trí số bốn là phenoxy ở vị trí số ba có"
+    },
+    {
+     "t": 579.5,
+     "n": 21,
+     "text": "với hợp chất này các bạn cũng vậy thôi các bạn phải chọn cái mạch carbon dài nhất ha mang cái"
+    },
+    {
+     "t": 647.3,
+     "n": 20,
+     "text": "rồi hợp chất tiếp theo đây hợp chất này đây hợp chất này là có nhóm acetamido này là phía"
+    },
+    {
+     "t": 682.0,
+     "n": 66,
+     "text": "là acetamido cho nên vần a là ở bên này vần a là được ưu tiên trước chúng ta đánh số một hai ba bốn năm sáu như vậy cái acid này cũng là acid benzoic trước hết là acid"
+    },
+    {
+     "t": 780.9,
+     "n": 20,
+     "text": "thôi chứ không có gì cả rồi hợp chất này thì cực kỳ khó khăn ha nhưng mà thực ra"
+    }
+   ],
+   "max_gaps": [
+    [
+     49.6,
+     168.4
+    ],
+    [
+     45.1,
+     424.7
+    ],
+    [
+     40.7,
+     691.0
+    ],
+    [
+     39.0,
+     125.7
+    ],
+    [
+     38.5,
+     330.9
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 2.9,
+    "max_seg_s": 29.02,
+    "upper_ratio": 0.05908824104871845,
+    "punct_per_100w": 20.107719928186714,
+    "digit_tokens": 132
+   },
+   "segments": 94,
+   "top_subs": [
+    [
+     "chức",
+     "trước",
+     8
+    ],
+    [
+     "acid",
+     "bốn",
+     7
+    ],
+    [
+     "là",
+     "một",
+     6
+    ],
+    [
+     "carbon",
+     "con",
+     6
+    ],
+    [
+     "là",
+     "bốn",
+     6
+    ],
+    [
+     "acid",
+     "hai",
+     5
+    ],
+    [
+     "bên",
+     "tinh",
+     5
+    ],
+    [
+     "ic",
+     "x",
+     4
+    ],
+    [
+     "là",
+     "hai",
+     4
+    ],
+    [
+     "ha",
+     "bốn",
+     4
+    ],
+    [
+     "acetamido",
+     "vết",
+     4
+    ],
+    [
+     "này",
+     "vết",
+     4
+    ],
+    [
+     "là",
+     "tinh",
+     4
+    ],
+    [
+     "formyl",
+     "minh",
+     4
+    ],
+    [
+     "rồi",
+     "bốn",
+     4
+    ],
+    [
+     "amoni",
+     "bốn",
+     4
+    ],
+    [
+     "gốc",
+     "bốn",
+     4
+    ],
+    [
+     "benzoat",
+     "ác",
+     3
+    ],
+    [
+     "thay",
+     "tay",
+     3
+    ],
+    [
+     "hay",
+     "một",
+     3
+    ],
+    [
+     "acid",
+     "một",
+     3
+    ],
+    [
+     "ha",
+     "một",
+     3
+    ],
+    [
+     "benzen",
+     "hai",
+     3
+    ],
+    [
+     "thế",
+     "thuế",
+     3
+    ],
+    [
+     "amid",
+     "amin",
+     3
+    ],
+    [
+     "nhóm",
+     "có",
+     3
+    ],
+    [
+     "methylacetamido",
+     "vết",
+     3
+    ],
+    [
+     "ba",
+     "và",
+     3
+    ],
+    [
+     "một",
+     "vl3",
+     3
+    ],
+    [
+     "lộn",
+     "bốn",
+     3
+    ],
+    [
+     "amino",
+     "bốn",
+     3
+    ],
+    [
+     "này",
+     "bốn",
+     3
+    ],
+    [
+     "benzyl",
+     "bốn",
+     3
+    ],
+    [
+     "tên",
+     "bên",
+     2
+    ],
+    [
+     "ethyl",
+     "cơ",
+     2
+    ],
+    [
+     "cái",
+     "là",
+     2
+    ],
+    [
+     "acid",
+     "là",
+     2
+    ],
+    [
+     "axetic",
+     "acetylacety",
+     2
+    ],
+    [
+     "gốc",
+     "góc",
+     2
+    ],
+    [
+     "ta",
+     "nó",
+     2
+    ]
+   ],
+   "run": {
+    "job_id": "27a5c8cb-9d04-4313-9fb5-36a2669499fe",
+    "elapsed": 138.6,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 19.6,
+     "diarizing": 87.0,
+     "ready": 138.6
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 1175880,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2862
+  },
+  "hop1": {
+   "ref_words": 5017,
+   "hyp_words": 6333,
+   "ref_speakers": 3,
+   "wer": 0.6067370938808052,
+   "sub": 800,
+   "del": 464,
+   "ins": 1780,
+   "cer": 0.5122304850100556,
+   "wer_nofill": 0.5960643250105798,
+   "terms": {
+    "term_cer": 1.4924623115577889,
+    "term_exact": 79,
+    "term_total": 120,
+    "per_term": {
+     "brainstorming": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "power": {
+      "hit": 0,
+      "n": 2,
+      "misses": [
+       [
+        "∅",
+        1
+       ],
+       [
+        "luôn",
+        1
+       ]
+      ]
+     },
+     "cuộc họp": {
+      "hit": 32,
+      "n": 52,
+      "misses": [
+       [
+        "của họ",
+        4
+       ],
+       [
+        "của",
+        1
+       ],
+       [
+        "bộ họp",
+        1
+       ],
+       [
+        "cổ họp",
+        1
+       ]
+      ]
+     },
+     "ra quyết định": {
+      "hit": 2,
+      "n": 3,
+      "misses": [
+       [
+        "giảm quyết định",
+        1
+       ]
+      ]
+     },
+     "đồng thuận": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "đồng phong",
+        1
+       ],
+       [
+        "đồng phận",
+        1
+       ],
+       [
+        "những cái",
+        1
+       ]
+      ]
+     },
+     "chủ trì": {
+      "hit": 6,
+      "n": 6,
+      "misses": []
+     },
+     "kết luận": {
+      "hit": 6,
+      "n": 6,
+      "misses": []
+     },
+     "lãnh đạo": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "quyền lực": {
+      "hit": 3,
+      "n": 4,
+      "misses": [
+       [
+        "người dân",
+        1
+       ]
+      ]
+     },
+     "tổ chức": {
+      "hit": 4,
+      "n": 5,
+      "misses": [
+       [
+        "tổ chức của họ ví dụ là như vậy thế đấy là bây giờ chúng ta cứ trước khi bắt đầu cuộc họp chúng ta dùng cái này ta giống như cái dưỡng hoặc là cái tức đo cái tiêu chuẩn đã chết ạ à một là rõ về gì hai là có cần không phải sao mà bọn thứ ba là ở đâu được phần tiệm khi nào cần phù hợp những ai là phụ nữ được và nếu đã triển thai được chúng ta làm thế nào thì nó không hiệu quả nhất không mất nhiều thời gian mang lại cái lợi ích mà chúng ta cần thì cái này chúng ta chú ý cho về thành phần thì không nhất thiết được quy mô lực cố gắng là tối ưu qua tối ưu qua rất là càng nhỏ trong cho",
+        1
+       ]
+      ]
+     },
+     "mục tiêu": {
+      "hit": 7,
+      "n": 7,
+      "misses": []
+     },
+     "tập thể": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "happy hour": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "giao hưu",
+        1
+       ]
+      ]
+     },
+     "hiệu quả": {
+      "hit": 1,
+      "n": 2,
+      "misses": [
+       [
+        "hiệu quả đúng không",
+        1
+       ]
+      ]
+     },
+     "lãng phí": {
+      "hit": 1,
+      "n": 2,
+      "misses": [
+       [
+        "sức",
+        1
+       ]
+      ]
+     },
+     "bình đẳng": {
+      "hit": 1,
+      "n": 3,
+      "misses": [
+       [
+        "người nhận",
+        1
+       ],
+       [
+        "mình nhận",
+        1
+       ]
+      ]
+     },
+     "con người": {
+      "hit": 1,
+      "n": 4,
+      "misses": [
+       [
+        "con ngươn",
+        1
+       ],
+       [
+        "trường nữa",
+        1
+       ],
+       [
+        "công thức",
+        1
+       ]
+      ]
+     },
+     "công việc": {
+      "hit": 10,
+      "n": 15,
+      "misses": [
+       [
+        "tương được",
+        1
+       ],
+       [
+        "công nghiệp",
+        1
+       ],
+       [
+        "không biết",
+        1
+       ],
+       [
+        "công nghệ",
+        1
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.9837469800131782,
+    "purity": 0.9995538701762213,
+    "aligned": 4553,
+    "null_words": 70,
+    "ref_speakers": 2,
+    "hyp_speakers": 2,
+    "mapping": {
+     "Giảng viên": "SPEAKER_00",
+     "Đại diện Ban Tổ chức": "SPEAKER_01"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "SPEAKER_01",
+     "None"
+    ],
+    "rows": [
+     "Giảng viên",
+     "Đại diện Ban Tổ chức"
+    ],
+    "matrix": [
+     [
+      4479,
+      2,
+      69
+     ],
+     [
+      2,
+      0,
+      1
+     ]
+    ]
+   },
+   "flagged_segments": [
+    {
+     "start": 893.912,
+     "dur": 2.14,
+     "text": "Mày đi ra đi, hãy nhớ lại đi, hãy subscribe cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn"
+    }
+   ],
+   "ins_runs": [
+    {
+     "t": 442.6,
+     "n": 12,
+     "text": "cái này chúng ta cố gắng làm dư dòng đúng không cái"
+    },
+    {
+     "t": 503.6,
+     "n": 16,
+     "text": "tiết thì cái đó nó tùy theo cái tính chất của người ta lựa chọn cho"
+    },
+    {
+     "t": 588.4,
+     "n": 21,
+     "text": "tổ chức của cuộc họp là nó gọi là skin ốc thì viết sinh học hôm nay đây sẽ rất là"
+    },
+    {
+     "t": 596.5,
+     "n": 141,
+     "text": "của họ ví dụ là như vậy thế đấy là bây giờ chúng ta cứ trước khi bắt đầu cuộc họp chúng ta dùng cái này ta giống như cái dưỡng hoặc là cái tức đo cái tiêu chuẩn đã"
+    },
+    {
+     "t": 631.9,
+     "n": 56,
+     "text": "tập truyền là đọc số lượng và đối tiểu chúng ta nói rồi ừ ừ ừ cái gì đấy là người ta đổi tên một số vấn đề đó à à nội dung nào hoặc là quan trọng và đặc"
+    },
+    {
+     "t": 649.5,
+     "n": 167,
+     "text": "thì nó diễn biến nó nhiều cái đa dạng có nhiều khi bắt đầu với này sau một hồi thảo luận kéo vào vấn đề khác có ai gặp ạ chúng ta rất hay gặp thế cho nên là cái"
+    },
+    {
+     "t": 709.1,
+     "n": 12,
+     "text": "thế còn chủ trì riêng còn người điều hành hợp dung riêng"
+    },
+    {
+     "t": 716.8,
+     "n": 17,
+     "text": "không được nhiều ở đây vấn đề chủ trì đây có một số điểm lưu ý này"
+    },
+    {
+     "t": 842.2,
+     "n": 66,
+     "text": "họ vậy thì hôm trước thì tôi có đọc tôi có trao đổi chúng ta một phần mời đúng không ta nói về cái chuyện là một ý kiến tốt nhiều mấy ý kiến tốt hay là một trăm ý"
+    },
+    {
+     "t": 857.4,
+     "n": 51,
+     "text": "là mọi người đều có quyền có một cái công bằng và bình đẳng với nhau trong ý kiến thì nếu ý kiến của nhân viên nói ra thì đúng xếp rồi thì cũng có thể là sự đồng tình"
+    },
+    {
+     "t": 956.4,
+     "n": 19,
+     "text": "không thì đấy là cái vẫn là có một điểm chia sẻ như vậy thôi ừ thì mình tất"
+    },
+    {
+     "t": 962.4,
+     "n": 34,
+     "text": "có những bạn là cái điều đó nhưng mà ta cố gắng ở cái trạng thái là chúng ta làm thế nào để làm cho con người sẵn sàng nói ra ý kiến của"
+    },
+    {
+     "t": 1118.4,
+     "n": 36,
+     "text": "gì giải quyết được vấn đề đúng bản chất vấn đề và quyết định ra đúng thời gian sau khi ra quyết định được vấn đề thì tạo ra mọi người tâm lý còn thực ra"
+    },
+    {
+     "t": 1130.5,
+     "n": 25,
+     "text": "tốt mà mọi người không tổng vận thì làm việc cầm trừng làm việc đối phó làm việc không tâm lý thì nó cũng tốt"
+    },
+    {
+     "t": 1159.3,
+     "n": 14,
+     "text": "đây là thực hiện này hay là hành động này là thực hiện quyết"
+    },
+    {
+     "t": 1242.3,
+     "n": 12,
+     "text": "sõ điểm chỉ có một cái sự dựa chọn như là tốt"
+    },
+    {
+     "t": 1252.8,
+     "n": 130,
+     "text": "là chúng ta đã chú ý là như vậy để chúng ta hẳn góp thế còn trong cuộc họp thì điều hành kiểm soát đây để dân mặt cáp để kiểm soát nghĩa nhé ở dự họp thảo luận ý"
+    },
+    {
+     "t": 1289.2,
+     "n": 29,
+     "text": "một số kỹ năng để nó chuyển từ cái phát huyệt sang thành đồng tọa ví dụ như là đàm phán và thương lượng như đi đâu xây dựng"
+    },
+    {
+     "t": 1296.0,
+     "n": 23,
+     "text": "cái gì đó thì nó sẽ là thế đó và quan trọng của cuộc họp thì kỳ vọng của những người tham gia"
+    },
+    {
+     "t": 1304.5,
+     "n": 57,
+     "text": "đối tượng nếu mà kỳ vọng họ tham gia giống với người trụ tạo giống với tinh thần dung cuộc họp thì vấn đề sẽ khác còn kỳ vọng nó không phù hợp thì nó sẽ khác sau này chúng"
+    },
+    {
+     "t": 1320.6,
+     "n": 54,
+     "text": "nhiều khi chúng ta học xong rồi nhân viên cứ tập trung vào cạnh nhau và người nọ là lên kia hoặc là chế trách người kia thì lại không phải là vấn đề thì đấy là chúng ta chú"
+    },
+    {
+     "t": 1338.7,
+     "n": 22,
+     "text": "chúng ta cố gắng làm thế nào làm cho một chiếc cổ cổ mang lại đúng ra như ta cần tức là"
+    },
+    {
+     "t": 1343.1,
+     "n": 102,
+     "text": "đúng và hiệu lụng đúng không ạ cần có thời gian xa đổi thì mọi người chẳng sàng cùng chia sẻ và tất nhiên họ chỉ chia sẻ để họ hiểu biết và tâm nhiên còn thiếu hiểu biết và"
+    },
+    {
+     "t": 1366.3,
+     "n": 31,
+     "text": "chất nhiệm thì không bao giờ họ đồng tình cho một cái mà không hiểu cho nên là giải trình là một cái này chính là kỹ năng thức trình kỹ"
+    },
+    {
+     "t": 1374.2,
+     "n": 33,
+     "text": "diễn trả ý kiến của mình để phân tích cho người họ có nhiều khi người ta thấy là có nhiều khi nói mái mà họ vẫn không hiểu mà họ không hiểu"
+    },
+    {
+     "t": 1380.6,
+     "n": 69,
+     "text": "không đi tiếp luận được thế nên là một vấn đề thứ thích đưa ra quan điểm bảo vệ những ý tưởng mới có một cái kỹ năng để vi động tư duyên tập thể ví dụ như vậy và"
+    },
+    {
+     "t": 1399.2,
+     "n": 97,
+     "text": "là thể hiện vai trò của mình còn trong quá trình thảo luận chia sẻ ý kiến thì đây là một vấn đề xảy ra cảm ơn như chúng ta đã nói nếu không làm tốt thì nó sẽ xảy"
+    },
+    {
+     "t": 1432.4,
+     "n": 97,
+     "text": "mà sau đó lại còn tranh trái chẳng dị dạng hô vấn không là sẽ biết đẩm vật không hoặc là không có giải pháp mà chỉ có một giải pháp tươi nhất là lại phé hóa bạc thế thì"
+    },
+    {
+     "t": 1457.6,
+     "n": 45,
+     "text": "thì như chúng ta đã chỉ bày ở trên thế thì đấy là tất cả những vấn đề mà có thể trao đổi thêm với chúng ta trong cái buổi ngày hôm nay và tôi chỉ chúc bạn thấy cuối"
+    },
+    {
+     "t": 1569.9,
+     "n": 24,
+     "text": "quan trọng như hôm trước ta nói cả thì vấn đề của tất nhiên tốt cũng quan trọng và vấn đề của nhóm tốt"
+    }
+   ],
+   "del_runs": [
+    {
+     "t": 83.1,
+     "n": 12,
+     "text": "không họp cái này là khâu chuẩn bị ban đầu đó đúng"
+    },
+    {
+     "t": 545.4,
+     "n": 28,
+     "text": "đúng vai trò cái thứ hai họ đến là họ hiểu vấn đề chứ nhiều khi chúng ta thấy là cử người đến họp cũng đúng nhưng mà"
+    },
+    {
+     "t": 1691.4,
+     "n": 12,
+     "text": "xin hết ạ dạ vâng xin cảm ơn thầy phó giáo sư"
+    }
+   ],
+   "max_gaps": [
+    [
+     15.0,
+     1144.2
+    ],
+    [
+     9.5,
+     1419.6
+    ],
+    [
+     7.0,
+     881.4
+    ],
+    [
+     5.1,
+     32.9
+    ],
+    [
+     4.2,
+     810.7
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 4.28,
+    "max_seg_s": 29.54,
+    "upper_ratio": 0.007972999413030719,
+    "punct_per_100w": 4.185091598231207,
+    "digit_tokens": 10
+   },
+   "segments": 184,
+   "top_subs": [
+    [
+     "họp",
+     "họ",
+     15
+    ],
+    [
+     "sếp",
+     "xếp",
+     10
+    ],
+    [
+     "kém",
+     "kéo",
+     6
+    ],
+    [
+     "cái",
+     "những",
+     6
+    ],
+    [
+     "cuộc",
+     "của",
+     5
+    ],
+    [
+     "họp",
+     "học",
+     5
+    ],
+    [
+     "mà",
+     "là",
+     4
+    ],
+    [
+     "cái",
+     "thế",
+     3
+    ],
+    [
+     "mà",
+     "một",
+     3
+    ],
+    [
+     "việc",
+     "biệt",
+     3
+    ],
+    [
+     "rồi",
+     "là",
+     3
+    ],
+    [
+     "là",
+     "phải",
+     2
+    ],
+    [
+     "họp",
+     "của",
+     2
+    ],
+    [
+     "đó",
+     "làm",
+     2
+    ],
+    [
+     "trong",
+     "cho",
+     2
+    ],
+    [
+     "thì",
+     "gì",
+     2
+    ],
+    [
+     "vậy",
+     "này",
+     2
+    ],
+    [
+     "ạ",
+     "được",
+     2
+    ],
+    [
+     "cuộc",
+     "cổ",
+     2
+    ],
+    [
+     "đặt",
+     "đạt",
+     2
+    ],
+    [
+     "là",
+     "lần",
+     2
+    ],
+    [
+     "lại",
+     "là",
+     2
+    ],
+    [
+     "coi",
+     "phải",
+     2
+    ],
+    [
+     "quyết",
+     "quy",
+     2
+    ],
+    [
+     "nó",
+     "là",
+     2
+    ],
+    [
+     "cái",
+     "là",
+     2
+    ],
+    [
+     "cao",
+     "ca",
+     2
+    ],
+    [
+     "đúng",
+     "là",
+     2
+    ],
+    [
+     "không",
+     "chúng",
+     2
+    ],
+    [
+     "ạ",
+     "ta",
+     2
+    ],
+    [
+     "rõ",
+     "dọn",
+     2
+    ],
+    [
+     "khi",
+     "ý",
+     2
+    ],
+    [
+     "có",
+     "nó",
+     2
+    ],
+    [
+     "tính",
+     "tinh",
+     2
+    ],
+    [
+     "và",
+     "mà",
+     2
+    ],
+    [
+     "là",
+     "và",
+     2
+    ],
+    [
+     "mà",
+     "và",
+     2
+    ],
+    [
+     "đẳng",
+     "nhận",
+     2
+    ],
+    [
+     "là",
+     "nó",
+     2
+    ],
+    [
+     "họp",
+     "hợp",
+     2
+    ]
+   ],
+   "run": {
+    "job_id": "660c8f33-c414-4763-8997-6812871cfa55",
+    "elapsed": 198.2,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 22.1,
+     "diarizing": 119.3,
+     "ready": 198.2
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 1699992,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 3004
+  },
+  "hop2": {
+   "ref_words": 2720,
+   "hyp_words": 2587,
+   "ref_speakers": 14,
+   "wer": 0.12242647058823529,
+   "sub": 146,
+   "del": 160,
+   "ins": 27,
+   "cer": 0.08984952596329478,
+   "wer_nofill": 0.10930232558139535,
+   "terms": {
+    "term_cer": 0.07951807228915662,
+    "term_exact": 47,
+    "term_total": 55,
+    "per_term": {
+     "marketing": {
+      "hit": 5,
+      "n": 5,
+      "misses": []
+     },
+     "banner": {
+      "hit": 3,
+      "n": 4,
+      "misses": [
+       [
+        "mender",
+        1
+       ]
+      ]
+     },
+     "target": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "tour": {
+      "hit": 0,
+      "n": 3,
+      "misses": [
+       [
+        "tuôn",
+        2
+       ],
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "file": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "online": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "digital": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "blog": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "facebook": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "internet": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "video": {
+      "hit": 1,
+      "n": 1,
+      "misses": []
+     },
+     "traffic": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "phích",
+        1
+       ]
+      ]
+     },
+     "mail": {
+      "hit": 0,
+      "n": 1,
+      "misses": [
+       [
+        "may",
+        1
+       ]
+      ]
+     },
+     "khách hàng": {
+      "hit": 3,
+      "n": 3,
+      "misses": []
+     },
+     "du lịch": {
+      "hit": 5,
+      "n": 6,
+      "misses": [
+       [
+        "∅",
+        1
+       ]
+      ]
+     },
+     "báo cáo": {
+      "hit": 5,
+      "n": 5,
+      "misses": []
+     },
+     "thiết kế": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "chiến dịch": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "quảng cáo": {
+      "hit": 2,
+      "n": 2,
+      "misses": []
+     },
+     "giám đốc": {
+      "hit": 7,
+      "n": 7,
+      "misses": []
+     },
+     "trưởng phòng": {
+      "hit": 3,
+      "n": 4,
+      "misses": [
+       [
+        "chứng phòng",
+        1
+       ]
+      ]
+     }
+    }
+   },
+   "speakers": {
+    "accuracy": 0.926171875,
+    "purity": 0.9564340459862848,
+    "aligned": 2560,
+    "null_words": 81,
+    "ref_speakers": 14,
+    "hyp_speakers": 10,
+    "mapping": {
+     "Chuyên viên Digital": "SPEAKER_00",
+     "Giám đốc": "SPEAKER_07",
+     "Nhân viên Nam 1": "SPEAKER_09",
+     "Nhân viên Nữ 1": "SPEAKER_01",
+     "Nhân viên Nữ 2": "SPEAKER_05",
+     "Nhân viên Nữ 3": "SPEAKER_08",
+     "Nhân viên Nữ 4": "SPEAKER_02",
+     "Nhân viên Thiết kế (Nữ)": "SPEAKER_04",
+     "Thư ký": "SPEAKER_03",
+     "Trưởng phòng (Chị Tuyền)": "SPEAKER_06"
+    },
+    "labels": [
+     "SPEAKER_00",
+     "SPEAKER_01",
+     "SPEAKER_02",
+     "SPEAKER_03",
+     "SPEAKER_04",
+     "SPEAKER_05",
+     "SPEAKER_06",
+     "SPEAKER_07",
+     "SPEAKER_08",
+     "SPEAKER_09",
+     "None"
+    ],
+    "rows": [
+     "Chuyên viên Digital",
+     "Các nhân viên",
+     "Duyên (Nhân viên)",
+     "Giám đốc",
+     "Nhân viên Nam (hài hước)",
+     "Nhân viên Nam 1",
+     "Nhân viên Nữ 1",
+     "Nhân viên Nữ 2",
+     "Nhân viên Nữ 3",
+     "Nhân viên Nữ 4",
+     "Nhân viên Thiết kế (Nữ)",
+     "Thư ký",
+     "Trưởng phòng (Chị Tuyền)",
+     "Tập thể nhân viên"
+    ],
+    "matrix": [
+     [
+      148,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      12
+     ],
+     [
+      2,
+      0,
+      6,
+      4,
+      0,
+      0,
+      1,
+      9,
+      1,
+      3,
+      7
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      7,
+      0,
+      1,
+      0,
+      949,
+      0,
+      0,
+      17
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      55,
+      6
+     ],
+     [
+      0,
+      91,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0,
+      6
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      62,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      113,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      18,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      86,
+      2,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      345,
+      0,
+      0,
+      0,
+      26,
+      0,
+      0,
+      9
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      504,
+      1,
+      0,
+      0,
+      19
+     ],
+     [
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      2,
+      2,
+      0,
+      2,
+      0
+     ]
+    ]
+   },
+   "flagged_segments": [],
+   "ins_runs": [
+    {
+     "t": 618.2,
+     "n": 16,
+     "text": "nhiệt độ các bạn khác thì sao ha chính sách của trưởng phòng như vậy các"
+    }
+   ],
+   "del_runs": [],
+   "max_gaps": [
+    [
+     4.7,
+     618.7
+    ],
+    [
+     4.5,
+     152.8
+    ],
+    [
+     4.2,
+     313.0
+    ],
+    [
+     4.0,
+     382.1
+    ],
+    [
+     3.7,
+     358.4
+    ]
+   ],
+   "seg_stats": {
+    "median_seg_s": 3.14,
+    "max_seg_s": 25.58,
+    "upper_ratio": 0.021823472356935016,
+    "punct_per_100w": 4.972592012529366,
+    "digit_tokens": 25
+   },
+   "segments": 154,
+   "top_subs": [
+    [
+     "lương",
+     "lưu",
+     5
+    ],
+    [
+     "mảng",
+     "mãn",
+     3
+    ],
+    [
+     "trễ",
+     "chẩn",
+     2
+    ],
+    [
+     "lương",
+     "luân",
+     2
+    ],
+    [
+     "các",
+     "cái",
+     2
+    ],
+    [
+     "đều",
+     "điều",
+     2
+    ],
+    [
+     "tour",
+     "tuôn",
+     2
+    ],
+    [
+     "quá",
+     "đạo",
+     2
+    ],
+    [
+     "đang",
+     "nay",
+     1
+    ],
+    [
+     "là",
+     "đã",
+     1
+    ],
+    [
+     "đã",
+     "nó",
+     1
+    ],
+    [
+     "thỏa",
+     "thả",
+     1
+    ],
+    [
+     "gờm",
+     "gồm",
+     1
+    ],
+    [
+     "đạt",
+     "thể",
+     1
+    ],
+    [
+     "chỉ",
+     "trị",
+     1
+    ],
+    [
+     "đưa",
+     "đuôi",
+     1
+    ],
+    [
+     "vắng",
+     "vắm",
+     1
+    ],
+    [
+     "trễ",
+     "chỉnh",
+     1
+    ],
+    [
+     "cho",
+     "như",
+     1
+    ],
+    [
+     "bất",
+     "bắt",
+     1
+    ],
+    [
+     "đi",
+     "tăng",
+     1
+    ],
+    [
+     "thấp",
+     "pháp",
+     1
+    ],
+    [
+     "theo",
+     "thì",
+     1
+    ],
+    [
+     "lương",
+     "viên",
+     1
+    ],
+    [
+     "lương",
+     "luôn",
+     1
+    ],
+    [
+     "mỗi",
+     "mọi",
+     1
+    ],
+    [
+     "sức",
+     "suất",
+     1
+    ],
+    [
+     "ạ",
+     "rồi",
+     1
+    ],
+    [
+     "bậc",
+     "bực",
+     1
+    ],
+    [
+     "vì",
+     "bị",
+     1
+    ],
+    [
+     "cấp",
+     "khắc",
+     1
+    ],
+    [
+     "mà",
+     "mừng",
+     1
+    ],
+    [
+     "làm",
+     "là",
+     1
+    ],
+    [
+     "việc",
+     "vì",
+     1
+    ],
+    [
+     "đó",
+     "đau",
+     1
+    ],
+    [
+     "sếp",
+     "tết",
+     1
+    ],
+    [
+     "thưởng",
+     "lưu",
+     1
+    ],
+    [
+     "sẽ",
+     "sửa",
+     1
+    ],
+    [
+     "càng",
+     "tài",
+     1
+    ],
+    [
+     "nhiều",
+     "nghiệm",
+     1
+    ]
+   ],
+   "run": {
+    "job_id": "8d2c6a86-8ff9-4f8c-bc01-72e36e3ae5eb",
+    "elapsed": 93.1,
+    "stages": {
+     "queued": 0.0,
+     "preprocessing": 1.0,
+     "transcribing": 13.1,
+     "diarizing": 53.8,
+     "ready": 93.1
+    },
+    "status": "ready",
+    "warnings": [],
+    "duration_ms": 856536,
+    "diarization_device": "cuda"
+   },
+   "peak_vram_mib": 2899
+  }
+ }
+}

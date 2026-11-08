@@ -1,0 +1,25 @@
+upload 201 0.2 s
+job e120d273-deb0-47d1-888e-857f95ef9054
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   17.6s] ('transcribing', None, None)
+[   70.1s] ('diarizing', None, None)
+[  122.1s] ('ready', None, None)
+elapsed 122.1 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1082064, "diarization_device": "cuda"}
+pass 2 segments 105 speakers ['SPEAKER_00']
+  SPEAKER_00: 705s
+  None: 5s
+words 2665 segments with >1 word speaker 44
+     22.6 SPEAKER_00: Bạn thật sự luôn sẽ có hiểu hiện là gì ạ?
+     26.0 SPEAKER_00: Tìm xem có cái hẹn tặng gì của bạn hay không
+     29.6 SPEAKER_00: Cảm ơn
+     31.5 SPEAKER_00: Hoặc là nếu các bạn chưa sinh được
+     34.8 SPEAKER_00: Thì khi bạn em bé sinh ra thì em bé sẽ có hiểu hiện là nông gói rất là sớm
+     39.6 SPEAKER_00: Nông sớm, đặc biệt là khi bạn em bé muốn bạn
+     41.4 SPEAKER_00: Thì giấc bạn sẽ không trùn thật dày
+     43.5 SPEAKER_00: Nó sẽ tùn lại ở các bạn thị vị đó
+     45.7 SPEAKER_00: Và nó sẽ làm sao?
+     46.8 SPEAKER_00: Nó sẽ tôn nặng
+     48.0 SPEAKER_00: Vì sao sinh?
+     62.6 SPEAKER_00: đi vào khí quản như vậy đúng không ạ?
