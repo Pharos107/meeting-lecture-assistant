@@ -24,7 +24,15 @@ from app.db import get_db, get_engine
 from app.models import Job, LiveSession, User, WsTicket
 from app.schemas.http import LiveSessionBody, request_body
 from app.services.dispatch import enqueue
-from app.services.gpu_lock import clear_gpu_wanted, get_gpu_lock, keeper, lock_owner, want_gpu
+from app.services.gpu_lock import (
+    acquire_for,
+    clear_gpu_wanted,
+    get_gpu_lock,
+    is_reservation,
+    keeper,
+    lock_owner,
+    want_gpu,
+)
 from app.services.housekeeping import delete_expired_secrets, purge_expired_secrets
 from app.services.live_channel import (
     LiveFeed,
@@ -104,18 +112,19 @@ def parse_live_body(data: dict) -> tuple[str, str | None, int | None]:
     return title_text, vocabulary_text, num_speakers
 
 
-def gpu_conflict(db: Session) -> ApiError:
-    """Khóa của phiên nghe khác thì báo bận. Khóa của job hay việc ghi danh thì xin nhường."""
+def gpu_conflict(db: Session, user: User) -> ApiError:
+    """Khóa của phiên nghe khác, hay đang giữ chỗ cho người khác, thì báo bận.
+    Khóa của job hay việc ghi danh thì xin nhường cho chính người dùng này."""
     owner = lock_owner()
     holder = None
-    if owner:
+    if owner and not is_reservation(owner):
         try:
             holder = db.get(LiveSession, uuid.UUID(owner))
         except ValueError:
             holder = None
-    if owner is None or holder is not None:
+    if owner is None or is_reservation(owner) or holder is not None:
         return ApiError(409, "gpu_busy", _GPU_BUSY)
-    want_gpu()
+    want_gpu(str(user.id))
     return ApiError(409, "gpu_yielding", _GPU_YIELDING)
 
 
@@ -131,8 +140,8 @@ async def create_session(request: Request, db: Session = Depends(get_db)) -> dic
     title, vocabulary, num_speakers = parse_live_body(data)
     session_id = uuid.uuid4()
     job_id = uuid.uuid4()
-    if not get_gpu_lock().acquire(str(session_id)):
-        raise gpu_conflict(db)
+    if not acquire_for(str(session_id), str(user.id)):
+        raise gpu_conflict(db, user)
     clear_gpu_wanted()
     keeper.start(str(session_id), until_quiet=True)
     now = datetime.now(timezone.utc)

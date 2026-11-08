@@ -34,7 +34,7 @@ Thời gian trong JSON là số nguyên mili giây, mốc 0 là đầu file ho�
 | 400 | `bad_request` | Body không đọc được |
 | 401 | `unauthorized` | Thiếu token, token hết hạn, hoặc sai mật khẩu |
 | 404 | `not_found` | Không có bản ghi, hoặc bản ghi thuộc người khác |
-| 409 | `gpu_busy` | Mở phiên nghe khi một phiên nghe khác đang giữ khóa GPU |
+| 409 | `gpu_busy` | Mở phiên nghe khi một phiên nghe khác đang giữ khóa GPU, hoặc khóa đang giữ chỗ cho người khác |
 | 409 | `gpu_yielding` | Mở phiên nghe khi khóa GPU thuộc job PT1 hoặc việc ghi danh giọng. API đã xin nhường, client thử lại sau vài giây |
 | 409 | `invalid_state` | Hủy, sửa, hoặc hỏi trợ lý khi trạng thái không cho phép |
 | 409 | `chat_busy` | Bản ghi đang có một câu trả lời chạy |
@@ -322,7 +322,7 @@ Không cần Bearer. Token sai hoặc hết hạn trả 404.
 { "title": "Buổi học", "vocabulary": "FastAPI", "num_speakers": 2 }
 ```
 
-Request này lấy `gpu:lock` bằng `SET NX` trước khi tạo session. Khóa thuộc một phiên nghe khác thì trả `gpu_busy` và không tạo session. Khóa thuộc job PT1 hay việc ghi danh giọng thì API đặt cờ `gpu:wanted` 30 giây, trả `gpu_yielding`, và cũng không tạo session. Trang `/live` thử lại mỗi 3 giây, tối đa 90 giây. Lấy được khóa thì API xóa cờ. Cơ chế nhường ở kiến trúc mục 1. Tác vụ worker chỉ gia hạn khóa. Pass 2 của chính phiên đó chạy xong thì khóa mới được nhả. Thành công `201`:
+Request này lấy `gpu:lock` bằng `SET NX` trước khi tạo session. Khóa thuộc một phiên nghe khác thì trả `gpu_busy` và không tạo session. Khóa thuộc job PT1 hay việc ghi danh giọng thì API ghi id người dùng vào cờ `gpu:wanted` 30 giây, trả `gpu_yielding`, và cũng không tạo session. Job nhường thì giữ chỗ khóa 10 giây cho đúng người đó. Trang `/live` thử lại mỗi 3 giây, tối đa 90 giây. Lấy được khóa thì API xóa cờ. Cơ chế nhường ở kiến trúc mục 1. Tác vụ worker chỉ gia hạn khóa. Pass 2 của chính phiên đó chạy xong thì khóa mới được nhả. Thành công `201`:
 
 Cùng transaction với session, API tạo job `source = live`, `status = capturing`, và gắn `job_id`. Các câu nháp đã chốt ghi vào pass 1 của job đó.
 

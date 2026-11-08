@@ -86,40 +86,90 @@ def get_gpu_lock() -> MemoryGpuLock | RedisGpuLock:
     return _memory
 
 
-# Phiên nghe gặp khóa của job PT1 thì đặt cờ này. Job đọc cờ giữa hai chunk, nhả khóa,
-# rồi chạy tiếp sau. Cờ tự hết hạn để job không chờ mãi khi người dùng bỏ ý định ghi.
+# Phiên nghe gặp khóa của job PT1 thì ghi id người xin vào cờ này. Job đọc cờ giữa hai chunk
+# và trao khóa cho đúng người đó dưới dạng giữ chỗ ngắn. Cờ không chặn job lấy khóa trống,
+# nên gọi mở phiên liên tục mà không dùng GPU chỉ làm job chậm đi tới MAX_YIELDS lần.
 _WANTED_KEY = "gpu:wanted"
 WANTED_TTL_S = 30
-_wanted_until = 0.0
+RESERVE_TTL_S = 10
+_RESERVED = "reserved:"
+_wanted: tuple[str, float] | None = None
 _wanted_guard = threading.Lock()
 
 
-def want_gpu() -> None:
-    global _wanted_until
+def want_gpu(requester: str) -> None:
+    global _wanted
     url = get_settings().redis_url
     if url:
-        redis_client(url).set(_WANTED_KEY, "1", ex=WANTED_TTL_S)
+        redis_client(url).set(_WANTED_KEY, requester, ex=WANTED_TTL_S)
         return
     with _wanted_guard:
-        _wanted_until = time.monotonic() + WANTED_TTL_S
+        _wanted = (requester, time.monotonic() + WANTED_TTL_S)
 
 
-def gpu_wanted() -> bool:
+def gpu_wanted() -> str | None:
+    """Id người đang xin GPU, hoặc None."""
     url = get_settings().redis_url
     if url:
-        return bool(redis_client(url).exists(_WANTED_KEY))
+        value = redis_client(url).get(_WANTED_KEY)
+        return value.decode() if isinstance(value, bytes) else value
     with _wanted_guard:
-        return _wanted_until > time.monotonic()
+        if _wanted is not None and _wanted[1] > time.monotonic():
+            return _wanted[0]
+        return None
 
 
 def clear_gpu_wanted() -> None:
-    global _wanted_until
+    global _wanted
     url = get_settings().redis_url
     if url:
         redis_client(url).delete(_WANTED_KEY)
         return
     with _wanted_guard:
-        _wanted_until = 0.0
+        _wanted = None
+
+
+def hand_over(owner: str, requester: str) -> bool:
+    """Chủ khóa trao khóa cho người xin, giữ chỗ RESERVE_TTL_S giây. Hết hạn thì khóa trống lại."""
+    reserved = _RESERVED + requester
+    url = get_settings().redis_url
+    if url:
+        script = (
+            "if redis.call('get', KEYS[1]) == ARGV[1] "
+            "then redis.call('set', KEYS[1], ARGV[2], 'EX', ARGV[3]) return 1 else return 0 end"
+        )
+        return bool(redis_client(url).eval(script, 1, _KEY, owner, reserved, str(RESERVE_TTL_S)))
+    with _memory._guard:
+        if _memory.owner != owner:
+            return False
+        _memory.owner = reserved
+        _memory.deadline = time.monotonic() + RESERVE_TTL_S
+        return True
+
+
+def acquire_for(owner: str, requester: str, ttl: int = 30) -> bool:
+    """Lấy khóa trống, hoặc khóa đang giữ chỗ cho chính người xin."""
+    reserved = _RESERVED + requester
+    url = get_settings().redis_url
+    if url:
+        script = (
+            "local v = redis.call('get', KEYS[1]) "
+            "if (not v) or v == ARGV[2] then redis.call('set', KEYS[1], ARGV[1], 'EX', ARGV[3]) return 1 end "
+            "return 0"
+        )
+        return bool(redis_client(url).eval(script, 1, _KEY, owner, reserved, str(ttl)))
+    now = time.monotonic()
+    with _memory._guard:
+        free = _memory.owner is None or _memory.deadline <= now
+        if not free and _memory.owner != reserved:
+            return False
+        _memory.owner = owner
+        _memory.deadline = now + ttl
+        return True
+
+
+def is_reservation(owner: str | None) -> bool:
+    return bool(owner) and owner.startswith(_RESERVED)
 
 
 def lock_owner() -> str | None:

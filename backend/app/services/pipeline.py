@@ -5,7 +5,7 @@ import logging
 import shutil
 import time
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -250,6 +250,7 @@ class ChunkPlan:
     chunks: list[SpeechChunk]
     next_index: int
     position: int
+    yields: int = 0
 
     def to_json(self) -> str:
         return json.dumps(
@@ -264,6 +265,7 @@ class ChunkPlan:
                 ],
                 "next_index": self.next_index,
                 "position": self.position,
+                "yields": self.yields,
             }
         )
 
@@ -278,7 +280,7 @@ class ChunkPlan:
             )
             for item in data["chunks"]
         ]
-        return cls(chunks, int(data["next_index"]), int(data["position"]))
+        return cls(chunks, int(data["next_index"]), int(data["position"]), int(data.get("yields", 0)))
 
 
 def _plan_path(root: Path, job_id) -> Path:
@@ -351,7 +353,7 @@ def run_standard_pass(
                 db, job, "stage", {"stage": "transcribing", "detail": "Tạm nhường GPU cho phiên ghi trực tiếp"}
             )
             db.commit()
-            return ChunkPlan(chunks, index, position)
+            return ChunkPlan(chunks, index, position, plan.yields if plan is not None else 0)
         started = time.perf_counter()
         produced = transcribe(chunk)
         elapsed = max(int((time.perf_counter() - started) * 1000), 1)
@@ -408,11 +410,10 @@ def run_upload_job(job_id: str, *, engine_factory=None, diarize_fn=None, regions
 
     from app.services.gpu_lock import keeper
 
-    from app.services.gpu_lock import gpu_wanted
+    from app.services.gpu_lock import gpu_wanted, hand_over
 
     lock = get_gpu_lock()
-    # Phiên nghe đang xin GPU thì để phiên đó lấy khóa trước, kể cả khi khóa đang trống.
-    if gpu_wanted() or not lock.acquire(str(job_id)):
+    if not lock.acquire(str(job_id)):
         with Session(get_engine()) as db:
             job = db.get(Job, uuid.UUID(str(job_id)))
             if job is None or job.status == "cancelled":
@@ -432,9 +433,16 @@ def run_upload_job(job_id: str, *, engine_factory=None, diarize_fn=None, regions
                 engine_factory or _whisper_engine,
                 diarize_fn or _real_diarize,
                 regions_fn,
-                should_yield=gpu_wanted,
+                should_yield=lambda: gpu_wanted() is not None,
             )
-        return "retry" if outcome == "yielded" else "done"
+        if outcome == "yielded":
+            keeper.stop(str(job_id))
+            requester = gpu_wanted()
+            # Trao khóa thẳng cho người xin, để job khác trên hàng không chen vào giữa.
+            if requester is not None:
+                hand_over(str(job_id), requester)
+            return "retry"
+        return "done"
     finally:
         keeper.stop(str(job_id))
         lock.release(str(job_id))
@@ -529,6 +537,10 @@ def _take_plan(root: Path, job: Job, pcm_path: Path) -> ChunkPlan | None:
     return plan
 
 
+# Mỗi job nhường GPU tối đa chừng này lần, để việc mở phiên liên tục không làm job đứng mãi.
+MAX_YIELDS = 3
+
+
 def _process_upload(db: Session, job: Job, engine_factory, diarize_fn, regions_fn, should_yield=None) -> str:
     """Trả "yielded" khi job nhường GPU giữa chừng, "done" trong mọi trường hợp còn lại."""
     from app.services.audio_processor import MediaError, close_pcm, load_pcm, normalize, slice_pcm
@@ -543,6 +555,9 @@ def _process_upload(db: Session, job: Job, engine_factory, diarize_fn, regions_f
     yielded = False
     try:
         plan = _take_plan(root, job, pcm_path) if should_yield is not None else None
+        yields_so_far = plan.yields if plan is not None else 0
+        if should_yield is not None and yields_so_far >= MAX_YIELDS:
+            should_yield = None
         if plan is None:
             if job.status != "queued":
                 # Celery giao lại sau khi worker chết giữa job: xóa pass 2 dở rồi chạy lại.
@@ -586,6 +601,7 @@ def _process_upload(db: Session, job: Job, engine_factory, diarize_fn, regions_f
         )
         if left is not None:
             # Giữ PCM và kế hoạch chunk để lượt sau chạy tiếp mà không chuẩn hóa lại.
+            left = replace(left, yields=yields_so_far + 1)
             _plan_path(root, job_id).write_text(left.to_json(), encoding="utf-8")
             yielded = True
             logger.info("Job %s nhường GPU ở chunk %s/%s.", job_id, left.next_index, len(left.chunks))
