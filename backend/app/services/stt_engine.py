@@ -48,6 +48,8 @@ _CALL_TO_ACTION = (
     "theo dõi và đăng ký kênh",
 )
 _CALL_TO_ACTION_MAX_WORDS = 20
+# Câu dài hơn trần: bỏ khi số từ nằm ngoài mọi cụm đã biết không quá mức này.
+_CALL_TO_ACTION_MAX_OTHER_WORDS = 8
 
 
 class GpuOutOfMemory(Exception):
@@ -64,6 +66,7 @@ def _plain(text: str) -> str:
 
 _HALLUCINATED_PLAIN = tuple(_plain(item) for item in _HALLUCINATED)
 _CALL_TO_ACTION_PLAIN = tuple(_plain(item) for item in _CALL_TO_ACTION)
+_KNOWN_PHRASES = tuple(item.split() for item in _HALLUCINATED_PLAIN + _CALL_TO_ACTION_PLAIN)
 
 
 def is_hallucination(text: str) -> bool:
@@ -73,10 +76,26 @@ def is_hallucination(text: str) -> bool:
     for phrase in _HALLUCINATED_PLAIN:
         if plain == phrase or (plain.startswith(phrase) and len(plain) - len(phrase) <= 25):
             return True
-    if len(plain.split()) <= _CALL_TO_ACTION_MAX_WORDS:
-        padded = f" {plain} "
-        return any(f" {phrase} " in padded for phrase in _CALL_TO_ACTION_PLAIN)
-    return False
+    words = plain.split()
+    padded = f" {plain} "
+    if not any(f" {phrase} " in padded for phrase in _CALL_TO_ACTION_PLAIN):
+        return False
+    if len(words) <= _CALL_TO_ACTION_MAX_WORDS:
+        return True
+    # Câu dài hơn trần vẫn là câu bịa khi gần như toàn bộ là các cụm đã biết, như
+    # "Cảm ơn các bạn đã theo dõi và hãy subscribe cho kênh lalaschool Để không bỏ lỡ
+    # những video hấp dẫn" (21 từ, #25). Lời thật dính sau lời mời thì còn nhiều từ lạ.
+    return _uncovered_words(words) <= _CALL_TO_ACTION_MAX_OTHER_WORDS
+
+
+def _uncovered_words(words: list[str]) -> int:
+    covered = [False] * len(words)
+    for phrase in _KNOWN_PHRASES:
+        size = len(phrase)
+        for start in range(len(words) - size + 1):
+            if words[start : start + size] == phrase:
+                covered[start : start + size] = [True] * size
+    return covered.count(False)
 
 
 def too_fast(text: str, start: float, end: float) -> bool:

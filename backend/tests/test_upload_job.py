@@ -274,6 +274,21 @@ class HallucinationFilterTests(unittest.TestCase):
         self.assertTrue(is_hallucination("Để không bỏ lỡ những video hấp dẫn"))
         self.assertTrue(is_hallucination("cảm ơn bạn đã cùng theo dõi và đăng ký kênh của chương trình."))
 
+    def test_long_call_to_action_made_of_known_phrases_is_dropped(self) -> None:
+        # #25: câu 21 từ lọt trần 20 từ ở `acid` giây 791 (2026-11-05).
+        text = "Cảm ơn các bạn đã theo dõi và hãy subscribe cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn"
+        self.assertEqual(len(text.split()), 21)
+        self.assertTrue(is_hallucination(text))
+        self.assertTrue(is_hallucination(text + " Hẹn gặp lại các bạn trong những video tiếp theo."))
+
+    def test_call_to_action_glued_to_real_speech_is_kept(self) -> None:
+        # Lời thật dính sau lời mời, như `hop1` giây 1573 vòng 11-03: bỏ cả câu thì mất lời thật.
+        text = (
+            "Các bạn hãy đăng kí cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn "
+            "nó tiếp tục thể hiện năng lực sẽ trở thành công thức và sau đó chúng ta sẽ bàn tiếp"
+        )
+        self.assertFalse(is_hallucination(text))
+
     def test_real_sentences_are_kept(self) -> None:
         self.assertFalse(is_hallucination("Hôm nay chúng ta bàn về việc đăng ký kênh phân phối mới cho quý sau."))
         self.assertFalse(is_hallucination("Khách hàng subscribe gói năm tăng 20% so với cùng kỳ."))
