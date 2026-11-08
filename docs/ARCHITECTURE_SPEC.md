@@ -553,7 +553,7 @@ FastAPI gọi LLM bất đồng bộ và đẩy từng mảnh chữ về trình 
 - Phần chữ đã nhận được ghi vào Postgres khoảng 2 giây một lần, và cập nhật `updated_at`.
 - Người dùng bấm dừng hoặc đóng trang thì client ngắt kết nối. Server dừng gọi LLM và lưu phần đã nhận với trạng thái `stopped`.
 - Lỗi giữa chừng thì giữ phần đã nhận, đặt `failed`, và gửi sự kiện `error`.
-- Quá `LLM_TIMEOUT_SECONDS` không nhận thêm mảnh chữ nào thì mã `llm_timeout`. Server LLM trả 429 thì mã `llm_rate_limited`. Lỗi kết nối hoặc lỗi HTTP khác thì mã `llm_upstream`. Thiếu `LLM_MODEL` hoặc `LLM_API_KEY` thì `llm_not_configured` và không mở kết nối.
+- Quá `LLM_TIMEOUT_SECONDS` không nhận thêm mảnh chữ nào thì mã `llm_timeout`. Server LLM trả 429 thì mã `llm_rate_limited`. Lỗi kết nối hoặc lỗi HTTP khác thì mã `llm_upstream`. Luồng đóng mà không mảnh nào mang `finish_reason` cũng là `llm_upstream`, kể cả khi đã nhận `[DONE]`: câu trả lời có thể bị cụt nên không lưu `done`, phần đã nhận vẫn giữ ở tin nhắn `failed`. Thiếu `LLM_MODEL` hoặc `LLM_API_KEY` thì `llm_not_configured` và không mở kết nối.
 - Tiến trình FastAPI chết giữa chừng để lại dòng `streaming`. Lần đọc sau coi dòng có `updated_at` cũ hơn `LLM_TIMEOUT_SECONDS` là `failed` với mã `llm_timeout`.
 
 Giao diện biến mốc `[MM:SS]` trong câu trả lời thành nút tua. Model vẫn ghi khoảng như `[12:04 - 12:30]` thì nút tua tới mốc đầu. Bấm mốc, bấm mục trong `Đánh dấu và việc`, hoặc dùng trình phát để tua đều đưa câu tại mốc đó ra giữa khung chữ và tô viền 2 giây. Trên điện thoại, panel đóng lại để thấy câu đó. Mốc vượt thời lượng bản ghi giữ nguyên là chữ. Mốc do model ghi nên có thể sai, người dùng kiểm tra bằng cách bấm nghe lại.

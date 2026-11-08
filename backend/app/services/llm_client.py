@@ -20,18 +20,26 @@ class LlmRateLimited(Exception):
     pass
 
 
-def _delta_text(line: str) -> str | None:
-    """Một dòng SSE của server LLM. Dòng không có chữ thì trả None."""
+class LlmTruncated(LlmUpstream):
+    """Luồng đóng mà server không báo finish_reason, câu trả lời có thể bị cụt."""
+
+
+def _parse_line(line: str) -> tuple[str | None, str | None]:
+    """Một dòng SSE của server LLM, trả (chữ, finish_reason). Phần nào không có thì là None."""
     if not line.startswith("data:"):
-        return None
+        return None, None
     data = line[5:].strip()
     if not data or data == "[DONE]":
-        return None
+        return None, None
     try:
-        payload = json.loads(data)
-        return payload["choices"][0]["delta"].get("content") or None
-    except (json.JSONDecodeError, KeyError, IndexError, TypeError, AttributeError):
-        return None
+        choice = json.loads(data)["choices"][0]
+    except (json.JSONDecodeError, KeyError, IndexError, TypeError):
+        return None, None
+    if not isinstance(choice, dict):
+        return None, None
+    delta = choice.get("delta")
+    text = delta.get("content") if isinstance(delta, dict) else None
+    return text or None, choice.get("finish_reason") or None
 
 
 async def stream_chat(
@@ -57,10 +65,14 @@ async def stream_chat(
                     raise LlmRateLimited("Hết hạn mức của nhà cung cấp LLM.")
                 if response.status_code >= 400:
                     raise LlmUpstream(f"Server LLM trả {response.status_code}.")
+                finish_reason = None
                 async for line in response.aiter_lines():
-                    text = _delta_text(line)
+                    text, reason = _parse_line(line)
                     if text:
                         yield text
+                    finish_reason = reason or finish_reason
+                if finish_reason is None:
+                    raise LlmTruncated("Luồng LLM đóng trước khi trả lời xong.")
     except httpx.TimeoutException as exc:
         raise LlmTimeout("LLM hết hạn.") from exc
     except httpx.HTTPError as exc:
