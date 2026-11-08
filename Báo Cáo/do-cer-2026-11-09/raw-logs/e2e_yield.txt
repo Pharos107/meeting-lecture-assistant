@@ -1,0 +1,12 @@
+# yield_e2e.py /tmp/hop1.mp3, chạy trong container backend ngày 2026-11-09, code của worktree tích hợp.
+[  23.1s] job transcribing
+[  36.0s] mở phiên sau 1 lần thử, mã: ['gpu_yielding'], được phiên: True
+[  36.0s] job lúc đó: transcribing None None
+[  41.1s] dừng phiên: 202 stopping
+[  41.1s] job ('transcribing', None) None
+[ 126.8s] job ('diarizing', None) None
+[ 210.8s] job ('ready', None) None
+[ 210.9s] xong: ready, 173 câu, mốc tăng dần: True
+# log worker-gpu
+Job 4114ed71-185e-4d16-8caf-9ef0f488c06f nhường GPU ở chunk 5/71.
+Task app.tasks.transcribe_upload[3d89973c-77fe-43c5-8b09-481cb9014fd3] retry: Retry in 5s

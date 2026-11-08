@@ -1,0 +1,24 @@
+upload 201 0.2 s
+job fdb80449-ec71-451d-8bac-d538787cffeb
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   17.8s] ('transcribing', None, None)
+[   93.6s] ('diarizing', None, None)
+[  149.3s] ('ready', None, None)
+elapsed 149.3 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1175880, "diarization_device": "cuda"}
+pass 2 segments 112 speakers ['SPEAKER_01']
+  SPEAKER_01: 505s
+words 1656 segments with >1 word speaker 21
+      0.7 SPEAKER_01: Chào tạm biệt!
+      4.2 SPEAKER_01: Chúng ta nhớ là cái lần alphabet trước nhé
+      7.1 SPEAKER_01: Không quan tâm đến con số lớn nhỏ
+     13.5 SPEAKER_01: Và đây là dẫn xuất của axit benzoic, dẫn xuất, axit halic nha, benzoic bỏ x thay vào cái hình là benzointhlori
+     39.2 SPEAKER_01: Rồi đây là mối hộp, cảm nhận của anh.
+     48.2 SPEAKER_01: Đó là S&T, là S&T Benoit
+     50.8 SPEAKER_01: Như vậy chúng ta sẽ gọi là ET4-almido-bencoate, nhớ là gốc của bộ phần album của ET4 đưa lên đầu.
+     73.7 SPEAKER_01: Nhưng vẫn là chiếc cực ưu diên đầu tiên trong tất cả các nhóm trước.
+     77.0 SPEAKER_01: Nhóm trước là chiếc cực ưu diên đầu.
+     79.2 SPEAKER_01: Như vậy thì cái nhóm COC23 đó là nhóm Acety.
+     83.8 SPEAKER_01: Ta biết rồi, cô đã nói khỏi Acety.
+     87.6 SPEAKER_01: Acetylacety nó cũng tức tứ từ cái nhóm này CACOO.

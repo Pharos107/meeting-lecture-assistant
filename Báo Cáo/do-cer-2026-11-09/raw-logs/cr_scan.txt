@@ -1,0 +1,16 @@
+câu 4666 > 2.4: 26 > 2.0: 56
+15.74 large-v3-turbo-1109b/acid.json 863s hay là vết tinh, hay là vết tinh, và vết tinh, và vết tinh, và vết tinh, và vết tinh, và vết tinh, và vết tinh
+13.97 turbo-retry/acid.json 863s hay là vết tinh, hay là vết tinh, và vết tinh, và vết tinh, và vết tinh, vết tinh, vết tinh, vết tinh, vết tin
+13.97 large-v3-turbo/acid.json 863s hay là vết tinh, hay là vết tinh, và vết tinh, và vết tinh, và vết tinh, vết tinh, vết tinh, vết tinh, vết tin
+13.97 large-v3-turbo-1109/acid.json 863s hay là vết tinh, hay là vết tinh, và vết tinh, và vết tinh, và vết tinh, vết tinh, vết tinh, vết tinh, vết tin
+12.64 turbo-retry/acid.json 1011s VL1, VL2, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, 
+12.64 large-v3-turbo/acid.json 1011s VL1, VL2, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, 
+12.64 large-v3-turbo-1109b/acid.json 1011s VL1, VL2, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, 
+12.64 large-v3-turbo-1109/acid.json 1011s VL1, VL2, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, VL3, 
+10.41 phowhisper-large/acid.json 710s mấy bộ........................................................................................................
+9.27 phowhisper-large/hop2.json 805s dạ đúng ạ dạ đúng rồi em rất yêu ý kiến của anh ạ dạ đúng rồi em hiểu rồi dạ em hiểu rồi dạ em hiểu rồi dạ em 
+7.97 turbo-retry/acid.json 1066s Hoặc là bên bên 1,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+7.97 large-v3-turbo/acid.json 1066s Hoặc là bên bên 1,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+7.97 large-v3-turbo-1109/acid.json 1066s Hoặc là bên bên 1,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+6.99 turbo-retry/aldehyd.json 97s giống như trong phần mặt trạng côn, chúng ta cũng gọi là quy tắc là cái tên của phần phần phần phần phần phần 
+6.99 large-v3-turbo/aldehyd.json 97s giống như trong phần mặt trạng côn, chúng ta cũng gọi là quy tắc là cái tên của phần phần phần phần phần phần 

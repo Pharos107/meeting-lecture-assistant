@@ -1,0 +1,25 @@
+upload 201 0.2 s
+job 88e72d68-6619-478f-b481-e594225aacc6
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   17.9s] ('transcribing', None, None)
+[  112.8s] ('diarizing', None, None)
+[  163.9s] ('ready', None, None)
+elapsed 163.9 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1175880, "diarization_device": "cuda"}
+pass 2 segments 149 speakers ['SPEAKER_01']
+  SPEAKER_01: 646s
+  None: 1s
+words 2060 segments with >1 word speaker 35
+      0.7 SPEAKER_01: Chào tạm biệt!
+      4.2 SPEAKER_01: Chúng ta nhớ là cái lần alphabet trước nhé
+      7.1 SPEAKER_01: Không quan tâm đến con số lớn nhỏ
+     13.5 SPEAKER_01: Và đây là dẫn xuất của axit benzoic, dẫn xuất, axit halic nha, benzoic bỏ x thay vào cái hình là benzointhlori
+     39.2 SPEAKER_01: Rồi đây là muối của Dabney Benchlor, đây là ST, ST Benchlor, đó là ST9, là ST Benchlor.
+     51.0 SPEAKER_01: Nhưng mà ở đây Benchlor thì vị trí số 4 có nhóm Amido, như vậy chúng ta sẽ gọi là ST4 Amido Benchlor.
+     58.9 SPEAKER_01: Nhớ là gốc của phần Ampol của ST đưa lên đầu.
+     70.6 SPEAKER_01: Có nhóm chức acid, có chức xeo thì chức acid vẫn là trước cực ưu tiên đầu tiên trong tất cả các nhóm chức.
+     77.0 SPEAKER_01: Nhóm chức acid được ưu tiên đầu tiên đọc. Như vậy thì cái nhóm CO, CH3 đó là nhóm acetic.
+     83.9 SPEAKER_01: Và biết rồi, cô đã nói khỏi acetic. Acetic nó cũng rất tối xử như nhóm này CH3, CH3, CH3, CH3.
+     92.2 SPEAKER_01: Và chúng ta bỏ cái nhóm này đi, thì chúng ta cây bằng i, gốc tổng hại là cây x bằng i
+     97.0 SPEAKER_01: Thì đây là acetyls, bỏ x, cây i là acetyls, để gốc acetyls

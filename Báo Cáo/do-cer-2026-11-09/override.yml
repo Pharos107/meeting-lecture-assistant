@@ -1,0 +1,9 @@
+services:
+  backend:
+    volumes:
+      - <worktree tích hợp>/backend:/app
+  worker-gpu:
+    environment:
+      WHISPER_MODEL: large-v3-turbo
+    volumes:
+      - <worktree tích hợp>/backend:/app

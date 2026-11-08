@@ -1,0 +1,9 @@
+worker greedy retry: 2
+large-v3-turbo-1109d quahat elapsed 46.1 s peakVRAM=2904MiB
+large-v3-turbo-1109d phoi21 elapsed 62.1 s peakVRAM=2923MiB
+large-v3-turbo-1109d phoi42 elapsed 122.2 s peakVRAM=2923MiB
+large-v3-turbo-1109d aldehyd elapsed 94.2 s peakVRAM=2919MiB
+large-v3-turbo-1109d acid elapsed 169.2 s peakVRAM=2927MiB
+large-v3-turbo-1109d hop2 elapsed 95.2 s peakVRAM=2927MiB
+large-v3-turbo-1109d hop1 elapsed 190.4 s peakVRAM=2927MiB
+done

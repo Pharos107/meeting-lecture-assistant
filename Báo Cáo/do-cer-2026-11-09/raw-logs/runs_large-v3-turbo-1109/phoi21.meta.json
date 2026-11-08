@@ -1,0 +1,1 @@
+{"job_id": "dd423d09-a384-4572-b45a-b7b0285c30d5", "elapsed": 64.5, "stages": {"queued": 0.0, "preprocessing": 1.0, "transcribing": 9.1, "diarizing": 37.7, "ready": 64.5}, "status": "ready", "warnings": [], "duration_ms": 527664, "diarization_device": "cuda"}

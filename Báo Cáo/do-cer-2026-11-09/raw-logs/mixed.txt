@@ -1,0 +1,14 @@
+large-v3-turbo-1109/acid.json                 câu    99 người nói 1 lẫn hai nhãn thật    0 có từ null   25
+large-v3-turbo-1109/aldehyd.json              câu   144 người nói 1 lẫn hai nhãn thật    0 có từ null   24
+large-v3-turbo-1109/hop1.json                 câu   185 người nói 2 lẫn hai nhãn thật    1 có từ null   54
+large-v3-turbo-1109/hop2.json                 câu   165 người nói 10 lẫn hai nhãn thật    4 có từ null   61
+large-v3-turbo-1109/phoi21.json               câu    63 người nói 1 lẫn hai nhãn thật    0 có từ null   32
+large-v3-turbo-1109/phoi42.json               câu   110 người nói 1 lẫn hai nhãn thật    0 có từ null   46
+large-v3-turbo-1109/quahat.json               câu    72 người nói 1 lẫn hai nhãn thật    0 có từ null   19
+large-v3-turbo-1109d/acid.json                câu   148 người nói 1 lẫn hai nhãn thật    0 có từ null   34
+large-v3-turbo-1109d/aldehyd.json             câu   134 người nói 1 lẫn hai nhãn thật    0 có từ null   21
+large-v3-turbo-1109d/hop1.json                câu   173 người nói 2 lẫn hai nhãn thật    1 có từ null   55
+large-v3-turbo-1109d/hop2.json                câu   161 người nói 10 lẫn hai nhãn thật    4 có từ null   56
+large-v3-turbo-1109d/phoi21.json              câu    63 người nói 1 lẫn hai nhãn thật    0 có từ null   32
+large-v3-turbo-1109d/phoi42.json              câu   111 người nói 1 lẫn hai nhãn thật    0 có từ null   46
+large-v3-turbo-1109d/quahat.json              câu    58 người nói 1 lẫn hai nhãn thật    0 có từ null   22
