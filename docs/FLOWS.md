@@ -518,7 +518,7 @@ Xếp theo mức chặn demo. Cập nhật 2026-11-09.
 ## 14. Thứ tự làm tiếp đề xuất
 
 1. Thử chia sẻ âm thanh tab và rớt mạng trên giao diện `/live` của trình duyệt thật. Phía server đã thử rớt mạng 10 giây ngày 2026-11-09.
-2. Thu ghi âm họp của nhóm, rồi đo lại turbo và PhoWhisper với cùng code để khóa model bản chuẩn, đo #20, và đo lại #18 trên cuộc họp đổi lượt nói nhiều.
+2. Thu ghi âm họp của nhóm để đo #20 và đo lại #18 trên cuộc họp đổi lượt nói nhiều. Model bản chuẩn đã chốt là `large-v3-turbo`, xem D19 ở [`README.md`](README.md).
 3. Đo điểm giống của hồ sơ giọng trên mẫu thu của nhóm, so với giọng cùng người trong ghi âm họp, để chỉnh `VOICE_MATCH_THRESHOLD`.
 4. Phần #19 còn lại ở `acid` và chunk 51,1–61,7 s của `phoi42`.
 

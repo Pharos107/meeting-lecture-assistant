@@ -51,7 +51,7 @@ Tên ngắn dưới đây là khóa trong `faster_whisper/utils.py` của bản 
 
 Khi nâng faster-whisper, mở lại bảng `_MODELS` và ghi repo thực tế vào `backend/MODELS.lock`. Tham số runtime nằm ở kiến trúc.
 
-`large-v3-turbo` cắt decoder từ 32 xuống 4 lớp. Mức giảm chất lượng thường rõ hơn ở ngôn ngữ ít dữ liệu. Ứng viên để so là PhoWhisper của VinAI, đã huấn luyện thêm trên khoảng 844 giờ tiếng Việt, chuyển sang định dạng CTranslate2 rồi chạy `int8` như bản chuẩn. Model bản chuẩn được chọn theo CER trên bộ đối chiếu, theo tiêu chí ở [ý tưởng mục 6](IDEA_AND_CHALLENGES.md#6-tiêu-chí-nghiệm-thu). Đổi model thì `WHISPER_MODEL` nhận đường dẫn thư mục model đã chuyển.
+`large-v3-turbo` cắt decoder từ 32 xuống 4 lớp. Mức giảm chất lượng thường rõ hơn ở ngôn ngữ ít dữ liệu. Ứng viên đã so là PhoWhisper của VinAI, đã huấn luyện thêm trên khoảng 844 giờ tiếng Việt, chuyển sang định dạng CTranslate2 rồi chạy `int8` như bản chuẩn. Model bản chuẩn đã chốt là `large-v3-turbo` (D19 ở [`README.md`](README.md)): sau các bước vá ở kiến trúc mục 2.3 và 2.4, turbo có CER thấp hơn PhoWhisper trên 7 bài thực tế và nhanh gấp 1,85 lần. Số đo ở `Báo Cáo/`. Đổi model thì `WHISPER_MODEL` nhận đường dẫn thư mục model đã chuyển.
 
 ### Pyannote
 

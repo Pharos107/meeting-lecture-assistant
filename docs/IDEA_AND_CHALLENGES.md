@@ -140,7 +140,7 @@ Sau khi có các cụm, worker so vector giọng của từng cụm với hồ s
 
 Các con số dưới đây là việc phải đo, không phải mốc đã đạt.
 
-- CER của pass 2 trên bộ đối chiếu do nhóm thu: ít nhất 3 đoạn tiếng Việt, tổng thời lượng ít nhất 30 phút, có transcript người làm. Báo cáo CER toàn bộ và CER trên danh sách tên riêng, thuật ngữ. Chạy cùng bộ này với `large-v3-turbo` và PhoWhisper đã chuyển sang CTranslate2 `int8`, kèm thời gian xử lý, để chọn model bản chuẩn.
+- CER của pass 2 trên bộ đối chiếu do nhóm thu: ít nhất 3 đoạn tiếng Việt, tổng thời lượng ít nhất 30 phút, có transcript người làm. Báo cáo CER toàn bộ và CER trên danh sách tên riêng, thuật ngữ. Đã so `large-v3-turbo` với PhoWhisper đã chuyển sang CTranslate2 `int8` trên 7 bài giảng và cuộc họp đăng mạng (108 phút), kèm thời gian xử lý. Model bản chuẩn đã chốt là turbo (D19 ở [`README.md`](README.md)). Bộ do nhóm thu vẫn chưa có.
 - Với diarization, nếu có file RTTM đối chiếu thì báo cáo DER. Nếu chưa có, nghe lại 10 phút được rút ngẫu nhiên và ghi số chỗ gán nhầm.
 - Với PT2, đo thời gian từ lúc hết một câu nói đến sự kiện nháp ổn định, trên câu không dài quá 8 giây. Mục tiêu thiết kế là trong 3 giây khi GPU đang dành cho phiên đó. Báo cáo số đo được, kể cả lần trượt mục tiêu.
 - Với hỏi đáp, soạn sẵn bộ câu hỏi có đáp án trên bộ đối chiếu, gồm cả câu mà transcript không có đáp án. Báo cáo tỉ lệ trả lời đúng, tỉ lệ mốc thời gian đúng, số câu bị bịa, thời gian tới chữ đầu tiên, và chi phí mỗi câu hỏi.

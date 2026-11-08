@@ -1,8 +1,8 @@
 # Bộ tài liệu triển khai
 
 **Dự án:** Hệ thống trợ lý chuyển đổi, tóm tắt và trích xuất biên bản cuộc họp / bài giảng tiếng Việt  
-**Phiên bản:** 1.4  
-**Ngày:** 2026-10-28  
+**Phiên bản:** 1.9.1  
+**Ngày:** 2026-11-09  
 **Trạng thái:** Đặc tả đủ để triển khai Phương thức 1 và Phương thức 2. Có bản phân tích luồng đối chiếu với code
 
 Khi các tài liệu lệch nhau, dùng thứ tự này:
@@ -48,6 +48,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | D16 | LLM chỉ dùng để người dùng hỏi về nội dung transcript của một bản ghi. Không có tác vụ biên bản theo mẫu. Lịch sử hỏi đáp lưu theo bản ghi. |
 | D17 | Trang sau đăng nhập là khung ba vùng: menu điều hướng bên trái, nội dung ở giữa, dãy công cụ của job bên phải. Tạo bản ghi là hộp thoại, không chuyển trang. |
 | D18 | Chia sẻ một bản ghi bằng liên kết chỉ đọc, ai có liên kết cũng xem được mà không cần đăng nhập. Chỉ gồm transcript và tên người nói. Chủ tắt được bất cứ lúc nào. Phiên nghe chia sẻ được ngay lúc đang ghi, người xem theo dõi chữ nháp trực tiếp. |
+| D19 | Model bản chuẩn là `large-v3-turbo`, cùng model với bản nháp PT2. Chốt ngày 2026-11-09 sau vòng đo trên 7 bài giảng và cuộc họp thật: gộp 6 bài, turbo CER 23,66% và WER 32,05%, PhoWhisper CER 24,97% và WER 34,68%, turbo nhanh gấp 1,85 lần. Không chờ ghi âm họp do nhóm tự thu. |
 
 ## Lịch sử phiên bản
 
@@ -70,6 +71,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | 1.8 | 2026-11-03 | Mở rộng D18: chia sẻ phiên nghe lúc đang ghi, thêm `GET /api/shared/{token}/live` và trường `state` ở API mục 5. Hỏi trợ lý được khi job live đang `capturing`. Trang `/live` có `Chia sẻ`, `Cài đặt hiển thị`, `Trợ lý AI`, và chữ nháp hiện dần từng ký tự, kiến trúc mục 3.3 |
 | 1.8.1 | 2026-11-05 | Kiến trúc mục 2.3 thêm bước 7: nhận dạng riêng vùng VAD trống, vẫn rỗng thì giải mã greedy. Đo lại #19 và đo hỏi đáp #23 trên bộ dữ liệu thực tế, số đo ở `Báo Cáo/Báo cáo đo lại #19 và đo hỏi đáp #23 (2026-11-05).md`. Đóng #23, thêm #24 và #25 ở [`FLOWS.md`](FLOWS.md). Không đổi quyết định D1–D18 |
 | 1.9 | 2026-11-09 | Kiến trúc mục 1: job PT1 nhường GPU cho phiên nghe, API thêm mã `gpu_yielding`. Mục 2.3: greedy khi cả chunk trống, thêm khoảng VAD bỏ trống mà to, kẹp PCM. Mục 2.4: bỏ câu lặp theo tỉ lệ nén, luật và phần cắt lời mời đăng ký kênh cho câu dài. Mục 2.5: tách câu tại chỗ đổi người nói. Mục 6: luồng LLM không có `finish_reason` là `llm_upstream`. `rate_limit` đếm trong Redis. Đóng #9, #18, #24, #25 ở [`FLOWS.md`](FLOWS.md). Số đo ở `Báo Cáo/Báo cáo chẩn đoán #19, đo PT2 và nhường GPU (2026-11-09).md`. Không đổi quyết định D1–D18 |
+| 1.9.1 | 2026-11-09 | Thêm D19: chốt `large-v3-turbo` làm model bản chuẩn. Bỏ dòng model bản chuẩn khỏi việc còn mở, ghi các hướng tối ưu đã khóa. Cập nhật môi trường mục Whisper, ý tưởng mục 6, và thứ tự việc ở [`FLOWS.md`](FLOWS.md) mục 14 |
 
 ## Việc còn mở
 
@@ -77,8 +79,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 |---|---|
 | Khóa Gemini và gói dùng | Điền `LLM_API_KEY` từ AI Studio. Gói miễn phí chỉ dùng cho dữ liệu demo, vì điều khoản cho phép Google dùng nội dung và cấm gửi nội dung nhạy cảm. Họp thật cần gói trả phí. |
 | Mã card màn hình | Chưa gắn một SKU. Ngân sách thiết kế là card dưới 6GB, tính toán chặt cho card 4GB. |
-| Model bản chuẩn | `large-v3-turbo` là mặc định. Vòng đo 2026-11-05 trên bài giảng và cuộc họp thật, sau khi thêm bước nhận dạng lại vùng trống: PhoWhisper có CER thấp hơn 2,0 điểm (vòng 11-03 là 3,1), nhưng chậm gấp 1,9 lần và ra toàn chữ thường. Ở cuộc họp `hop2` turbo đã tốt hơn. Giữ turbo, chẩn đoán phần #19 còn lại, đo lại khi có ghi âm họp do nhóm tự thu. Số đo ở `Báo Cáo/`. |
-| Các đoạn "Hướng tối ưu" | Chưa khóa. Đo trên bộ đối chiếu rồi mới ghi thành quy định. |
+| Các đoạn "Hướng tối ưu" | Đo trên bộ đối chiếu rồi mới ghi thành quy định. Đã khóa ngày 2026-11-09: job PT1 nhường GPU cho phiên nghe (kiến trúc mục 1), tách câu tại chỗ đổi người nói (kiến trúc mục 2.5). Các đoạn còn lại chưa khóa. |
 | Phần code chưa hiện thực | Liệt kê và xếp mức ở [`FLOWS.md` mục 13](FLOWS.md#13-khoảng-trống-giữa-đặc-tả-và-code). |
 
 ## Thuật ngữ
