@@ -109,8 +109,8 @@ def _covered(produced: list[dict], offset: float) -> list[tuple[float, float]]:
     return sorted(spans)
 
 
-def empty_spans(chunk: SpeechChunk, produced: list[dict]) -> list[tuple[float, float]]:
-    """Phần của từng vùng VAD không có từ nào, dài từ MIN_EMPTY_S. Mốc tính bằng giây trong file."""
+def _gaps(chunk: SpeechChunk, produced: list[dict]) -> list[tuple[float, float]]:
+    """Phần của từng vùng VAD không có từ nào, dài từ MIN_EMPTY_S, kể cả khoảng phủ cả chunk."""
     covered = _covered(produced, chunk.start)
     spans: list[tuple[float, float]] = []
     for piece in chunk.slices:
@@ -123,12 +123,19 @@ def empty_spans(chunk: SpeechChunk, produced: list[dict]) -> list[tuple[float, f
             cursor = max(cursor, end)
         if piece.end - cursor >= MIN_EMPTY_S:
             spans.append((cursor, piece.end))
-    # Khoảng trống phủ cả chunk thì nhận dạng lại cũng là cùng một audio.
-    return [
-        (start, end)
-        for start, end in spans
-        if start > chunk.start + EDGE_TOLERANCE_S or end < chunk.end - EDGE_TOLERANCE_S
-    ]
+    return spans
+
+
+def _covers_chunk(chunk: SpeechChunk, start: float, end: float) -> bool:
+    return start <= chunk.start + EDGE_TOLERANCE_S and end >= chunk.end - EDGE_TOLERANCE_S
+
+
+def empty_spans(chunk: SpeechChunk, produced: list[dict]) -> list[tuple[float, float]]:
+    """Khoảng trống cần nhận dạng riêng, mốc tính bằng giây trong file.
+
+    Khoảng phủ cả chunk không có ở đây: nhận dạng lại cùng cách giải mã cũng là cùng một audio.
+    """
+    return [(start, end) for start, end in _gaps(chunk, produced) if not _covers_chunk(chunk, start, end)]
 
 
 def _first_start(raw: dict) -> float:
@@ -154,11 +161,18 @@ def fill_empty_spans(chunk: SpeechChunk, produced: list[dict], transcribe, retry
     Khoảng nhận dạng riêng vẫn rỗng thì chạy `retry` nếu có. Trên audio có tiếng, beam search của turbo có lúc
     ra lời mời đăng ký kênh thay cho lời nói thật, bộ lọc bỏ câu đó và khoảng thành trống. Giải mã greedy
     lấy lại được chữ ở những chỗ như vậy, xem kiến trúc mục 2.3.
+
+    Cả chunk trống thì bỏ qua lần nhận dạng lại bằng beam, vì cùng audio và cùng cách giải mã, mà
+    chạy thẳng `retry`. Đầu bài `phoi42` là trường hợp này: beam ra một lời mời đăng ký kênh phủ cả
+    chunk 22 giây, greedy lấy lại được 6 câu thật (#19).
     """
     merged = list(produced)
-    for start, end in empty_spans(chunk, produced):
+    for start, end in _gaps(chunk, produced):
         piece = SpeechChunk(start, end, (SpeechSlice(start, end, False),))
-        found = transcribe(piece)
+        whole = _covers_chunk(chunk, start, end)
+        if whole and retry is None:
+            continue
+        found = [] if whole else transcribe(piece)
         if not found and retry is not None:
             found = retry(piece)
         merged.extend(_shifted(raw, start - chunk.start) for raw in found)
