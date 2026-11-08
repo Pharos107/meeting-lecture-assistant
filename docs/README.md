@@ -69,6 +69,7 @@ Khi các tài liệu lệch nhau, dùng thứ tự này:
 | 1.7.3 | 2026-11-03 | Đổi D13: bản nháp PT2 dùng `large-v3-turbo` thay `small`, vì khi thử trên cuộc họp thật `small` sai quá nhiều chữ. Pass 2 dùng lại model đã nạp. Thêm `websockets` vào `requirements.txt`: thiếu gói này thì uvicorn trả 404 cho WebSocket. Whisper nạp từ cache trước khi hỏi Hugging Face |
 | 1.8 | 2026-11-03 | Mở rộng D18: chia sẻ phiên nghe lúc đang ghi, thêm `GET /api/shared/{token}/live` và trường `state` ở API mục 5. Hỏi trợ lý được khi job live đang `capturing`. Trang `/live` có `Chia sẻ`, `Cài đặt hiển thị`, `Trợ lý AI`, và chữ nháp hiện dần từng ký tự, kiến trúc mục 3.3 |
 | 1.8.1 | 2026-11-05 | Kiến trúc mục 2.3 thêm bước 7: nhận dạng riêng vùng VAD trống, vẫn rỗng thì giải mã greedy. Đo lại #19 và đo hỏi đáp #23 trên bộ dữ liệu thực tế, số đo ở `Báo Cáo/Báo cáo đo lại #19 và đo hỏi đáp #23 (2026-11-05).md`. Đóng #23, thêm #24 và #25 ở [`FLOWS.md`](FLOWS.md). Không đổi quyết định D1–D18 |
+| 1.9 | 2026-11-09 | Kiến trúc mục 1: job PT1 nhường GPU cho phiên nghe, API thêm mã `gpu_yielding`. Mục 2.3: greedy khi cả chunk trống, thêm khoảng VAD bỏ trống mà to, kẹp PCM. Mục 2.4: bỏ câu lặp theo tỉ lệ nén, luật và phần cắt lời mời đăng ký kênh cho câu dài. Mục 2.5: tách câu tại chỗ đổi người nói. Mục 6: luồng LLM không có `finish_reason` là `llm_upstream`. `rate_limit` đếm trong Redis. Đóng #9, #18, #24, #25 ở [`FLOWS.md`](FLOWS.md). Số đo ở `Báo Cáo/Báo cáo chẩn đoán #19, đo PT2 và nhường GPU (2026-11-09).md`. Không đổi quyết định D1–D18 |
 
 ## Việc còn mở
 

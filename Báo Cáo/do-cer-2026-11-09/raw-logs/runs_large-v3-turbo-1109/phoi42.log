@@ -1,0 +1,25 @@
+upload 201 0.2 s
+job 285da6cf-abe8-4eb1-afd5-d718be7c5266
+[    0.0s] ('queued', None, None)
+[    1.0s] ('preprocessing', None, None)
+[   16.6s] ('transcribing', None, None)
+[   71.4s] ('diarizing', None, None)
+[  120.8s] ('ready', None, None)
+elapsed 120.8 s
+{"status": "ready", "error_code": null, "error_message": null, "warnings": [], "duration_ms": 1082064, "diarization_device": "cuda"}
+pass 2 segments 110 speakers ['SPEAKER_00']
+  SPEAKER_00: 728s
+  None: 5s
+words 2753 segments with >1 word speaker 46
+      0.2 SPEAKER_00: và đau khả năng, đánh giá là em bé sẽ tốt đáy khi được ối lại xuất chuyển hoạt được ối đấy nhưng mà nó sẽ có b
+     11.4 SPEAKER_00: Tức là nước ối được tạo ra nhưng mà không có sự chuyển hoạt được của người mạnh trong hoặc ối.
+     17.3 SPEAKER_00: Thật sự có việc là đạo ối.
+     19.0 SPEAKER_00: Và khi mà sự hoàn thiện với đạo ối thì bác sĩ trận lại.
+     22.6 SPEAKER_00: Bạn thật sự luôn sẽ có hiểu hiện là gì ạ?
+     26.0 SPEAKER_00: Tìm xem có cái hẹn tặng gì của bạn hay không
+     29.6 SPEAKER_00: Cảm ơn
+     31.5 SPEAKER_00: Hoặc là nếu các bạn chưa sinh được
+     34.8 SPEAKER_00: Thì khi bạn em bé sinh ra thì em bé sẽ có hiểu hiện là nông gói rất là sớm
+     39.6 SPEAKER_00: Nông sớm, đặc biệt là khi bạn em bé muốn bạn
+     41.4 SPEAKER_00: Thì giấc bạn sẽ không trùn thật dày
+     43.5 SPEAKER_00: Nó sẽ tùn lại ở các bạn thị vị đó

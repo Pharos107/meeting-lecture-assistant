@@ -1,0 +1,41 @@
+turbo 11-05 vá+greedy  WER 35.19% CER 26.94% S2960 D1768 I261 flagged(7) 2 RTF(7) 0.116
+turbo 11-09            WER 34.92% CER 26.58% S3038 D1652 I260 flagged(7) 1 RTF(7) 0.120
+turbo 11-09b           WER 34.83% CER 26.51% S3006 D1685 I247 flagged(7) 0 RTF(7) 0.119
+turbo 11-09c           WER 32.10% CER 23.64% S2758 D1460 I333 flagged(7) 1 RTF(7) 0.120
+turbo 11-09d           WER 32.05% CER 23.66% S2740 D1475 I329 flagged(7) 0 RTF(7) 0.120
+phowhisper 11-03       WER 34.68% CER 24.97% S3339 D849 I729 flagged(7) 1 RTF(7) 0.222
+
+quahat turbo 11-05 vá+greedy: CER 14.83% D66 I10 gap [5.6, 261.1] | turbo 11-09: CER 14.83% D66 I10 gap [5.6, 261.1] | turbo 11-09b: CER 13.54% D60 I5 gap [5.6, 261.1] | turbo 11-09c: CER 11.75% D42 I5 gap [6.8, 257.6] | turbo 11-09d: CER 11.75% D42 I5 gap [6.8, 257.6] | phowhisper 11-03: CER 10.46% D25 I17 gap [5.5, 261.2]
+phoi21 turbo 11-05 vá+greedy: CER 9.79% D188 I10 gap [2.5, 88.7] | turbo 11-09: CER 9.79% D188 I10 gap [2.5, 88.7] | turbo 11-09b: CER 9.81% D189 I10 gap [2.5, 88.7] | turbo 11-09c: CER 9.81% D189 I10 gap [2.5, 88.7] | turbo 11-09d: CER 9.81% D189 I10 gap [2.5, 88.7] | phowhisper 11-03: CER 7.33% D86 I40 gap [2.5, 88.7]
+phoi42 turbo 11-05 vá+greedy: CER 34.43% D511 I62 gap [12.4, 50.1] | turbo 11-09: CER 32.76% D423 I62 gap [12.4, 50.1] | turbo 11-09b: CER 32.76% D423 I62 gap [12.4, 50.1] | turbo 11-09c: CER 31.75% D435 I68 gap [12.4, 50.1] | turbo 11-09d: CER 31.75% D435 I68 gap [12.4, 50.1] | phowhisper 11-03: CER 28.66% D189 I158 gap [6.1, 442.5]
+aldehyd turbo 11-05 vá+greedy: CER 28.85% D221 I95 gap [9.7, 624.4] | turbo 11-09: CER 28.85% D221 I95 gap [9.7, 624.4] | turbo 11-09b: CER 28.96% D212 I88 gap [9.7, 624.4] | turbo 11-09c: CER 26.78% D183 I109 gap [9.7, 624.4] | turbo 11-09d: CER 26.78% D183 I109 gap [9.7, 624.4] | phowhisper 11-03: CER 29.14% D109 I170 gap [9.6, 624.4]
+acid turbo 11-05 vá+greedy: CER 53.17% D622 I57 gap [49.6, 168.4] | turbo 11-09: CER 53.14% D594 I56 gap [49.6, 168.4] | turbo 11-09b: CER 52.80% D637 I58 gap [49.6, 168.4] | turbo 11-09c: CER 41.45% D454 I116 gap [38.5, 330.9] | turbo 11-09d: CER 41.54% D469 I112 gap [38.5, 330.9] | phowhisper 11-03: CER 51.05% D375 I199 gap [31.9, 186.1]
+hop1 turbo 11-05 vá+greedy: CER 51.22% D464 I1780 gap [15.0, 1144.2] | turbo 11-09: CER 51.32% D464 I1787 gap [10.0, 1144.2] | turbo 11-09b: CER 51.71% D476 I1797 gap [10.0, 1144.2] | turbo 11-09c: CER 51.48% D473 I1796 gap [10.0, 1144.2] | turbo 11-09d: CER 51.48% D473 I1796 gap [10.0, 1144.2] | phowhisper 11-03: CER 50.98% D226 I1987 gap [9.9, 1144.3]
+hop2 turbo 11-05 vá+greedy: CER 8.98% D160 I27 gap [4.7, 618.7] | turbo 11-09: CER 8.98% D160 I27 gap [4.7, 618.7] | turbo 11-09b: CER 9.18% D164 I24 gap [4.7, 618.7] | turbo 11-09c: CER 8.91% D157 I25 gap [4.7, 618.7] | turbo 11-09d: CER 8.91% D157 I25 gap [4.7, 618.7] | phowhisper 11-03: CER 9.99% D65 I145 gap [4.7, 1.6]
+
+== Đoạn mất chữ liền nhau (>=12 từ), vòng 11-09
+  quahat: 0 đoạn, 0 từ
+  phoi21: 0 đoạn, 0 từ
+  phoi42: 4 đoạn, 72 từ
+     t=46.8s n=14 sẽ nôn ra đó thì là và sau sinh thì nếu mà ăn thì
+     t=47.0s n=14 có biểu hiện nôn vọt rất là sớm thế còn nếu mà rò khí
+     t=48.6s n=32 thì khi mà em bé ăn vào em bé bú sữa vào thì lúc đấy nó sẽ nó không đi xuống đườ
+     t=820.3s n=12 khoảng các bạn nghỉ khoảng ba mươi phút nhé các bạn nghỉ
+  aldehyd: 1 đoạn, 13 từ
+     t=614.0s n=13 cái này là file word ha cái file bài giảng của cái giáo
+  acid: 9 đoạn, 159 từ
+     t=181.4s n=24 phthalimid rồi bây giờ đến danh pháp của một số hợp chất khó hơn rồi với hợp chấ
+     t=245.2s n=22 năm có nitơ nitơ nối với hydro đó là pyrrolidin vị trí này là vị trí số một của 
+     t=329.3s n=16 thế nha đây ví dụ như thế này ví dụ các bạn có hợp chất như
+     t=451.1s n=17 một hydro đi để cho nó trở thành gốc thì thêm o vào acetamido rồi chúng ta
+     t=543.4s n=16 gọi methoxy ha c_2h_5 o là ethoxy đó thì c_6h_5 o là phenoxy như vậy ở
+     t=670.3s n=14 là nhóm này acetamido được chưa ha rồi đây nhóm acetamido là nhóm này
+     t=780.9s n=16 thôi chứ không có gì cả rồi hợp chất này thì cực kỳ khó khăn ha
+     t=950.6s n=18 tetrahydroxy một oxohexan hai yl đó toàn bộ cái đó phía trước là nitơ rồi n gắn 
+     t=1134.0s n=16 benzoyl bromid ha xuất xứ từ acid benzoic thay oh bằng brom là benzoyl bromid đư
+  hop1: 2 đoạn, 40 từ
+     t=83.1s n=12 không họp cái này là khâu chuẩn bị ban đầu đó đúng
+     t=545.4s n=28 đúng vai trò cái thứ hai họ đến là họ hiểu vấn đề chứ nhiều khi chúng ta thấy là
+  hop2: 0 đoạn, 0 từ
+
+flagged: []

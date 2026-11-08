@@ -1,0 +1,14 @@
+# live_e2e.py /tmp/hop2.mp3 180 90 10, chạy trong container backend ngày 2026-11-09, code của worktree tích hợp.
+tin: {'type': 'warning', 'code': 'draft_degraded', 'message': 'Bản nháp chậm, chỉ hiện câu khi câu kết thúc.'}
+[  90.0s] rớt mạng 10.0 giây
+[ 100.0s] nối lại, xả 100 khung
+tin: {'type': 'warning', 'code': 'draft_degraded', 'message': 'Bản nháp chậm, chỉ hiện câu khi câu kết thúc.'}
+câu nháp ổn định: 27, dùng để đo: 24
+độ trễ: trung vị 1.03 s, p90 1.25 s, lớn nhất 3.03 s, trong 3 giây 23/24
+pass 2: ready None sau 30 s, duration_ms 180000
+pass 2: 26 câu, 517 từ, 35 từ trong khoảng rớt mạng
+câu quanh chỗ rớt:
+    86.8 Giám đốc nhận thấy
+    90.0 Giám đốc nhận thấy vấn đề lớn nhất dẫn đến việc không thể trị tiêu, đó là các chiến lược marketing đ
+    97.7 Lý do chính là các mảng nhỏ trong chiến lược đó đều không được hoàn thành tốt.
+   102.4 Ví dụ như nhân viên nhận mảng thiết kế banner chẩn mảng, làm cho có, khiến cho việc quảng cáo sản ph
