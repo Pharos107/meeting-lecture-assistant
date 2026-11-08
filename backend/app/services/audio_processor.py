@@ -150,6 +150,11 @@ def close_pcm(pcm: np.ndarray | None) -> None:
 
 
 def slice_pcm(pcm: np.ndarray, start_s: float, end_s: float) -> np.ndarray:
+    """Một đoạn PCM, kẹp về [-1, 1].
+
+    Khung Opus hỏng có thể giải mã ra mẫu cỡ hàng chục nghìn, như `hop1` giây 1423. Một mẫu như vậy
+    làm lệch phổ mel của cả cửa sổ 30 giây mà Whisper đọc.
+    """
     start = max(0, int(round(start_s * SAMPLE_RATE)))
     end = min(len(pcm), int(round(end_s * SAMPLE_RATE)))
-    return np.ascontiguousarray(pcm[start:end], dtype=np.float32)
+    return np.clip(np.asarray(pcm[start:end], dtype=np.float32), -1.0, 1.0)

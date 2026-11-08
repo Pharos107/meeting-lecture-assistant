@@ -4,6 +4,7 @@ import gc
 import os
 import re
 import unicodedata
+import zlib
 
 import numpy as np
 
@@ -24,6 +25,9 @@ HALLUCINATION_SILENCE_S = 2.0
 # Người nói nhanh nhất đo được khoảng 8,5 từ/giây. Câu bịa của Whisper dồn hàng chục từ vào dưới 1 giây.
 MAX_WORDS_PER_SECOND = 12
 MIN_WORDS_FOR_RATE = 4
+# Câu lặp kiểu "CH3, CH3, CH3…" có tỉ lệ nén từ khoảng 3. Câu thật đo trên 7 bài thực tế tối đa 2,1.
+# Với một mức temperature, faster-whisper chỉ dùng ngưỡng này để quyết định giải mã lại, không bỏ câu.
+MAX_COMPRESSION_RATIO = 2.4
 
 # Câu Whisper hay bịa ở đoạn ồn hoặc lặng. Chỉ bỏ khi cả câu chỉ là cụm này.
 _HALLUCINATED = (
@@ -66,10 +70,19 @@ _HALLUCINATED_PLAIN = tuple(_plain(item) for item in _HALLUCINATED)
 _CALL_TO_ACTION_PLAIN = tuple(_plain(item) for item in _CALL_TO_ACTION)
 
 
+def compression_ratio(text: str) -> float:
+    """Cùng cách faster-whisper tính: số byte UTF-8 chia số byte sau zlib."""
+    data = text.encode("utf-8")
+    return len(data) / len(zlib.compress(data)) if data else 0.0
+
+
 def is_hallucination(text: str) -> bool:
     plain = _plain(text)
     if not plain:
         return False
+    # Bỏ câu lặp để khoảng đó thành trống và được nhận dạng lại, kể cả bằng greedy.
+    if compression_ratio(text.strip()) > MAX_COMPRESSION_RATIO:
+        return True
     for phrase in _HALLUCINATED_PLAIN:
         if plain == phrase or (plain.startswith(phrase) and len(plain) - len(phrase) <= 25):
             return True
@@ -108,8 +121,57 @@ def speech_regions(pcm: np.ndarray, parameters: dict = VAD_PARAMETERS) -> list[t
         return []
     from faster_whisper.vad import VadOptions, get_speech_timestamps
 
-    stamps = get_speech_timestamps(np.asarray(pcm, dtype=np.float32), VadOptions(**parameters))
+    audio = np.asarray(pcm, dtype=np.float32)
+    # Chỉ chép khi có mẫu vượt [-1, 1], vì bài 3 giờ là khoảng 690 MB PCM.
+    if audio.size and (audio.max() > 1.0 or audio.min() < -1.0):
+        audio = np.clip(audio, -1.0, 1.0)
+    stamps = get_speech_timestamps(audio, VadOptions(**parameters))
     return [(stamp["start"] / SAMPLE_RATE, stamp["end"] / SAMPLE_RATE) for stamp in stamps]
+
+
+# Silero bỏ sót lời giảng to và bị clip ở `acid`: 50 khoảng trống dài từ 3 giây, tổng 428 giây,
+# to ngang phần có tiếng, trong khi Whisper đọc thẳng các khoảng đó ra lời thật (#19).
+LOUD_GAP_MIN_S = 3.0
+LOUD_GAP_RATIO = 0.5
+
+
+def _rms(pcm: np.ndarray, start_s: float, end_s: float) -> tuple[float, int]:
+    """Tổng bình phương và số mẫu của một khoảng, mẫu đã kẹp về [-1, 1]."""
+    start = max(0, int(round(start_s * SAMPLE_RATE)))
+    end = min(len(pcm), int(round(end_s * SAMPLE_RATE)))
+    piece = np.clip(np.asarray(pcm[start:end], dtype=np.float32), -1.0, 1.0).astype(np.float64)
+    return float((piece * piece).sum()), len(piece)
+
+
+def add_loud_gaps(pcm: np.ndarray, regions: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    """Thêm khoảng VAD bỏ trống mà to ngang lời nói, để Whisper vẫn nhận dạng.
+
+    Câu Whisper ra ở khoảng thêm vào vẫn đi qua mọi bộ lọc như câu khác. Không có vùng nào có tiếng
+    thì giữ nguyên, để bài im lặng về `ready` mà không nạp Whisper.
+    """
+    if not regions:
+        return regions
+    total_s = len(pcm) / SAMPLE_RATE
+    square, count = 0.0, 0
+    for start, end in regions:
+        part, size = _rms(pcm, start, end)
+        square, count = square + part, count + size
+    if count == 0:
+        return regions
+    floor = LOUD_GAP_RATIO * (square / count) ** 0.5
+    edges = [(0.0, regions[0][0])]
+    edges += [(regions[index][1], regions[index + 1][0]) for index in range(len(regions) - 1)]
+    edges.append((regions[-1][1], total_s))
+    added = []
+    for start, end in edges:
+        if end - start < LOUD_GAP_MIN_S:
+            continue
+        part, size = _rms(pcm, start, end)
+        if size and (part / size) ** 0.5 >= floor:
+            added.append((start, end))
+    if not added:
+        return regions
+    return sorted(regions + added)
 
 
 def prompt_or_none(vocabulary: str | None) -> str | None:

@@ -385,9 +385,9 @@ def _real_diarize(pcm, num_speakers):
 
 
 def _real_regions(pcm):
-    from app.services.stt_engine import speech_regions
+    from app.services.stt_engine import add_loud_gaps, speech_regions
 
-    return speech_regions(pcm)
+    return add_loud_gaps(pcm, speech_regions(pcm))
 
 
 def _upload_source(root: Path, job: Job) -> Path | None:
