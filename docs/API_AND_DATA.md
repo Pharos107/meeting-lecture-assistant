@@ -50,6 +50,8 @@ Thời gian trong JSON là số nguyên mili giây, mốc 0 là đầu file ho�
 
 `llm_rate_limited` chỉ đi bằng sự kiện `error` của SSE hỏi đáp, vì lỗi xảy ra sau khi stream đã mở.
 
+Trần của `rate_limited` đếm theo cửa sổ trượt 60 giây. Có `REDIS_URL` thì đếm trong Redis, nên mọi bản uvicorn dùng chung trần. Không có Redis, hoặc Redis lỗi, thì mỗi tiến trình đếm riêng.
+
 Lỗi nghiệp vụ trong lúc chạy job không trả trên request tải file. Chúng nằm ở `jobs.error_code` và sự kiện `error`.
 
 ## 2. Tài khoản
