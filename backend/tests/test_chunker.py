@@ -92,6 +92,25 @@ class EmptySpanTests(unittest.TestCase):
         self.assertEqual(retried, [(9, 20)])
         self.assertEqual([raw["words"][0]["start"] for raw in merged], [0.0, 9.5])
 
+    def test_whole_empty_chunk_goes_straight_to_greedy(self) -> None:
+        # #19, đầu bài phoi42: beam ra lời mời đăng ký kênh phủ cả chunk, bộ lọc xóa, chunk trống.
+        chunk = build_chunks([(0.2, 22.2)])[0]
+        beam_calls: list[tuple[float, float]] = []
+        retried: list[tuple[float, float]] = []
+
+        def transcribe(piece):
+            beam_calls.append((piece.start, piece.end))
+            return []
+
+        def retry(piece):
+            retried.append((piece.start, piece.end))
+            return [words((0.5, 1.5)), words((3.0, 4.0))]
+
+        merged = fill_empty_spans(chunk, [], transcribe, retry)
+        self.assertEqual(beam_calls, [])
+        self.assertEqual(retried, [(0.2, 22.2)])
+        self.assertEqual([raw["words"][0]["start"] for raw in merged], [0.5, 3.0])
+
     def test_no_retry_keeps_the_old_behaviour(self) -> None:
         chunk = build_chunks([(0, 8), (9, 20)])[0]
         self.assertEqual(fill_empty_spans(chunk, [], lambda piece: []), [])
