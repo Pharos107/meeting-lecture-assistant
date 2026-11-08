@@ -23,6 +23,7 @@ from app.services.speaker_align import (
     label_for_segment,
     label_for_word,
     match_speakers,
+    split_by_speaker,
     unpack_embedding,
 )
 from app.services.vad_chunker import TimedWord, build_chunks, fill_empty_spans, keep_word
@@ -154,23 +155,68 @@ def _write_speaker_labels(
     db: Session,
     written_segments: list[tuple[Segment, list[Word]]],
     turns: list[SpeakerTurn],
-) -> dict[uuid.UUID, str | None]:
-    """Ghi nhãn từ và câu bằng hai lệnh cập nhật hàng loạt theo khóa chính. Trả nhãn của từng câu."""
+) -> tuple[list[tuple[Segment, list[Word]]], dict[uuid.UUID, str | None]]:
+    """Ghi nhãn từ, tách câu tại chỗ đổi người nói, rồi ghi nhãn câu.
+
+    Từ và câu ghi bằng lệnh cập nhật hàng loạt theo khóa chính. Trả danh sách câu sau khi tách
+    và nhãn của từng câu. Câu tách ra có id mới, nên bước này phải xong trước sự kiện `speakers`.
+    """
     word_rows: list[dict] = []
-    segment_rows: list[dict] = []
+    pieces: list[tuple[Segment, list[Word], int, int, str | None]] = []
     for segment, words in written_segments:
         spans = []
         for word in words:
             label = label_for_word(word.start_ms, word.end_ms, turns)
             word_rows.append({"id": word.id, "speaker_label": label})
             spans.append(WordSpan(word.start_ms, word.end_ms, label))
-        segment_rows.append({"id": segment.id, "speaker_label": label_for_segment(spans)})
+        runs = split_by_speaker(spans) or [(0, len(words), label_for_segment(spans))]
+        for start, end, label in runs:
+            pieces.append((segment, words, start, end, label))
     db.flush()
     if word_rows:
         db.execute(update(Word), word_rows)
-    if segment_rows:
-        db.execute(update(Segment), segment_rows)
-    return {row["id"]: row["speaker_label"] for row in segment_rows}
+
+    split = len(pieces) != len(written_segments)
+    if split:
+        # Dời vị trí cũ sang số âm trước, để chèn câu mới không chạm ràng buộc (job, pass, position).
+        for index, (segment, _words) in enumerate(written_segments):
+            segment.position = -(index + 1)
+        db.flush()
+
+    result: list[tuple[Segment, list[Word]]] = []
+    labels: dict[uuid.UUID, str | None] = {}
+    moved: list[dict] = []
+    for segment, words, start, end, label in pieces:
+        part = words[start:end]
+        if start == 0:
+            target = segment
+            if end < len(words):
+                segment.text_raw = " ".join(word.text for word in part)
+                segment.end_ms = part[-1].end_ms
+        else:
+            target = Segment(
+                job_id=segment.job_id,
+                pass_index=segment.pass_index,
+                position=-(len(written_segments) + len(result) + 1),
+                start_ms=part[0].start_ms,
+                end_ms=part[-1].end_ms,
+                text_raw=" ".join(word.text for word in part),
+            )
+            db.add(target)
+            db.flush()
+            moved.extend(
+                {"id": word.id, "segment_id": target.id, "position": index} for index, word in enumerate(part)
+            )
+        target.speaker_label = label
+        labels[target.id] = label
+        result.append((target, list(part)))
+    if moved:
+        db.execute(update(Word), moved)
+    if split:
+        for index, (segment, _words) in enumerate(result):
+            segment.position = index
+    db.flush()
+    return result, labels
 
 
 def _merge_sentences(
@@ -316,7 +362,9 @@ def run_standard_pass(
             _append_event(db, job, "warning", {"code": "diarization_failed", "message": "Không gán được người nói."})
             turns = []
             vectors = {}
-    labels = _write_speaker_labels(db, written_segments, turns) if turns else {}
+    labels: dict[uuid.UUID, str | None] = {}
+    if turns:
+        written_segments, labels = _write_speaker_labels(db, written_segments, turns)
     _merge_sentences(db, written_segments, labels)
     if turns:
         _apply_voice_aliases(db, job, vectors)

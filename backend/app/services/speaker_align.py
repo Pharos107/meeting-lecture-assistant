@@ -50,6 +50,83 @@ def label_for_segment(words: list[WordSpan]) -> str | None:
     return max(totals.items(), key=lambda item: item[1])[0]
 
 
+# Lượt ngắn hơn cả hai mức này coi là nhiễu ở biên lượt nói của pyannote, không tách câu.
+MIN_RUN_WORDS = 2
+MIN_RUN_MS = 800
+
+
+def _resolve_null_labels(words: list[WordSpan]) -> list[str | None]:
+    """Từ chưa có nhãn theo từ có nhãn gần nhất trong câu, đo bằng khoảng cách thời gian."""
+    labels = [word.speaker_label for word in words]
+    known = [index for index, label in enumerate(labels) if label is not None]
+    if not known:
+        return labels
+    resolved = list(labels)
+    for index, label in enumerate(labels):
+        if label is not None:
+            continue
+        before = max((k for k in known if k < index), default=None)
+        after = min((k for k in known if k > index), default=None)
+        if before is None:
+            resolved[index] = labels[after]
+        elif after is None:
+            resolved[index] = labels[before]
+        else:
+            gap_before = words[index].start_ms - words[before].end_ms
+            gap_after = words[after].start_ms - words[index].end_ms
+            resolved[index] = labels[before] if gap_before <= gap_after else labels[after]
+    return resolved
+
+
+def split_by_speaker(words: list[WordSpan]) -> list[tuple[int, int, str | None]]:
+    """Chia một câu tại chỗ đổi người nói. Trả các khoảng [đầu, cuối) theo chỉ số từ, kèm nhãn.
+
+    Từ null đi theo lượt gần nhất. Lượt dưới MIN_RUN_WORDS từ và ngắn hơn MIN_RUN_MS nhập vào
+    lượt bên cạnh, nên một từ lệch biên không cắt câu thành mảnh.
+    """
+    if not words:
+        return []
+    resolved = _resolve_null_labels(words)
+    runs: list[list[int]] = []
+    for index, label in enumerate(resolved):
+        if runs and resolved[runs[-1][0]] == label:
+            runs[-1][1] = index + 1
+        else:
+            runs.append([index, index + 1])
+
+    def is_short(run: list[int]) -> bool:
+        count = run[1] - run[0]
+        duration = words[run[1] - 1].end_ms - words[run[0]].start_ms
+        return count < MIN_RUN_WORDS and duration < MIN_RUN_MS
+
+    while len(runs) > 1:
+        short = [position for position, run in enumerate(runs) if is_short(run)]
+        if not short:
+            break
+        position = short[0]
+        if position == 0:
+            target = 1
+        elif position == len(runs) - 1:
+            target = position - 1
+        else:
+            left, right = runs[position - 1], runs[position + 1]
+            target = position - 1 if left[1] - left[0] >= right[1] - right[0] else position + 1
+        low, high = sorted((position, target))
+        runs[low] = [runs[low][0], runs[high][1]]
+        del runs[high]
+        # Hai lượt cùng người hai bên một lượt vừa nhập thì gộp luôn.
+        merged: list[list[int]] = []
+        for run in runs:
+            if merged and label_for_segment(words[merged[-1][0] : merged[-1][1]]) == label_for_segment(
+                words[run[0] : run[1]]
+            ):
+                merged[-1][1] = run[1]
+            else:
+                merged.append(run)
+        runs = merged
+    return [(start, end, label_for_segment(words[start:end])) for start, end in runs]
+
+
 def pack_embedding(values: list[float]) -> bytes:
     return struct.pack("<" + "f" * len(values), *[float(value) for value in values])
 
