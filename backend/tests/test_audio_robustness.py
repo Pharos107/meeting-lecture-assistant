@@ -27,6 +27,27 @@ class AudioRobustnessTests(unittest.TestCase):
         self.assertLessEqual(float(np.abs(piece).max()), 1.0)
         self.assertEqual(piece.dtype, np.float32)
 
+    def test_vad_input_is_clamped_without_touching_the_file(self) -> None:
+        import tempfile
+        from pathlib import Path
+
+        from app.services.stt_engine import _clamped_view
+
+        folder = Path(tempfile.mkdtemp())
+        path = folder / "a.f32"
+        data = tone(25.0, 0.5)
+        data[20 * SAMPLE_RATE] = 26933.0
+        data.tofile(path)
+        pcm = np.memmap(path, dtype="<f4", mode="r")
+        fixed = _clamped_view(pcm)
+        self.assertLessEqual(float(np.abs(fixed).max()), 1.0)
+        self.assertEqual(float(fixed[100]), float(data[100]))
+        # File gốc không đổi, memmap đọc lại vẫn còn mẫu hỏng.
+        self.assertEqual(float(np.memmap(path, dtype="<f4", mode="r")[20 * SAMPLE_RATE]), 26933.0)
+        clean = tone(1.0, 0.5)
+        self.assertIs(_clamped_view(clean), clean)
+        del pcm, fixed
+
     def test_loud_gap_is_added_and_quiet_gap_is_not(self) -> None:
         # 0-5 lời nói, 5-10 to như lời nói mà VAD bỏ, 10-15 lời nói, 15-20 gần lặng, 20-25 lời nói.
         pcm = np.concatenate([tone(5, 0.3), tone(5, 0.3), tone(5, 0.3), tone(5, 0.005), tone(5, 0.3)])

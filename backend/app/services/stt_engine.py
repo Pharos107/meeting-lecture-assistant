@@ -115,16 +115,41 @@ def collect_words(raw_words) -> list[dict]:
     return words
 
 
+# Đọc PCM theo khối 10 giây, để bài 3 giờ không bị chép cả vào RAM.
+_BLOCK = 10 * SAMPLE_RATE
+
+
+def _clamped_view(pcm: np.ndarray) -> np.ndarray:
+    """PCM với mẫu kẹp về [-1, 1], không chép cả mảng và không gom chỉ số mẫu.
+
+    Đi theo từng khối. Gặp khối đầu tiên có mẫu vượt thì mở lại memmap ở chế độ copy-on-write
+    (mảng trong RAM thì chép một lần), rồi kẹp tại chỗ đúng những khối có mẫu vượt. Chỉ trang của
+    các khối đó bị chép, file trên đĩa không đổi.
+    """
+    audio = np.asarray(pcm, dtype=np.float32)
+    fixed = None
+    for offset in range(0, len(audio), _BLOCK):
+        block = audio[offset : offset + _BLOCK]
+        if not ((block > 1.0) | (block < -1.0)).any():
+            continue
+        if fixed is None:
+            filename = getattr(pcm, "filename", None)
+            if isinstance(pcm, np.memmap) and filename:
+                fixed = np.memmap(filename, dtype=pcm.dtype, mode="c", shape=pcm.shape, offset=pcm.offset)
+            else:
+                fixed = np.array(audio, dtype=np.float32)
+        segment = fixed[offset : offset + _BLOCK]
+        np.clip(segment, -1.0, 1.0, out=segment)
+    return audio if fixed is None else fixed
+
+
 def speech_regions(pcm: np.ndarray, parameters: dict = VAD_PARAMETERS) -> list[tuple[float, float]]:
     """Vùng có tiếng, đổi từ chỉ số mẫu sang giây."""
     if len(pcm) == 0:
         return []
     from faster_whisper.vad import VadOptions, get_speech_timestamps
 
-    audio = np.asarray(pcm, dtype=np.float32)
-    # Chỉ chép khi có mẫu vượt [-1, 1], vì bài 3 giờ là khoảng 690 MB PCM.
-    if audio.size and (audio.max() > 1.0 or audio.min() < -1.0):
-        audio = np.clip(audio, -1.0, 1.0)
+    audio = _clamped_view(pcm)
     stamps = get_speech_timestamps(audio, VadOptions(**parameters))
     return [(stamp["start"] / SAMPLE_RATE, stamp["end"] / SAMPLE_RATE) for stamp in stamps]
 
@@ -139,8 +164,11 @@ def _rms(pcm: np.ndarray, start_s: float, end_s: float) -> tuple[float, int]:
     """Tổng bình phương và số mẫu của một khoảng, mẫu đã kẹp về [-1, 1]."""
     start = max(0, int(round(start_s * SAMPLE_RATE)))
     end = min(len(pcm), int(round(end_s * SAMPLE_RATE)))
-    piece = np.clip(np.asarray(pcm[start:end], dtype=np.float32), -1.0, 1.0).astype(np.float64)
-    return float((piece * piece).sum()), len(piece)
+    total = 0.0
+    for offset in range(start, end, _BLOCK):
+        block = np.clip(np.asarray(pcm[offset : min(end, offset + _BLOCK)], dtype=np.float32), -1.0, 1.0)
+        total += float(np.dot(block, block))
+    return total, max(0, end - start)
 
 
 def add_loud_gaps(pcm: np.ndarray, regions: list[tuple[float, float]]) -> list[tuple[float, float]]:
