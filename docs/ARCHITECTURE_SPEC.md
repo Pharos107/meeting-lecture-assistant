@@ -36,7 +36,15 @@ Khóa Redis `gpu:lock` là `SET key value NX EX 30`. Giá trị là id phiên ng
 
 Tác vụ PT1, khi được worker lấy ra, thử `SET NX` với id job. Thất bại thì gọi `self.retry(countdown=5)` và trả slot ngay, để tác vụ nghe đang chờ được vào gia hạn khóa. Job đã `cancelled` thì không retry. PT1 nhả khóa khi job sang `ready`, `failed`, hoặc `cancelled`. Request tải file vẫn trả `queued` trong lúc task nằm trên broker.
 
-Hướng tối ưu, chưa khóa: tác vụ PT1 đang chạy giữ khóa đến hết job, nên một file 3 giờ chặn phiên nghe mới hàng chục phút. PT1 đã ghi kết quả theo chunk, nên tác vụ có thể đọc một cờ `gpu:wanted` giữa hai chunk, nhả model và khóa, `retry`, rồi chạy tiếp từ chunk chưa ghi. Phiên nghe đặt cờ đó khi gặp `gpu_busy`.
+Tác vụ PT1 nhường GPU cho phiên nghe, để một file 3 giờ không chặn phiên nghe mới hàng chục phút:
+
+1. `POST /api/live/sessions` không lấy được khóa. Nếu chủ khóa là job PT1 hay việc ghi danh giọng, API ghi id người dùng vào `gpu:wanted` với `EX 30` và trả `gpu_yielding`. Trang `/live` thử lại mỗi 3 giây trong tối đa 90 giây, mỗi lần thử gia hạn cờ. Chủ khóa là phiên nghe khác, hoặc khóa đang giữ chỗ cho người khác, thì `gpu_busy`.
+2. Giữa hai chunk, sau ít nhất một chunk của lượt đang chạy, PT1 đọc cờ. Có cờ thì ghi sự kiện `stage` với chữ "Tạm nhường GPU cho phiên ghi trực tiếp", lưu danh sách chunk, chỗ chạy tiếp và số lần đã nhường vào `/data/tmp/{job_id}.plan.json`, giữ file PCM, nhả Whisper, rồi `retry`. Job vẫn ở `transcribing`.
+3. Thay vì xóa khóa, PT1 đổi giá trị khóa thành `reserved:{user_id}` của người xin với `EX 10`. Chỉ phiên nghe của đúng người đó lấy được khóa đang giữ chỗ, rồi xóa cờ. Hết 10 giây mà người đó không mở phiên thì khóa trống lại và PT1 chạy tiếp ở lần `retry` kế. Cờ không chặn PT1 lấy khóa trống.
+4. Mỗi job nhường tối đa 3 lần. Sau đó job chạy tới hết, để việc mở phiên liên tục mà không dùng GPU không làm job đứng mãi.
+5. Lượt chạy tiếp đọc rồi xóa file kế hoạch, nạp PCM, chạy từ chunk chưa ghi, và đưa cả câu đã ghi trước đó vào bước gán người nói. Lượt này chết giữa chừng thì lần giao lại không còn file kế hoạch, nên xóa pass 2 và chạy từ đầu như cũ. Job bị hủy hoặc xóa trong lúc chờ thì lượt sau xóa PCM và file kế hoạch.
+
+PT1 chỉ nhường ở bước nhận dạng. Đang chuẩn hóa hay đang gán người nói thì chạy hết bước rồi mới nhả khóa, nên phiên nghe có thể chờ quá 90 giây với file rất dài. Pass 2 của phiên nghe và việc ghi danh giọng không nhường.
 
 ## 2. Phương thức 1
 

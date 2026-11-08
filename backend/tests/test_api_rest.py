@@ -282,6 +282,35 @@ class ApiRestTests(unittest.TestCase):
         blocked = client.post(f"/api/jobs/{queued}/exports", headers=auth(self.token), json={"format": "md"})
         self.assertEqual(blocked.status_code, 409)
 
+    def test_live_session_asks_upload_job_to_yield(self) -> None:
+        from app.services.gpu_lock import clear_gpu_wanted, gpu_wanted, hand_over
+
+        clear_gpu_wanted()
+        job_id = upload(self.token)
+        other = register("b@example.com")
+        self.assertTrue(_memory.acquire(job_id))
+        try:
+            asked = client.post("/api/live/sessions", headers=auth(self.token), json={"title": "Chen ngang"})
+            self.assertEqual(asked.status_code, 409)
+            self.assertEqual(asked.json()["error"]["code"], "gpu_yielding")
+            requester = gpu_wanted()
+            self.assertIsNotNone(requester)
+            with Session(get_engine()) as db:
+                self.assertEqual(db.query(LiveSession).count(), 0)
+            # Job trao khóa cho đúng người xin: người khác vẫn gặp bận trong lúc giữ chỗ.
+            self.assertTrue(hand_over(job_id, requester))
+            stolen = client.post("/api/live/sessions", headers=auth(other), json={"title": "Chen ngang"})
+            self.assertEqual(stolen.json()["error"]["code"], "gpu_busy")
+            opened = client.post("/api/live/sessions", headers=auth(self.token), json={"title": "Chen ngang"})
+            self.assertEqual(opened.status_code, 201, opened.text)
+            self.assertEqual(_memory.owner, opened.json()["session_id"])
+            self.assertIsNone(gpu_wanted())
+        finally:
+            keeper.stop_all()
+            clear_gpu_wanted()
+            _memory.owner = None
+            _memory.deadline = 0.0
+
     def test_live_lock_stop_and_websocket(self) -> None:
         created = client.post("/api/live/sessions", headers=auth(self.token), json={"title": "Buổi học"})
         self.assertEqual(created.status_code, 201, created.text)

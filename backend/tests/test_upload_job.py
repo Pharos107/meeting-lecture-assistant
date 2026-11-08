@@ -178,6 +178,99 @@ class UploadJobTests(unittest.TestCase):
         with Session(get_engine()) as db:
             self.assertEqual(db.get(Job, job_id).status, "ready")
 
+    def test_job_yields_gpu_between_chunks_and_resumes(self) -> None:
+        from app.services.gpu_lock import _memory, clear_gpu_wanted, want_gpu
+
+        clear_gpu_wanted()
+        job_id = self._job()
+        self._source(job_id, seconds=40.0)
+        regions = lambda pcm: [(0.0, 2.0), (35.0, 37.0)]  # noqa: E731, hai chunk xa nhau
+
+        class AskingEngine(FakeEngine):
+            def transcribe(self, audio, vocabulary):
+                # Phiên nghe xin GPU khi job đang nhận dạng chunk đầu.
+                want_gpu("nguoi-xin")
+                return super().transcribe(audio, vocabulary)
+
+        def diarize(pcm, num_speakers):
+            return [SpeakerTurn(0, 40000, "SPEAKER_00")], {}, "cpu"
+
+        plan = self.root / "tmp" / f"{job_id}.plan.json"
+        pcm = self.root / "tmp" / f"{job_id}.f32"
+        try:
+            self.assertEqual(self._run(job_id, engine_factory=AskingEngine, diarize_fn=diarize, regions_fn=regions), "retry")
+            self.assertTrue(plan.is_file())
+            self.assertTrue(pcm.is_file())
+            self.assertTrue(FakeEngine.instances[-1].released)
+            # Khóa được giữ chỗ cho người xin, không bỏ trống cho job khác chen vào.
+            self.assertEqual(_memory.owner, "reserved:nguoi-xin")
+            with Session(get_engine()) as db:
+                job = db.get(Job, job_id)
+                self.assertEqual(job.status, "transcribing")
+                self.assertEqual(db.query(Segment).filter(Segment.job_id == job_id).count(), 1)
+                last = db.query(JobEvent).filter(JobEvent.job_id == job_id).order_by(JobEvent.seq.desc()).first()
+                self.assertIn("nhường GPU", last.payload["detail"])
+
+            # Còn giữ chỗ thì job chưa lấy lại được khóa.
+            self.assertEqual(self._run(job_id, diarize_fn=diarize, regions_fn=regions), "retry")
+            self.assertTrue(plan.is_file())
+
+            # Phiên nghe dùng xong, khóa trống lại.
+            clear_gpu_wanted()
+            _memory.owner = None
+            self.assertEqual(self._run(job_id, diarize_fn=diarize, regions_fn=regions), "done")
+            with Session(get_engine()) as db:
+                job = db.get(Job, job_id)
+                self.assertEqual(job.status, "ready")
+                rows = db.query(Segment).filter(Segment.job_id == job_id).order_by(Segment.position).all()
+                self.assertEqual([row.position for row in rows], [0, 1])
+                self.assertEqual([row.start_ms // 1000 for row in rows], [0, 35])
+                self.assertEqual({row.speaker_label for row in rows}, {"SPEAKER_00"})
+                chunks = [
+                    row.payload["chunk_index"]
+                    for row in db.query(JobEvent).filter(JobEvent.job_id == job_id, JobEvent.event_type == "chunk")
+                ]
+                self.assertEqual(sorted(chunks), [0, 1])
+            self.assertFalse(plan.exists())
+            self.assertFalse(pcm.exists())
+        finally:
+            clear_gpu_wanted()
+            _memory.owner = None
+
+    def test_job_yields_at_most_three_times(self) -> None:
+        from app.services.gpu_lock import _memory, clear_gpu_wanted, want_gpu
+
+        # Ai đó mở phiên liên tục mà không bao giờ dùng GPU: job vẫn chạy xong.
+        job_id = self._job()
+        self._source(job_id, seconds=180.0)
+        regions = lambda pcm: [(start, start + 2.0) for start in (0.0, 35.0, 70.0, 105.0, 140.0)]  # noqa: E731
+        outcomes = []
+        try:
+            for _ in range(6):
+                want_gpu("nguoi-xin")
+                _memory.owner = None
+                outcomes.append(self._run(job_id, regions_fn=regions))
+                if outcomes[-1] == "done":
+                    break
+            self.assertEqual(outcomes, ["retry", "retry", "retry", "done"])
+            with Session(get_engine()) as db:
+                self.assertEqual(db.get(Job, job_id).status, "ready")
+                self.assertEqual(db.query(Segment).filter(Segment.job_id == job_id).count(), 5)
+        finally:
+            clear_gpu_wanted()
+            _memory.owner = None
+
+    def test_cancel_while_yielded_drops_saved_audio(self) -> None:
+        job_id = self._job(status="cancelled")
+        plan = self.root / "tmp" / f"{job_id}.plan.json"
+        pcm = self.root / "tmp" / f"{job_id}.f32"
+        plan.parent.mkdir(parents=True, exist_ok=True)
+        plan.write_text("{}", encoding="utf-8")
+        pcm.write_bytes(b"\x00" * 8)
+        self.assertEqual(self._run(job_id), "done")
+        self.assertFalse(plan.exists())
+        self.assertFalse(pcm.exists())
+
     def test_redelivery_clears_partial_pass_two(self) -> None:
         job_id = self._job(status="transcribing")
         self._source(job_id)

@@ -23,6 +23,9 @@ type Preview = { stream: MediaStream; source: LiveSource; label: string };
 
 const MAX_VOCAB = 800;
 const CONFIRM_STOP_MS = 4000;
+// Bản ghi đang nhận dạng nhường GPU sau đoạn hiện tại. Thử mở phiên lại trong khoảng này.
+const GPU_RETRY_MS = 3000;
+const GPU_WAIT_MS = 90_000;
 const FIELD_BASE =
   "mt-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20";
 const FIELD = `${FIELD_BASE} w-full`;
@@ -56,6 +59,7 @@ export default function LivePage() {
   const [error, setError] = useState<string | null>(null);
   const [sourceProblem, setSourceProblem] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [waitingGpu, setWaitingGpu] = useState(false);
   const [connection, setConnection] = useState<Connection>("connecting");
   const [drafts, setDrafts] = useState<Map<string, LiveDraft>>(new Map());
   const [startedAt, setStartedAt] = useState<number | null>(null);
@@ -152,6 +156,24 @@ export default function LivePage() {
     await socket.stop();
   }, []);
 
+  async function openSession(body: Parameters<typeof createLiveSession>[0]) {
+    const deadline = Date.now() + GPU_WAIT_MS;
+    try {
+      for (;;) {
+        try {
+          return await createLiveSession(body);
+        } catch (failure) {
+          const yielding = failure instanceof ApiRequestError && failure.code === "gpu_yielding";
+          if (!yielding || Date.now() >= deadline) throw failure;
+          setWaitingGpu(true);
+          await new Promise((resolve) => setTimeout(resolve, GPU_RETRY_MS));
+        }
+      }
+    } finally {
+      setWaitingGpu(false);
+    }
+  }
+
   async function start() {
     const current = previewRef.current;
     if (!current) return;
@@ -159,7 +181,7 @@ export default function LivePage() {
     setNotice(null);
     setPhase("starting");
     try {
-      const session = await createLiveSession({
+      const session = await openSession({
         title: title.trim(),
         vocabulary: vocabulary.trim() || undefined,
         num_speakers: speakersValue,
@@ -395,6 +417,11 @@ export default function LivePage() {
             {phase === "starting" ? <LoaderCircle className="size-4 animate-spin" /> : <span className="size-2.5 rounded-full bg-white" />}
             {phase === "starting" ? "Đang kết nối" : "Bắt đầu ghi"}
           </button>
+          {waitingGpu ? (
+            <p className="mt-2 text-center text-xs text-slate-500">
+              GPU đang nhận dạng một bản ghi khác. Bản ghi đó sẽ tạm dừng để nhường máy, chờ vài giây.
+            </p>
+          ) : null}
           {!preview ? <p className="mt-2 text-center text-xs text-slate-500">Mở nguồn âm thanh trước khi ghi.</p> : null}
         </section>
       </form>
