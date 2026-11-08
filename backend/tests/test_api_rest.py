@@ -282,6 +282,30 @@ class ApiRestTests(unittest.TestCase):
         blocked = client.post(f"/api/jobs/{queued}/exports", headers=auth(self.token), json={"format": "md"})
         self.assertEqual(blocked.status_code, 409)
 
+    def test_live_session_asks_upload_job_to_yield(self) -> None:
+        from app.services.gpu_lock import clear_gpu_wanted, gpu_wanted
+
+        clear_gpu_wanted()
+        job_id = upload(self.token)
+        self.assertTrue(_memory.acquire(job_id))
+        try:
+            asked = client.post("/api/live/sessions", headers=auth(self.token), json={"title": "Chen ngang"})
+            self.assertEqual(asked.status_code, 409)
+            self.assertEqual(asked.json()["error"]["code"], "gpu_yielding")
+            self.assertTrue(gpu_wanted())
+            with Session(get_engine()) as db:
+                self.assertEqual(db.query(LiveSession).count(), 0)
+            # Job nhả khóa: phiên lấy được khóa và xóa cờ, để job không nhường thêm lần nữa.
+            _memory.release(job_id)
+            opened = client.post("/api/live/sessions", headers=auth(self.token), json={"title": "Chen ngang"})
+            self.assertEqual(opened.status_code, 201, opened.text)
+            self.assertFalse(gpu_wanted())
+        finally:
+            keeper.stop_all()
+            clear_gpu_wanted()
+            _memory.owner = None
+            _memory.deadline = 0.0
+
     def test_live_lock_stop_and_websocket(self) -> None:
         created = client.post("/api/live/sessions", headers=auth(self.token), json={"title": "Buổi học"})
         self.assertEqual(created.status_code, 201, created.text)

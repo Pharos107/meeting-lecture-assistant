@@ -86,6 +86,54 @@ def get_gpu_lock() -> MemoryGpuLock | RedisGpuLock:
     return _memory
 
 
+# Phiên nghe gặp khóa của job PT1 thì đặt cờ này. Job đọc cờ giữa hai chunk, nhả khóa,
+# rồi chạy tiếp sau. Cờ tự hết hạn để job không chờ mãi khi người dùng bỏ ý định ghi.
+_WANTED_KEY = "gpu:wanted"
+WANTED_TTL_S = 30
+_wanted_until = 0.0
+_wanted_guard = threading.Lock()
+
+
+def want_gpu() -> None:
+    global _wanted_until
+    url = get_settings().redis_url
+    if url:
+        redis_client(url).set(_WANTED_KEY, "1", ex=WANTED_TTL_S)
+        return
+    with _wanted_guard:
+        _wanted_until = time.monotonic() + WANTED_TTL_S
+
+
+def gpu_wanted() -> bool:
+    url = get_settings().redis_url
+    if url:
+        return bool(redis_client(url).exists(_WANTED_KEY))
+    with _wanted_guard:
+        return _wanted_until > time.monotonic()
+
+
+def clear_gpu_wanted() -> None:
+    global _wanted_until
+    url = get_settings().redis_url
+    if url:
+        redis_client(url).delete(_WANTED_KEY)
+        return
+    with _wanted_guard:
+        _wanted_until = 0.0
+
+
+def lock_owner() -> str | None:
+    """Id đang giữ gpu:lock, hoặc None khi khóa trống."""
+    url = get_settings().redis_url
+    if url:
+        value = redis_client(url).get(_KEY)
+        return value.decode() if isinstance(value, bytes) else value
+    with _memory._guard:
+        if _memory.owner is not None and _memory.deadline > time.monotonic():
+            return _memory.owner
+        return None
+
+
 class LockKeeper:
     """Gia hạn khóa mỗi 10 giây. Phiên nghe chưa có worker thì nhả khóa khi mất nhịp quá 30 giây."""
 

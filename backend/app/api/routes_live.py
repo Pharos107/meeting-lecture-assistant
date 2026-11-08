@@ -24,7 +24,7 @@ from app.db import get_db, get_engine
 from app.models import Job, LiveSession, User, WsTicket
 from app.schemas.http import LiveSessionBody, request_body
 from app.services.dispatch import enqueue
-from app.services.gpu_lock import get_gpu_lock, keeper
+from app.services.gpu_lock import clear_gpu_wanted, get_gpu_lock, keeper, lock_owner, want_gpu
 from app.services.housekeeping import delete_expired_secrets, purge_expired_secrets
 from app.services.live_channel import (
     LiveFeed,
@@ -40,6 +40,7 @@ from app.services.live_heartbeat import touch
 router = APIRouter(prefix="/api", tags=["live"])
 
 _GPU_BUSY = "GPU đang bận với một phiên khác."
+_GPU_YIELDING = "GPU đang xử lý một bản ghi. Bản ghi sẽ tạm dừng sau đoạn đang nhận dạng, thử lại sau vài giây."
 
 
 def session_json(session: LiveSession) -> dict:
@@ -103,6 +104,21 @@ def parse_live_body(data: dict) -> tuple[str, str | None, int | None]:
     return title_text, vocabulary_text, num_speakers
 
 
+def gpu_conflict(db: Session) -> ApiError:
+    """Khóa của phiên nghe khác thì báo bận. Khóa của job hay việc ghi danh thì xin nhường."""
+    owner = lock_owner()
+    holder = None
+    if owner:
+        try:
+            holder = db.get(LiveSession, uuid.UUID(owner))
+        except ValueError:
+            holder = None
+    if owner is None or holder is not None:
+        return ApiError(409, "gpu_busy", _GPU_BUSY)
+    want_gpu()
+    return ApiError(409, "gpu_yielding", _GPU_YIELDING)
+
+
 @router.post(
     "/live/sessions",
     status_code=201,
@@ -116,7 +132,8 @@ async def create_session(request: Request, db: Session = Depends(get_db)) -> dic
     session_id = uuid.uuid4()
     job_id = uuid.uuid4()
     if not get_gpu_lock().acquire(str(session_id)):
-        raise ApiError(409, "gpu_busy", _GPU_BUSY)
+        raise gpu_conflict(db)
+    clear_gpu_wanted()
     keeper.start(str(session_id), until_quiet=True)
     now = datetime.now(timezone.utc)
     try:
