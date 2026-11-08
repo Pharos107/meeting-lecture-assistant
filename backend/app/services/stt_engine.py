@@ -46,8 +46,12 @@ _CALL_TO_ACTION = (
     "hãy đăng ký cho kênh",
     "không bỏ lỡ những video",
     "theo dõi và đăng ký kênh",
+    "like share và đăng ký kênh",
+    "đăng ký kênh để ủng hộ kênh",
 )
 _CALL_TO_ACTION_MAX_WORDS = 20
+# Câu dài hơn trần: bỏ khi số từ nằm ngoài mọi cụm đã biết không quá mức này.
+_CALL_TO_ACTION_MAX_OTHER_WORDS = 8
 
 
 class GpuOutOfMemory(Exception):
@@ -64,6 +68,7 @@ def _plain(text: str) -> str:
 
 _HALLUCINATED_PLAIN = tuple(_plain(item) for item in _HALLUCINATED)
 _CALL_TO_ACTION_PLAIN = tuple(_plain(item) for item in _CALL_TO_ACTION)
+_KNOWN_PHRASES = tuple(item.split() for item in _HALLUCINATED_PLAIN + _CALL_TO_ACTION_PLAIN)
 
 
 def is_hallucination(text: str) -> bool:
@@ -73,10 +78,101 @@ def is_hallucination(text: str) -> bool:
     for phrase in _HALLUCINATED_PLAIN:
         if plain == phrase or (plain.startswith(phrase) and len(plain) - len(phrase) <= 25):
             return True
-    if len(plain.split()) <= _CALL_TO_ACTION_MAX_WORDS:
-        padded = f" {plain} "
-        return any(f" {phrase} " in padded for phrase in _CALL_TO_ACTION_PLAIN)
-    return False
+    words = plain.split()
+    padded = f" {plain} "
+    if not any(f" {phrase} " in padded for phrase in _CALL_TO_ACTION_PLAIN):
+        return False
+    if len(words) <= _CALL_TO_ACTION_MAX_WORDS:
+        return True
+    # Câu dài hơn trần vẫn là câu bịa khi gần như toàn bộ là các cụm đã biết, như
+    # "Cảm ơn các bạn đã theo dõi và hãy subscribe cho kênh lalaschool Để không bỏ lỡ
+    # những video hấp dẫn" (21 từ, #25). Lời thật dính sau lời mời thì còn nhiều từ lạ.
+    return _uncovered_words(words) <= _CALL_TO_ACTION_MAX_OTHER_WORDS
+
+
+def _coverage(words: list[str], phrases=_KNOWN_PHRASES) -> list[bool]:
+    covered = [False] * len(words)
+    for phrase in phrases:
+        size = len(phrase)
+        for start in range(len(words) - size + 1):
+            if words[start : start + size] == phrase:
+                covered[start : start + size] = [True] * size
+    return covered
+
+
+def _uncovered_words(words: list[str]) -> int:
+    return _coverage(words).count(False)
+
+
+# Từ lạ xen giữa hai cụm, như tên kênh "Ghiền Mì Gõ" và chữ "để", và từ lạ còn ở mép câu, như "các bạn".
+_CALL_TO_ACTION_GAP = 4
+_CALL_TO_ACTION_EDGE = 2
+_CALL_TO_ACTION_PLAIN_WORDS = tuple(item.split() for item in _CALL_TO_ACTION_PLAIN)
+_TRIM_PHRASES = _KNOWN_PHRASES + (_plain("để không bỏ lỡ những video hấp dẫn").split(),)
+
+
+def call_to_action_span(words: list[str]) -> tuple[int, int] | None:
+    """Khoảng [đầu, cuối) theo chỉ số từ của lời mời đăng ký kênh dính trong một câu dài, hoặc None.
+
+    Bắt đầu từ một cụm lời mời, nới sang hai bên qua các cụm đã biết, cho phép tối đa
+    _CALL_TO_ACTION_GAP từ lạ xen giữa. Còn không quá _CALL_TO_ACTION_EDGE từ ở mép câu thì lấy tới mép.
+    """
+    hits = _coverage(words, _CALL_TO_ACTION_PLAIN_WORDS)
+    if True not in hits:
+        return None
+    covered = _coverage(words, _TRIM_PHRASES)
+    first = hits.index(True)
+    start, end = first, first
+    while end < len(words) and covered[end]:
+        end += 1
+    while True:
+        ahead = end
+        while ahead < len(words) and ahead - end < _CALL_TO_ACTION_GAP and not covered[ahead]:
+            ahead += 1
+        if ahead < len(words) and covered[ahead]:
+            end = ahead
+            while end < len(words) and covered[end]:
+                end += 1
+            continue
+        break
+    while True:
+        back = start
+        while back > 0 and start - back < _CALL_TO_ACTION_GAP and not covered[back - 1]:
+            back -= 1
+        if back > 0 and covered[back - 1]:
+            start = back - 1
+            while start > 0 and covered[start - 1]:
+                start -= 1
+            continue
+        break
+    if start <= _CALL_TO_ACTION_EDGE:
+        start = 0
+    if len(words) - end <= _CALL_TO_ACTION_EDGE:
+        end = len(words)
+    return start, end
+
+
+def trim_call_to_action(words: list[dict]) -> list[dict]:
+    """Bỏ các từ thuộc lời mời đăng ký kênh dính trong câu dài, giữ lời thật hai bên (#25)."""
+    tokens: list[str] = []
+    owner: list[int] = []
+    for index, word in enumerate(words):
+        for token in _plain(word["text"]).split():
+            # _plain quy "đăng kí" trên cả chuỗi. Tách theo từ thì phải quy lại ở đây.
+            if token == "kí" and tokens and tokens[-1] == "đăng":
+                token = "ký"
+            tokens.append(token)
+            owner.append(index)
+    span = call_to_action_span(tokens)
+    if span is None:
+        return words
+    dropped = set(owner[span[0] : span[1]])
+    return [word for index, word in enumerate(words) if index not in dropped]
+
+
+def trim_call_to_action_text(text: str) -> str:
+    kept = trim_call_to_action([{"text": part} for part in text.split()])
+    return " ".join(word["text"] for word in kept)
 
 
 def too_fast(text: str, start: float, end: float) -> bool:
@@ -188,14 +284,15 @@ class WhisperEngine:
             if is_hallucination(segment.text) or too_fast(segment.text, segment.start, segment.end):
                 continue
             words = collect_words(segment.words)
-            produced.append(
-                {
-                    "start": float(segment.start),
-                    "end": float(segment.end),
-                    "text": segment.text.strip(),
-                    "words": words,
-                }
-            )
+            start, end, text = float(segment.start), float(segment.end), segment.text.strip()
+            kept = trim_call_to_action(words)
+            if len(kept) != len(words):
+                if not kept:
+                    continue
+                words = kept
+                start, end = words[0]["start"], words[-1]["end"]
+                text = " ".join(word["text"] for word in words)
+            produced.append({"start": start, "end": end, "text": text, "words": words})
         return produced
 
     def release(self) -> None:
@@ -231,7 +328,7 @@ class DraftEngine:
             temperature=0.0,
             initial_prompt=prompt_or_none(vocabulary),
         )
-        kept = [segment.text.strip() for segment in segments if not is_hallucination(segment.text)]
+        kept = [trim_call_to_action_text(segment.text.strip()) for segment in segments if not is_hallucination(segment.text)]
         return " ".join(text for text in kept if text)
 
     def release(self) -> None:

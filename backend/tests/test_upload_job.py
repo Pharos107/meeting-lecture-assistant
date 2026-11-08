@@ -23,7 +23,15 @@ from app.models import Base, Job, JobEvent, Segment, User, Word
 from app.services import audio_processor
 from app.services.pipeline import clear_pass, run_upload_job
 from app.services.speaker_align import SpeakerTurn
-from app.services.stt_engine import GpuOutOfMemory, collect_words, is_hallucination, prompt_or_none, too_fast
+from app.services.stt_engine import (
+    GpuOutOfMemory,
+    collect_words,
+    is_hallucination,
+    prompt_or_none,
+    too_fast,
+    trim_call_to_action,
+    trim_call_to_action_text,
+)
 
 HAS_FFMPEG = shutil.which("ffmpeg") is not None and shutil.which("ffprobe") is not None
 DATA_DIR = tempfile.mkdtemp(prefix="stt-upload-")
@@ -273,6 +281,43 @@ class HallucinationFilterTests(unittest.TestCase):
         self.assertTrue(is_hallucination("Các bạn hãy đăng kí cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn"))
         self.assertTrue(is_hallucination("Để không bỏ lỡ những video hấp dẫn"))
         self.assertTrue(is_hallucination("cảm ơn bạn đã cùng theo dõi và đăng ký kênh của chương trình."))
+        # acid giây 870, vòng 2026-11-09.
+        self.assertTrue(is_hallucination("Các bạn có thể nhớ like, share và đăng ký kênh để ủng hộ kênh của chúng mình nhé."))
+
+    def test_long_call_to_action_made_of_known_phrases_is_dropped(self) -> None:
+        # #25: câu 21 từ lọt trần 20 từ ở `acid` giây 791 (2026-11-05).
+        text = "Cảm ơn các bạn đã theo dõi và hãy subscribe cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn"
+        self.assertEqual(len(text.split()), 21)
+        self.assertTrue(is_hallucination(text))
+        self.assertTrue(is_hallucination(text + " Hẹn gặp lại các bạn trong những video tiếp theo."))
+
+    def test_call_to_action_glued_to_real_speech_is_kept(self) -> None:
+        # Lời thật dính sau lời mời, như `hop1` giây 1573 vòng 11-03: bỏ cả câu thì mất lời thật.
+        text = (
+            "Các bạn hãy đăng kí cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn "
+            "nó tiếp tục thể hiện năng lực sẽ trở thành công thức và sau đó chúng ta sẽ bàn tiếp"
+        )
+        self.assertFalse(is_hallucination(text))
+
+    def test_call_to_action_inside_long_sentence_is_cut_out(self) -> None:
+        # #25: `hop1` giây 894 (2026-11-05 và 11-09), lời mời ở đuôi câu 21 từ.
+        tail = "Mày đi ra đi, hãy nhớ lại đi, hãy subscribe cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn"
+        self.assertFalse(is_hallucination(tail))
+        self.assertEqual(trim_call_to_action_text(tail), "Mày đi ra đi, hãy nhớ lại đi,")
+        # `hop1` giây 1573 vòng 11-03, lời mời ở đầu câu dài.
+        head = "Các bạn hãy đăng kí cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn nó tiếp tục thể hiện năng lực"
+        self.assertEqual(trim_call_to_action_text(head), "nó tiếp tục thể hiện năng lực")
+
+    def test_trimming_keeps_word_timings_of_the_rest(self) -> None:
+        words = [{"text": text, "start": index, "end": index + 1} for index, text in enumerate(
+            "Chốt lại như vậy. Hãy subscribe cho kênh Ghiền Mì Gõ Để không bỏ lỡ những video hấp dẫn".split())]
+        kept = trim_call_to_action(words)
+        self.assertEqual([word["text"] for word in kept], ["Chốt", "lại", "như", "vậy."])
+        self.assertEqual(kept[-1]["end"], 4)
+
+    def test_sentences_without_call_to_action_are_not_trimmed(self) -> None:
+        text = "Khách hàng subscribe gói năm tăng 20% và mình không muốn bỏ lỡ những khách hàng quay lại trong quý sau nữa"
+        self.assertEqual(trim_call_to_action_text(text), text)
 
     def test_real_sentences_are_kept(self) -> None:
         self.assertFalse(is_hallucination("Hôm nay chúng ta bàn về việc đăng ký kênh phân phối mới cho quý sau."))
