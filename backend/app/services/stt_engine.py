@@ -46,6 +46,8 @@ _CALL_TO_ACTION = (
     "hãy đăng ký cho kênh",
     "không bỏ lỡ những video",
     "theo dõi và đăng ký kênh",
+    "like share và đăng ký kênh",
+    "đăng ký kênh để ủng hộ kênh",
 )
 _CALL_TO_ACTION_MAX_WORDS = 20
 # Câu dài hơn trần: bỏ khi số từ nằm ngoài mọi cụm đã biết không quá mức này.

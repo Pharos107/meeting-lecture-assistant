@@ -281,6 +281,8 @@ class HallucinationFilterTests(unittest.TestCase):
         self.assertTrue(is_hallucination("Các bạn hãy đăng kí cho kênh lalaschool Để không bỏ lỡ những video hấp dẫn"))
         self.assertTrue(is_hallucination("Để không bỏ lỡ những video hấp dẫn"))
         self.assertTrue(is_hallucination("cảm ơn bạn đã cùng theo dõi và đăng ký kênh của chương trình."))
+        # acid giây 870, vòng 2026-11-09.
+        self.assertTrue(is_hallucination("Các bạn có thể nhớ like, share và đăng ký kênh để ủng hộ kênh của chúng mình nhé."))
 
     def test_long_call_to_action_made_of_known_phrases_is_dropped(self) -> None:
         # #25: câu 21 từ lọt trần 20 từ ở `acid` giây 791 (2026-11-05).
